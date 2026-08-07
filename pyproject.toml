@@ -8,11 +8,11 @@ dependencies = [
   "numpy>=2.0,<2.3",
   "pandas>=2.2",
   "pyarrow>=17",
+  "pygame-ce>=2.5",
   "tomli-w>=1.0",
 ]
 
 [project.optional-dependencies]
-viz = ["pygame-ce>=2.5"]
 dev = [
   "hypothesis>=6.100",
   "mypy>=1.11",
@@ -23,6 +23,7 @@ dev = [
 [project.scripts]
 soup-run = "experiments.runner:main"
 soup-report = "analysis.report:main"
+soup-viz = "soup.viz.app:main"
 
 [build-system]
 requires = ["hatchling"]

@@ -137,8 +137,9 @@ class VizConfig:
     enabled: bool = field(default=False, metadata=knob("Enable in-process visualization.", "true|false"))
     cell_px: int = field(default=8, metadata=knob("Rendered pixels per lattice cell.", "1..64"))
     fps_cap: int = field(default=60, metadata=knob("Maximum render frames per second.", "1..240"))
-    render_every: int = field(default=1, metadata=knob("Ticks between renders.", "1..10^6"))
-    colour_mode: str = field(default="content_hash", metadata=knob("Active lattice colour mapping.", "registered colour mode"))
+    render_every: int = field(default=1, metadata=knob("Simulation ticks between renders.", "1..10^6"))
+    ticks_per_frame: int = field(default=1, metadata=knob("Ticks advanced per rendered frame at normal speed.", "1..10^4"))
+    colour_mode: str = field(default="content_hash", metadata=knob("Active lattice colour mapping.", "content_hash|dominant_opcode|activity"))
     live_tunable: list[str] = field(default_factory=list, metadata=knob("Config paths editable at tick boundaries.", "valid numeric config paths"))
 
 
@@ -173,6 +174,10 @@ class Config:
             ("world.interactions_per_tick", self.world.interactions_per_tick),
             ("logging.flush_interval", self.logging.flush_interval),
             ("logging.tape_snapshot_interval", self.logging.tape_snapshot_interval),
+            ("viz.cell_px", self.viz.cell_px),
+            ("viz.fps_cap", self.viz.fps_cap),
+            ("viz.render_every", self.viz.render_every),
+            ("viz.ticks_per_frame", self.viz.ticks_per_frame),
         )
         for positive_name, positive_value in positive_values:
             if positive_value <= 0:
@@ -200,6 +205,8 @@ class Config:
             raise ValueError("logging.compression must be zstd, snappy, or none")
         if self.logging.full_tape_snapshot_interval < 0:
             raise ValueError("logging.full_tape_snapshot_interval must be nonnegative")
+        if self.viz.colour_mode not in {"content_hash", "dominant_opcode", "activity"}:
+            raise ValueError("viz.colour_mode must be content_hash, dominant_opcode, or activity")
 
     def apply_stage_gates(self) -> None:
         """Force features unavailable at the selected stage off, with warnings."""

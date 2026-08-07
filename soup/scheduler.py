@@ -46,25 +46,31 @@ class Scheduler:
         """Run exactly the configured number of ticks or halt on an invariant."""
 
         for tick in range(self.config.run.n_ticks):
-            try:
-                self.step(tick)
-            except InvariantViolation as error:
-                dump_violation(self.writer.run_dir, tick, error, self.world)
-                self.writer.append_event(
-                    tick=tick,
-                    event_type="invariant_violation",
-                    details={"error_type": type(error).__name__, "message": str(error)},
-                )
-                raise
-            except BaseException as error:
-                self.writer.append_event(
-                    tick=tick,
-                    event_type="run_halted",
-                    details={"error_type": type(error).__name__, "message": str(error)},
-                )
-                raise
+            self.advance(tick)
 
-    def step(self, tick: int) -> None:
+    def advance(self, tick: int) -> list[InteractionFact]:
+        """Advance one checked tick for either a headless or visual runner."""
+
+        try:
+            return self.step(tick)
+        except InvariantViolation as error:
+            dump_violation(self.writer.run_dir, tick, error, self.world)
+            self.writer.append_event(
+                tick=tick,
+                event_type="invariant_violation",
+                details={"error_type": type(error).__name__, "message": str(error)},
+            )
+            raise
+        except BaseException as error:
+            self.writer.append_event(
+                tick=tick,
+                event_type="run_halted",
+                details={"error_type": type(error).__name__, "message": str(error)},
+            )
+            raise
+
+    def step(self, tick: int) -> list[InteractionFact]:
+        """Advance one tick and return raw interaction facts for optional views."""
         facts = run_random_round(
             world=self.world,
             substrate=self.substrate,
@@ -86,6 +92,7 @@ class Scheduler:
             self._write_epoch(epoch, tick)
         if (tick + 1) % self.config.logging.flush_interval == 0:
             self.writer.flush()
+        return facts
 
     def _write_interactions(self, facts: list[InteractionFact]) -> None:
         if "interactions" not in self.config.logging.tick_tables:

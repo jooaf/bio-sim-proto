@@ -98,6 +98,7 @@ dependencies = [
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
     { name = "pandas", version = "3.0.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
     { name = "pyarrow" },
+    { name = "pygame-ce" },
     { name = "tomli-w" },
 ]
 
@@ -107,9 +108,6 @@ dev = [
     { name = "mypy" },
     { name = "pandas-stubs" },
     { name = "pytest" },
-]
-viz = [
-    { name = "pygame-ce" },
 ]
 
 [package.dev-dependencies]
@@ -128,11 +126,11 @@ requires-dist = [
     { name = "pandas", specifier = ">=2.2" },
     { name = "pandas-stubs", marker = "extra == 'dev'", specifier = ">=2.2" },
     { name = "pyarrow", specifier = ">=17" },
-    { name = "pygame-ce", marker = "extra == 'viz'", specifier = ">=2.5" },
+    { name = "pygame-ce", specifier = ">=2.5" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0" },
     { name = "tomli-w", specifier = ">=1.0" },
 ]
-provides-extras = ["viz", "dev"]
+provides-extras = ["dev"]
 
 [package.metadata.requires-dev]
 dev = [

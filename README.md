@@ -19,4 +19,15 @@ Each run is written beneath `runs/` and can be analysed with:
 uv run soup-report runs/<run-directory> --stage 0
 ```
 
+## Interactive Stage 0 viewer
+
+```sh
+uv sync
+uv run soup-viz experiments/configs/stage0_viz.toml
+```
+
+The square arrangement is only a display grid; Stage 0 interactions remain globally random. Identical content hashes share a colour, while recently modified tapes flash yellow.
+
+Controls: **Space** pause/resume, **Right/N** single-step, **Up/Down** change speed, **C** cycle colour mode, click a tape to inspect it, **S** save a screenshot, and **Q/Escape** quit. Closing early still finalizes truthful raw logs in `runs/`.
+
 See `FINDINGS.md` for stage-gate results and semantic notes.
