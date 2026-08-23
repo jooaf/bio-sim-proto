@@ -1,0 +1,18 @@
+[run]
+stage = 1
+seed = 0
+n_ticks = 100000000
+
+[world]
+population_size = 256
+
+[symbols]
+pool_multiplier = 2.0
+
+[viz]
+enabled = true
+cell_px = 12
+fps_cap = 60
+render_every = 1
+ticks_per_frame = 1
+colour_mode = "content_hash"

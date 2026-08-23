@@ -1,4 +1,4 @@
-"""Deterministic Stage 0 timestep scheduler."""
+"""Deterministic stage-aware timestep scheduler."""
 
 from __future__ import annotations
 
@@ -7,39 +7,58 @@ from collections import defaultdict
 import numpy as np
 from numpy.random import Generator
 
-from soup.config import Config
-from soup.interactions import InteractionFact, run_random_round
-from soup.logging.invariants import InvariantViolation, check_stage0, dump_violation
+from soup.config import Config, PairingMode
+from soup.dissolution import DissolutionFact, dissolve_candidates
+from soup.interactions import InteractionFact, run_interaction_round, run_local_interaction_round
+from soup.ledgers import SymbolPool
+from soup.logging.invariants import (
+    InvariantViolation,
+    check_stage0,
+    check_stage1,
+    check_stage2,
+    dump_violation,
+)
 from soup.logging.writer import RunWriter
+from soup.placement import PlacementFact, PlacementResult, place_random_tapes
 from soup.substrate.base import ExecutionBudget, Substrate
-from soup.world import FlatWorld
+from soup.world import FlatWorld, SpatialWorld, World
 
 
 class Scheduler:
-    """Advance the bare soup in explicit tick order.
+    """Advance the soup in an explicit stage-dependent order.
 
-    Stage 0 order is: (1) execute a random interaction round, (2) age tapes,
-    (3) check available structural invariants, (4) write raw tick facts, and
-    (5) write epoch censuses when ``tick % epoch_length == 0``. Environment,
-    absorption, dissolution, and placement are intentionally absent until their
-    specified stages; their eventual order is not approximated here.
+    Stages 0/1 execute interactions, age tapes, check invariants, and log.
+    Stage 2 executes local interactions, ages tapes, dissolves candidates,
+    attempts pool-funded placement, checks invariants, and then logs. Energy,
+    environment, and starvation remain absent until Stage 3.
     """
 
     def __init__(
         self,
         *,
         config: Config,
-        world: FlatWorld,
+        world: World,
         substrate: Substrate,
         rng: Generator,
         writer: RunWriter,
+        pool: SymbolPool | None = None,
     ) -> None:
         self.config = config
         self.world = world
         self.substrate = substrate
         self.rng = rng
         self.writer = writer
+        self.pool = pool
         self._abundance_events: set[str] = set()
+        self._birth_records: dict[int, tuple[int, tuple[int, int] | None, str]] = {}
+        for index_value in world.occupied_indices():
+            index = int(index_value)
+            tape_id = int(world.tape_ids[index])
+            self._birth_records[tape_id] = (
+                0,
+                world.cell(index),
+                writer.hash_tape(world.tapes[index]),
+            )
         self.budget = ExecutionBudget(max_steps=config.substrate.max_steps)
 
     def run(self) -> None:
@@ -54,7 +73,7 @@ class Scheduler:
         try:
             return self.step(tick)
         except InvariantViolation as error:
-            dump_violation(self.writer.run_dir, tick, error, self.world)
+            dump_violation(self.writer.run_dir, tick, error, self.world, self.pool)
             self.writer.append_event(
                 tick=tick,
                 event_type="invariant_violation",
@@ -70,29 +89,142 @@ class Scheduler:
             raise
 
     def step(self, tick: int) -> list[InteractionFact]:
-        """Advance one tick and return raw interaction facts for optional views."""
-        facts = run_random_round(
-            world=self.world,
-            substrate=self.substrate,
-            rng=self.rng,
-            budget=self.budget,
-            tick=tick,
-            interactions_per_tick=self.config.world.interactions_per_tick,
-            hash_tape=self.writer.hash_tape,
-        )
-        self.world.ages += 1
+        """Advance one tick and return interaction facts for optional views."""
+
+        dissolutions: list[DissolutionFact] = []
+        placements = PlacementResult(0, 0, ())
+        if isinstance(self.world, SpatialWorld):
+            if self.pool is None:
+                raise InvariantViolation("Stage 2 requires a symbol pool")
+            facts = run_local_interaction_round(
+                world=self.world,
+                substrate=self.substrate,
+                rng=self.rng,
+                budget=self.budget,
+                tick=tick,
+                interactions_per_tick=self.config.world.interactions_per_tick,
+                interaction_radius=self.config.world.interaction_radius,
+                mutation_rate=self.config.world.mutation_rate,
+                pool=self.pool,
+                hash_tape=self.writer.hash_tape,
+            )
+            self.world.ages[self.world.occupied] += 1
+            dissolutions = dissolve_candidates(
+                world=self.world,
+                substrate=self.substrate,
+                pool=self.pool,
+                config=self.config.dissolution,
+                rng=self.rng,
+                tick=tick,
+            )
+            placements = place_random_tapes(
+                world=self.world,
+                substrate=self.substrate,
+                pool=self.pool,
+                rng=self.rng,
+                tick=tick,
+                reseed_rate=self.config.world.reseed_rate,
+            )
+            self._write_lifecycle(tick, dissolutions, placements)
+        else:
+            facts = run_interaction_round(
+                world=self.world,
+                substrate=self.substrate,
+                rng=self.rng,
+                budget=self.budget,
+                tick=tick,
+                interactions_per_tick=self.config.world.interactions_per_tick,
+                pairing_mode=PairingMode(self.config.world.pairing_mode),
+                mutation_rate=self.config.world.mutation_rate,
+                pool=self.pool,
+                hash_tape=self.writer.hash_tape,
+            )
+            self.world.ages += 1
 
         if self.config.run.debug_invariants or tick % self.config.run.invariant_check_interval == 0:
-            check_stage0(self.world, self.config.substrate.tape_length)
+            self._check_invariants()
 
         self._write_interactions(facts)
-        self._write_tick(tick, facts)
+        self._write_tick(tick, facts, len(dissolutions))
         if tick % self.config.run.epoch_length == 0:
             epoch = tick // self.config.run.epoch_length
             self._write_epoch(epoch, tick)
         if (tick + 1) % self.config.logging.flush_interval == 0:
             self.writer.flush()
         return facts
+
+    def _check_invariants(self) -> None:
+        if isinstance(self.world, SpatialWorld):
+            if self.pool is None:
+                raise InvariantViolation("Stage 2 requires a symbol pool")
+            check_stage2(self.world, self.pool, self.config.substrate.tape_length)
+        elif self.pool is None:
+            check_stage0(self.world, self.config.substrate.tape_length)
+        else:
+            check_stage1(self.world, self.pool, self.config.substrate.tape_length)
+
+    def _write_lifecycle(
+        self,
+        tick: int,
+        dissolutions: list[DissolutionFact],
+        placement_result: PlacementResult,
+    ) -> None:
+        for death in dissolutions:
+            born_tick, birth_cell, birth_hash = self._birth_records.pop(
+                death.tape_id,
+                (death.born_tick, death.cell, ""),
+            )
+            death_hash = self.writer.hash_tape(death.tape)
+            self.writer.append(
+                "lineage",
+                {
+                    "tape_id": death.tape_id,
+                    "born_tick": born_tick,
+                    "died_tick": death.died_tick,
+                    "birth_cell": birth_cell,
+                    "death_cause": death.cause,
+                    "progenitor_ids": [],
+                    "content_hash_at_birth": birth_hash,
+                },
+            )
+            self.writer.append_event(
+                tick=death.died_tick,
+                event_type="tape_dissolved",
+                tape_id=death.tape_id,
+                content_hash=death_hash,
+                details={"cell": list(death.cell), "cause": death.cause},
+            )
+        for birth in placement_result.placements:
+            birth_hash = self.writer.hash_tape(birth.tape)
+            self._birth_records[birth.tape_id] = (birth.born_tick, birth.cell, birth_hash)
+            self.writer.append(
+                "lineage",
+                {
+                    "tape_id": birth.tape_id,
+                    "born_tick": birth.born_tick,
+                    "died_tick": None,
+                    "birth_cell": birth.cell,
+                    "death_cause": None,
+                    "progenitor_ids": [],
+                    "content_hash_at_birth": birth_hash,
+                },
+            )
+            self.writer.append_event(
+                tick=birth.born_tick,
+                event_type="random_tape_placed",
+                tape_id=birth.tape_id,
+                content_hash=birth_hash,
+                details={"cell": list(birth.cell)},
+            )
+        if placement_result.blocked:
+            self.writer.append_event(
+                tick=tick,
+                event_type="placement_blocked",
+                details={
+                    "attempted": placement_result.attempted,
+                    "blocked": placement_result.blocked,
+                },
+            )
 
     def _write_interactions(self, facts: list[InteractionFact]) -> None:
         if "interactions" not in self.config.logging.tick_tables:
@@ -107,8 +239,12 @@ class Scheduler:
                     "round_index": fact.round_index,
                     "a_id": fact.a_id,
                     "b_id": fact.b_id,
-                    "a_cell": None,
-                    "b_cell": None,
+                    "a_cell": fact.a_cell,
+                    "b_cell": fact.b_cell,
+                    "a_mutations": fact.a_mutations,
+                    "b_mutations": fact.b_mutations,
+                    "mutation_writes_success": fact.mutation_writes_success,
+                    "mutation_writes_blocked": fact.mutation_writes_blocked,
                     "steps": fact.steps,
                     "energy_spent": fact.energy_spent,
                     "writes_success": fact.writes_success,
@@ -123,35 +259,57 @@ class Scheduler:
                 },
             )
 
-    def _write_tick(self, tick: int, facts: list[InteractionFact]) -> None:
+    def _write_tick(
+        self,
+        tick: int,
+        facts: list[InteractionFact],
+        dissolution_count: int,
+    ) -> None:
         if "ticks" not in self.config.logging.tick_tables:
             return
+        occupied = self.world.occupied_indices()
+        mean_age = float(np.mean(self.world.ages[occupied])) if len(occupied) else 0.0
         self.writer.append(
             "ticks",
             {
                 "tick": tick,
                 "n_tapes": self.world.population_size,
-                "n_free_cells": 0,
-                "pool_total": 0,
-                "pool_entropy": 0.0,
+                "n_free_cells": self.world.free_cells,
+                "pool_total": 0 if self.pool is None else self.pool.total,
+                "pool_entropy": 0.0 if self.pool is None else self.pool.entropy,
+                "pool_histogram": (
+                    np.zeros(256, dtype=np.int64).tolist()
+                    if self.pool is None
+                    else self.pool.counts.tolist()
+                ),
                 "energy_field_total": 0.0,
                 "energy_tape_total": 0.0,
                 "energy_dissipated_cum": 0.0,
                 "energy_influx_cum": 0.0,
                 "n_interactions": len(facts),
-                "n_writes_success": sum(fact.writes_success for fact in facts),
-                "n_writes_blocked": sum(fact.writes_blocked for fact in facts),
-                "n_dissolutions": 0,
+                "n_writes_success": sum(
+                    fact.writes_success + fact.mutation_writes_success for fact in facts
+                ),
+                "n_writes_blocked": sum(
+                    fact.writes_blocked + fact.mutation_writes_blocked for fact in facts
+                ),
+                "n_dissolutions": dissolution_count,
                 "mean_tape_energy": 0.0,
-                "mean_tape_age": float(np.mean(self.world.ages)),
+                "mean_tape_age": mean_age,
             },
         )
 
     def _write_epoch(self, epoch: int, tick: int) -> None:
-        hashes = [self.writer.hash_tape(tape) for tape in self.world.tapes]
+        occupied = self.world.occupied_indices()
+        hashes = {
+            int(index): self.writer.hash_tape(self.world.tapes[int(index)])
+            for index in occupied
+        }
         members: defaultdict[str, list[int]] = defaultdict(list)
-        for index, content_hash in enumerate(hashes):
-            members[content_hash].append(index)
+        for index in occupied:
+            index_int = int(index)
+            content_hash = hashes[index_int]
+            members[content_hash].append(index_int)
             self.writer.first_seen.setdefault(content_hash, tick)
 
         if "population" in self.config.logging.epoch_tables:
@@ -185,14 +343,18 @@ class Scheduler:
             return
         full_interval = self.config.logging.full_tape_snapshot_interval
         include_full = full_interval > 0 and tick % full_interval == 0
-        for index, tape in enumerate(self.world.tapes):
+        for index_value in occupied:
+            index = int(index_value)
+            tape = self.world.tapes[index]
+            cell = self.world.cell(index)
+            cell_x, cell_y = (-1, index) if cell is None else cell
             self.writer.append(
                 "tapes",
                 {
                     "tick": tick,
                     "tape_id": int(self.world.tape_ids[index]),
-                    "cell_x": -1,
-                    "cell_y": int(index),
+                    "cell_x": cell_x,
+                    "cell_y": cell_y,
                     "age": int(self.world.ages[index]),
                     "energy": 0.0,
                     "content_hash": hashes[index],

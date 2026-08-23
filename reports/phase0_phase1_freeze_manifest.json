@@ -1,0 +1,65 @@
+{
+  "freeze_id": "phase0-phase1-closeout-v1",
+  "generated_at_utc": "2026-08-23T01:19:15-05:00",
+  "base_git_commit": "1ccf01cecfa386c86d745f179268c95b44968a54",
+  "intended_version_marker": "phase1-closeout-v1",
+  "artifact_index": "reports/phase0_phase1_artifact_index.csv",
+  "artifact_index_sha256": "3c69c02952a41fa603b2282ab3156972b0d95614a6ead5ee97825ba9faa1e630",
+  "artifact_groups": [
+    {
+      "name": "phase1_probe_runs",
+      "path_prefix": "experiments/phase1_runs/",
+      "files": 757,
+      "bytes": 1499494277
+    },
+    {
+      "name": "replicator_length_results",
+      "path_prefix": "experiments/replicator_length_study/results/",
+      "files": 1866,
+      "bytes": 7540284
+    },
+    {
+      "name": "detailed_runs",
+      "path_prefix": "runs/",
+      "files": 563,
+      "bytes": 9194560480
+    },
+    {
+      "name": "batch_logs",
+      "path_prefix": "logs/",
+      "files": 11,
+      "bytes": 56807
+    },
+    {
+      "name": "notebooks",
+      "path_prefix": "notebooks/",
+      "files": 2,
+      "bytes": 533286
+    }
+  ],
+  "validation": {
+    "pytest": "81 passed after Phase 2 scaffold",
+    "mypy": "strict soup analysis: success (32 source files)",
+    "corrected_statistics": {
+      "A3_spearman_p_asymptotic": 0.2733497897,
+      "A3_exact_grouped_label_p": 0.2841972842,
+      "A4_spearman_p_asymptotic": 1.1286993948503049e-7,
+      "A4_exact_grouped_label_p": 2.6428597857169285e-6,
+      "C2_exact_p": 0.7285714286,
+      "D3_exact_p": 0.0833333333
+    },
+    "build": "uv build: sdist and wheel succeeded"
+  },
+  "exclusions_from_git": [
+    "runs/** raw Parquet and checkpoints",
+    "experiments/phase1_runs/** aggregate run directories",
+    "experiments/replicator_length_study/results/**",
+    "logs/**",
+    "notebook checkpoints",
+    "organism-sim project contents except PHASE1_FINDINGS_TRANSFER.md"
+  ],
+  "notes": [
+    "Raw artifacts are content-addressed by the CSV index and intentionally remain outside Git.",
+    "The final version commit/tag is created only after the quality gate."
+  ]
+}

@@ -23,6 +23,10 @@ class HaltReason(str, Enum):
     BUDGET_EXHAUSTED = "budget_exhausted"
     PC_OVERRUN = "pc_overrun"
     ENERGY_EXHAUSTED = "energy_exhausted"
+    NORMAL_FORM = "normal_form"
+    CAPACITY_EXHAUSTED = "capacity_exhausted"
+    POOL_BLOCKED = "pool_blocked"
+    INVALID_PROGRAM = "invalid_program"
 
 
 class WriteOutcome(str, Enum):
@@ -31,10 +35,25 @@ class WriteOutcome(str, Enum):
     BLOCKED = "blocked"
 
 
+@dataclass(frozen=True, slots=True)
+class BatchWriteResult:
+    """Outcome of one atomic multi-slot replacement."""
+
+    outcome: WriteOutcome
+    changed_slots: int
+
+
 class WriteMediator(Protocol):
-    """Minimal interface through which a substrate requests a tape write."""
+    """Minimal interface through which a substrate requests conserved writes."""
 
     def write(self, tape: ByteTape, index: int, new_value: int) -> WriteOutcome: ...
+
+    def write_batch(
+        self,
+        tape: ByteTape,
+        indices: NDArray[np.int64],
+        new_values: NDArray[np.uint8],
+    ) -> BatchWriteResult: ...
 
 
 class SignalView(Protocol):

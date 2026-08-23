@@ -21,7 +21,9 @@ population_size = 256
 width = 64
 height = 64
 interaction_radius = 1
-interactions_per_tick = 256
+interactions_per_tick = 128
+pairing_mode = "shuffled_disjoint"
+mutation_rate = 0.000244140625
 reseed_rate = 0.0
 
 [symbols]

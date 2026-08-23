@@ -1,0 +1,11 @@
+arm,seed,entropy_transition,first_transition_epoch,final_entropy,held_to_end,max_diversity_collapse,structural_takeover,first_blocked_epoch
+m16,0,False,,0.1360031724137362,False,0.00030517578125,False,5441
+m16,1,False,,0.1297615896234152,False,0.000244140625,False,4383
+m16,2,False,,0.1374498414172995,False,0.00018310546875,False,4634
+m16,3,True,24701.0,5.126822105688844,True,0.415771484375,True,5296
+m16,4,False,,0.1141478608798127,False,0.00018310546875,False,11156
+control,0,False,,0.1291664255051108,False,0.00030517578125,False,-1
+control,1,False,,0.1210531654772246,False,0.000244140625,False,-1
+control,2,False,,0.1124054115280923,False,0.00018310546875,False,-1
+control,3,False,,0.1068213878890711,False,0.00030517578125,False,-1
+control,4,True,44101.0,0.0469819851869903,False,0.0013427734375,False,-1

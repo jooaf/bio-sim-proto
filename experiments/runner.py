@@ -15,7 +15,12 @@ from typing import Any
 import pandas as pd
 import tomli_w
 
-from analysis.report import write_batch_stage0_report, write_stage0_report
+from analysis.report import (
+    write_batch_stage0_report,
+    write_stage0_report,
+    write_stage1_report,
+    write_stage2_report,
+)
 from soup.config import Config
 from soup.simulation import Simulation
 
@@ -152,9 +157,16 @@ def main() -> None:
 
     args = parser.parse_args()
     if args.command == "run":
-        run_dir = Path(_run_one(Config.load(args.config)))
+        config = Config.load(args.config)
+        run_dir = Path(_run_one(config))
         if args.report:
-            print(write_stage0_report(run_dir))
+            if config.run.stage == 0:
+                report = write_stage0_report(run_dir)
+            elif config.run.stage == 1:
+                report = write_stage1_report(run_dir)
+            else:
+                report = write_stage2_report(run_dir)
+            print(report)
         else:
             print(run_dir)
     elif args.command == "replicates":

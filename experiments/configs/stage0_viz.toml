@@ -1,47 +1,15 @@
-# Interactive demonstration profile. This is intentionally smaller/faster than
-# the Stage 0 acceptance protocol and must not be used for acceptance numbers.
-
 [run]
-seed = 18
-n_ticks = 100000
-epoch_length = 10
 stage = 0
-debug_invariants = true
-invariant_check_interval = 1
-output_dir = "runs"
-
-[substrate]
-name = "bff"
-tape_length = 64
-max_steps = 512
-head_wrap = true
-pc_wrap = false
-separate_tapes = false
-noop_density = 0.9609375
+seed = 0
+n_ticks = 100000000
 
 [world]
 population_size = 256
-width = 64
-height = 64
-interaction_radius = 1
-interactions_per_tick = 64
-reseed_rate = 0.0
-
-[logging]
-tick_tables = ["ticks", "interactions"]
-epoch_tables = ["population", "tapes"]
-tape_snapshot_interval = 10
-full_tape_snapshot_interval = 1000
-interaction_log_rate = 0.1
-flush_interval = 100
-compression = "zstd"
-abundance_event_threshold = 16
 
 [viz]
 enabled = true
-cell_px = 24
+cell_px = 12
 fps_cap = 60
 render_every = 1
 ticks_per_frame = 1
 colour_mode = "content_hash"
-live_tunable = []

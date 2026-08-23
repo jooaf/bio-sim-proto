@@ -42,4 +42,4 @@ def test_logs_load_and_report_without_manual_intervention(tmp_path: Path) -> Non
 
 def test_golden_short_run_parquet_digest(tmp_path: Path) -> None:
     run_dir = Simulation(short_config(), run_dir=tmp_path / "golden").run()
-    assert parquet_digest(run_dir) == "f5cbbe69c6083390556a74c11a1ff68df6d58bd2b87105a1d767dc6e139a7906"
+    assert parquet_digest(run_dir) == "274f72ec3fbbbf1ab038963ca22518be66248828d60d9b4beb35ad2d51d0002e"

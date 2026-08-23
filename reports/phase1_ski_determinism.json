@@ -1,0 +1,13 @@
+{
+  "all_tables_byte_identical": true,
+  "digest_first": "c56352a9ce4b425692156556c9625be51f837c4e614a5e49da1c0411a958d5c8",
+  "digest_second": "c56352a9ce4b425692156556c9625be51f837c4e614a5e49da1c0411a958d5c8",
+  "tables": {
+    "events": true,
+    "interactions": true,
+    "lineage": true,
+    "population": true,
+    "tapes": true,
+    "ticks": true
+  }
+}

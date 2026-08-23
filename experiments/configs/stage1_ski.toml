@@ -1,0 +1,44 @@
+[run]
+seed = 0
+n_ticks = 5000
+epoch_length = 1
+stage = 1
+debug_invariants = true
+invariant_check_interval = 1
+output_dir = "experiments/phase1_runs/ski"
+
+[substrate]
+name = "ski"
+tape_length = 64
+max_steps = 32
+head_wrap = true
+pc_wrap = false
+separate_tapes = false
+noop_density = 0.9609375
+
+[world]
+population_size = 256
+width = 64
+height = 64
+interaction_radius = 1
+interactions_per_tick = 128
+pairing_mode = "shuffled_disjoint"
+mutation_rate = 0.0
+reseed_rate = 0.0
+
+[symbols]
+pool_multiplier = 2.0
+initial_tape_fill = 1.0
+
+[logging]
+tick_tables = ["ticks", "interactions"]
+epoch_tables = ["population", "tapes"]
+tape_snapshot_interval = 100
+full_tape_snapshot_interval = 100
+interaction_log_rate = 0.01
+flush_interval = 100
+compression = "zstd"
+abundance_event_threshold = 16
+
+[viz]
+enabled = false

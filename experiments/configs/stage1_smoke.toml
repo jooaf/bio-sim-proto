@@ -1,0 +1,31 @@
+[run]
+seed = 7
+n_ticks = 8
+epoch_length = 1
+stage = 1
+debug_invariants = true
+output_dir = "runs"
+
+[substrate]
+name = "bff"
+tape_length = 16
+max_steps = 64
+head_wrap = true
+pc_wrap = false
+noop_density = 0.75
+
+[world]
+population_size = 12
+interactions_per_tick = 6
+pairing_mode = "shuffled_disjoint"
+mutation_rate = 0.000244140625
+
+[logging]
+tick_tables = ["ticks", "interactions"]
+epoch_tables = ["population", "tapes"]
+tape_snapshot_interval = 1
+full_tape_snapshot_interval = 2
+interaction_log_rate = 1.0
+flush_interval = 4
+compression = "zstd"
+abundance_event_threshold = 4

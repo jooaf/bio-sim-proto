@@ -16,7 +16,9 @@ noop_density = 0.75
 
 [world]
 population_size = 12
-interactions_per_tick = 12
+interactions_per_tick = 6
+pairing_mode = "shuffled_disjoint"
+mutation_rate = 0.000244140625
 
 [logging]
 tick_tables = ["ticks", "interactions"]

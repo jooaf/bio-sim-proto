@@ -37,6 +37,7 @@ class RunWriter:
         self.run_dir.mkdir(parents=True, exist_ok=False)
         (self.run_dir / "config.toml").write_bytes(config_bytes)
         (self.run_dir / "invariant_log.jsonl").write_text("", encoding="utf-8")
+        (self.run_dir / "parameter_changes.jsonl").write_text("", encoding="utf-8")
 
         self.schemas = table_schemas()
         self.buffers: dict[str, list[dict[str, Any]]] = {name: [] for name in self.schemas}
@@ -44,6 +45,7 @@ class RunWriter:
         self.started_at = datetime.now(UTC)
         self.started_clock = time.perf_counter()
         self.first_seen: dict[str, int] = {}
+        self.parameter_change_count = 0
         self._manifest = self._base_manifest()
         self._write_manifest(exit_status="running", wall_time_seconds=0.0)
 
@@ -100,6 +102,34 @@ class RunWriter:
             },
         )
 
+    def record_parameter_change(
+        self,
+        *,
+        tick: int,
+        path: str,
+        old_value: object,
+        new_value: object,
+        source: str = "pygame",
+    ) -> None:
+        """Persist one runtime parameter change immediately and in the event table."""
+
+        record = {
+            "tick": tick,
+            "path": path,
+            "old_value": old_value,
+            "new_value": new_value,
+            "source": source,
+            "recorded_at_utc": datetime.now(UTC).isoformat(),
+        }
+        with (self.run_dir / "parameter_changes.jsonl").open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(record, sort_keys=True, separators=(",", ":")) + "\n")
+        self.parameter_change_count += 1
+        self.append_event(
+            tick=tick,
+            event_type="parameter_changed",
+            details={"path": path, "old_value": old_value, "new_value": new_value, "source": source},
+        )
+
     def flush(self) -> None:
         """Write each nonempty buffer as one deterministic Parquet row group."""
 
@@ -142,6 +172,7 @@ class RunWriter:
         for writer in self.writers.values():
             writer.close()
         self.writers.clear()
+        (self.run_dir / "effective_config.toml").write_bytes(self._config_bytes(self.config))
         elapsed = time.perf_counter() - self.started_clock
         self._write_manifest(exit_status=exit_status, wall_time_seconds=elapsed)
 
@@ -176,6 +207,7 @@ class RunWriter:
         manifest = dict(self._manifest)
         manifest["exit_status"] = exit_status
         manifest["wall_time_seconds"] = wall_time_seconds
+        manifest["parameter_change_count"] = self.parameter_change_count
         if exit_status != "running":
             manifest["finished_at_utc"] = datetime.now(UTC).isoformat()
         (self.run_dir / "manifest.json").write_text(

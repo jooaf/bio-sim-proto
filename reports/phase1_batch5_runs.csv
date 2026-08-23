@@ -1,0 +1,11 @@
+arm,seed,entropy_transition,first_transition_epoch,max_high_order_entropy,final_high_order_entropy,held_to_end,overall_blocked_fraction,max_conservation_residual,run_dir
+U16,0,False,,0.3730422433908593,0.1439234964021309,False,2.8224799653946332e-06,0,experiments/phase1_runs/batch4_mismatch/p1_m16_n32768_s0_uniform
+U16,1,True,45701.0,6.358769110856665,6.280140486037583,True,1.5400813838924744e-05,0,experiments/phase1_runs/batch4_mismatch/p1_m16_n32768_s1_uniform
+U16,2,True,15101.0,6.388501529090499,6.328548764103406,True,4.336495182449902e-06,0,experiments/phase1_runs/batch4_mismatch/p1_m16_n32768_s2_uniform
+U16,3,False,,0.4660240076239494,0.1350035473750468,False,0.0,0,experiments/phase1_runs/batch5_exclusion/p1_m16_n32768_s3_uniform
+U16,4,False,,0.3839094896635942,0.1231547050917658,False,1.707612658671853e-06,0,experiments/phase1_runs/batch5_exclusion/p1_m16_n32768_s4_uniform
+M16,0,True,81401.0,5.870843301533041,4.11814144144151,True,1.1225321626546991e-06,0,experiments/phase1_runs/batch3_scale/p1_m16_n32768_s0
+M16,1,False,,0.3602569606182264,0.1261734382197765,False,4.675796471267642e-09,0,experiments/phase1_runs/batch3_scale/p1_m16_n32768_s1
+M16,2,False,,0.3903046763372746,0.1269765814735608,False,1.5142714842245022e-06,0,experiments/phase1_runs/batch3_scale/p1_m16_n32768_s2
+M16,3,True,87601.0,6.355902016448394,6.328041395618647,True,3.9505546132451486e-05,0,experiments/phase1_runs/batch3_scale/p1_m16_n32768_s3
+M16,4,False,,0.3839094896635942,0.1439036584624169,False,2.8735096997729144e-06,0,experiments/phase1_runs/batch3_scale/p1_m16_n32768_s4

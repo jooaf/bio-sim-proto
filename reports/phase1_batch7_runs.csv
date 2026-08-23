@@ -1,0 +1,9 @@
+arm,seed,entropy_transition,first_transition_epoch,max_high_order_entropy,final_high_order_entropy,held_to_end,median_entropy,blocked_writes_total,max_conservation_residual,run_dir
+I1-ctrl6,0,False,,0.7360612242966829,0.3471224116158069,False,0.3146195928444752,157344999,0,experiments/phase1_runs/batch7_specificity/p1_m2_n32768_s0_exlist6_aeece65c
+I1-ctrl6,1,True,68301.0,2.273148329674868,2.0678179660906757,True,0.3314521629908062,876307969,0,experiments/phase1_runs/batch7_specificity/p1_m2_n32768_s1_exlist6_aeece65c
+I1-ctrl6,2,False,,0.7721652785730804,0.2760090718516714,False,0.3081638523733243,171666590,0,experiments/phase1_runs/batch7_specificity/p1_m2_n32768_s2_exlist6_aeece65c
+I1-ctrl6,3,True,79101.0,1.3616764069601697,0.868277049483611,False,0.3187140786139801,628950570,0,experiments/phase1_runs/batch7_specificity/p1_m2_n32768_s3_exlist6_aeece65c
+I1-ctrl6,4,True,84901.0,2.816153470615655,2.1930402063527303,True,0.2954440711827573,543766109,0,experiments/phase1_runs/batch7_specificity/p1_m2_n32768_s4_exlist6_aeece65c
+I2-ctrl1,0,False,,0.8609954324419133,0.2861414610383406,False,0.3103133063740309,155179530,0,experiments/phase1_runs/batch7_specificity/p1_m2_n32768_s0_exlist1_09b9265b
+I2-ctrl1,1,False,,0.9211027343294688,0.2975491369155669,False,0.3072880472205082,151370427,0,experiments/phase1_runs/batch7_specificity/p1_m2_n32768_s1_exlist1_09b9265b
+I2-ctrl1,2,True,40501.0,1.0527389895286072,0.9876096506028792,False,0.90757415637205,3110206241,0,experiments/phase1_runs/batch7_specificity/p1_m2_n32768_s2_exlist1_09b9265b

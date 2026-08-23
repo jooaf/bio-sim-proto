@@ -11,6 +11,7 @@ import dataclasses
 import tomllib
 import warnings
 from dataclasses import asdict, dataclass, field
+from enum import Enum
 from pathlib import Path
 from typing import Any, TypeVar, cast
 
@@ -18,6 +19,38 @@ import tomli_w
 
 
 T = TypeVar("T")
+
+
+LIVE_TUNABLE_PATHS = frozenset(
+    {
+        "run.n_ticks",
+        "run.debug_invariants",
+        "run.invariant_check_interval",
+        "substrate.max_steps",
+        "substrate.head_wrap",
+        "substrate.pc_wrap",
+        "world.interactions_per_tick",
+        "world.pairing_mode",
+        "world.mutation_rate",
+        "logging.tape_snapshot_interval",
+        "logging.full_tape_snapshot_interval",
+        "logging.interaction_log_rate",
+        "logging.flush_interval",
+        "logging.abundance_event_threshold",
+        "viz.fps_cap",
+        "viz.render_every",
+        "viz.ticks_per_frame",
+        "viz.colour_mode",
+    }
+)
+
+
+class PairingMode(str, Enum):
+    """Supported stage-aware interaction-sampling protocols."""
+
+    WITH_REPLACEMENT = "with_replacement"
+    SHUFFLED_DISJOINT = "shuffled_disjoint"
+    LOCAL_NEIGHBORHOOD = "local_neighborhood"
 
 
 def knob(description: str, sane: str) -> dict[str, str]:
@@ -64,6 +97,17 @@ class WorldConfig:
     height: int = field(default=64, metadata=knob("Future lattice height.", "2..16384"))
     interaction_radius: int = field(default=1, metadata=knob("Future Moore-neighbourhood radius.", "1..64"))
     interactions_per_tick: int = field(default=256, metadata=knob("Ordered pairs executed per tick.", "1..10^9"))
+    pairing_mode: str = field(
+        default=PairingMode.WITH_REPLACEMENT.value,
+        metadata=knob(
+            "Protocol used to choose ordered tape pairs.",
+            "with_replacement|shuffled_disjoint|local_neighborhood",
+        ),
+    )
+    mutation_rate: float = field(
+        default=0.0,
+        metadata=knob("Independent pre-interaction replacement probability per tape byte.", "0..1"),
+    )
     reseed_rate: float = field(default=0.0, metadata=knob("Chance to seed each free cell per tick.", "0..1"))
 
 
@@ -140,7 +184,10 @@ class VizConfig:
     render_every: int = field(default=1, metadata=knob("Simulation ticks between renders.", "1..10^6"))
     ticks_per_frame: int = field(default=1, metadata=knob("Ticks advanced per rendered frame at normal speed.", "1..10^4"))
     colour_mode: str = field(default="content_hash", metadata=knob("Active lattice colour mapping.", "content_hash|dominant_opcode|activity"))
-    live_tunable: list[str] = field(default_factory=list, metadata=knob("Config paths editable at tick boundaries.", "valid numeric config paths"))
+    live_tunable: list[str] = field(
+        default_factory=lambda: sorted(LIVE_TUNABLE_PATHS),
+        metadata=knob("Config paths editable at tick boundaries.", "supported live-safe config paths"),
+    )
 
 
 @dataclass(slots=True)
@@ -171,7 +218,12 @@ class Config:
             ("substrate.tape_length", self.substrate.tape_length),
             ("substrate.max_steps", self.substrate.max_steps),
             ("world.population_size", self.world.population_size),
+            ("world.width", self.world.width),
+            ("world.height", self.world.height),
+            ("world.interaction_radius", self.world.interaction_radius),
             ("world.interactions_per_tick", self.world.interactions_per_tick),
+            ("dissolution.inert_ticks", self.dissolution.inert_ticks),
+            ("dissolution.starved_ticks", self.dissolution.starved_ticks),
             ("logging.flush_interval", self.logging.flush_interval),
             ("logging.tape_snapshot_interval", self.logging.tape_snapshot_interval),
             ("viz.cell_px", self.viz.cell_px),
@@ -184,8 +236,28 @@ class Config:
                 raise ValueError(f"{positive_name} must be positive")
         if self.world.population_size < 2:
             raise ValueError("world.population_size must be at least two")
+        if self.symbols.pool_multiplier <= 0.0:
+            raise ValueError("symbols.pool_multiplier must be positive")
+        try:
+            pairing_mode = PairingMode(self.world.pairing_mode)
+        except ValueError as error:
+            allowed = ", ".join(mode.value for mode in PairingMode)
+            raise ValueError(f"world.pairing_mode must be one of: {allowed}") from error
+        if (
+            pairing_mode is PairingMode.SHUFFLED_DISJOINT
+            and self.world.interactions_per_tick > self.world.population_size // 2
+        ):
+            raise ValueError(
+                "world.interactions_per_tick cannot exceed half of world.population_size "
+                "when world.pairing_mode is shuffled_disjoint"
+            )
+        if self.run.stage < 2 and pairing_mode is PairingMode.LOCAL_NEIGHBORHOOD:
+            raise ValueError("local_neighborhood pairing requires Stage 2 or later")
+        if self.run.stage >= 2 and pairing_mode is not PairingMode.LOCAL_NEIGHBORHOOD:
+            raise ValueError("Stage 2 or later requires local_neighborhood pairing")
         rates: tuple[tuple[str, float], ...] = (
             ("substrate.noop_density", self.substrate.noop_density),
+            ("world.mutation_rate", self.world.mutation_rate),
             ("world.reseed_rate", self.world.reseed_rate),
             ("symbols.initial_tape_fill", self.symbols.initial_tape_fill),
             ("energy.decay", self.energy.decay),
@@ -195,10 +267,14 @@ class Config:
         for rate_name, rate_value in rates:
             if not 0.0 <= rate_value <= 1.0:
                 raise ValueError(f"{rate_name} must be in 0..1")
+        if self.run.stage >= 2 and round(
+            self.world.width * self.world.height * self.symbols.initial_tape_fill
+        ) < 2:
+            raise ValueError("Stage 2 initial_tape_fill must create at least two tapes")
         if self.substrate.name not in {"bff", "ski"}:
             raise ValueError("substrate.name must be 'bff' or 'ski'")
         if self.run.stage == 0 and self.substrate.name != "bff":
-            raise ValueError("Stage 0 implements only the BFF substrate")
+            raise ValueError("Stage 0 implements only the BFF substrate; SKI requires Stage 1 conservation")
         if self.substrate.separate_tapes:
             raise ValueError("separate_tapes is exposed but is not implemented in Stage 0")
         if self.logging.compression not in {"zstd", "snappy", "none"}:
@@ -207,6 +283,11 @@ class Config:
             raise ValueError("logging.full_tape_snapshot_interval must be nonnegative")
         if self.viz.colour_mode not in {"content_hash", "dominant_opcode", "activity"}:
             raise ValueError("viz.colour_mode must be content_hash, dominant_opcode, or activity")
+        unknown_tunables = set(self.viz.live_tunable) - LIVE_TUNABLE_PATHS
+        if unknown_tunables:
+            raise ValueError(f"unsupported viz.live_tunable paths: {sorted(unknown_tunables)}")
+        if len(self.viz.live_tunable) != len(set(self.viz.live_tunable)):
+            raise ValueError("viz.live_tunable paths must be unique")
 
     def apply_stage_gates(self) -> None:
         """Force features unavailable at the selected stage off, with warnings."""

@@ -1,0 +1,58 @@
+{
+  "all_invariant_logs_empty": true,
+  "all_stage1_success": true,
+  "paper_mutation_runs": [
+    {
+      "first_epoch": 1,
+      "last_epoch": 16000,
+      "path": "reports/paper_mutation_high_seed0.csv",
+      "rows": 126
+    },
+    {
+      "first_epoch": 1,
+      "last_epoch": 16000,
+      "path": "reports/paper_mutation_reference_seed0.csv",
+      "rows": 126
+    },
+    {
+      "first_epoch": 1,
+      "last_epoch": 16000,
+      "path": "reports/paper_mutation_zero_seed0.csv",
+      "rows": 126
+    }
+  ],
+  "stage1_runs": [
+    {
+      "exit_status": "success",
+      "interactions": 2560000,
+      "invariant_log_bytes": 0,
+      "pool_multiplier": 0.1,
+      "run_dir": "sweeps/p1_pool_multiplier_pilot/runs/20260809T013333.109519Z_c62501dd5a98_1",
+      "ticks": 20000
+    },
+    {
+      "exit_status": "success",
+      "interactions": 2560000,
+      "invariant_log_bytes": 0,
+      "pool_multiplier": 0.5,
+      "run_dir": "sweeps/p1_pool_multiplier_pilot/runs/20260809T013819.464208Z_c16cdc9ecab2_1",
+      "ticks": 20000
+    },
+    {
+      "exit_status": "success",
+      "interactions": 2560000,
+      "invariant_log_bytes": 0,
+      "pool_multiplier": 2.0,
+      "run_dir": "sweeps/p1_pool_multiplier_pilot/runs/20260809T014352.303548Z_922302c93fbf_1",
+      "ticks": 20000
+    },
+    {
+      "exit_status": "success",
+      "interactions": 2560000,
+      "invariant_log_bytes": 0,
+      "pool_multiplier": 16.0,
+      "run_dir": "sweeps/p1_pool_multiplier_pilot/runs/20260809T014903.463088Z_7efe4cc8c1ca_1",
+      "ticks": 20000
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+[
+  {
+    "attempted_interactions_per_tick": 32,
+    "executed_interactions": 3200,
+    "executed_interactions_per_s": 2336.966890952424,
+    "final_free_cells": 13,
+    "final_tapes": 51,
+    "height": 8,
+    "invariant_failures": 0,
+    "name": "correctness_8x8",
+    "output_bytes": 164874,
+    "projected_500k_output_bytes": 824370000,
+    "projected_500k_wall_time_s": 6846.481249667704,
+    "ticks": 100,
+    "ticks_per_s": 73.03021534226325,
+    "wall_time_s": 1.3692962499335408,
+    "width": 8
+  },
+  {
+    "attempted_interactions_per_tick": 512,
+    "executed_interactions": 512000,
+    "executed_interactions_per_s": 4037.0670141270693,
+    "final_free_cells": 201,
+    "final_tapes": 823,
+    "height": 32,
+    "invariant_failures": 0,
+    "name": "smoke_32x32",
+    "output_bytes": 1295428,
+    "projected_500k_output_bytes": 647714000,
+    "projected_500k_wall_time_s": 63412.373166996986,
+    "ticks": 1000,
+    "ticks_per_s": 7.884896511966932,
+    "wall_time_s": 126.82474633399397,
+    "width": 32
+  },
+  {
+    "attempted_interactions_per_tick": 2048,
+    "executed_interactions": 2048000,
+    "executed_interactions_per_s": 4436.397514466227,
+    "final_free_cells": 808,
+    "final_tapes": 3288,
+    "height": 64,
+    "invariant_failures": 0,
+    "name": "scale_64x64",
+    "output_bytes": 3796423,
+    "projected_500k_output_bytes": 1898211500,
+    "projected_500k_wall_time_s": 230817.90949997958,
+    "ticks": 1000,
+    "ticks_per_s": 2.1662097238604625,
+    "wall_time_s": 461.63581899995916,
+    "width": 64
+  }
+]

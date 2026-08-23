@@ -1,4 +1,5 @@
 .venv/
+dist/
 __pycache__/
 *.py[cod]
 .pytest_cache/
@@ -6,4 +7,11 @@ __pycache__/
 runs/*
 !runs/.gitkeep
 sweeps/
+experiments/phase1_runs/
+experiments/replicator_length_study/results/
+logs/
+notebooks/.ipynb_checkpoints/
+*.pid
+nu-tool-output_*.txt
+organism-sim/rust/target/
 .DS_Store

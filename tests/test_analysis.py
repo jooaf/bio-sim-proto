@@ -4,6 +4,7 @@ import math
 
 import pandas as pd
 
+from analysis.complexity import soup_high_order_entropy
 from analysis.diversity import hill_number
 from analysis.report import detect_replications
 
@@ -13,6 +14,18 @@ def test_hill_numbers_are_effective_type_counts() -> None:
     assert hill_number([1, 1, 1, 1], 1) == 4
     assert hill_number([1, 1, 1, 1], 2) == 4
     assert hill_number([9, 1], math.inf) == 10 / 9
+
+
+def test_repeated_soup_has_positive_high_order_entropy() -> None:
+    repeated = bytes(range(64))
+    tapes = pd.DataFrame(
+        [
+            {"tick": 0, "tape_id": tape_id, "full_bytes": repeated}
+            for tape_id in range(256)
+        ]
+    )
+    complexity = soup_high_order_entropy(tapes)
+    assert complexity.iloc[0]["high_order_entropy"] >= 1.0
 
 
 def test_replication_is_detected_only_offline_from_hashes() -> None:
