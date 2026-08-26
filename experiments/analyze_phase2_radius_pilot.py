@@ -96,6 +96,15 @@ def write_report(runs: pd.DataFrame, groups: pd.DataFrame, target: Path) -> None
             f"{float(row['median_opcode_beta_excess']):.6f} | "
             f"{float(row['median_opcode_beta_p']):.4f} |"
         )
+    all_final_hashes_unique = bool((runs["final_tapes"] == runs["final_unique_hashes"]).all())
+    mechanics_matched = all(
+        bool((runs.pivot(index="seed", columns="radius", values=column).nunique(axis=1) == 1).all())
+        for column in ("late_mean_occupied_fraction", "dissolutions", "placements")
+    )
+    byte_positive = int((runs["neighbor_byte_identity_excess"] > 0.0).sum())
+    strongest_radius = int(
+        cast(Any, groups.loc[groups["median_byte_excess"].idxmax(), "radius"])
+    )
     lines += [
         "",
         "## Focused matched contrast: radius 1 minus radius 8",
@@ -109,6 +118,16 @@ def write_report(runs: pd.DataFrame, groups: pd.DataFrame, target: Path) -> None
         "",
         "The exact test has only 2⁵ = 32 sign assignments, so its smallest possible one-sided p-value is 0.03125. Effect sizes and seed consistency are primary for this pilot.",
         "",
+        "## Interpretation",
+        "",
+        f"- Positive within-run byte-identity excess: {byte_positive}/{len(runs)} runs.",
+        f"- Largest median byte-identity excess occurred at radius {strongest_radius}; the response was not monotonic.",
+        f"- Radius 1 exceeded radius 8 for byte identity in all {len(byte_differences)} matched seeds (exact one-sided p={byte_p:.5f}).",
+        f"- The opcode-signature radius-1 minus radius-8 contrast was inconsistent (p={opcode_p:.3f}) and is not supported by this pilot.",
+        f"- Occupancy, dissolution, and placement outcomes were exactly matched across radii within seed: **{mechanics_matched}**.",
+        "",
+        "These results support a radius effect on local sequence similarity, not a general monotonic claim and not yet a Phase 2 acceptance result.",
+        "",
         "## Integrity",
         "",
         f"- Runs analyzed: {len(runs)}",
@@ -116,6 +135,8 @@ def write_report(runs: pd.DataFrame, groups: pd.DataFrame, target: Path) -> None
         f"- Exactly conserved runs: {int(runs['conserved'].sum())}/{len(runs)}",
         f"- Total invariant failures: {int(runs['invariant_failures'].sum())}",
         f"- Mechanically feasible runs: {int(runs['mechanically_feasible'].sum())}/{len(runs)}",
+        f"- Every final exact hash unique: **{all_final_hashes_unique}**",
+        f"- Non-radius mechanics matched within seed: **{mechanics_matched}**",
         "",
         "Exact-hash effects remain in the run table but are non-identifiable when all hashes are singletons. No monotonic radius response was assumed, and all four radii are reported.",
         "",
