@@ -3,9 +3,14 @@ from __future__ import annotations
 import tomllib
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
-from experiments.analyze_phase2_liveness_pilot import treatment_summary, write_report
+from experiments.analyze_phase2_liveness_pilot import (
+    _count_pool_changes,
+    treatment_summary,
+    write_report,
+)
 from soup.config import Config, PairingMode
 
 
@@ -23,6 +28,33 @@ def test_liveness_pilot_config_and_sweep_are_frozen_consistently() -> None:
     assert sweep["sweep"]["n_seeds"] == 3
     assert sweep["parameters"]["dissolution.spontaneous_rate"] == [1e-6, 1e-5, 1e-4]
     assert sweep["parameters"]["world.reseed_rate"] == [1e-5, 1e-4, 1e-3]
+
+
+def test_liveness_confirmation_keeps_selected_rates_at_larger_scale() -> None:
+    config = Config.load("experiments/configs/stage2_liveness_confirmation.toml")
+    with Path("experiments/configs/stage2_liveness_confirmation_sweep.toml").open("rb") as handle:
+        sweep = tomllib.load(handle)
+
+    assert config.world.width == config.world.height == 32
+    assert config.world.interactions_per_tick == 512
+    assert config.run.n_ticks == 5_000
+    assert config.world.reseed_rate == 1e-5
+    assert config.dissolution.spontaneous_rate == 1e-5
+    assert config.logging.full_tape_snapshot_interval == 500
+    assert sweep["sweep"]["n_seeds"] == 3
+    assert sweep["parameters"]["dissolution.spontaneous_rate"] == [1e-5]
+    assert sweep["parameters"]["world.reseed_rate"] == [1e-5]
+
+
+def test_pool_changes_compare_each_adjacent_pair_once() -> None:
+    values = pd.Series(
+        [
+            np.asarray([1, 2], dtype=np.int64),
+            np.asarray([1, 2], dtype=np.int64),
+            np.asarray([2, 1], dtype=np.int64),
+        ]
+    )
+    assert _count_pool_changes(values) == 1
 
 
 def test_treatment_selection_uses_feasibility_then_occupancy_distance(tmp_path: Path) -> None:
@@ -43,6 +75,8 @@ def test_treatment_selection_uses_feasibility_then_occupancy_distance(tmp_path: 
                 "placements": 2,
                 "neighbor_identity_excess": 0.0,
                 "q1_beta_excess": 0.0,
+                "final_tapes": 50,
+                "final_unique_hashes": 50,
             },
             {
                 "seed": seed,
@@ -58,6 +92,8 @@ def test_treatment_selection_uses_feasibility_then_occupancy_distance(tmp_path: 
                 "placements": 4,
                 "neighbor_identity_excess": 0.0,
                 "q1_beta_excess": 0.0,
+                "final_tapes": 50,
+                "final_unique_hashes": 50,
             },
         ]
     runs = pd.DataFrame(rows)

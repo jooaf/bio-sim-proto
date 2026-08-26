@@ -96,6 +96,21 @@ Spatial results cannot be used to choose the liveness operating point. This prev
 
 The selected operating point will receive a larger-lattice confirmation before the matched radius sweep. The radius sweep remains fixed at radii 1, 2, 4, and 8 with at least five matched seeds per radius. The parasite campaign cannot support a containment claim until its large-radius positive control is viable.
 
+## Larger-lattice confirmation addendum
+
+**Frozen after applying the selection rule and before confirmation execution:** 2026-08-25
+
+The pilot selected spontaneous dissolution `10⁻⁵` and reseeding `10⁻⁵`. The confirmation changes only scale and logging needed for future similarity analysis:
+
+- lattice: 32×32 torus;
+- horizon: 5,000 ticks;
+- attempted interactions: 512 per tick;
+- matched seeds: 202608250, 202608251, 202608252;
+- full-byte tape snapshots: every 500 ticks;
+- all other scientific parameters: the selected pilot treatment unchanged.
+
+The operating point is confirmed if at least 2 of 3 seeds satisfy the same mechanical feasibility rule, all completed runs are exactly conserved, and there are zero invariant failures. Spatial effects remain descriptive and cannot reverse this decision. Failure triggers a separately preregistered pilot rather than post-hoc rate changes.
+
 ## Provenance
 
-The Phase 1 closeout baseline is commit `ff52403`, tagged `phase1-closeout-v1`. Pilot source, config, analysis code, and this addendum must be committed before execution. Raw outputs remain outside Git and are referenced by run manifests and compact summary tables.
+The Phase 1 closeout baseline is commit `ff52403`, tagged `phase1-closeout-v1`. The initial liveness-pilot protocol was committed as `2d98d9f` before execution. Pilot and confirmation source, config, analysis code, and addenda must be committed before their respective executions. Raw outputs remain outside Git and are referenced by run manifests and compact summary tables.

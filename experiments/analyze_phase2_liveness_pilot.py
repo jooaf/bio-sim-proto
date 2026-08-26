@@ -27,6 +27,14 @@ def _longest_true_run(values: pd.Series) -> int:
     return longest
 
 
+def _count_pool_changes(values: pd.Series) -> int:
+    histograms = [np.asarray(value, dtype=np.int64) for value in values]
+    return sum(
+        not np.array_equal(left, right)
+        for left, right in zip(histograms, histograms[1:])
+    )
+
+
 def summarize_run(
     run_dir: Path,
     *,
@@ -51,13 +59,7 @@ def summarize_run(
     longest_clogged = _longest_true_run(ticks["n_free_cells"] == 0)
     dissolutions = int(ticks["n_dissolutions"].sum())
     placements = int((events["event_type"] == "random_tape_placed").sum())
-    pool_changes = 0
-    if len(late) > 1:
-        histograms = [np.asarray(value, dtype=np.int64) for value in late["pool_histogram"]]
-        pool_changes = sum(
-            not np.array_equal(left, right)
-            for left, right in zip(histograms, histograms[1:], strict=True)
-        )
+    pool_changes = _count_pool_changes(late["pool_histogram"])
     residuals = conservation_residuals(ticks, tapes)
     conserved = bool(len(residuals) and residuals["conserved"].all())
     max_residual = int(residuals["max_abs_residual"].max()) if not residuals.empty else -1
@@ -118,6 +120,8 @@ def summarize_run(
         "late_pool_changes": pool_changes,
         "mechanically_feasible": mechanically_feasible,
         "final_snapshot_tick": final_tick,
+        "final_tapes": len(final_snapshot),
+        "final_unique_hashes": int(final_snapshot["content_hash"].nunique()),
         "neighbor_identity_excess": identity.excess,
         "neighbor_identity_p": identity.p_value,
         "q1_beta": float(beta["observed_beta"]),
@@ -201,7 +205,16 @@ def write_report(runs: pd.DataFrame, treatments: pd.DataFrame, target: Path) -> 
             f"{float(treatment['median_neighbor_excess']):.6f} | "
             f"{float(treatment['median_q1_beta_excess']):.6f} |"
         )
+    all_final_hashes_unique = bool((runs["final_tapes"] == runs["final_unique_hashes"]).all())
     lines += [
+        "",
+        "## Spatial-screening limitation",
+        "",
+        (
+            "Every final tape hash was unique in every run. Exact-hash neighbor identity and hash-label beta permutation effects are therefore degenerate: relabeling unique hashes cannot change either statistic. The zero excesses are **uninformative**, not evidence that locality has no effect. The radius campaign needs replicated types, a coarser preregistered type definition, or an additional sequence-similarity statistic before these tests can answer the spatial question."
+            if all_final_hashes_unique
+            else "At least one final snapshot contained a repeated exact content hash, so the exact-hash spatial screen was not universally degenerate."
+        ),
         "",
         "## Integrity",
         "",
@@ -210,6 +223,7 @@ def write_report(runs: pd.DataFrame, treatments: pd.DataFrame, target: Path) -> 
         f"- Exactly conserved runs: {int(runs['conserved'].sum())}/{len(runs)}",
         f"- Total invariant failures: {int(runs['invariant_failures'].sum())}",
         f"- Mechanically feasible runs: {int(runs['mechanically_feasible'].sum())}/{len(runs)}",
+        f"- Every final hash unique in every run: **{all_final_hashes_unique}**",
         "",
         "The selected treatment, if any, must pass a larger-lattice confirmation before the matched radius sweep.",
         "",

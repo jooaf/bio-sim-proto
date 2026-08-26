@@ -1,0 +1,11 @@
+[sweep]
+name = "phase2_liveness_confirmation"
+base_config = "stage2_liveness_confirmation.toml"
+n_seeds = 3
+start_seed = 202608250
+processes = 3
+output_dir = "sweeps"
+
+[parameters]
+"dissolution.spontaneous_rate" = [0.00001]
+"world.reseed_rate" = [0.00001]
