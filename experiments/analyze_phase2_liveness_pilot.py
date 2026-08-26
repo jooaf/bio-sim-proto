@@ -164,28 +164,48 @@ def treatment_summary(runs: pd.DataFrame) -> pd.DataFrame:
     )
 
 
-def write_report(runs: pd.DataFrame, treatments: pd.DataFrame, target: Path) -> None:
-    """Write a compact Markdown pilot report without confirmatory spatial claims."""
+def write_report(
+    runs: pd.DataFrame,
+    treatments: pd.DataFrame,
+    target: Path,
+    *,
+    confirmation: bool = False,
+) -> None:
+    """Write a compact pilot or scale-confirmation report."""
 
     selected = treatments[treatments["eligible"]].head(1)
     if selected.empty:
-        decision = "**NO OPERATING POINT SELECTED.** No treatment met the 2-of-3 feasibility rule."
+        decision = (
+            "**OPERATING POINT NOT CONFIRMED.** Fewer than 2 of 3 seeds were mechanically feasible."
+            if confirmation
+            else "**NO OPERATING POINT SELECTED.** No treatment met the 2-of-3 feasibility rule."
+        )
     else:
         selected_row = selected.iloc[0]
+        prefix = "Larger-lattice operating point confirmed:" if confirmation else "Selected for larger-lattice confirmation:"
         decision = (
-            "Selected for larger-lattice confirmation: "
-            f"spontaneous dissolution `{float(selected_row['dissolution_rate']):g}` and "
+            f"{prefix} spontaneous dissolution "
+            f"`{float(selected_row['dissolution_rate']):g}` and "
             f"reseed `{float(selected_row['reseed_rate']):g}` "
             f"({int(selected_row['feasible_seeds'])}/{int(selected_row['runs'])} feasible seeds)."
         )
+    title = (
+        "# Phase 2 liveness larger-lattice confirmation"
+        if confirmation
+        else "# Phase 2 liveness operating-point pilot"
+    )
     lines = [
-        "# Phase 2 liveness operating-point pilot",
+        title,
         "",
         "## Decision",
         "",
         decision,
         "",
-        "This is a short parameter-selection pilot, not the 500,000-tick acceptance result. Spatial statistics are descriptive and were not used for treatment selection.",
+        (
+            "This is a 5,000-tick scale confirmation, not the 500,000-tick acceptance result. Spatial statistics are descriptive and did not affect the mechanical decision."
+            if confirmation
+            else "This is a short parameter-selection pilot, not the 500,000-tick acceptance result. Spatial statistics are descriptive and were not used for treatment selection."
+        ),
         "",
         "## Treatment summary",
         "",
@@ -225,7 +245,11 @@ def write_report(runs: pd.DataFrame, treatments: pd.DataFrame, target: Path) -> 
         f"- Mechanically feasible runs: {int(runs['mechanically_feasible'].sum())}/{len(runs)}",
         f"- Every final hash unique in every run: **{all_final_hashes_unique}**",
         "",
-        "The selected treatment, if any, must pass a larger-lattice confirmation before the matched radius sweep.",
+        (
+            "Mechanical liveness is confirmed at 32×32, but the radius sweep remains blocked until its non-degenerate spatial metric is frozen."
+            if confirmation and not selected.empty
+            else "The selected treatment, if any, must pass a larger-lattice confirmation before the matched radius sweep."
+        ),
         "",
     ]
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -252,6 +276,7 @@ def main() -> None:
     )
     parser.add_argument("--permutations", type=int, default=199)
     parser.add_argument("--analysis-seed", type=int, default=20260825)
+    parser.add_argument("--confirmation", action="store_true")
     args = parser.parse_args()
     index = pd.read_parquet(args.index)
     required = {"run_dir", "seed", DISSOLUTION_COLUMN, RESEED_COLUMN}
@@ -276,7 +301,7 @@ def main() -> None:
     args.runs_output.parent.mkdir(parents=True, exist_ok=True)
     runs.to_csv(args.runs_output, index=False)
     treatments.to_csv(args.treatments_output, index=False)
-    write_report(runs, treatments, args.report)
+    write_report(runs, treatments, args.report, confirmation=args.confirmation)
     print(args.runs_output)
     print(args.treatments_output)
     print(args.report)

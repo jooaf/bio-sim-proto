@@ -106,3 +106,8 @@ def test_treatment_selection_uses_feasibility_then_occupancy_distance(tmp_path: 
     report = tmp_path / "pilot.md"
     write_report(runs, treatments, report)
     assert "Selected for larger-lattice confirmation" in report.read_text(encoding="utf-8")
+
+    write_report(runs, treatments, report, confirmation=True)
+    confirmation = report.read_text(encoding="utf-8")
+    assert "larger-lattice confirmation" in confirmation.lower()
+    assert "operating point confirmed" in confirmation.lower()
