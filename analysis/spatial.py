@@ -14,6 +14,7 @@ from numpy.typing import NDArray
 
 from analysis.diversity import hill_number
 from analysis.load import load_run
+from soup.substrate.bff import INSTRUCTION_SET
 
 
 @dataclass(frozen=True, slots=True)
@@ -24,6 +25,18 @@ class NeighborIdentityResult:
     excess: float
     p_value: float
     edges: int
+    permutations: int
+
+
+@dataclass(frozen=True, slots=True)
+class NeighborByteSimilarityResult:
+    observed: float
+    null_mean: float
+    null_std: float
+    excess: float
+    p_value: float
+    edges: int
+    tape_length: int
     permutations: int
 
 
@@ -115,6 +128,79 @@ def neighbor_identity_test(
         edges=len(edges),
         permutations=permutations,
     )
+
+
+def _full_byte_matrix(snapshot: pd.DataFrame) -> NDArray[np.uint8]:
+    if "full_bytes" not in snapshot.columns:
+        raise ValueError("spatial snapshot is missing full_bytes")
+    values = snapshot["full_bytes"].tolist()
+    if not values or any(value is None for value in values):
+        raise ValueError("spatial byte similarity requires a complete full-byte snapshot")
+    rows = [np.frombuffer(bytes(value), dtype=np.uint8) for value in values]
+    lengths = {len(row) for row in rows}
+    if len(lengths) != 1 or not lengths or next(iter(lengths)) == 0:
+        raise ValueError("full-byte tapes must have one shared positive length")
+    return np.stack(rows)
+
+
+def neighbor_byte_similarity_test(
+    snapshot: pd.DataFrame,
+    *,
+    width: int,
+    height: int,
+    radius: int = 1,
+    permutations: int = 999,
+    rng: Generator | None = None,
+) -> NeighborByteSimilarityResult:
+    """Compare positional byte identity of neighbors with a tape-permutation null."""
+
+    if permutations <= 0:
+        raise ValueError("permutations must be positive")
+    frame = _validate_snapshot(snapshot, width, height)
+    tapes = _full_byte_matrix(snapshot.reset_index(drop=True))
+    edges = _neighbor_edges(frame, width, height, radius)
+    if len(edges) == 0:
+        return NeighborByteSimilarityResult(
+            observed=float("nan"),
+            null_mean=float("nan"),
+            null_std=float("nan"),
+            excess=float("nan"),
+            p_value=float("nan"),
+            edges=0,
+            tape_length=tapes.shape[1],
+            permutations=permutations,
+        )
+    observed = float(np.mean(tapes[edges[:, 0]] == tapes[edges[:, 1]]))
+    generator = np.random.default_rng(0) if rng is None else rng
+    null = np.empty(permutations, dtype=np.float64)
+    for index in range(permutations):
+        permutation = generator.permutation(len(tapes))
+        null[index] = float(
+            np.mean(tapes[permutation[edges[:, 0]]] == tapes[permutation[edges[:, 1]]])
+        )
+    null_mean = float(np.mean(null))
+    return NeighborByteSimilarityResult(
+        observed=observed,
+        null_mean=null_mean,
+        null_std=float(np.std(null, ddof=1)) if permutations > 1 else 0.0,
+        excess=observed - null_mean,
+        p_value=float((1 + np.count_nonzero(null >= observed - 1e-15)) / (permutations + 1)),
+        edges=len(edges),
+        tape_length=tapes.shape[1],
+        permutations=permutations,
+    )
+
+
+def bff_opcode_signature_snapshot(snapshot: pd.DataFrame) -> pd.DataFrame:
+    """Replace exact hashes with ordered BFF-instruction signatures."""
+
+    frame = snapshot.copy()
+    tapes = _full_byte_matrix(frame)
+    frame["content_hash"] = [
+        bytes(int(value) for value in tape if int(value) in INSTRUCTION_SET).hex()
+        for tape in tapes
+    ]
+    return frame
 
 
 def block_beta_diversity(

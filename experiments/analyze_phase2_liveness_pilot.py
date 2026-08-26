@@ -11,7 +11,12 @@ import pandas as pd
 
 from analysis.conservation import conservation_residuals
 from analysis.load import load_run
-from analysis.spatial import block_beta_permutation_test, neighbor_identity_test
+from analysis.spatial import (
+    bff_opcode_signature_snapshot,
+    block_beta_permutation_test,
+    neighbor_byte_similarity_test,
+    neighbor_identity_test,
+)
 
 
 DISSOLUTION_COLUMN = "dissolution.spontaneous_rate"
@@ -86,6 +91,36 @@ def summarize_run(
         q_values=(1.0,),
         rng=rng,
     ).iloc[0]
+    complete_bytes = tapes[tapes["full_bytes"].notna()]
+    byte_snapshot_tick = -1
+    byte_excess = float("nan")
+    byte_p = float("nan")
+    opcode_beta_excess = float("nan")
+    opcode_beta_p = float("nan")
+    if not complete_bytes.empty:
+        byte_snapshot_tick = int(cast(Any, complete_bytes["tick"].max()))
+        byte_snapshot = complete_bytes[complete_bytes["tick"] == byte_snapshot_tick]
+        byte_similarity = neighbor_byte_similarity_test(
+            byte_snapshot,
+            width=data.config.world.width,
+            height=data.config.world.height,
+            permutations=permutations,
+            rng=rng,
+        )
+        opcode_snapshot = bff_opcode_signature_snapshot(byte_snapshot)
+        opcode_beta = block_beta_permutation_test(
+            opcode_snapshot,
+            width=data.config.world.width,
+            height=data.config.world.height,
+            block_size=max(2, data.config.world.width // 4),
+            permutations=permutations,
+            q_values=(1.0,),
+            rng=rng,
+        ).iloc[0]
+        byte_excess = byte_similarity.excess
+        byte_p = byte_similarity.p_value
+        opcode_beta_excess = float(opcode_beta["beta_excess"])
+        opcode_beta_p = float(opcode_beta["p_value"])
     successful_exit = data.manifest.get("exit_status") == "success"
     late_writes = int(late["n_writes_success"].sum())
     mechanically_feasible = bool(
@@ -128,6 +163,11 @@ def summarize_run(
         "q1_beta_null_mean": float(beta["null_mean_beta"]),
         "q1_beta_excess": float(beta["beta_excess"]),
         "q1_beta_p": float(beta["p_value"]),
+        "byte_snapshot_tick": byte_snapshot_tick,
+        "neighbor_byte_identity_excess": byte_excess,
+        "neighbor_byte_identity_p": byte_p,
+        "opcode_q1_beta_excess": opcode_beta_excess,
+        "opcode_q1_beta_p": opcode_beta_p,
     }
 
 
@@ -147,6 +187,8 @@ def treatment_summary(runs: pd.DataFrame) -> pd.DataFrame:
         total_placements=("placements", "sum"),
         median_neighbor_excess=("neighbor_identity_excess", "median"),
         median_q1_beta_excess=("q1_beta_excess", "median"),
+        median_neighbor_byte_excess=("neighbor_byte_identity_excess", "median"),
+        median_opcode_q1_beta_excess=("opcode_q1_beta_excess", "median"),
     ).reset_index()
     summary["occupancy_distance_from_0_8"] = (
         summary["median_late_occupied_fraction"] - 0.8
@@ -209,8 +251,8 @@ def write_report(
         "",
         "## Treatment summary",
         "",
-        "| dissolution | reseed | feasible | median late occupancy | min tapes | dissolutions | placements | median neighbor excess | median q=1 beta excess |",
-        "|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
+        "| dissolution | reseed | feasible | median late occupancy | min tapes | dissolutions | placements | exact-hash neighbor excess | byte-identity neighbor excess | opcode q=1 beta excess |",
+        "|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     treatment_records = cast(list[dict[str, Any]], treatments.to_dict(orient="records"))
     for treatment in treatment_records:
@@ -223,15 +265,17 @@ def write_report(
             f"{int(treatment['total_dissolutions'])} | "
             f"{int(treatment['total_placements'])} | "
             f"{float(treatment['median_neighbor_excess']):.6f} | "
-            f"{float(treatment['median_q1_beta_excess']):.6f} |"
+            f"{float(treatment['median_neighbor_byte_excess']):.6f} | "
+            f"{float(treatment['median_opcode_q1_beta_excess']):.6f} |"
         )
     all_final_hashes_unique = bool((runs["final_tapes"] == runs["final_unique_hashes"]).all())
+    complete_byte_runs = int((runs["byte_snapshot_tick"] >= 0).sum())
     lines += [
         "",
         "## Spatial-screening limitation",
         "",
         (
-            "Every final tape hash was unique in every run. Exact-hash neighbor identity and hash-label beta permutation effects are therefore degenerate: relabeling unique hashes cannot change either statistic. The zero excesses are **uninformative**, not evidence that locality has no effect. The radius campaign needs replicated types, a coarser preregistered type definition, or an additional sequence-similarity statistic before these tests can answer the spatial question."
+            "Every final tape hash was unique in every run. Exact-hash neighbor identity and hash-label beta permutation effects are therefore degenerate: relabeling unique hashes cannot change either statistic. The zero excesses are **uninformative**, not evidence that locality has no effect. Where full-byte snapshots exist, positional byte-identity and BFF-opcode-signature effects are reported as exploratory diagnostics. They cannot become radius-campaign outcomes until a pre-campaign metric addendum freezes them."
             if all_final_hashes_unique
             else "At least one final snapshot contained a repeated exact content hash, so the exact-hash spatial screen was not universally degenerate."
         ),
@@ -244,6 +288,7 @@ def write_report(
         f"- Total invariant failures: {int(runs['invariant_failures'].sum())}",
         f"- Mechanically feasible runs: {int(runs['mechanically_feasible'].sum())}/{len(runs)}",
         f"- Every final hash unique in every run: **{all_final_hashes_unique}**",
+        f"- Runs with complete full-byte snapshots: {complete_byte_runs}/{len(runs)}",
         "",
         (
             "Mechanical liveness is confirmed at 32×32, but the radius sweep remains blocked until its non-degenerate spatial metric is frozen."

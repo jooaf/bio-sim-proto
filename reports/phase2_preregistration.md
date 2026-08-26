@@ -4,6 +4,8 @@
 
 This document fixes Phase 2 semantics before implementation. Phase 2 adds space and dissolution only. Energy, signals, task bias, external fitness, and simulator-side replication detection remain disabled.
 
+**Pre-acceptance amendment:** The liveness pilots found every exact content hash to be a singleton, making the original hash-label permutation statistics non-identifiable. `reports/phase2_spatial_metric_addendum.md` therefore freezes positional byte-identity excess and BFF-opcode-signature beta diversity before the matched radius campaign and before any 500,000-tick treatment. The original exact-hash statistics remain reported as diagnostics.
+
 ## 1. Scientific questions
 
 1. Can a locally interacting conserved soup remain both unfilled and alive for 500,000 ticks?

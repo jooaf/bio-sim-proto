@@ -1,0 +1,10 @@
+[sweep]
+name = "phase2_radius_pilot"
+base_config = "stage2_radius_pilot.toml"
+n_seeds = 5
+start_seed = 202608260
+processes = 5
+output_dir = "sweeps"
+
+[parameters]
+"world.interaction_radius" = [1, 2, 4, 8]

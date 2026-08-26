@@ -11,6 +11,7 @@ from experiments.analyze_phase2_liveness_pilot import (
     treatment_summary,
     write_report,
 )
+from experiments.analyze_phase2_radius_pilot import exact_paired_sign_flip_greater
 from soup.config import Config, PairingMode
 
 
@@ -46,6 +47,19 @@ def test_liveness_confirmation_keeps_selected_rates_at_larger_scale() -> None:
     assert sweep["parameters"]["world.reseed_rate"] == [1e-5]
 
 
+def test_radius_pilot_uses_unseen_matched_seeds_and_frozen_radii() -> None:
+    config = Config.load("experiments/configs/stage2_radius_pilot.toml")
+    with Path("experiments/configs/stage2_radius_pilot_sweep.toml").open("rb") as handle:
+        sweep = tomllib.load(handle)
+
+    assert config.world.width == config.world.height == 32
+    assert config.world.reseed_rate == config.dissolution.spontaneous_rate == 1e-5
+    assert config.logging.full_tape_snapshot_interval == 500
+    assert sweep["sweep"]["start_seed"] == 202608260
+    assert sweep["sweep"]["n_seeds"] == 5
+    assert sweep["parameters"]["world.interaction_radius"] == [1, 2, 4, 8]
+
+
 def test_pool_changes_compare_each_adjacent_pair_once() -> None:
     values = pd.Series(
         [
@@ -55,6 +69,11 @@ def test_pool_changes_compare_each_adjacent_pair_once() -> None:
         ]
     )
     assert _count_pool_changes(values) == 1
+
+
+def test_exact_sign_flip_test_has_expected_five_pair_resolution() -> None:
+    assert exact_paired_sign_flip_greater(np.ones(5)) == 1 / 32
+    assert exact_paired_sign_flip_greater(-np.ones(5)) == 1.0
 
 
 def test_treatment_selection_uses_feasibility_then_occupancy_distance(tmp_path: Path) -> None:
@@ -77,6 +96,9 @@ def test_treatment_selection_uses_feasibility_then_occupancy_distance(tmp_path: 
                 "q1_beta_excess": 0.0,
                 "final_tapes": 50,
                 "final_unique_hashes": 50,
+                "byte_snapshot_tick": -1,
+                "neighbor_byte_identity_excess": float("nan"),
+                "opcode_q1_beta_excess": float("nan"),
             },
             {
                 "seed": seed,
@@ -94,6 +116,9 @@ def test_treatment_selection_uses_feasibility_then_occupancy_distance(tmp_path: 
                 "q1_beta_excess": 0.0,
                 "final_tapes": 50,
                 "final_unique_hashes": 50,
+                "byte_snapshot_tick": -1,
+                "neighbor_byte_identity_excess": float("nan"),
+                "opcode_q1_beta_excess": float("nan"),
             },
         ]
     runs = pd.DataFrame(rows)

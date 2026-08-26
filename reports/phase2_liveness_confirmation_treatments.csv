@@ -1,2 +1,2 @@
-dissolution_rate,reseed_rate,runs,feasible_seeds,all_exits_successful,all_conserved,total_invariant_failures,median_late_occupied_fraction,min_population_across_seeds,total_dissolutions,total_placements,median_neighbor_excess,median_q1_beta_excess,occupancy_distance_from_0_8,eligible
-1e-05,1e-05,3,3,True,True,0,0.766833984375,780,131,31,0.0,0.0,0.03316601562499999,True
+dissolution_rate,reseed_rate,runs,feasible_seeds,all_exits_successful,all_conserved,total_invariant_failures,median_late_occupied_fraction,min_population_across_seeds,total_dissolutions,total_placements,median_neighbor_excess,median_q1_beta_excess,median_neighbor_byte_excess,median_opcode_q1_beta_excess,occupancy_distance_from_0_8,eligible
+1e-05,1e-05,3,3,True,True,0,0.766833984375,780,131,31,0.0,0.0,0.004916652048744749,0.045139562511467446,0.03316601562499999,True

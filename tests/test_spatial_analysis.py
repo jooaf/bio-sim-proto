@@ -6,12 +6,15 @@ import numpy as np
 import pandas as pd
 
 from analysis.spatial import (
+    bff_opcode_signature_snapshot,
     block_beta_diversity,
     block_beta_permutation_test,
+    neighbor_byte_similarity_test,
     neighbor_identity_test,
     write_spatial_report,
 )
 from soup.config import Config, PairingMode
+from soup.substrate.bff import OP_INC, OP_LOOP_START
 from soup.simulation import Simulation
 
 
@@ -38,6 +41,39 @@ def test_clustered_hashes_exceed_well_mixed_neighbor_null() -> None:
     assert result.observed > result.null_mean
     assert result.excess > 0.15
     assert result.p_value < 0.05
+
+
+def test_neighbor_byte_similarity_detects_near_copy_clusters() -> None:
+    clustered = _snapshot([["A"] * 3 + ["B"] * 3 for _ in range(6)])
+    clustered["full_bytes"] = [
+        bytes([1, 2, 3, y]) if x < 3 else bytes([9, 8, 7, y])
+        for y in range(6)
+        for x in range(6)
+    ]
+    result = neighbor_byte_similarity_test(
+        clustered,
+        width=6,
+        height=6,
+        permutations=499,
+        rng=np.random.default_rng(11),
+    )
+
+    assert result.observed > result.null_mean
+    assert result.excess > 0.2
+    assert result.p_value < 0.05
+
+
+def test_bff_opcode_signatures_ignore_non_instruction_data() -> None:
+    snapshot = _snapshot([["A", "B"]])
+    snapshot["full_bytes"] = [
+        bytes([0, OP_INC, 1, OP_LOOP_START]),
+        bytes([99, OP_INC, 100, OP_LOOP_START]),
+    ]
+
+    signatures = bff_opcode_signature_snapshot(snapshot)
+
+    assert signatures["content_hash"].nunique() == 1
+    assert signatures.iloc[0]["content_hash"] == bytes([OP_INC, OP_LOOP_START]).hex()
 
 
 def test_block_beta_detects_compositionally_distinct_blocks() -> None:
