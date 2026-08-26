@@ -2,7 +2,12 @@
 
 from __future__ import annotations
 
+import hashlib
+from collections.abc import Mapping
 from pathlib import Path
+
+import numpy as np
+from numpy.typing import NDArray
 
 from soup.config import Config
 from soup.ledgers import SymbolPool
@@ -19,7 +24,12 @@ from soup.world import FlatWorld, SpatialWorld, World
 class Simulation:
     """Assemble and run the stage-selected flat or spatial soup."""
 
-    def __init__(self, config: Config, run_dir: Path | None = None) -> None:
+    def __init__(
+        self,
+        config: Config,
+        run_dir: Path | None = None,
+        initial_tape_overrides: Mapping[int, NDArray[np.uint8]] | None = None,
+    ) -> None:
         config.apply_stage_gates()
         config.validate()
         if config.run.stage not in {0, 1, 2}:
@@ -47,6 +57,33 @@ class Simulation:
                 substrate=self.substrate,
                 rng=self.rng,
             )
+        initialization_metadata: dict[str, object] | None = None
+        if initial_tape_overrides:
+            override_records: list[dict[str, object]] = []
+            for flat_index, tape in sorted(initial_tape_overrides.items()):
+                if not 0 <= flat_index < len(self.world.tapes):
+                    raise IndexError(f"initial tape override index is outside the world: {flat_index}")
+                if isinstance(self.world, SpatialWorld) and not bool(self.world.occupied[flat_index]):
+                    raise ValueError(f"initial tape override targets an empty cell: {flat_index}")
+                if tape.dtype != np.uint8 or tape.ndim != 1 or len(tape) != self.substrate.tape_length:
+                    raise ValueError(
+                        "initial tape overrides must be uint8 vectors matching substrate.tape_length"
+                    )
+                seeded_tape = tape.copy()
+                self.world.tapes[flat_index] = seeded_tape
+                cell = self.world.cell(flat_index)
+                override_records.append(
+                    {
+                        "flat_index": flat_index,
+                        "cell": list(cell) if cell is not None else None,
+                        "sha256": hashlib.sha256(seeded_tape.tobytes()).hexdigest(),
+                    }
+                )
+            initialization_metadata = {
+                "mode": "explicit_tape_overrides",
+                "count": len(override_records),
+                "overrides": override_records,
+            }
         initial_tapes = (
             self.world.occupied_tapes()
             if isinstance(self.world, SpatialWorld)
@@ -57,7 +94,11 @@ class Simulation:
             if config.run.stage >= 1
             else None
         )
-        self.writer = RunWriter(config, run_dir=run_dir)
+        self.writer = RunWriter(
+            config,
+            run_dir=run_dir,
+            initialization_metadata=initialization_metadata,
+        )
         write_initial_lineage(self.world, self.writer)
         self.scheduler = Scheduler(
             config=config,

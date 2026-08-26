@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import numpy as np
@@ -10,6 +11,7 @@ from soup.config import Config, PairingMode
 from soup.interactions import run_local_interaction_round
 from soup.ledgers import SymbolPool
 from soup.logging.invariants import check_stage2
+from soup.logging.writer import RunWriter
 from soup.placement import place_random_tapes
 from soup.simulation import Simulation
 from soup.substrate.base import ExecutionBudget
@@ -150,6 +152,32 @@ def test_stage2_dissolution_returns_all_matter(tmp_path: Path) -> None:
     assert int(ticks.iloc[-1]["n_dissolutions"]) > 0
     events = pd.read_parquet(run_dir / "events.parquet")
     assert set(events["event_type"]) == {"tape_dissolved"}
+
+
+def test_initial_tape_overrides_precede_pool_and_lineage_initialization(tmp_path: Path) -> None:
+    config = _stage2_config()
+    config.run.n_ticks = 1
+    config.symbols.initial_tape_fill = 1.0
+    candidate = np.arange(config.substrate.tape_length, dtype=np.uint8)
+    simulation = Simulation(
+        config,
+        run_dir=tmp_path / "seeded",
+        initial_tape_overrides={0: candidate},
+    )
+    seeded_tape_id = int(simulation.world.tape_ids[0])
+
+    assert np.array_equal(simulation.world.tapes[0], candidate)
+    run_dir = simulation.run()
+
+    lineage = pd.read_parquet(run_dir / "lineage.parquet")
+    birth = lineage[
+        (lineage["tape_id"] == seeded_tape_id) & lineage["died_tick"].isna()
+    ].iloc[0]
+    assert birth["content_hash_at_birth"] == RunWriter.hash_tape(candidate)
+    manifest = json.loads((run_dir / "manifest.json").read_text(encoding="utf-8"))
+    assert manifest["initialization"]["mode"] == "explicit_tape_overrides"
+    assert manifest["initialization"]["count"] == 1
+    assert manifest["initialization"]["overrides"][0]["flat_index"] == 0
 
 
 def test_stage2_short_runs_are_byte_deterministic(tmp_path: Path) -> None:

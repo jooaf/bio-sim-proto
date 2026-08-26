@@ -26,8 +26,14 @@ from soup.logging.schemas import table_schemas
 class RunWriter:
     """Own one run directory and append rows in deterministic row groups."""
 
-    def __init__(self, config: Config, run_dir: Path | None = None) -> None:
+    def __init__(
+        self,
+        config: Config,
+        run_dir: Path | None = None,
+        initialization_metadata: dict[str, object] | None = None,
+    ) -> None:
         self.config = config
+        self.initialization_metadata = initialization_metadata
         config_bytes = self._config_bytes(config)
         self.config_hash = hashlib.sha256(config_bytes).hexdigest()[:12]
         if run_dir is None:
@@ -192,7 +198,7 @@ class RunWriter:
                 versions[package] = importlib.metadata.version(package)
             except importlib.metadata.PackageNotFoundError:
                 versions[package] = "unavailable"
-        return {
+        manifest: dict[str, object] = {
             "config_hash": self.config_hash,
             "seed": self.config.run.seed,
             "stage": self.config.run.stage,
@@ -202,6 +208,9 @@ class RunWriter:
             "hostname": socket.gethostname(),
             "started_at_utc": self.started_at.isoformat(),
         }
+        if self.initialization_metadata is not None:
+            manifest["initialization"] = self.initialization_metadata
+        return manifest
 
     def _write_manifest(self, *, exit_status: str, wall_time_seconds: float) -> None:
         manifest = dict(self._manifest)
