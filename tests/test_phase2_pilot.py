@@ -60,6 +60,19 @@ def test_radius_pilot_uses_unseen_matched_seeds_and_frozen_radii() -> None:
     assert sweep["parameters"]["world.interaction_radius"] == [1, 2, 4, 8]
 
 
+def test_acceptance_candidate_freezes_pilot_selected_configuration() -> None:
+    config = Config.load("experiments/configs/stage2_acceptance_candidate.toml")
+
+    assert config.run.seed == 202608300
+    assert config.run.n_ticks == 500_000
+    assert config.world.width == config.world.height == 32
+    assert config.world.interaction_radius == 1
+    assert config.world.interactions_per_tick == 512
+    assert config.world.reseed_rate == config.dissolution.spontaneous_rate == 1e-5
+    assert config.logging.interaction_log_rate == 0.0
+    assert config.logging.full_tape_snapshot_interval == 5_000
+
+
 def test_pool_changes_compare_each_adjacent_pair_once() -> None:
     values = pd.Series(
         [
