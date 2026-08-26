@@ -6,13 +6,17 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from experiments.analyze_phase2_parasite_control import snapshot_family_counts
+from experiments.analyze_phase2_parasite_control import (
+    ancestry_trajectory,
+    snapshot_family_counts,
+)
 from experiments.run_phase2_parasite_control import (
     DEFAULT_INSERTED_COUNT,
     PARASITE_CONTENT_HASH,
     PARASITE_SHA256,
     override_indices,
     parasite_tape,
+    protocol,
 )
 from soup.config import Config
 from soup.simulation import Simulation
@@ -40,6 +44,52 @@ def test_frozen_parasite_identity_and_family_counts() -> None:
     assert int(counts["near_count"]) == 2
 
 
+def test_neutral_ancestry_propagates_only_through_strict_exact_copies() -> None:
+    interactions = pd.DataFrame(
+        [
+            {
+                "tick": 0,
+                "round_index": 0,
+                "a_id": 1,
+                "b_id": 2,
+                "a_hash_before": "A",
+                "a_hash_after": "A",
+                "b_hash_before": "B",
+                "b_hash_after": "A",
+                "a_bytes_changed": 0,
+                "b_bytes_changed": 1,
+            },
+            {
+                "tick": 1,
+                "round_index": 0,
+                "a_id": 3,
+                "b_id": 2,
+                "a_hash_before": "C",
+                "a_hash_after": "C",
+                "b_hash_before": "A",
+                "b_hash_after": "C",
+                "a_bytes_changed": 0,
+                "b_bytes_changed": 1,
+            },
+        ]
+    )
+    events = pd.DataFrame(columns=["tick", "event_type", "tape_id"])
+    tapes = pd.DataFrame(
+        [
+            {"tick": 0, "tape_id": tape_id}
+            for tape_id in (1, 2, 3)
+        ]
+        + [
+            {"tick": 1, "tape_id": tape_id}
+            for tape_id in (1, 2, 3)
+        ]
+    )
+
+    trajectory = ancestry_trajectory(interactions, events, tapes, [1])
+
+    assert trajectory["ancestry_count"].tolist() == [2, 1]
+
+
 def test_parasite_override_indices_are_occupied_and_manifested(tmp_path: Path) -> None:
     config = Config.load("experiments/configs/stage2_parasite_mechanics.toml")
     config.run.n_ticks = 1
@@ -54,6 +104,8 @@ def test_parasite_override_indices_are_occupied_and_manifested(tmp_path: Path) -
     assert len(indices) == DEFAULT_INSERTED_COUNT
     assert all(bool(simulation.world.occupied[index]) for index in indices)
     assert all(np.array_equal(simulation.world.tapes[index], candidate) for index in indices)
+    record = protocol(config, indices)
+    assert record["tape_ids"] == [int(simulation.world.tape_ids[index]) for index in indices]
     assert simulation.writer.initialization_metadata is not None
     assert simulation.writer.initialization_metadata["count"] == DEFAULT_INSERTED_COUNT
     simulation.run()
@@ -62,6 +114,7 @@ def test_parasite_override_indices_are_occupied_and_manifested(tmp_path: Path) -
 def test_parasite_development_configs_match_preregistration() -> None:
     mechanics = Config.load("experiments/configs/stage2_parasite_mechanics.toml")
     viability = Config.load("experiments/configs/stage2_parasite_viability.toml")
+    ancestry = Config.load("experiments/configs/stage2_parasite_ancestry.toml")
 
     assert mechanics.world.width == mechanics.world.height == 8
     assert mechanics.world.interaction_radius == 4
@@ -72,3 +125,5 @@ def test_parasite_development_configs_match_preregistration() -> None:
     assert viability.run.n_ticks == 2_000
     assert viability.world.mutation_rate == 1 / 4_096
     assert viability.world.reseed_rate == viability.dissolution.spontaneous_rate == 1e-5
+    assert ancestry.logging.tick_tables == ["ticks", "interactions"]
+    assert ancestry.logging.interaction_log_rate == 1.0

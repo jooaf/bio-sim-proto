@@ -35,24 +35,34 @@ def parasite_tape() -> NDArray[np.uint8]:
     return tape
 
 
-def override_indices(config: Config, count: int) -> list[int]:
-    """Select the first sorted occupied cells without consuming the simulation RNG."""
+def initial_occupied_order(config: Config) -> list[int]:
+    """Reproduce the SpatialWorld's pre-tape occupancy permutation."""
 
     capacity = config.world.width * config.world.height
     population = min(
         capacity,
         max(2, int(round(capacity * config.symbols.initial_tape_fill))),
     )
-    if count <= 0 or count > population:
-        raise ValueError("inserted parasite count must be in 1..initial population")
     rng = make_rng(config.run.seed)
-    chosen = rng.permutation(capacity)[:population]
-    return sorted(int(index) for index in chosen)[:count]
+    return [int(index) for index in rng.permutation(capacity)[:population]]
+
+
+def override_indices(config: Config, count: int) -> list[int]:
+    """Select the first sorted occupied cells without consuming the simulation RNG."""
+
+    occupied = initial_occupied_order(config)
+    if count <= 0 or count > len(occupied):
+        raise ValueError("inserted parasite count must be in 1..initial population")
+    return sorted(occupied)[:count]
 
 
 def protocol(config: Config, indices: list[int]) -> dict[str, Any]:
     """Return the complete experiment-specific initialization record."""
 
+    tape_id_by_index = {
+        flat_index: tape_id
+        for tape_id, flat_index in enumerate(initial_occupied_order(config))
+    }
     return {
         "candidate_hex": PARASITE_HEX,
         "candidate_sha256": PARASITE_SHA256,
@@ -67,6 +77,7 @@ def protocol(config: Config, indices: list[int]) -> dict[str, Any]:
         },
         "inserted_count": len(indices),
         "flat_indices": indices,
+        "tape_ids": [tape_id_by_index[index] for index in indices],
         "cells": [[index % config.world.width, index // config.world.width] for index in indices],
     }
 
