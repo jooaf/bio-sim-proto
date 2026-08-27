@@ -11,6 +11,8 @@ from analysis.spatial import (
     block_beta_permutation_test,
     neighbor_byte_similarity_test,
     neighbor_identity_test,
+    pooled_bff_opcode_beta_test,
+    pooled_neighbor_byte_similarity_test,
     write_spatial_report,
 )
 from soup.config import Config, PairingMode
@@ -61,6 +63,37 @@ def test_neighbor_byte_similarity_detects_near_copy_clusters() -> None:
     assert result.observed > result.null_mean
     assert result.excess > 0.2
     assert result.p_value < 0.05
+
+
+def test_pooled_spatial_tests_detect_repeated_cluster_structure() -> None:
+    clustered = _snapshot([["A"] * 3 + ["B"] * 3 for _ in range(6)])
+    clustered["full_bytes"] = [
+        bytes([OP_INC, 2, 3, y]) if x < 3 else bytes([OP_LOOP_START, 8, 7, y])
+        for y in range(6)
+        for x in range(6)
+    ]
+    snapshots = [clustered, clustered.copy()]
+
+    byte_result = pooled_neighbor_byte_similarity_test(
+        snapshots,
+        width=6,
+        height=6,
+        permutations=199,
+        rng=np.random.default_rng(12),
+    )
+    beta_result = pooled_bff_opcode_beta_test(
+        snapshots,
+        width=6,
+        height=6,
+        block_size=3,
+        permutations=199,
+        rng=np.random.default_rng(13),
+    )
+
+    assert byte_result.excess > 0.2
+    assert byte_result.p_value < 0.05
+    assert beta_result.excess > 0.2
+    assert beta_result.p_value < 0.05
 
 
 def test_bff_opcode_signatures_ignore_non_instruction_data() -> None:

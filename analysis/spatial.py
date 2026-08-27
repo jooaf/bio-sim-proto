@@ -40,6 +40,16 @@ class NeighborByteSimilarityResult:
     permutations: int
 
 
+@dataclass(frozen=True, slots=True)
+class PooledBetaResult:
+    observed: float
+    null_mean: float
+    excess: float
+    p_value: float
+    snapshots: int
+    permutations: int
+
+
 def _validate_snapshot(snapshot: pd.DataFrame, width: int, height: int) -> pd.DataFrame:
     required = {"cell_x", "cell_y", "content_hash"}
     missing = required - set(snapshot.columns)
@@ -191,6 +201,65 @@ def neighbor_byte_similarity_test(
     )
 
 
+def pooled_neighbor_byte_similarity_test(
+    snapshots: list[pd.DataFrame],
+    *,
+    width: int,
+    height: int,
+    radius: int = 1,
+    permutations: int = 999,
+    rng: Generator | None = None,
+) -> NeighborByteSimilarityResult:
+    """Test the equal-weight mean byte similarity across multiple snapshots."""
+
+    if not snapshots:
+        raise ValueError("at least one spatial snapshot is required")
+    if permutations <= 0:
+        raise ValueError("permutations must be positive")
+    prepared: list[tuple[NDArray[np.uint8], NDArray[np.int64]]] = []
+    for snapshot in snapshots:
+        frame = _validate_snapshot(snapshot, width, height)
+        tapes = _full_byte_matrix(snapshot.reset_index(drop=True))
+        edges = _neighbor_edges(frame, width, height, radius)
+        if len(edges) == 0:
+            raise ValueError("every pooled snapshot must contain occupied neighbor edges")
+        prepared.append((tapes, edges))
+    tape_lengths = {tapes.shape[1] for tapes, _ in prepared}
+    if len(tape_lengths) != 1:
+        raise ValueError("pooled snapshots must share one tape length")
+    observed = float(
+        np.mean(
+            [np.mean(tapes[edges[:, 0]] == tapes[edges[:, 1]]) for tapes, edges in prepared]
+        )
+    )
+    generator = np.random.default_rng(0) if rng is None else rng
+    null = np.empty(permutations, dtype=np.float64)
+    for permutation_index in range(permutations):
+        values: list[float] = []
+        for tapes, edges in prepared:
+            permutation = generator.permutation(len(tapes))
+            values.append(
+                float(
+                    np.mean(
+                        tapes[permutation[edges[:, 0]]]
+                        == tapes[permutation[edges[:, 1]]]
+                    )
+                )
+            )
+        null[permutation_index] = float(np.mean(values))
+    null_mean = float(np.mean(null))
+    return NeighborByteSimilarityResult(
+        observed=observed,
+        null_mean=null_mean,
+        null_std=float(np.std(null, ddof=1)) if permutations > 1 else 0.0,
+        excess=observed - null_mean,
+        p_value=float((1 + np.count_nonzero(null >= observed - 1e-15)) / (permutations + 1)),
+        edges=sum(len(edges) for _, edges in prepared),
+        tape_length=next(iter(tape_lengths)),
+        permutations=permutations,
+    )
+
+
 def bff_opcode_signature_snapshot(snapshot: pd.DataFrame) -> pd.DataFrame:
     """Replace exact hashes with ordered BFF-instruction signatures."""
 
@@ -201,6 +270,63 @@ def bff_opcode_signature_snapshot(snapshot: pd.DataFrame) -> pd.DataFrame:
         for tape in tapes
     ]
     return frame
+
+
+def pooled_bff_opcode_beta_test(
+    snapshots: list[pd.DataFrame],
+    *,
+    width: int,
+    height: int,
+    block_size: int,
+    permutations: int = 999,
+    rng: Generator | None = None,
+) -> PooledBetaResult:
+    """Test mean q=1 opcode-signature beta across fixed snapshots."""
+
+    if not snapshots:
+        raise ValueError("at least one spatial snapshot is required")
+    if permutations <= 0:
+        raise ValueError("permutations must be positive")
+    prepared = [bff_opcode_signature_snapshot(snapshot) for snapshot in snapshots]
+    observed_values = [
+        block_beta_diversity(
+            snapshot,
+            width=width,
+            height=height,
+            block_size=block_size,
+            q_values=(1.0,),
+        )[1.0]
+        for snapshot in prepared
+    ]
+    observed = float(np.mean(observed_values))
+    generator = np.random.default_rng(0) if rng is None else rng
+    null = np.empty(permutations, dtype=np.float64)
+    for permutation_index in range(permutations):
+        values: list[float] = []
+        for snapshot in prepared:
+            shuffled = snapshot.copy()
+            shuffled["content_hash"] = generator.permutation(
+                snapshot["content_hash"].astype(str).to_numpy()
+            )
+            values.append(
+                block_beta_diversity(
+                    shuffled,
+                    width=width,
+                    height=height,
+                    block_size=block_size,
+                    q_values=(1.0,),
+                )[1.0]
+            )
+        null[permutation_index] = float(np.mean(values))
+    null_mean = float(np.mean(null))
+    return PooledBetaResult(
+        observed=observed,
+        null_mean=null_mean,
+        excess=observed - null_mean,
+        p_value=float((1 + np.count_nonzero(null >= observed - 1e-15)) / (permutations + 1)),
+        snapshots=len(prepared),
+        permutations=permutations,
+    )
 
 
 def block_beta_diversity(
