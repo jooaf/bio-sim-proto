@@ -1,0 +1,220 @@
+diff --git a/src/sm_spatial.cpp b/src/sm_spatial.cpp
+index d9050fc..507d3d1 100644
+--- a/src/sm_spatial.cpp
++++ b/src/sm_spatial.cpp
+@@ -576,20 +576,27 @@ int Stringmol_Spatial::ToroidalNeighbour(int coord, int iterator, int dim){
+ *******************************************************************************/
+ s_ag * Stringmol_Spatial::ReactionSeekRandomSpatialPartner(int x, int y){
+ 
++	if(interaction_radius == 0){
++		s_ag *partner = AgentSelectRandomly(nowhead,B_UNBOUND);
++		if(partner != NULL)
++			grid->status[partner->x][partner->y] = G_NEXT;
++		return partner;
++	}
++
+ 	int i,j,xx,yy;
++	int radius = (int) interaction_radius;
+ 
+-	//first, let's count the agents
++	//first, count eligible agents in the configured Moore neighborhood
+ 	int count = 0;
+-	for(i=-1;i<2;i++){
+-		for(j=-1;j<2;j++){
++	for(i=-radius;i<=radius;i++){
++		for(j=-radius;j<=radius;j++){
+ 			if( !(i == 0 && j ==0) ){
+ 				xx = ToroidalNeighbour(x,i,grid->gridx);
+-				yy = (y + j + grid->gridy)%grid->gridy;
++				yy = ToroidalNeighbour(y,j,grid->gridy);
+ 				if(grid->grid[xx][yy]!=NULL){
+ 					if(grid->grid[xx][yy]->status == B_UNBOUND){
+-						if(grid->status[xx][yy] == G_NOW){
++						if(grid->status[xx][yy] == G_NOW)
+ 							count++;
+-						}
+ 					}
+ 				}
+ 			}
+@@ -598,23 +605,23 @@ s_ag * Stringmol_Spatial::ReactionSeekRandomSpatialPartner(int x, int y){
+ 	if(!count)
+ 		return NULL;
+ 
+-	int it = count * RandomBetween0And1();
++	int selected = count * RandomBetween0And1();
+ 
+-
+-	//now, let's choose the agents
++	//choose the drawn eligible neighbor rather than the first eligible neighbor
+ 	count = 0;
+-	for(i=-1;i<2;i++){
+-		for(j=-1;j<2;j++){
++	for(i=-radius;i<=radius;i++){
++		for(j=-radius;j<=radius;j++){
+ 			if( !(i == 0 && j ==0) ){
+-				xx = (x + i + grid->gridx)%grid->gridx;
+-				yy = (y + j + grid->gridy)%grid->gridy;
++				xx = ToroidalNeighbour(x,i,grid->gridx);
++				yy = ToroidalNeighbour(y,j,grid->gridy);
+ 				if(grid->grid[xx][yy]!=NULL){
+ 					if(grid->grid[xx][yy]->status == B_UNBOUND){
+ 						if(grid->status[xx][yy] == G_NOW){
+-							if(count==it)
++							if(count==selected){
+ 								grid->status[xx][yy] = G_NEXT;
+-							return grid->grid[xx][yy];
+-							//count++;
++								return grid->grid[xx][yy];
++							}
++							count++;
+ 						}
+ 					}
+ 				}
+@@ -622,7 +629,6 @@ s_ag * Stringmol_Spatial::ReactionSeekRandomSpatialPartner(int x, int y){
+ 		}
+ 	}
+ 
+-	//We should never get to here! todo(sjh): exit with error code
+ 	printf("Something's wrong - neighbour detected in first pass but none selected\n");
+ 	return NULL;
+ }
+@@ -1001,29 +1007,22 @@ int Stringmol_Spatial::OpcodeCleaveSpatial(s_ag *act){//, int x, int y){
+ *******************************************************************************/
+ s_ag * Stringmol_Spatial::AgentPlaceInMooreNeighbourhood(s_ag *c,int x,int y){
+ 
+-
+ 	int xx,yy;
+ 	int nvacant=0;
+-	for(int i=-1;i<2;i++){
+-		for(int j=-1;j<2;j++){
+-			xx = (x+i+grid->gridx)%grid->gridx;
+-			yy = (y+j+grid->gridy)%grid->gridy;
+-			//No need to ingnore x,y because it is occupied by the parent!
+-			if(grid->grid[xx][yy]==NULL)
+-				nvacant++;
+-		}
+-	}
+-	if(nvacant){
+-		//Decide where to put it:
+-		int pos = nvacant * RandomBetween0And1();
+-		int here=0;
+-		for(int i=-1;i<2;i++){
+-			for(int j=-1;j<2;j++){
+-				xx = (x+i+grid->gridx)%grid->gridx;
+-				yy = (y+j+grid->gridy)%grid->gridy;
+-				//No need to ingnore x,y because it is occupied by the parent!
++
++	if(placement_radius == 0){
++		for(xx=0;xx<grid->gridx;xx++)
++			for(yy=0;yy<grid->gridy;yy++)
++				if(grid->grid[xx][yy]==NULL)
++					nvacant++;
++		if(!nvacant)
++			return NULL;
++		int selected = nvacant * RandomBetween0And1();
++		int here = 0;
++		for(xx=0;xx<grid->gridx;xx++){
++			for(yy=0;yy<grid->gridy;yy++){
+ 				if(grid->grid[xx][yy]==NULL){
+-					if(here == pos){
++					if(here == selected){
+ 						AgentPlaceOnGrid(c,grid,xx,yy);
+ 						return c;
+ 					}
+@@ -1031,9 +1030,36 @@ s_ag * Stringmol_Spatial::AgentPlaceInMooreNeighbourhood(s_ag *c,int x,int y){
+ 				}
+ 			}
+ 		}
++		return NULL;
+ 	}
+-	else{
++
++	int radius = (int) placement_radius;
++	for(int i=-radius;i<=radius;i++){
++		for(int j=-radius;j<=radius;j++){
++			xx = ToroidalNeighbour(x,i,grid->gridx);
++			yy = ToroidalNeighbour(y,j,grid->gridy);
++			//No need to ignore x,y because it is occupied by the parent.
++			if(grid->grid[xx][yy]==NULL)
++				nvacant++;
++		}
++	}
++	if(!nvacant)
+ 		return NULL;
++
++	int selected = nvacant * RandomBetween0And1();
++	int here=0;
++	for(int i=-radius;i<=radius;i++){
++		for(int j=-radius;j<=radius;j++){
++			xx = ToroidalNeighbour(x,i,grid->gridx);
++			yy = ToroidalNeighbour(y,j,grid->gridy);
++			if(grid->grid[xx][yy]==NULL){
++				if(here == selected){
++					AgentPlaceOnGrid(c,grid,xx,yy);
++					return c;
++				}
++				here++;
++			}
++		}
+ 	}
+ 	return NULL;
+ 	/*TODO(sjh): Need to decide whether to replace or not
+diff --git a/src/stringPM.cpp b/src/stringPM.cpp
+index e1efc9a..43435cd 100644
+--- a/src/stringPM.cpp
++++ b/src/stringPM.cpp
+@@ -107,6 +107,8 @@ stringPM::stringPM(SMspp * pSP){
+ 
+ 	report_every = 10000;	//How often to write splists and configs
+ 	image_every	 = 100; //How often to generate an image (spatial stringmol only)
++	interaction_radius = 1;
++	placement_radius = 1;
+ 
+ 
+ 	timestep = 0;
+@@ -193,6 +195,8 @@ stringPM& stringPM::operator=(const stringPM &spm){
+ 
+ 	report_every = spm.report_every;   //How often to write splists and configs
+ 	image_every  = spm.image_every;	   //How often to generate an image (spatial stringmol only)
++	interaction_radius = spm.interaction_radius;
++	placement_radius = spm.placement_radius;
+ 
+ 	timestep = spm.timestep;
+ 	randseed = spm.randseed;
+@@ -321,6 +325,14 @@ int stringPM::ParametersLoad(const char *fn, int test, int verbose){
+ 		if(e>1)err++;
+ 		//err += 	ParameterReadFloat(fp,"DIVTIME",&divtime);
+ 
++		unsigned int default_radius = 1;
++		e = ParameterReadOrDefineUnsignedInt(
++				fn,"INTERACTION_RADIUS",&interaction_radius,default_radius,0);
++		if(e>1)err++;
++		e = ParameterReadOrDefineUnsignedInt(
++				fn,"PLACEMENT_RADIUS",&placement_radius,default_radius,0);
++		if(e>1)err++;
++
+ 		int destep = estep;
+ 		e = ParameterReadOrDefineUnsignedInt(fn,"ESTEP", &estep, destep, 0);
+ 		if(e>1){
+@@ -3111,6 +3123,8 @@ int stringPM::print_conf(FILE *fp){
+ 	fprintf(fp,"ENERGY      %d\n",(int) energy);
+ 	fprintf(fp,"NSTEPS      %d\n",(int) nsteps);//1200000000\n");
+ 	fprintf(fp,"DECAY       %f\n",decayrate);
++	fprintf(fp,"INTERACTION_RADIUS %u\n",interaction_radius);
++	fprintf(fp,"PLACEMENT_RADIUS   %u\n",placement_radius);
+ 
+ 
+ 
+diff --git a/src/stringPM.h b/src/stringPM.h
+index 1e2cbd2..032ab99 100644
+--- a/src/stringPM.h
++++ b/src/stringPM.h
+@@ -117,6 +117,8 @@ public:
+ 	//Reporting timings
+ 	unsigned int report_every;			//How often to write splists and configs
+ 	unsigned int image_every;			//How often to generate an image (spatial stringmol only)
++	unsigned int interaction_radius;	//0 means any unbound molecule; positive is a Moore radius
++	unsigned int placement_radius;		//0 means any vacant cell; positive is a Moore radius
+ 
+ 	//Max molecular lengths
+ 	unsigned int maxl;

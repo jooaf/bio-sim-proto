@@ -1,0 +1,12 @@
+{
+  "repository": "https://github.com/uoy-research/stringmol.git",
+  "commit": "15dad84da126a4f887ba945c23a13e89e827f067",
+  "branch_observed": "dev",
+  "license": "GPL-3.0-or-later",
+  "upstream_tests": {
+    "assertions": 79,
+    "test_cases": 15
+  },
+  "canonical_spatial_config": "config/quick_test33.conf",
+  "canonical_replicase": "WWGEWLHHHRLUEUWJJJRJXUUUDYGRHJLRWWRE$BLUBO^B>C$=?>$$BLUBO%}OYHOB"
+}
