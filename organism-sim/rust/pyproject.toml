@@ -1,0 +1,14 @@
+[build-system]
+requires = ["maturin>=1.7,<2"]
+build-backend = "maturin"
+
+[project]
+name = "organism-sim-kernel"
+requires-python = ">=3.11"
+dynamic = ["version"]
+
+[tool.maturin]
+bindings = "pyo3"
+manifest-path = "Cargo.toml"
+features = ["python-module"]
+module-name = "organism_sim_kernel"

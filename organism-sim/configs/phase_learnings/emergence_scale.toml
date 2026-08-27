@@ -1,0 +1,27 @@
+# Phase-learnings profile: emergence-scale hunting.
+#
+# bio-sim-proto phase 0/E1 result: population scale — not conservation or
+# tuning — gates emergence probability and takeover persistence (1/5 events
+# at small populations, 3/5 at 8x larger). This profile quadruples the
+# founding population and founding lineages and widens the founder region
+# with proportionally scaled deposits. Mutation stays at the reference
+# multiplier: phase 0 found a Goldilocks regime where zero and 8x mutation
+# both failed where the reference rate succeeded.
+#
+# Also enables deposit_match_ecology: newly explored geology mirrors founder
+# body demand (phase-1 matched-pool economy), so the constraint stays at the
+# founding transition rather than re-binding forever.
+
+[run]
+ticks = 10000
+
+[simulation]
+seed = 7
+width = 256
+height = 256
+founder_count = 1200
+founder_archetype_count = 24
+initial_deposits = 10400
+deposit_production_rate = 0.10
+deposit_match_ecology = true
+mutation_multiplier = 1.0

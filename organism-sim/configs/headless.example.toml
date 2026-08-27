@@ -1,0 +1,56 @@
+schema_version = 1
+
+[run]
+ticks = 1000
+# runs_dir = "/tmp/organism-runs"
+
+[simulation]
+seed = 7
+width = 128
+height = 128
+founder_count = 300
+founder_archetype_count = 8
+element_count = 8
+molecule_count = 48
+initial_deposits = 2600
+ticks_per_second = 20.0
+heat_diffusion = 0.08
+primary_production_rate = 0.0
+decomposition_rate = 0.0008
+mutation_multiplier = 1.0
+maintenance_cost_multiplier = 0.75
+seasons_enabled = false
+season_duration_min = 500
+season_duration_max = 1500
+season_transition_ticks = 100
+season_strength = 0.65
+cellular_emergence_enabled = false
+emergence_max_modules = 12
+emergence_structural_mutation_rate = 0.02
+emergence_module_cost = 0.002
+emergence_module_effect = 0.25
+emergence_bond_rate = 0.01
+emergence_bond_break_rate = 0.002
+emergence_exchange_rate = 0.02
+emergence_engulfment_rate = 0.01
+emergence_max_internal_guests = 4
+emergence_coordinated_components = true
+biodeposits_enabled = false
+biodeposit_decay_rate = 0.001
+biodeposit_movement_resistance = 0.25
+biodeposit_cover_strength = 0.35
+biodeposit_concealment = 0.10
+maturity_age_multiplier = 0.65
+reproduction_action_bonus = 1.25
+reproduction_cost_multiplier = 0.50
+reproduction_cooldown_multiplier = 0.75
+asexual_probability_floor = 0.20
+sexual_probability_floor_enabled = true
+sexual_probability_floor = 0.12
+mana_decay = 0.002
+reaction_rate = 1.0
+audit_every = 20
+recording_metrics_interval = 5
+recording_detail_interval = 20
+recording_snapshot_interval = 50
+recording_commit_interval = 50

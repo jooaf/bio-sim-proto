@@ -1,0 +1,37 @@
+[project]
+name = "emergent-organism-sim"
+version = "0.1.0"
+description = "Playable prototype of a conserved-matter emergent ecosystem"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "numpy>=2.0",
+  "pygame-ce>=2.5",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+organism-sim = "organism_sim.app:main"
+organism-sim-headless = "organism_sim.cli:main"
+organism-sim-report = "organism_sim.report:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/organism_sim"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[dependency-groups]
+dev = [
+    "maturin>=1.7,<2",
+    "pyinstrument>=5.1.3",
+    "pytest>=8.0",
+    "ruff>=0.6",
+]

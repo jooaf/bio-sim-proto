@@ -12,6 +12,10 @@ experiments/replicator_length_study/results/
 logs/
 notebooks/.ipynb_checkpoints/
 *.pid
+*.csv
+*.jsonl
+*.json
+*.sqllite
 nu-tool-output_*.txt
 organism-sim/rust/target/
 .DS_Store

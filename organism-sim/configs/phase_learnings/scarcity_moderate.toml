@@ -1,0 +1,19 @@
+# Phase-learnings profile: moderate scarcity — the primary regime.
+#
+# bio-sim-proto phase 1 analog: pool multiplier 2 — a genuinely constrained
+# economy (not an unlimited control) with rare, resource-specific blocking
+# bursts. This is the recommended operating point for selection experiments:
+# scarcity binds during founding and early adaptation without globally
+# braking the ecology. Matches current defaults except for explicitness.
+
+[run]
+ticks = 8000
+
+[simulation]
+seed = 7
+founder_count = 300
+founder_archetype_count = 8
+initial_deposits = 2600
+deposit_production_rate = 0.10
+deposit_match_ecology = false
+mutation_multiplier = 1.0

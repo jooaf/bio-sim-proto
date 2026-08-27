@@ -1,0 +1,25 @@
+[package]
+name = "organism-sim-kernel"
+version = "0.1.0"
+edition = "2021"
+description = "Rust tick kernel for the emergent organism simulation, exposed via PyO3"
+
+[lib]
+name = "organism_sim_kernel"
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = []
+python-module = ["pyo3/extension-module"]
+simd-neural = []
+
+[dependencies]
+pyo3 = { version = "0.23", features = ["auto-initialize"] }
+numpy = "0.23"
+rayon = "1.10"
+rustc-hash = "2"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
