@@ -1,0 +1,11 @@
+seed,host_final,alone_initial_r,alone_max_r,alone_final_r,mixed_initial_r,mixed_max_r,mixed_final_r,mixed_max_r_fraction,mixed_minus_alone_max,mixed_increased,alone_did_not_increase,paired_advantage_positive,host_persisted
+202608310,709,10,10,2,10,661,67,0.4141604010025063,651,True,True,True,True
+202608311,14,10,10,2,10,831,2,0.519375,821,True,True,True,True
+202608312,355,10,10,2,10,1111,1111,0.694375,1101,True,True,True,True
+202608313,27,10,10,2,10,1280,1280,0.8025078369905956,1270,True,True,True,True
+202608314,629,10,10,2,10,638,110,0.39875,628,True,True,True,True
+202608315,484,10,10,4,10,402,3,0.3449367088607595,392,True,True,True,True
+202608316,645,10,10,2,10,763,556,0.476875,753,True,True,True,True
+202608317,645,10,10,2,10,1094,1094,0.6841776110068793,1084,True,True,True,True
+202608318,853,10,10,2,10,444,1,0.3955637707948244,434,True,True,True,True
+202608319,599,10,10,2,10,1231,1231,0.7713032581453634,1221,True,True,True,True
