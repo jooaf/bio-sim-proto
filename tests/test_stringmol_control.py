@@ -3,6 +3,12 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import numpy as np
+
+from experiments.stringmol.analyze_locality import (
+    exact_sign_flip_greater,
+    paired_bootstrap_interval,
+)
 from experiments.stringmol.ancestry import ancestry_trajectory, descendant_species
 from experiments.stringmol.configure_control import (
     HOST,
@@ -68,6 +74,13 @@ def test_stringmol_ancestry_closure_and_population_trajectory(tmp_path: Path) ->
     trajectory = ancestry_trajectory(population, species, 2)
     assert trajectory["ancestry_count"].tolist() == [1, 5]
     assert trajectory["ancestry_fraction"].tolist() == [0.1, 0.5]
+
+
+def test_stringmol_paired_statistics_are_deterministic_and_directional() -> None:
+    differences = np.asarray([0.2] * 10, dtype=np.float64)
+
+    assert paired_bootstrap_interval(differences) == (0.2, 0.2)
+    assert exact_sign_flip_greater(differences) == 1 / 1_024
 
 
 def test_stringmol_population_parser_tracks_exact_seed_species(tmp_path: Path) -> None:
