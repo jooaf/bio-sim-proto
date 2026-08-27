@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from experiments.stringmol.ancestry import ancestry_trajectory, descendant_species
 from experiments.stringmol.configure_control import (
     HOST,
     PARASITE_R,
@@ -47,6 +48,26 @@ def test_stringmol_control_config_has_explicit_agents_and_matched_cells(tmp_path
     assert "NUMAGENTS 150" in text
     assert "INTERACTION_RADIUS 0" in text
     assert "PLACEMENT_RADIUS 0" in text
+
+
+def test_stringmol_ancestry_closure_and_population_trajectory(tmp_path: Path) -> None:
+    species = tmp_path / "splist100.dat"
+    species.write_text(
+        "1,-1,-1,1,HOST\n"
+        "2,-1,-1,1,PARASITE\n"
+        "3,1,2,4,10,3,CHILD\n"
+        "4,3,1,2,20,2,GRANDCHILD\n"
+        "5,1,1,5,30,1,HOSTCHILD\n",
+        encoding="utf-8",
+    )
+    population = tmp_path / "popdy001.dat"
+    population.write_text("0,1,9\n0,2,1\n100,1,4\n100,3,3\n100,4,2\n100,5,1\n", encoding="utf-8")
+
+    assert descendant_species(species, 2) == {2, 3, 4}
+    assert descendant_species(species, 2, "passive") == {2, 3}
+    trajectory = ancestry_trajectory(population, species, 2)
+    assert trajectory["ancestry_count"].tolist() == [1, 5]
+    assert trajectory["ancestry_fraction"].tolist() == [0.1, 0.5]
 
 
 def test_stringmol_population_parser_tracks_exact_seed_species(tmp_path: Path) -> None:
