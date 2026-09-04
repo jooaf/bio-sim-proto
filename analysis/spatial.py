@@ -272,7 +272,7 @@ def bff_opcode_signature_snapshot(snapshot: pd.DataFrame) -> pd.DataFrame:
     return frame
 
 
-def pooled_bff_opcode_beta_test(
+def pooled_categorical_beta_test(
     snapshots: list[pd.DataFrame],
     *,
     width: int,
@@ -281,13 +281,12 @@ def pooled_bff_opcode_beta_test(
     permutations: int = 999,
     rng: Generator | None = None,
 ) -> PooledBetaResult:
-    """Test mean q=1 opcode-signature beta across fixed snapshots."""
+    """Test equal-weight mean q=1 beta for precomputed categorical labels."""
 
     if not snapshots:
         raise ValueError("at least one spatial snapshot is required")
     if permutations <= 0:
         raise ValueError("permutations must be positive")
-    prepared = [bff_opcode_signature_snapshot(snapshot) for snapshot in snapshots]
     observed_values = [
         block_beta_diversity(
             snapshot,
@@ -296,14 +295,14 @@ def pooled_bff_opcode_beta_test(
             block_size=block_size,
             q_values=(1.0,),
         )[1.0]
-        for snapshot in prepared
+        for snapshot in snapshots
     ]
     observed = float(np.mean(observed_values))
     generator = np.random.default_rng(0) if rng is None else rng
     null = np.empty(permutations, dtype=np.float64)
     for permutation_index in range(permutations):
         values: list[float] = []
-        for snapshot in prepared:
+        for snapshot in snapshots:
             shuffled = snapshot.copy()
             shuffled["content_hash"] = generator.permutation(
                 snapshot["content_hash"].astype(str).to_numpy()
@@ -324,8 +323,30 @@ def pooled_bff_opcode_beta_test(
         null_mean=null_mean,
         excess=observed - null_mean,
         p_value=float((1 + np.count_nonzero(null >= observed - 1e-15)) / (permutations + 1)),
-        snapshots=len(prepared),
+        snapshots=len(snapshots),
         permutations=permutations,
+    )
+
+
+def pooled_bff_opcode_beta_test(
+    snapshots: list[pd.DataFrame],
+    *,
+    width: int,
+    height: int,
+    block_size: int,
+    permutations: int = 999,
+    rng: Generator | None = None,
+) -> PooledBetaResult:
+    """Test mean q=1 opcode-signature beta across fixed snapshots."""
+
+    prepared = [bff_opcode_signature_snapshot(snapshot) for snapshot in snapshots]
+    return pooled_categorical_beta_test(
+        prepared,
+        width=width,
+        height=height,
+        block_size=block_size,
+        permutations=permutations,
+        rng=rng,
     )
 
 
