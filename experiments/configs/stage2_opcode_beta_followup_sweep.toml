@@ -1,0 +1,11 @@
+[sweep]
+name = "phase2_opcode_beta_followup"
+base_config = "stage2_opcode_beta_followup.toml"
+n_seeds = 10
+start_seed = 202609050
+processes = 10
+output_dir = "sweeps"
+
+[parameters]
+"world.interaction_radius" = [1, 8]
+"world.mutation_rate" = [0.00006103515625, 0.000244140625]
