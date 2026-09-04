@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "raw_run_dir": "sweeps/phase2_acceptance_candidate/runs/20260903T051120.391509Z_2f2d06947bae_202608300",
+  "source_commit": "02727ecf2764dac67dd51cde510b10912dfc3007",
+  "config_hash": "2f2d06947bae",
+  "seed": 202608300,
+  "stage": 2,
+  "exit_status": "success",
+  "started_at_utc": "2026-09-03T05:11:20.393070+00:00",
+  "finished_at_utc": "2026-09-03T17:59:30.270480+00:00",
+  "wall_time_seconds": 46089.841784957796,
+  "ticks_completed": 500000,
+  "parameter_change_count": 0,
+  "invariant_log_bytes": 0,
+  "run_apparent_bytes": 122193419,
+  "checksums": [
+    {
+      "name": "config.toml",
+      "bytes": 1548,
+      "sha256": "2f2d06947bae38519224594852e46800a7586f0a9436f04c84dcdce05f62b5d4"
+    },
+    {
+      "name": "effective_config.toml",
+      "bytes": 1548,
+      "sha256": "2f2d06947bae38519224594852e46800a7586f0a9436f04c84dcdce05f62b5d4"
+    },
+    {
+      "name": "manifest.json",
+      "bytes": 526,
+      "sha256": "e565e4385ac45bd6b526dedef4ac88c7800ceaef91f5dfff9d4d55c9f68c691c"
+    },
+    {
+      "name": "stage2_report.md",
+      "bytes": 941,
+      "sha256": "405f8fcd0ed093b61dc47b9ffee4bb588ed7834c13350ad15d0de0f63f7d876d"
+    },
+    {
+      "name": "analysis_acceptance_spatial.csv",
+      "bytes": 255,
+      "sha256": "a6ceccf24a4f29e27e603c97531d3862c0f88203cc5d28fca7017e23bf190c79"
+    },
+    {
+      "name": "stage2_acceptance_spatial_report.md",
+      "bytes": 943,
+      "sha256": "7cd797aabbdafc1ed9942142a3f5df88fed987219a5b4f015fa27ba552014fd3"
+    },
+    {
+      "name": "analysis_conservation.parquet",
+      "bytes": 4232,
+      "sha256": "8e5fdd83956fbf2ffb900fa9e522449b59028a28dfc7a40767d1a170c9c04a45"
+    }
+  ]
+}
