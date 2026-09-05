@@ -6,9 +6,11 @@ import numpy as np
 import pandas as pd
 
 from analysis.spatial import (
+    bff_opcode_composition_matrix,
     bff_opcode_signature_snapshot,
     block_beta_diversity,
     block_beta_permutation_test,
+    neighbor_bff_opcode_js_test,
     neighbor_byte_similarity_test,
     neighbor_identity_test,
     pooled_bff_opcode_beta_test,
@@ -63,6 +65,30 @@ def test_neighbor_byte_similarity_detects_near_copy_clusters() -> None:
     assert result.observed > result.null_mean
     assert result.excess > 0.2
     assert result.p_value < 0.05
+
+
+def test_opcode_composition_js_detects_clustered_instruction_profiles() -> None:
+    clustered = _snapshot([["A"] * 3 + ["B"] * 3 for _ in range(6)])
+    clustered["full_bytes"] = [
+        bytes([OP_INC] * 64) if x < 3 else bytes([OP_LOOP_START] * 64)
+        for _y in range(6)
+        for x in range(6)
+    ]
+
+    compositions = bff_opcode_composition_matrix(clustered)
+    result = neighbor_bff_opcode_js_test(
+        clustered,
+        width=6,
+        height=6,
+        permutations=199,
+        rng=np.random.default_rng(14),
+    )
+
+    assert compositions.shape == (36, 11)
+    assert np.allclose(compositions.sum(axis=1), 1.0)
+    assert result.excess > 0.2
+    assert result.p_value < 0.05
+    assert result.categories == 11
 
 
 def test_pooled_spatial_tests_detect_repeated_cluster_structure() -> None:

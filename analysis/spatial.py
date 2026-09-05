@@ -50,6 +50,18 @@ class PooledBetaResult:
     permutations: int
 
 
+@dataclass(frozen=True, slots=True)
+class NeighborJensenShannonResult:
+    observed: float
+    null_mean: float
+    null_std: float
+    excess: float
+    p_value: float
+    edges: int
+    categories: int
+    permutations: int
+
+
 def _validate_snapshot(snapshot: pd.DataFrame, width: int, height: int) -> pd.DataFrame:
     required = {"cell_x", "cell_y", "content_hash"}
     missing = required - set(snapshot.columns)
@@ -256,6 +268,90 @@ def pooled_neighbor_byte_similarity_test(
         p_value=float((1 + np.count_nonzero(null >= observed - 1e-15)) / (permutations + 1)),
         edges=sum(len(edges) for _, edges in prepared),
         tape_length=next(iter(tape_lengths)),
+        permutations=permutations,
+    )
+
+
+def bff_opcode_composition_matrix(snapshot: pd.DataFrame) -> NDArray[np.float64]:
+    """Return ten opcode proportions plus one aggregate non-opcode proportion."""
+
+    tapes = _full_byte_matrix(snapshot)
+    opcodes = tuple(sorted(INSTRUCTION_SET))
+    counts = np.column_stack([(tapes == opcode).sum(axis=1) for opcode in opcodes])
+    other = tapes.shape[1] - counts.sum(axis=1)
+    return np.column_stack((counts, other)).astype(np.float64) / tapes.shape[1]
+
+
+def _jensen_shannon_similarity(
+    left: NDArray[np.float64], right: NDArray[np.float64]
+) -> NDArray[np.float64]:
+    """Return base-2 Jensen–Shannon similarity for aligned probability rows."""
+
+    midpoint = 0.5 * (left + right)
+    left_ratio = np.divide(left, midpoint, out=np.ones_like(left), where=left > 0.0)
+    right_ratio = np.divide(right, midpoint, out=np.ones_like(right), where=right > 0.0)
+    left_kl = np.sum(np.where(left > 0.0, left * np.log2(left_ratio), 0.0), axis=1)
+    right_kl = np.sum(
+        np.where(right > 0.0, right * np.log2(right_ratio), 0.0), axis=1
+    )
+    return cast(NDArray[np.float64], 1.0 - 0.5 * (left_kl + right_kl))
+
+
+def neighbor_bff_opcode_js_test(
+    snapshot: pd.DataFrame,
+    *,
+    width: int,
+    height: int,
+    radius: int = 1,
+    permutations: int = 999,
+    rng: Generator | None = None,
+) -> NeighborJensenShannonResult:
+    """Compare neighboring opcode-composition similarity with a tape-label null."""
+
+    if permutations <= 0:
+        raise ValueError("permutations must be positive")
+    frame = _validate_snapshot(snapshot, width, height)
+    compositions = bff_opcode_composition_matrix(snapshot.reset_index(drop=True))
+    edges = _neighbor_edges(frame, width, height, radius)
+    if len(edges) == 0:
+        return NeighborJensenShannonResult(
+            observed=float("nan"),
+            null_mean=float("nan"),
+            null_std=float("nan"),
+            excess=float("nan"),
+            p_value=float("nan"),
+            edges=0,
+            categories=compositions.shape[1],
+            permutations=permutations,
+        )
+    observed = float(
+        np.mean(
+            _jensen_shannon_similarity(
+                compositions[edges[:, 0]], compositions[edges[:, 1]]
+            )
+        )
+    )
+    generator = np.random.default_rng(0) if rng is None else rng
+    null = np.empty(permutations, dtype=np.float64)
+    for index in range(permutations):
+        permutation = generator.permutation(len(compositions))
+        null[index] = float(
+            np.mean(
+                _jensen_shannon_similarity(
+                    compositions[permutation[edges[:, 0]]],
+                    compositions[permutation[edges[:, 1]]],
+                )
+            )
+        )
+    null_mean = float(np.mean(null))
+    return NeighborJensenShannonResult(
+        observed=observed,
+        null_mean=null_mean,
+        null_std=float(np.std(null, ddof=1)) if permutations > 1 else 0.0,
+        excess=observed - null_mean,
+        p_value=float((1 + np.count_nonzero(null >= observed - 1e-15)) / (permutations + 1)),
+        edges=len(edges),
+        categories=compositions.shape[1],
         permutations=permutations,
     )
 
