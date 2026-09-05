@@ -356,6 +356,71 @@ def neighbor_bff_opcode_js_test(
     )
 
 
+def pooled_neighbor_bff_opcode_js_test(
+    snapshots: list[pd.DataFrame],
+    *,
+    width: int,
+    height: int,
+    radius: int = 1,
+    permutations: int = 999,
+    rng: Generator | None = None,
+) -> NeighborJensenShannonResult:
+    """Test equal-weight mean opcode-composition similarity across snapshots."""
+
+    if not snapshots:
+        raise ValueError("at least one spatial snapshot is required")
+    if permutations <= 0:
+        raise ValueError("permutations must be positive")
+    prepared: list[tuple[NDArray[np.float64], NDArray[np.int64]]] = []
+    for snapshot in snapshots:
+        frame = _validate_snapshot(snapshot, width, height)
+        compositions = bff_opcode_composition_matrix(snapshot.reset_index(drop=True))
+        edges = _neighbor_edges(frame, width, height, radius)
+        if len(edges) == 0:
+            raise ValueError("every pooled snapshot must contain occupied neighbor edges")
+        prepared.append((compositions, edges))
+    observed = float(
+        np.mean(
+            [
+                np.mean(
+                    _jensen_shannon_similarity(
+                        compositions[edges[:, 0]], compositions[edges[:, 1]]
+                    )
+                )
+                for compositions, edges in prepared
+            ]
+        )
+    )
+    generator = np.random.default_rng(0) if rng is None else rng
+    null = np.empty(permutations, dtype=np.float64)
+    for permutation_index in range(permutations):
+        values: list[float] = []
+        for compositions, edges in prepared:
+            permutation = generator.permutation(len(compositions))
+            values.append(
+                float(
+                    np.mean(
+                        _jensen_shannon_similarity(
+                            compositions[permutation[edges[:, 0]]],
+                            compositions[permutation[edges[:, 1]]],
+                        )
+                    )
+                )
+            )
+        null[permutation_index] = float(np.mean(values))
+    null_mean = float(np.mean(null))
+    return NeighborJensenShannonResult(
+        observed=observed,
+        null_mean=null_mean,
+        null_std=float(np.std(null, ddof=1)) if permutations > 1 else 0.0,
+        excess=observed - null_mean,
+        p_value=float((1 + np.count_nonzero(null >= observed - 1e-15)) / (permutations + 1)),
+        edges=sum(len(edges) for _, edges in prepared),
+        categories=prepared[0][0].shape[1],
+        permutations=permutations,
+    )
+
+
 def bff_opcode_signature_snapshot(snapshot: pd.DataFrame) -> pd.DataFrame:
     """Replace exact hashes with ordered BFF-instruction signatures."""
 

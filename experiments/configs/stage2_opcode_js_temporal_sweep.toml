@@ -1,0 +1,10 @@
+[sweep]
+name = "phase2_opcode_js_temporal"
+base_config = "stage2_opcode_js_temporal.toml"
+n_seeds = 10
+start_seed = 202609070
+processes = 10
+output_dir = "sweeps"
+
+[parameters]
+"world.interaction_radius" = [1, 8]

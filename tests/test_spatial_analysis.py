@@ -14,6 +14,7 @@ from analysis.spatial import (
     neighbor_byte_similarity_test,
     neighbor_identity_test,
     pooled_bff_opcode_beta_test,
+    pooled_neighbor_bff_opcode_js_test,
     pooled_neighbor_byte_similarity_test,
     write_spatial_report,
 )
@@ -89,6 +90,16 @@ def test_opcode_composition_js_detects_clustered_instruction_profiles() -> None:
     assert result.excess > 0.2
     assert result.p_value < 0.05
     assert result.categories == 11
+
+    pooled = pooled_neighbor_bff_opcode_js_test(
+        [clustered, clustered.copy()],
+        width=6,
+        height=6,
+        permutations=199,
+        rng=np.random.default_rng(15),
+    )
+    assert pooled.excess > 0.2
+    assert pooled.p_value < 0.05
 
 
 def test_pooled_spatial_tests_detect_repeated_cluster_structure() -> None:

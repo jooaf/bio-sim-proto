@@ -10,6 +10,10 @@ from experiments.analyze_phase2_opcode_beta_followup import (
     paired_effect,
 )
 from experiments.analyze_phase2_opcode_js_followup import paired_results
+from experiments.analyze_phase2_opcode_js_temporal import (
+    checkpoint_contrasts,
+    paired_results as temporal_paired_results,
+)
 from soup.substrate.bff import OP_DEC, OP_INC
 
 
@@ -41,6 +45,33 @@ def test_js_paired_results_use_radius_one_minus_radius_eight() -> None:
     assert p_value == 1 / 1_024
     assert lower > 0
     assert upper > 0
+
+
+def test_temporal_pairing_and_checkpoint_contrasts_are_radius_one_minus_eight() -> None:
+    runs = pd.DataFrame(
+        [
+            {"seed": seed, "radius": radius, "pooled_js_excess": 0.3 if radius == 1 else 0.1}
+            for seed in range(10)
+            for radius in (1, 8)
+        ]
+    )
+    trajectory = pd.DataFrame(
+        [
+            {"seed": seed, "radius": radius, "tick": tick, "excess": radius * 0.01 + tick * 0.0}
+            for seed in range(10)
+            for radius in (1, 8)
+            for tick in (0, 500)
+        ]
+    )
+
+    differences, p_value, lower, upper = temporal_paired_results(runs)
+    checkpoints = checkpoint_contrasts(trajectory)
+
+    assert all(value > 0 for value in differences)
+    assert p_value == 1 / 1_024
+    assert lower > 0 and upper > 0
+    assert (checkpoints["mean_paired_effect"] < 0).all()
+    assert (checkpoints["positive_seed_pairs"] == 0).all()
 
 
 def test_paired_effect_selects_matched_factorial_slice() -> None:
