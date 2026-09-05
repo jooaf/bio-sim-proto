@@ -180,6 +180,43 @@ def write_report(runs: pd.DataFrame, groups: pd.DataFrame, target: Path) -> None
         outcome="ordered_block2_beta_excess",
     )
     decisions = holm_two({"H1": h1_p, "H2": h2_p})
+    baseline_radius_effect, baseline_radius_p = paired_effect(
+        runs,
+        fixed_column="mutation_rate",
+        fixed_value=BASELINE_MUTATION,
+        compared_column="radius",
+        high=1,
+        low=8,
+        outcome="ordered_block2_beta_excess",
+    )
+    locality_unique, locality_unique_p = paired_effect(
+        runs,
+        fixed_column="mutation_rate",
+        fixed_value=LOW_MUTATION,
+        compared_column="radius",
+        high=8,
+        low=1,
+        outcome="ordered_unique_fraction",
+    )
+    locality_byte, locality_byte_p = paired_effect(
+        runs,
+        fixed_column="mutation_rate",
+        fixed_value=LOW_MUTATION,
+        compared_column="radius",
+        high=1,
+        low=8,
+        outcome="neighbor_byte_identity_excess",
+    )
+    locality_presence, locality_presence_p = paired_effect(
+        runs,
+        fixed_column="mutation_rate",
+        fixed_value=LOW_MUTATION,
+        compared_column="radius",
+        high=1,
+        low=8,
+        outcome="presence_block2_beta_excess",
+    )
+    interaction = h2 - baseline_radius_effect
     viable = int(
         runs[
             np.isclose(runs["mutation_rate"], LOW_MUTATION)
@@ -226,6 +263,16 @@ def write_report(runs: pd.DataFrame, groups: pd.DataFrame, target: Path) -> None
         "",
         f"- H1 seed effects: {', '.join(f'{value:.6f}' for value in h1)}",
         f"- H2 seed effects: {', '.join(f'{value:.6f}' for value in h2)}",
+        "",
+        "## Frozen secondary and descriptive contrasts",
+        "",
+        f"- Baseline-mutation radius-1-minus-radius-8 block-2 beta effect: {float(baseline_radius_effect.mean()):.6f}; exact p = {baseline_radius_p:.6f}",
+        f"- Mutation × radius interaction (low-mutation radius effect minus baseline radius effect): {float(interaction.mean()):.6f}",
+        f"- Low-mutation radius-8-minus-radius-1 unique-fraction effect: {float(locality_unique.mean()):.6f}; exact p = {locality_unique_p:.6f}",
+        f"- Low-mutation radius-1-minus-radius-8 byte-excess effect: {float(locality_byte.mean()):.6f}; exact p = {locality_byte_p:.6f}",
+        f"- Low-mutation radius-1-minus-radius-8 opcode-presence beta effect: {float(locality_presence.mean()):.6f}; exact p = {locality_presence_p:.6f}",
+        "",
+        "These secondary p-values are descriptive and unadjusted; they are not additional passed hypotheses.",
         "",
         "## Integrity",
         "",

@@ -1,0 +1,412 @@
+{
+  "schema_version": 1,
+  "source_commit": "8e06d242f568c5d16fe178d733c890b6369e7f94",
+  "preregistration_commit": "8e06d24",
+  "index_path": "sweeps/phase2_opcode_beta_followup/index.parquet",
+  "index_sha256": "6b792bd055f1d632244ae4f04eeb14a8facff081ef6d1d03eb73c979f155da3d",
+  "sweep_spec_sha256": "2ed6dafc073b34c1d39e0856cb1059c6f0af302cf815395250b40dbe1145c63f",
+  "base_config_sha256": "1f0fbaf57e1034fbec4d88eaa465d256647ed81110cd3de1a9647dde31d953cf",
+  "raw_apparent_bytes": 268975719,
+  "runs": [
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T215442.414463Z_d8e6bc9e5854_202609050",
+      "seed": 202609050,
+      "radius": 1,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "d8e6bc9e5854",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "ff918f8ee47e9b01c8b335a9c80a3beea83280d3a3432c57d00daf36c5cd873d"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T215442.414471Z_b111977b2512_202609051",
+      "seed": 202609051,
+      "radius": 1,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "b111977b2512",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "736df913160e8ff89ab9dd628ea9167dbe0c5d100221169e7f1236c14d1dcedb"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T215442.414479Z_edb9dd2ea0fa_202609052",
+      "seed": 202609052,
+      "radius": 1,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "edb9dd2ea0fa",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "d3e3fc9ef36e803fd5350cda84071d5f5205e6a2b8a1186b7bfd628d104f63e3"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T215442.423188Z_175f7125a163_202609053",
+      "seed": 202609053,
+      "radius": 1,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "175f7125a163",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "4144f9147154514285c0d64b7e52380159fed73a96bac4aa7cd15bc44a4ff678"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T215442.424718Z_faa6ecb58467_202609054",
+      "seed": 202609054,
+      "radius": 1,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "faa6ecb58467",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "aeb2c9ab6cd93f1f7f4075f0244478dc02401b058f2c0ca420a944c188bf61c8"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T215442.423816Z_3cd21bbb2979_202609055",
+      "seed": 202609055,
+      "radius": 1,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "3cd21bbb2979",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "4b683d7129f465cad4cc6586c45438149677b0befcddfc89808980592a890c07"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T215442.424036Z_f5e850f0bee3_202609056",
+      "seed": 202609056,
+      "radius": 1,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "f5e850f0bee3",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "fd6ba0eeb20cfe703a65fdc9a8e476afff43e16c9def26947728a657258a776f"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T215442.424578Z_7e31bef7171f_202609057",
+      "seed": 202609057,
+      "radius": 1,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "7e31bef7171f",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "3e9bcd0186395d46c6049f20dbd104f12a07c22cb4dfe17f8dd8f806752fe72b"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T215442.426261Z_00e4b2c2be8d_202609058",
+      "seed": 202609058,
+      "radius": 1,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "00e4b2c2be8d",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "5fea2d947bc749cd0b75ed0280cc793b6bfd63232c188dafbae42b3a0079e1cd"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T215442.431739Z_09d26c020149_202609059",
+      "seed": 202609059,
+      "radius": 1,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "09d26c020149",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "d74e643673e13d5784179629bc3f8eefe72bca48257a2869dd711da38fd20cc6"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T220437.437745Z_031878e12a11_202609050",
+      "seed": 202609050,
+      "radius": 1,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "031878e12a11",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "7b65ea9422ce456d703228681e87f696beac9d5e57db70d19f3c8652c0142cae"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T220437.437872Z_23fc0f7e32fc_202609051",
+      "seed": 202609051,
+      "radius": 1,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "23fc0f7e32fc",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "ad35b23def2e9f73b98a050794d9ce1ea63f91db6703564696cd054d8f7edcb4"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T220437.437932Z_b886b01475aa_202609052",
+      "seed": 202609052,
+      "radius": 1,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "b886b01475aa",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "bec36c167bbf5e4079b51d2571b0904794d61c846d7348758e8b8d8acc5e25d5"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T220437.437883Z_a25e164ea36e_202609053",
+      "seed": 202609053,
+      "radius": 1,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "a25e164ea36e",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "59ff72b9f123e1292206fef26399391e46adaf945924b827e2264cf20d63477a"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T220437.437876Z_96b51088c423_202609054",
+      "seed": 202609054,
+      "radius": 1,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "96b51088c423",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "5dcff143faee9d45eba2f5582fae313c8f7b9b89067ecf3314226f29959c8632"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T220437.437872Z_bfd23641f6ce_202609055",
+      "seed": 202609055,
+      "radius": 1,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "bfd23641f6ce",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "e2a8b2c88516b7196a39a2efb95daa2c993ffbe310616d921a177c10a86f93fb"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T220437.437942Z_a485e7d61812_202609056",
+      "seed": 202609056,
+      "radius": 1,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "a485e7d61812",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "3852f391c971d317b02a6588ea7861623e3445d11471113e7edaba94eef51d31"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T220437.438014Z_23dce9fb1902_202609057",
+      "seed": 202609057,
+      "radius": 1,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "23dce9fb1902",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "6b97a7d9fe740958667f66b3791eaebb71d1848ecddb572f14e1a1b2d6477c0c"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T220437.437907Z_fb191220da9c_202609058",
+      "seed": 202609058,
+      "radius": 1,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "fb191220da9c",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "b2c221e05483e4d7368d84d6b22850cff8a759e9e01dd973ccd2b15c7f07d9a1"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T220437.438016Z_8a69dd5360d2_202609059",
+      "seed": 202609059,
+      "radius": 1,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "8a69dd5360d2",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "4710fe233fef9664f9b4f5a549c5955d1229b5d246456a1250c823f4f80bb74e"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T221351.935934Z_c36f26965901_202609050",
+      "seed": 202609050,
+      "radius": 8,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "c36f26965901",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "995fc42f6d13d42cbfada6ea6254182bb19093089d2fd5c29f6cc7e0447a73c3"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T221351.935873Z_a185c4295f98_202609051",
+      "seed": 202609051,
+      "radius": 8,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "a185c4295f98",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "821d692ddd6a473aaba6bc658c2b0188c46897e77c48963f176b46d30e28bf00"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T221351.935955Z_528e9571c273_202609052",
+      "seed": 202609052,
+      "radius": 8,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "528e9571c273",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "1e9b53e8bcff5767a9a3c1ea6dcbfb421f888a7bf1547a9a4f1ebacd9a079a74"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T221351.935938Z_b9bec3b130e7_202609053",
+      "seed": 202609053,
+      "radius": 8,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "b9bec3b130e7",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "487324cc816d302473d41aa833712588f5c9a44dfbad321fdd8263cd7180a353"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T221351.935973Z_b61d42ed708d_202609054",
+      "seed": 202609054,
+      "radius": 8,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "b61d42ed708d",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "0a8ea89d48064f9dd567e4d7673d7e03c4b5cd657a882cdf74966b65436fa646"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T221351.935997Z_e10d9486c420_202609055",
+      "seed": 202609055,
+      "radius": 8,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "e10d9486c420",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "bc5e6e4a5c32e814f91ff65f1ccef8255c8f822ad0e84b8d7db395287fa36f2d"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T221351.935935Z_4fae1ca8f31c_202609056",
+      "seed": 202609056,
+      "radius": 8,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "4fae1ca8f31c",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "36a6630968614d9c98e407d0d3d8f17506761baa3659e1585cfe8e4eda7c3cf5"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T221351.936005Z_ed94a5944f40_202609057",
+      "seed": 202609057,
+      "radius": 8,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "ed94a5944f40",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "6e0569911e3882a47321da15b404863327fb1e4bc78e741578b68fa16a7d0cd1"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T221351.936014Z_b8d203ca4dcb_202609058",
+      "seed": 202609058,
+      "radius": 8,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "b8d203ca4dcb",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "aa32a8e90594f468df749d8b461d9db65b22e9339e4d988ee4696db74741a733"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T221351.936007Z_2d04ee52ac8f_202609059",
+      "seed": 202609059,
+      "radius": 8,
+      "mutation_rate": 6.103515625e-5,
+      "config_hash": "2d04ee52ac8f",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "d65e3d9e1b7f987d9cd28e3097f08769af70536fc879123505d9e1add47c64f9"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T222742.930767Z_d48753826040_202609050",
+      "seed": 202609050,
+      "radius": 8,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "d48753826040",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "ce3098b2d09fb8ac8512746e4454c7f5269fe9e84d6c7f76bf89514e4ca36fab"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T222742.930826Z_1252fe7a1cbc_202609051",
+      "seed": 202609051,
+      "radius": 8,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "1252fe7a1cbc",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "27a3bd433c81e822bf13ab9f16382ec280d01558ecbeba1fdb3a10e0663c36f4"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T222742.930787Z_bd6b7d21008a_202609052",
+      "seed": 202609052,
+      "radius": 8,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "bd6b7d21008a",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "7d0027f8088449f5041f1f4668b5fe517f6b17be5fe1a95bbfe3d727ef91b587"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T222742.930835Z_f2642bed8717_202609053",
+      "seed": 202609053,
+      "radius": 8,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "f2642bed8717",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "09ac4ae7048e3dc8786b7c6f8c8170d63de2dbc30afa4df21eebf01d4ecd718e"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T222742.930752Z_575775291803_202609054",
+      "seed": 202609054,
+      "radius": 8,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "575775291803",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "4dfc048ef3effa587265470d1f70446732ac02a51c0c4f1a02a25a2f6a9d5635"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T222742.930759Z_0599946cb299_202609055",
+      "seed": 202609055,
+      "radius": 8,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "0599946cb299",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "09738361f4d9a7264d99c38ab75693aacf298efdba56d83accde8ec04f9c21cf"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T222742.930783Z_3caeddc46b5e_202609056",
+      "seed": 202609056,
+      "radius": 8,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "3caeddc46b5e",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "833cc4de2c1b675d94bfbb3b329c92dc9016c46f0269487c18e0e67e9a6c2b42"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T222742.930781Z_6054878ee247_202609057",
+      "seed": 202609057,
+      "radius": 8,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "6054878ee247",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "8d196e139d1568bf535b95c3b71b6365e2308c54bf9910a22734c0f65fd919f7"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T222742.930804Z_7aacf3d2c7f1_202609058",
+      "seed": 202609058,
+      "radius": 8,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "7aacf3d2c7f1",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "a28eac2306c17476e8e95e9b8525e4023deae7ff336b66bbfc9f38c96919b75e"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_beta_followup/runs/20260904T222742.930792Z_8b1170b3fefb_202609059",
+      "seed": 202609059,
+      "radius": 8,
+      "mutation_rate": 0.000244140625,
+      "config_hash": "8b1170b3fefb",
+      "exit_status": "success",
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "8084c04dd6aaecf8c34b85c988314339046a5d81725a7557f2bc5dd82d3e39d9"
+    }
+  ]
+}
