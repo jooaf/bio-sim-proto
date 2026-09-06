@@ -1,0 +1,10 @@
+[sweep]
+name = "stage3r_reproduction_liveness"
+base_config = "stage3r_reproduction_liveness.toml"
+n_seeds = 3
+start_seed = 202609090
+processes = 12
+output_dir = "sweeps"
+
+[parameters]
+"reproduction.rate" = [0.000005, 0.00001, 0.00002, 0.00005]

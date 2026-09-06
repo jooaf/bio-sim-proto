@@ -5,6 +5,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from experiments.analyze_stage3r_reproduction_liveness import lineage_depth
 from soup.config import Config, PairingMode
 from soup.ledgers import SymbolPool
 from soup.logging.invariants import check_stage2
@@ -12,6 +13,17 @@ from soup.reproduction import reproduce_tapes
 from soup.simulation import Simulation
 from soup.substrate.bff import BFFSubstrate
 from soup.world import SpatialWorld
+
+
+def test_lineage_depth_follows_transitive_single_parent_births() -> None:
+    lineage = pd.DataFrame(
+        {
+            "tape_id": [0, 1, 2, 3],
+            "progenitor_ids": [[], [0], [1], [2]],
+        }
+    )
+
+    assert lineage_depth(lineage) == 3
 
 
 def test_copy_birth_is_local_pool_funded_and_conserved() -> None:
