@@ -4,6 +4,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import pytest
 
 from experiments.analyze_stage3r_lineage_patch import parent_map, root_map
 from experiments.analyze_stage3r_reproduction_liveness import lineage_depth
@@ -75,6 +76,16 @@ def test_copy_birth_is_local_pool_funded_and_conserved() -> None:
         child_index = world.index(*birth.child_cell)
         assert np.array_equal(world.tapes[child_index], birth.tape)
     check_stage2(world, pool, substrate.tape_length)
+
+
+def test_stage3r_rejects_unimplemented_energy_ledger() -> None:
+    config = Config()
+    config.run.stage = 3
+    config.world.pairing_mode = PairingMode.LOCAL_NEIGHBORHOOD.value
+    config.energy.enabled = True
+
+    with pytest.raises(ValueError, match="energy-ledger Stage 3 is not implemented"):
+        config.validate()
 
 
 def test_stage3r_scheduler_logs_parent_child_lineage(tmp_path: Path) -> None:

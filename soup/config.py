@@ -299,6 +299,10 @@ class Config:
             raise ValueError("substrate.name must be 'bff' or 'ski'")
         if self.run.stage == 0 and self.substrate.name != "bff":
             raise ValueError("Stage 0 implements only the BFF substrate; SKI requires Stage 1 conservation")
+        if self.run.stage == 3 and self.energy.enabled:
+            raise ValueError(
+                "experimental Stage 3R implements reproduction only; the energy-ledger Stage 3 is not implemented"
+            )
         if self.substrate.separate_tapes:
             raise ValueError("separate_tapes is exposed but is not implemented in Stage 0")
         if self.logging.compression not in {"zstd", "snappy", "none"}:

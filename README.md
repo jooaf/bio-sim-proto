@@ -2,7 +2,7 @@
 
 A staged research simulator for self-modifying program evolution without an external fitness function.
 
-The repository implements **Stages 0 and 1** and an initial **Stage 2 spatial scaffold**. Stages 0/1 provide a deterministic flat BFF tape soup with paper-style shuffled disjoint pairs, optional background mutation, raw Parquet logging, and offline analysis. Stage 1 adds an exactly conserved global byte pool that mediates every BFF and mutation write. The Stage 2 scaffold adds a toroidal occupancy lattice, local interactions, neutral dissolution, pool-funded random placement, spatial invariants, and permutation-based spatial analyses. Energy, signals, and task bias remain intentionally inactive.
+The repository implements **Stages 0 and 1**, the **Stage 2 spatial system**, and an experimental **Stage 3R reproduction prototype**. Stages 0/1 provide a deterministic flat BFF tape soup with paper-style shuffled disjoint pairs, optional background mutation, raw Parquet logging, and offline analysis. Stage 1 adds an exactly conserved global byte pool that mediates every BFF and mutation write. Stage 2 adds a toroidal occupancy lattice, local interactions, neutral dissolution, pool-funded random placement, spatial invariants, and permutation-based spatial analyses. Stage 3R adds neutral pool-funded copy birth and explicit one-parent lineage while keeping energy, signals, and task bias inactive; it is not the roadmap's energy-ledger Stage 3 gate.
 
 ## Setup
 
@@ -58,6 +58,12 @@ uv run python -m experiments.benchmark_stage2
 ```
 
 The 64×64 measurement projects roughly 64 hours for 500,000 ticks under aggregate logging. This is a projection, not a completed Stage 2 acceptance run.
+
+## Experimental Stage 3R reproduction
+
+Stage 3R schedules neutral exact-copy birth after dissolution and before random reseeding. Every child tape is atomically funded from the conserved symbol pool, placed in a configured local neighborhood, assigned a new tape ID, and logged with one parent. Stages 0–2 force reproduction off. Stage 3R rejects `energy.enabled = true` because the planned energy-ledger Stage 3 is not implemented.
+
+The mechanism is a positive-control model for lineage and spatial-placement studies, not endogenous BFF self-replication. See `reports/stage3r_conserved_reproduction_design.md`, `reports/stage3r_reproduction_liveness_report.md`, and `reports/stage3r_lineage_patch_report.md`.
 
 ## Interactive Stage 0 viewer
 

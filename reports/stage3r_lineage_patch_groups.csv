@@ -1,0 +1,3 @@
+placement_radius,runs,feasible,median_births,median_depth,median_occupancy,mean_family_excess,significant_family,mean_root_excess,mean_descendant_fraction,mean_family_q1,mean_opcode_js_excess,pool_blocks,space_blocks,conserved,invariant_failures
+1,10,10,127.0,2.5,0.8505556640625,0.03589684646119074,10,0.03861658430881371,0.13410194494425762,15.961179030476988,0.008428135414895566,0,448,True,0
+8,10,10,173.0,3.0,0.89924267578125,0.0032970498941352977,2,0.0011940018604042293,0.17770711115645035,15.957981118691649,0.006557013138666456,0,0,True,0
