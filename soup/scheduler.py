@@ -20,6 +20,7 @@ from soup.logging.invariants import (
 )
 from soup.logging.writer import RunWriter
 from soup.placement import PlacementFact, PlacementResult, place_random_tapes
+from soup.reproduction import ReproductionFact, ReproductionResult, reproduce_tapes
 from soup.substrate.base import ExecutionBudget, Substrate
 from soup.world import FlatWorld, SpatialWorld, World
 
@@ -29,8 +30,9 @@ class Scheduler:
 
     Stages 0/1 execute interactions, age tapes, check invariants, and log.
     Stage 2 executes local interactions, ages tapes, dissolves candidates,
-    attempts pool-funded placement, checks invariants, and then logs. Energy,
-    environment, and starvation remain absent until Stage 3.
+    attempts pool-funded placement, checks invariants, and then logs. Experimental
+    Stage 3R inserts neutral pool-funded copy birth before random placement. Energy,
+    environment, and starvation remain absent from the 3R prototype.
     """
 
     def __init__(
@@ -50,7 +52,9 @@ class Scheduler:
         self.writer = writer
         self.pool = pool
         self._abundance_events: set[str] = set()
-        self._birth_records: dict[int, tuple[int, tuple[int, int] | None, str]] = {}
+        self._birth_records: dict[
+            int, tuple[int, tuple[int, int] | None, str, tuple[int, ...]]
+        ] = {}
         for index_value in world.occupied_indices():
             index = int(index_value)
             tape_id = int(world.tape_ids[index])
@@ -58,6 +62,7 @@ class Scheduler:
                 0,
                 world.cell(index),
                 writer.hash_tape(world.tapes[index]),
+                (),
             )
         self.budget = ExecutionBudget(max_steps=config.substrate.max_steps)
 
@@ -92,6 +97,7 @@ class Scheduler:
         """Advance one tick and return interaction facts for optional views."""
 
         dissolutions: list[DissolutionFact] = []
+        reproductions = ReproductionResult(0, 0, 0, ())
         placements = PlacementResult(0, 0, ())
         if isinstance(self.world, SpatialWorld):
             if self.pool is None:
@@ -117,6 +123,16 @@ class Scheduler:
                 rng=self.rng,
                 tick=tick,
             )
+            if self.config.reproduction.enabled:
+                reproductions = reproduce_tapes(
+                    world=self.world,
+                    pool=self.pool,
+                    rng=self.rng,
+                    tick=tick,
+                    rate=self.config.reproduction.rate,
+                    placement_radius=self.config.reproduction.placement_radius,
+                    max_births_per_tick=self.config.reproduction.max_births_per_tick,
+                )
             placements = place_random_tapes(
                 world=self.world,
                 substrate=self.substrate,
@@ -125,7 +141,7 @@ class Scheduler:
                 tick=tick,
                 reseed_rate=self.config.world.reseed_rate,
             )
-            self._write_lifecycle(tick, dissolutions, placements)
+            self._write_lifecycle(tick, dissolutions, reproductions, placements)
         else:
             facts = run_interaction_round(
                 world=self.world,
@@ -167,12 +183,13 @@ class Scheduler:
         self,
         tick: int,
         dissolutions: list[DissolutionFact],
+        reproduction_result: ReproductionResult,
         placement_result: PlacementResult,
     ) -> None:
         for death in dissolutions:
-            born_tick, birth_cell, birth_hash = self._birth_records.pop(
+            born_tick, birth_cell, birth_hash, progenitor_ids = self._birth_records.pop(
                 death.tape_id,
-                (death.born_tick, death.cell, ""),
+                (death.born_tick, death.cell, "", ()),
             )
             death_hash = self.writer.hash_tape(death.tape)
             self.writer.append(
@@ -183,7 +200,7 @@ class Scheduler:
                     "died_tick": death.died_tick,
                     "birth_cell": birth_cell,
                     "death_cause": death.cause,
-                    "progenitor_ids": [],
+                    "progenitor_ids": list(progenitor_ids),
                     "content_hash_at_birth": birth_hash,
                 },
             )
@@ -194,9 +211,15 @@ class Scheduler:
                 content_hash=death_hash,
                 details={"cell": list(death.cell), "cause": death.cause},
             )
+        self._write_reproduction(tick, reproduction_result)
         for birth in placement_result.placements:
             birth_hash = self.writer.hash_tape(birth.tape)
-            self._birth_records[birth.tape_id] = (birth.born_tick, birth.cell, birth_hash)
+            self._birth_records[birth.tape_id] = (
+                birth.born_tick,
+                birth.cell,
+                birth_hash,
+                (),
+            )
             self.writer.append(
                 "lineage",
                 {
@@ -225,6 +248,57 @@ class Scheduler:
                     "blocked": placement_result.blocked,
                 },
             )
+
+    def _write_reproduction(
+        self, tick: int, reproduction_result: ReproductionResult
+    ) -> None:
+        for birth in reproduction_result.births:
+            self._write_reproductive_birth(birth)
+        if reproduction_result.blocked_no_space:
+            self.writer.append_event(
+                tick=tick,
+                event_type="reproduction_blocked_no_space",
+                details={"count": reproduction_result.blocked_no_space},
+            )
+        if reproduction_result.blocked_pool:
+            self.writer.append_event(
+                tick=tick,
+                event_type="reproduction_blocked_pool",
+                details={"count": reproduction_result.blocked_pool},
+            )
+
+    def _write_reproductive_birth(self, birth: ReproductionFact) -> None:
+        birth_hash = self.writer.hash_tape(birth.tape)
+        progenitors = (birth.parent_id,)
+        self._birth_records[birth.child_id] = (
+            birth.born_tick,
+            birth.child_cell,
+            birth_hash,
+            progenitors,
+        )
+        self.writer.append(
+            "lineage",
+            {
+                "tape_id": birth.child_id,
+                "born_tick": birth.born_tick,
+                "died_tick": None,
+                "birth_cell": birth.child_cell,
+                "death_cause": None,
+                "progenitor_ids": list(progenitors),
+                "content_hash_at_birth": birth_hash,
+            },
+        )
+        self.writer.append_event(
+            tick=birth.born_tick,
+            event_type="offspring_born",
+            tape_id=birth.child_id,
+            content_hash=birth_hash,
+            details={
+                "parent_id": birth.parent_id,
+                "parent_cell": list(birth.parent_cell),
+                "child_cell": list(birth.child_cell),
+            },
+        )
 
     def _write_interactions(self, facts: list[InteractionFact]) -> None:
         if "interactions" not in self.config.logging.tick_tables:

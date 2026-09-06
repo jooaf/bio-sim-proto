@@ -140,6 +140,26 @@ class DissolutionConfig:
 
 
 @dataclass(slots=True)
+class ReproductionConfig:
+    enabled: bool = field(
+        default=False,
+        metadata=knob("Enable neutral pool-funded copy birth.", "Stage 3R+"),
+    )
+    rate: float = field(
+        default=0.0,
+        metadata=knob("Independent birth-attempt probability per live tape per tick.", "0..1"),
+    )
+    placement_radius: int = field(
+        default=1,
+        metadata=knob("Moore radius for offspring placement.", "1..64"),
+    )
+    max_births_per_tick: int = field(
+        default=1,
+        metadata=knob("Maximum successful offspring placements per tick.", "1..10^6"),
+    )
+
+
+@dataclass(slots=True)
 class EnvironmentConfig:
     influx_spec: str = field(default="uniform", metadata=knob("Composable energy-influx field specification.", "uniform|gradient|patches|perlin|sum"))
     correlation_length: float = field(default=8.0, metadata=knob("Spatial field correlation length in cells.", ">0"))
@@ -198,6 +218,7 @@ class Config:
     symbols: SymbolsConfig = field(default_factory=SymbolsConfig)
     energy: EnergyConfig = field(default_factory=EnergyConfig)
     dissolution: DissolutionConfig = field(default_factory=DissolutionConfig)
+    reproduction: ReproductionConfig = field(default_factory=ReproductionConfig)
     environment: EnvironmentConfig = field(default_factory=EnvironmentConfig)
     signals: SignalsConfig = field(default_factory=SignalsConfig)
     task: TaskConfig = field(default_factory=TaskConfig)
@@ -224,6 +245,8 @@ class Config:
             ("world.interactions_per_tick", self.world.interactions_per_tick),
             ("dissolution.inert_ticks", self.dissolution.inert_ticks),
             ("dissolution.starved_ticks", self.dissolution.starved_ticks),
+            ("reproduction.placement_radius", self.reproduction.placement_radius),
+            ("reproduction.max_births_per_tick", self.reproduction.max_births_per_tick),
             ("logging.flush_interval", self.logging.flush_interval),
             ("logging.tape_snapshot_interval", self.logging.tape_snapshot_interval),
             ("viz.cell_px", self.viz.cell_px),
@@ -262,6 +285,7 @@ class Config:
             ("symbols.initial_tape_fill", self.symbols.initial_tape_fill),
             ("energy.decay", self.energy.decay),
             ("dissolution.spontaneous_rate", self.dissolution.spontaneous_rate),
+            ("reproduction.rate", self.reproduction.rate),
             ("logging.interaction_log_rate", self.logging.interaction_log_rate),
         )
         for rate_name, rate_value in rates:
@@ -299,6 +323,9 @@ class Config:
         if self.run.stage < 2:
             gated.append(("dissolution.enabled", self.dissolution.enabled))
             self.dissolution.enabled = False
+        if self.run.stage < 3:
+            gated.append(("reproduction.enabled", self.reproduction.enabled))
+            self.reproduction.enabled = False
         if self.run.stage < 4:
             gated.extend((("signals.enabled", self.signals.enabled), ("task.enabled", self.task.enabled)))
             self.signals.enabled = False
@@ -349,6 +376,7 @@ class Config:
             symbols=section("symbols", SymbolsConfig),
             energy=section("energy", EnergyConfig),
             dissolution=section("dissolution", DissolutionConfig),
+            reproduction=section("reproduction", ReproductionConfig),
             environment=section("environment", EnvironmentConfig),
             signals=section("signals", SignalsConfig),
             task=section("task", TaskConfig),
