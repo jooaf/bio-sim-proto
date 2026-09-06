@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "source_commit": "b2797961bf672b55040691dac35d0f6b36dc97fe",
+  "preregistration_commit": "b279796",
+  "batch_started_at": "2026-09-05T02:10:11.257068-05:00",
+  "batch_finished_at": "2026-09-05T14:53:59.289217-05:00",
+  "batch_exit_code": 0,
+  "index_path": "sweeps/phase2_opcode_js_temporal/index.parquet",
+  "index_sha256": "6992f3797c3873296f79e585e17047148a9f2a965c8a9eadac66cc563c984709",
+  "sweep_spec_sha256": "b4950ad2b28cb0081c29c59563605047697149dbfe0391b4f4a37db006913219",
+  "base_config_sha256": "9f2f3294ff50858c6c28ac78506182e2f4d2972875886a954acfdac5bb91d1ad",
+  "raw_apparent_bytes": 653471650,
+  "runs": [
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T071012.050701Z_fcf61fbf0737_202609070",
+      "seed": 202609070,
+      "radius": 1,
+      "config_hash": "fcf61fbf0737",
+      "exit_status": "success",
+      "wall_time_seconds": 8149.584821040742,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "93af1f386378809c2208c2dbef307ebbdaeab3202447ca7cee2ece7abffaa875"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T071012.051878Z_30ba0ddc3f60_202609071",
+      "seed": 202609071,
+      "radius": 1,
+      "config_hash": "30ba0ddc3f60",
+      "exit_status": "success",
+      "wall_time_seconds": 7979.652826124802,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "a5e633fc2810238876ecad51d1bf6911a18a3d534652aac466ed4169b4f4b411"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T071012.052240Z_195c07e965d9_202609072",
+      "seed": 202609072,
+      "radius": 1,
+      "config_hash": "195c07e965d9",
+      "exit_status": "success",
+      "wall_time_seconds": 8180.422377499752,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "a367c67456eb9a73beb28ad287c3ccff39daf987e5dc51fd3ec9deb3b9eb933f"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T071012.057893Z_a7bf164362e7_202609073",
+      "seed": 202609073,
+      "radius": 1,
+      "config_hash": "a7bf164362e7",
+      "exit_status": "success",
+      "wall_time_seconds": 8067.599884459283,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "47c037a513caffa601461464d28fa32e5864018a3fde20500236dc6ff54bd109"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T071012.058037Z_9b27cace67f4_202609074",
+      "seed": 202609074,
+      "radius": 1,
+      "config_hash": "9b27cace67f4",
+      "exit_status": "success",
+      "wall_time_seconds": 8193.625647542067,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "450cf7564514be57d159d67cc184a646def4dec403a3649e13489a08a1421e4d"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T071012.060222Z_d7a3df65096c_202609075",
+      "seed": 202609075,
+      "radius": 1,
+      "config_hash": "d7a3df65096c",
+      "exit_status": "success",
+      "wall_time_seconds": 8138.844704540912,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "4cd37e495cdd796df88ef9624a0ec9306fc83fdbebc69e412ed048a6b495420f"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T071012.060712Z_ae16767a3c06_202609076",
+      "seed": 202609076,
+      "radius": 1,
+      "config_hash": "ae16767a3c06",
+      "exit_status": "success",
+      "wall_time_seconds": 8204.000025584362,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "7b003be3148c7bf77e5e849eb2cefea6e3efabdb3568b7d5a01abb2e7b884703"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T071012.063698Z_09412417613e_202609077",
+      "seed": 202609077,
+      "radius": 1,
+      "config_hash": "09412417613e",
+      "exit_status": "success",
+      "wall_time_seconds": 7744.1059721671045,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "fa2b986899e2e693f17dce512d2aac2ec5a1e6f75c0c3ed95d8921c3818da287"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T071012.063911Z_2fc5a36206e2_202609078",
+      "seed": 202609078,
+      "radius": 1,
+      "config_hash": "2fc5a36206e2",
+      "exit_status": "success",
+      "wall_time_seconds": 8201.047806167044,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "c4ad5da0b78213e26790b539c7c3029c5cc18385960a6835b94305a06130233a"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T071012.064871Z_94e027f2582c_202609079",
+      "seed": 202609079,
+      "radius": 1,
+      "config_hash": "94e027f2582c",
+      "exit_status": "success",
+      "wall_time_seconds": 8266.531904750038,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "c744a957399440932c6c589ab73e91fcb9ceeb61413242cd71d0064fd595f01d"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T164009.857017Z_12bf232a9832_202609070",
+      "seed": 202609070,
+      "radius": 8,
+      "config_hash": "12bf232a9832",
+      "exit_status": "success",
+      "wall_time_seconds": 6730.089122417383,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "ec738a35eeeac2d42fffef59e17a70671c4722ff0f747001e060d09d53b82206"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T164009.856991Z_ecc30c19bee8_202609071",
+      "seed": 202609071,
+      "radius": 8,
+      "config_hash": "ecc30c19bee8",
+      "exit_status": "success",
+      "wall_time_seconds": 5436.750453209039,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "b673ea56b8cec1537bb905ce7a0be9c247680c784bb09daa1c6c5c5615e2b4ae"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T164009.857008Z_0f54069a124f_202609072",
+      "seed": 202609072,
+      "radius": 8,
+      "config_hash": "0f54069a124f",
+      "exit_status": "success",
+      "wall_time_seconds": 6012.400895541068,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "fde7635e473784fac99b9afae0d702bab9ac001c619166d6fa4879eecaa157df"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T164009.856994Z_924f9b565091_202609073",
+      "seed": 202609073,
+      "radius": 8,
+      "config_hash": "924f9b565091",
+      "exit_status": "success",
+      "wall_time_seconds": 6060.13452587463,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "088dd7b7fdd7b81d18d4e2b0225a82cac44257dce254653c943744ea342640ec"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T164009.857014Z_6c69b6159f3b_202609074",
+      "seed": 202609074,
+      "radius": 8,
+      "config_hash": "6c69b6159f3b",
+      "exit_status": "success",
+      "wall_time_seconds": 6007.071714375168,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "404de647de6e1d16512f4808363eedc8635bfad7d2955089d01e6d8680052631"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T164009.856992Z_2a73646b83f0_202609075",
+      "seed": 202609075,
+      "radius": 8,
+      "config_hash": "2a73646b83f0",
+      "exit_status": "success",
+      "wall_time_seconds": 6249.074647125322,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "09f0b1adb54fa6e70b60531d253f42cc3b0a74e7276689428307741d9b7a2636"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T164009.857014Z_602775c0ab74_202609076",
+      "seed": 202609076,
+      "radius": 8,
+      "config_hash": "602775c0ab74",
+      "exit_status": "success",
+      "wall_time_seconds": 6012.907471791841,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "5b8ba40064050abd031c8b52e37e89fd12be57a7a14e5bb7f0b29a18cb539eaf"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T164009.857005Z_aadd336b389b_202609077",
+      "seed": 202609077,
+      "radius": 8,
+      "config_hash": "aadd336b389b",
+      "exit_status": "success",
+      "wall_time_seconds": 6322.846233749762,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "f46a9530c86863c3faa2a05ec5546db599305d7a3fae00a54a873e21155c9f18"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T164009.856999Z_b95bee38f9c3_202609078",
+      "seed": 202609078,
+      "radius": 8,
+      "config_hash": "b95bee38f9c3",
+      "exit_status": "success",
+      "wall_time_seconds": 5659.93313658284,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "77a4ed85441f041158b301a7f436dec1b9411d20fbe5a22fc20649fe65152983"
+    },
+    {
+      "run_dir": "sweeps/phase2_opcode_js_temporal/runs/20260905T164009.857003Z_56aa6eb35cf5_202609079",
+      "seed": 202609079,
+      "radius": 8,
+      "config_hash": "56aa6eb35cf5",
+      "exit_status": "success",
+      "wall_time_seconds": 5902.3235940001905,
+      "invariant_log_bytes": 0,
+      "manifest_sha256": "ab3ca550c7c8a7a345885ad411257b7783f1c1f4e26adf00503017bfce6cd39e"
+    }
+  ]
+}
