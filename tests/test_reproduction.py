@@ -5,6 +5,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from experiments.analyze_stage3r_lineage_patch import parent_map, root_map
 from experiments.analyze_stage3r_reproduction_liveness import lineage_depth
 from soup.config import Config, PairingMode
 from soup.ledgers import SymbolPool
@@ -24,6 +25,20 @@ def test_lineage_depth_follows_transitive_single_parent_births() -> None:
     )
 
     assert lineage_depth(lineage) == 3
+
+
+def test_transitive_root_map_handles_reproductive_and_random_roots() -> None:
+    lineage = pd.DataFrame(
+        {
+            "tape_id": [2, 4, 8, 9],
+            "progenitor_ids": [[], [2], [4], []],
+        }
+    )
+
+    parents = parent_map(lineage)
+
+    assert parents == {4: 2, 8: 4}
+    assert root_map(parents, [2, 4, 8, 9]) == {2: 2, 4: 2, 8: 2, 9: 9}
 
 
 def test_copy_birth_is_local_pool_funded_and_conserved() -> None:

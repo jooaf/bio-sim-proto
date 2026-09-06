@@ -1,0 +1,93 @@
+[run]
+seed = 202609100
+n_ticks = 10000
+epoch_length = 100
+stage = 3
+debug_invariants = false
+invariant_check_interval = 100
+output_dir = "sweeps/stage3r_lineage_patch/runs"
+
+[substrate]
+name = "bff"
+tape_length = 64
+max_steps = 8192
+head_wrap = true
+pc_wrap = false
+separate_tapes = false
+noop_density = 0.9609375
+
+[world]
+population_size = 256
+width = 32
+height = 32
+interaction_radius = 1
+interactions_per_tick = 512
+pairing_mode = "local_neighborhood"
+mutation_rate = 0.000244140625
+reseed_rate = 0.00001
+
+[symbols]
+pool_multiplier = 16.0
+initial_tape_fill = 0.8
+
+[energy]
+enabled = false
+influx_rate = 1.0
+absorption_rate = 0.1
+tape_capacity = 100.0
+per_instruction = 0.01
+per_write = 0.1
+diffusion = 0.1
+decay = 0.0
+min_to_interact = 0.0
+
+[dissolution]
+enabled = true
+inert_ticks = 10000
+starved_ticks = 100
+max_age = 0
+spontaneous_rate = 0.00001
+
+[reproduction]
+enabled = true
+rate = 0.00002
+placement_radius = 1
+max_births_per_tick = 4
+
+[environment]
+influx_spec = "uniform"
+correlation_length = 8.0
+modulator = "static"
+modulator_period = 100
+modulator_amplitude = 0.0
+
+[signals]
+enabled = false
+tag_length = 4
+tag_stride = 8
+signal_spec = "uniform"
+
+[task]
+enabled = false
+task_bonus = 0.0
+task_spec = "identity"
+switch_cost_energy = 0.0
+
+[logging]
+tick_tables = ["ticks"]
+epoch_tables = ["population", "tapes"]
+tape_snapshot_interval = 1
+full_tape_snapshot_interval = 1000
+interaction_log_rate = 0.0
+flush_interval = 100
+compression = "zstd"
+abundance_event_threshold = 16
+
+[viz]
+enabled = false
+cell_px = 4
+fps_cap = 60
+render_every = 10
+ticks_per_frame = 1
+colour_mode = "content_hash"
+live_tunable = []

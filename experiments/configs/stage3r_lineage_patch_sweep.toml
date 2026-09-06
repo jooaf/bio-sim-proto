@@ -1,0 +1,10 @@
+[sweep]
+name = "stage3r_lineage_patch"
+base_config = "stage3r_lineage_patch.toml"
+n_seeds = 10
+start_seed = 202609100
+processes = 10
+output_dir = "sweeps"
+
+[parameters]
+"reproduction.placement_radius" = [1, 8]
