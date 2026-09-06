@@ -1,0 +1,5 @@
+reproduction_rate,runs,feasible,median_births,median_occupancy,median_pool_blocks,median_space_blocks,median_max_depth,conserved,invariant_failures,eligible,birth_distance,occupancy_distance
+2e-05,3,3,71.0,0.835208984375,0.0,17.0,2.0,True,0,True,4.0,0.08520898437500002
+1e-05,3,2,35.0,0.8062109375,0.0,6.0,2.0,True,0,True,40.0,0.05621093749999995
+5e-05,3,2,139.0,0.8940390625,0.0,73.0,2.0,True,0,True,64.0,0.14403906249999998
+5e-06,3,0,17.0,0.780404296875,0.0,4.0,1.0,True,0,False,58.0,0.030404296875000014
