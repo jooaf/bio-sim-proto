@@ -282,7 +282,7 @@ def bff_opcode_composition_matrix(snapshot: pd.DataFrame) -> NDArray[np.float64]
     return np.column_stack((counts, other)).astype(np.float64) / tapes.shape[1]
 
 
-def _jensen_shannon_similarity(
+def jensen_shannon_similarity(
     left: NDArray[np.float64], right: NDArray[np.float64]
 ) -> NDArray[np.float64]:
     """Return base-2 Jensen–Shannon similarity for aligned probability rows."""
@@ -326,7 +326,7 @@ def neighbor_bff_opcode_js_test(
         )
     observed = float(
         np.mean(
-            _jensen_shannon_similarity(
+            jensen_shannon_similarity(
                 compositions[edges[:, 0]], compositions[edges[:, 1]]
             )
         )
@@ -337,7 +337,7 @@ def neighbor_bff_opcode_js_test(
         permutation = generator.permutation(len(compositions))
         null[index] = float(
             np.mean(
-                _jensen_shannon_similarity(
+                jensen_shannon_similarity(
                     compositions[permutation[edges[:, 0]]],
                     compositions[permutation[edges[:, 1]]],
                 )
@@ -383,7 +383,7 @@ def pooled_neighbor_bff_opcode_js_test(
         np.mean(
             [
                 np.mean(
-                    _jensen_shannon_similarity(
+                    jensen_shannon_similarity(
                         compositions[edges[:, 0]], compositions[edges[:, 1]]
                     )
                 )
@@ -400,7 +400,7 @@ def pooled_neighbor_bff_opcode_js_test(
             values.append(
                 float(
                     np.mean(
-                        _jensen_shannon_similarity(
+                        jensen_shannon_similarity(
                             compositions[permutation[edges[:, 0]]],
                             compositions[permutation[edges[:, 1]]],
                         )

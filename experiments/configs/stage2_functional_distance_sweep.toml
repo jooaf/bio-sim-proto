@@ -1,0 +1,10 @@
+[sweep]
+name = "phase2_functional_distance"
+base_config = "stage2_functional_distance.toml"
+n_seeds = 10
+start_seed = 202609080
+processes = 10
+output_dir = "sweeps"
+
+[parameters]
+"world.interaction_radius" = [1, 8]
