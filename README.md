@@ -2,7 +2,7 @@
 
 A staged research simulator for self-modifying program evolution without an external fitness function.
 
-The repository implements **Stages 0 and 1**, the **Stage 2 spatial system**, and an experimental **Stage 3R reproduction prototype**. Stages 0/1 provide a deterministic flat BFF tape soup with paper-style shuffled disjoint pairs, optional background mutation, raw Parquet logging, and offline analysis. Stage 1 adds an exactly conserved global byte pool that mediates every BFF and mutation write. Stage 2 adds a toroidal occupancy lattice, local interactions, neutral dissolution, pool-funded random placement, spatial invariants, and permutation-based spatial analyses. Stage 3R adds neutral pool-funded copy birth and explicit one-parent lineage while keeping energy, signals, and task bias inactive; it is not the roadmap's energy-ledger Stage 3 gate.
+The repository implements **Stages 0 and 1**, the **Stage 2 spatial system**, and experimental **Stage 3 reproduction and energy mechanics**. Stages 0/1 provide a deterministic flat BFF tape soup with paper-style shuffled disjoint pairs, optional background mutation, raw Parquet logging, and offline analysis. Stage 1 adds an exactly conserved global byte pool that mediates every BFF and mutation write. Stage 2 adds a toroidal occupancy lattice, local interactions, neutral dissolution, pool-funded random placement, spatial invariants, and permutation-based spatial analyses. Stage 3 adds pool-funded scheduled copy birth, explicit one-parent lineage, and an optional spatial energy-flow ledger. Signals and task bias remain inactive.
 
 ## Setup
 
@@ -47,7 +47,7 @@ The exact-conservation Phase 1 probe (`experiments/phase1_probe.py`) additionall
 
 ## Stage 2 spatial scaffold
 
-Stage 2 uses explicit sparse occupancy on a toroidal lattice. Ordered interactions are local to a Moore neighborhood, dissolution returns every tape byte to the conserved pool, and exogenous random placement succeeds only when the pool can atomically supply a complete tape. Starvation dissolution is disabled until the Stage 3 energy ledger exists.
+Stage 2 uses explicit sparse occupancy on a toroidal lattice. Ordered interactions are local to a Moore neighborhood, dissolution returns every tape byte to the conserved pool, and exogenous random placement succeeds only when the pool can atomically supply a complete tape. Energy and starvation remain disabled in Stage 2.
 
 The clarified gate requires both free space and liveness, so an extinct empty world cannot pass. Spatial structure is measured with categorical neighbor-identity excess and block Hill beta diversity against seeded label-permutation nulls. See `reports/phase2_preregistration.md` for fixed semantics and `reports/phase1_closeout_and_phase2_handoff.md` for readiness and benchmark results.
 
@@ -59,11 +59,13 @@ uv run python -m experiments.benchmark_stage2
 
 The 64×64 measurement projects roughly 64 hours for 500,000 ticks under aggregate logging. This is a projection, not a completed Stage 2 acceptance run.
 
-## Experimental Stage 3R reproduction
+## Experimental Stage 3 reproduction and energy
 
-Stage 3R schedules neutral exact-copy birth after dissolution and before random reseeding. Every child tape is atomically funded from the conserved symbol pool, placed in a configured local neighborhood, assigned a new tape ID, and logged with one parent. Stages 0–2 force reproduction off. Stage 3R rejects `energy.enabled = true` because the planned energy-ledger Stage 3 is not implemented.
+Stage 3 can schedule exact-copy birth after dissolution and before random reseeding. Every child is atomically funded from the conserved symbol pool, placed by either parent-first or vacancy-first local sampling, assigned a new tape ID, and logged with one parent. A fixed stop tick supports switch-off experiments. Stages 0–2 force reproduction off.
 
-The mechanism is a positive-control model for lineage and spatial-placement studies, not endogenous BFF self-replication. See `reports/stage3r_conserved_reproduction_design.md`, `reports/stage3r_reproduction_liveness_report.md`, and `reports/stage3r_lineage_patch_report.md`.
+An optional BFF energy ledger adds uniform field influx, conservative toroidal diffusion, field decay, local absorption, instruction/write expenditure, starvation, death dissipation, and atomic parent-funded birth costs. The invariant checks `field + tapes + dissipation = initial energy + influx` while retaining exact per-byte matter conservation.
+
+The byte-exact execution-gated birth pilot produced zero triggers and remains a NO-GO, so implemented birth is still an exogenous mechanism control rather than endogenous self-replication. See `reports/stage3_causal_reproduction_energy_design.md`, `reports/stage3_vacancy_lineage_decision.md`, `reports/stage3_energy_liveness_decision.md`, and `reports/stage3_energy_birth_decision.md`.
 
 ## Interactive Stage 0 viewer
 

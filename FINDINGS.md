@@ -158,3 +158,17 @@ The custom Spearman helper was corrected. Its incomplete-beta symmetry exponents
 Phase 2 semantics are preregistered in `reports/phase2_preregistration.md`. The scaffold now has a toroidal sparse lattice, local pairing, neutral dissolution, atomically pool-funded random placement, occupancy/conservation invariants, lifecycle logging, a Stage 2 report, neighbor-identity permutation analysis, and block beta diversity. Starvation dissolution is disabled until Stage 3 energy exists, and the anti-clogging gate now also requires liveness so extinction cannot pass.
 
 The 500,000-tick benchmark projects 17.61 hours for 32x32 and 64.12 hours for 64x64 under aggregate logging; all measured cases had zero invariant failures. These are projections, not completed acceptance runs. Full details: `reports/phase1_closeout_and_phase2_handoff.md` and `reports/stage2_benchmark.md`. organism-sim transfer guidance is in `organism-sim/PHASE1_FINDINGS_TRANSFER.md`.
+## 2026-09-07 — Stage 3 causal reproduction and energy
+
+Stage 3 now supports scheduled conserved copy birth with parent-first or vacancy-first placement, a fixed switch-off tick, byte-exact execution-copy triggers, and an optional explicit spatial energy ledger. Stages 0–2 retain identical six-table trajectories when these mechanisms are disabled. The energy ledger tracks uniform influx, conservative diffusion, local absorption, execution costs, decay, starvation, death dissipation, and atomic birth expenditure; matter remains exactly conserved per byte.
+
+Frozen outcomes:
+
+- **Vacancy opportunity control — PASS.** Radius 1 and radius 8 each had median 78 births, zero no-parent/pool blocks, and 6/6 feasible runs.
+- **Execution-gated exact-copy birth — NO-GO.** Three 10,000-tick runs produced zero byte-exact triggers and zero births. The criterion was not weakened.
+- **Vacancy-controlled lineage clustering — PASS.** Mean local-minus-wide neutral-family neighbor excess was +0.045032, 95% interval [+0.041877,+0.047977], exact p=0.000977, positive in 10/10 pairs, with exactly matched per-seed births and zero opportunity blocks.
+- **Energy mechanics — PASS at influx 1024.** Three of three runs passed; maximum relative balance error was 1.721e-11. Lower influxes failed only the frozen dissipation-fraction criterion and were not rescued.
+- **Energy-funded scheduled birth — PASS.** A cost of 5 reduced births by a mean 43.9 versus cost 0, 95% interval [38.598,48.900], exact p=0.000977, positive in 10/10 pairs; all 20 runs were matter/energy clean.
+- **Lineage switch-off persistence — integrated NO-GO.** Stopped-arm patches remained strong for 9,900 ticks (mean final excess +0.045945, p=0.000977, retention 0.999), but continued birth clogged the lattice: median occupancy 0.971 and only 1/10 controls met the frozen occupancy ceiling.
+
+These results establish local inheritance and energetic constraint in scheduled-birth controls. They do not establish endogenous reproduction, trophic organization, self-maintenance, or organisms. Organizational-closure analysis remains gated on explicit advanced-algorithm review.
