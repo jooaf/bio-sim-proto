@@ -15,6 +15,7 @@ from soup.config import (
     PairingMode,
     ReproductionTrigger,
 )
+from soup.energy import EnergyLedger
 from soup.ledgers import SymbolPool
 from soup.interactions import ExactCopyTriggerFact, run_local_interaction_round
 from soup.logging.invariants import check_stage2
@@ -143,14 +144,38 @@ def test_exact_copy_mode_rejects_a_scheduled_rate() -> None:
         config.validate()
 
 
-def test_stage3r_rejects_unimplemented_energy_ledger() -> None:
-    config = Config()
-    config.run.stage = 3
-    config.world.pairing_mode = PairingMode.LOCAL_NEIGHBORHOOD.value
-    config.energy.enabled = True
+def test_energy_birth_block_is_atomic() -> None:
+    rng = np.random.default_rng(35)
+    substrate = BFFSubstrate(tape_length=8)
+    world = SpatialWorld.create(
+        width=4,
+        height=4,
+        initial_tape_fill=0.5,
+        substrate=substrate,
+        rng=rng,
+    )
+    pool = SymbolPool.from_tapes(world.occupied_tapes(), 16.0)
+    energy = EnergyLedger.create(world, Config().energy)
+    occupied_before = world.occupied.copy()
+    pool_before = pool.counts.copy()
 
-    with pytest.raises(ValueError, match="energy-ledger Stage 3 is not implemented"):
-        config.validate()
+    result = reproduce_tapes(
+        world=world,
+        pool=pool,
+        rng=rng,
+        tick=1,
+        rate=1.0,
+        placement_radius=1,
+        max_births_per_tick=2,
+        energy=energy,
+        birth_energy_cost=1.0,
+    )
+
+    assert result.births == ()
+    assert result.blocked_energy > 0
+    assert np.array_equal(world.occupied, occupied_before)
+    assert np.array_equal(pool.counts, pool_before)
+    assert energy.accounted_total == 0.0
 
 
 def test_stage3r_scheduler_logs_parent_child_lineage(tmp_path: Path) -> None:

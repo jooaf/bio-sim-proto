@@ -8,7 +8,8 @@ from typing import Callable, Iterator
 import numpy as np
 from numpy.random import Generator
 
-from soup.config import PairingMode
+from soup.config import EnergyConfig, PairingMode
+from soup.energy import EnergyLedger
 from soup.substrate.base import ByteTape, ExecutionBudget, Substrate, WriteMediator, WriteOutcome
 from soup.world import FlatWorld, SpatialWorld, World
 
@@ -277,24 +278,46 @@ def run_local_interaction_round(
     pool: WriteMediator,
     hash_tape: HashTape,
     copy_triggers: list[ExactCopyTriggerFact] | None = None,
+    energy: EnergyLedger | None = None,
+    energy_config: EnergyConfig | None = None,
 ) -> list[InteractionFact]:
     """Execute with-replacement interactions between occupied local neighbors."""
 
     occupied = world.occupied_indices()
     if len(occupied) < 2:
         return []
+    active = occupied
+    if energy is not None:
+        if energy_config is None:
+            raise ValueError("energy_config is required with an energy ledger")
+        active = occupied[
+            energy.tapes[occupied] >= energy_config.min_to_interact
+        ]
+        if len(active) == 0:
+            return []
     facts: list[InteractionFact] = []
     for round_index in range(interactions_per_tick):
-        a_index = int(occupied[int(rng.integers(len(occupied)))])
+        a_index = int(active[int(rng.integers(len(active)))])
+        if (
+            energy is not None
+            and energy_config is not None
+            and energy.tapes[a_index] < energy_config.min_to_interact
+        ):
+            continue
         neighbors = world.neighbor_indices(a_index, interaction_radius)
         if len(neighbors) == 0:
             continue
         b_index = int(neighbors[int(rng.integers(len(neighbors)))])
+        interaction_budget = (
+            budget
+            if energy is None or energy_config is None
+            else energy.execution_budget(a_index, energy_config, budget.max_steps)
+        )
         fact, triggers = _execute_pair(
             world=world,
             substrate=substrate,
             rng=rng,
-            budget=budget,
+            budget=interaction_budget,
             tick=tick,
             round_index=round_index,
             a_index=a_index,
@@ -305,6 +328,8 @@ def run_local_interaction_round(
             detect_exact_copy=copy_triggers is not None,
         )
         facts.append(fact)
+        if energy is not None:
+            energy.spend_execution(a_index, fact.energy_spent)
         if copy_triggers is not None:
             copy_triggers.extend(triggers)
     return facts

@@ -1,0 +1,10 @@
+[sweep]
+name = "stage3_energy_liveness"
+base_config = "stage3_energy_liveness.toml"
+n_seeds = 3
+start_seed = 202609140
+processes = 9
+output_dir = "sweeps"
+
+[parameters]
+"energy.influx_rate" = [64.0, 256.0, 1024.0]

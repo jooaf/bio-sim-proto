@@ -12,6 +12,7 @@ from pathlib import Path
 
 import numpy as np
 
+from soup.energy import EnergyLedger
 from soup.ledgers import SymbolPool
 from soup.world import FlatWorld, SpatialWorld
 
@@ -88,12 +89,59 @@ def check_stage2(world: SpatialWorld, pool: SymbolPool, tape_length: int) -> Non
         raise InvariantViolation("occupied plus free cells does not equal lattice capacity")
 
 
+def check_energy(
+    world: SpatialWorld,
+    energy: EnergyLedger,
+    *,
+    relative_tolerance: float = 1e-10,
+) -> None:
+    """Assert finite, bounded, nonnegative energy and ledger balance."""
+
+    for name, values, dtype in (
+        ("energy field", energy.field, np.float64),
+        ("tape energy", energy.tapes, np.float64),
+        ("starvation timers", energy.starved_ticks, np.int64),
+    ):
+        if values.shape != (world.capacity,) or values.dtype != dtype:
+            raise InvariantViolation(
+                f"{name} must be a {dtype.__name__} capacity vector"
+            )
+    if not np.all(np.isfinite(energy.field)) or not np.all(
+        np.isfinite(energy.tapes)
+    ):
+        raise InvariantViolation("energy arrays must be finite")
+    if np.any(energy.field < -1e-12) or np.any(energy.tapes < -1e-12):
+        raise InvariantViolation("energy balances must be nonnegative")
+    if np.any(energy.tapes > energy.tape_capacity + 1e-12):
+        raise InvariantViolation("tape energy exceeds capacity")
+    if np.any(energy.tapes[~world.occupied] != 0.0):
+        raise InvariantViolation("empty cells must have zero tape energy")
+    if np.any(energy.starved_ticks < 0) or np.any(
+        energy.starved_ticks[~world.occupied] != 0
+    ):
+        raise InvariantViolation("starvation timers are invalid")
+    scalars = (
+        energy.initial_total,
+        energy.influx_cumulative,
+        energy.dissipated_cumulative,
+    )
+    if not all(np.isfinite(value) and value >= 0.0 for value in scalars):
+        raise InvariantViolation("energy ledger scalars must be finite and nonnegative")
+    tolerance = relative_tolerance * max(1.0, energy.expected_total)
+    error = abs(energy.accounted_total - energy.expected_total)
+    if error > tolerance:
+        raise InvariantViolation(
+            f"energy balance error {error} exceeds tolerance {tolerance}"
+        )
+
+
 def dump_violation(
     run_dir: Path,
     tick: int,
     error: BaseException,
     world: FlatWorld | SpatialWorld,
     pool: SymbolPool | None = None,
+    energy: EnergyLedger | None = None,
 ) -> None:
     """Persist a full state dump and append the invariant error before re-raising."""
 
@@ -109,6 +157,18 @@ def dump_violation(
                 inert_ticks=world.inert_ticks,
                 born_ticks=world.born_ticks,
             )
+        elif energy is None:
+            np.savez_compressed(
+                dump_path,
+                tapes=world.tapes,
+                tape_ids=world.tape_ids,
+                ages=world.ages,
+                occupied=world.occupied,
+                inert_ticks=world.inert_ticks,
+                born_ticks=world.born_ticks,
+                pool_counts=pool.counts,
+                conserved_totals=pool.conserved_totals,
+            )
         else:
             np.savez_compressed(
                 dump_path,
@@ -120,6 +180,9 @@ def dump_violation(
                 born_ticks=world.born_ticks,
                 pool_counts=pool.counts,
                 conserved_totals=pool.conserved_totals,
+                energy_field=energy.field,
+                energy_tapes=energy.tapes,
+                energy_starved_ticks=energy.starved_ticks,
             )
     elif pool is None:
         np.savez_compressed(dump_path, tapes=world.tapes, tape_ids=world.tape_ids, ages=world.ages)

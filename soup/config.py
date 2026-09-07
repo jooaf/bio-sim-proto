@@ -183,6 +183,14 @@ class ReproductionConfig:
         default=0,
         metadata=knob("First tick with reproduction disabled; zero never stops.", "0..10^9"),
     )
+    birth_energy_cost: float = field(
+        default=0.0,
+        metadata=knob("Parent energy dissipated by one successful birth.", "0..10^12"),
+    )
+    offspring_energy: float = field(
+        default=0.0,
+        metadata=knob("Parent energy transferred to one newborn.", "0..tape_capacity"),
+    )
 
 
 @dataclass(slots=True)
@@ -287,6 +295,31 @@ class Config:
             raise ValueError("world.population_size must be at least two")
         if self.symbols.pool_multiplier <= 0.0:
             raise ValueError("symbols.pool_multiplier must be positive")
+        nonnegative_energy: tuple[tuple[str, float], ...] = (
+            ("energy.influx_rate", self.energy.influx_rate),
+            ("energy.absorption_rate", self.energy.absorption_rate),
+            ("energy.per_instruction", self.energy.per_instruction),
+            ("energy.per_write", self.energy.per_write),
+            ("energy.min_to_interact", self.energy.min_to_interact),
+            ("reproduction.birth_energy_cost", self.reproduction.birth_energy_cost),
+            ("reproduction.offspring_energy", self.reproduction.offspring_energy),
+        )
+        for energy_name, energy_value in nonnegative_energy:
+            if energy_value < 0.0:
+                raise ValueError(f"{energy_name} must be nonnegative")
+        if self.energy.tape_capacity <= 0.0:
+            raise ValueError("energy.tape_capacity must be positive")
+        if not 0.0 <= self.energy.diffusion <= 0.25:
+            raise ValueError("energy.diffusion must be in 0..0.25")
+        if self.energy.min_to_interact > self.energy.tape_capacity:
+            raise ValueError("energy.min_to_interact cannot exceed tape_capacity")
+        if self.reproduction.offspring_energy > self.energy.tape_capacity:
+            raise ValueError("reproduction.offspring_energy cannot exceed tape_capacity")
+        if not self.energy.enabled and (
+            self.reproduction.birth_energy_cost > 0.0
+            or self.reproduction.offspring_energy > 0.0
+        ):
+            raise ValueError("reproduction energy costs require energy.enabled = true")
         try:
             pairing_mode = PairingMode(self.world.pairing_mode)
         except ValueError as error:
@@ -344,10 +377,8 @@ class Config:
             raise ValueError("substrate.name must be 'bff' or 'ski'")
         if self.run.stage == 0 and self.substrate.name != "bff":
             raise ValueError("Stage 0 implements only the BFF substrate; SKI requires Stage 1 conservation")
-        if self.run.stage == 3 and self.energy.enabled:
-            raise ValueError(
-                "experimental Stage 3R implements reproduction only; the energy-ledger Stage 3 is not implemented"
-            )
+        if self.energy.enabled and self.substrate.name != "bff":
+            raise ValueError("the first energy-ledger Stage 3 implements only BFF")
         if self.substrate.separate_tapes:
             raise ValueError("separate_tapes is exposed but is not implemented in Stage 0")
         if self.logging.compression not in {"zstd", "snappy", "none"}:

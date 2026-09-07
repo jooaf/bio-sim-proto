@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from numpy.random import Generator
 
 from soup.config import DissolutionConfig
+from soup.energy import EnergyLedger
 from soup.ledgers import SymbolPool
 from soup.substrate.base import ByteTape, Substrate
 from soup.world import SpatialWorld
@@ -41,6 +42,7 @@ def dissolve_candidates(
     config: DissolutionConfig,
     rng: Generator,
     tick: int,
+    energy: EnergyLedger | None = None,
 ) -> list[DissolutionFact]:
     """Dissolve post-interaction candidates and return every byte to the pool.
 
@@ -58,6 +60,8 @@ def dissolve_candidates(
             causes.append("inert")
         if config.max_age > 0 and world.ages[index] >= config.max_age:
             causes.append("max_age")
+        if energy is not None and energy.starved_ticks[index] >= config.starved_ticks:
+            causes.append("starved")
         if config.spontaneous_rate > 0.0 and float(rng.random()) < config.spontaneous_rate:
             causes.append("spontaneous")
         if causes:
@@ -65,6 +69,8 @@ def dissolve_candidates(
 
     facts: list[DissolutionFact] = []
     for index, cause in selected:
+        if energy is not None:
+            energy.dissolve(index)
         tape_id, tape, born_tick, cell = world.dissolve(index)
         pool.release_tape(tape)
         facts.append(

@@ -9,6 +9,7 @@ from numpy.random import Generator
 
 from soup.config import Config, PairingMode, ReproductionTrigger
 from soup.dissolution import DissolutionFact, dissolve_candidates
+from soup.energy import EnergyLedger
 from soup.interactions import (
     ExactCopyTriggerFact,
     InteractionFact,
@@ -21,6 +22,7 @@ from soup.logging.invariants import (
     check_stage0,
     check_stage1,
     check_stage2,
+    check_energy,
     dump_violation,
 )
 from soup.logging.writer import RunWriter
@@ -54,6 +56,7 @@ class Scheduler:
         rng: Generator,
         writer: RunWriter,
         pool: SymbolPool | None = None,
+        energy: EnergyLedger | None = None,
     ) -> None:
         self.config = config
         self.world = world
@@ -61,6 +64,7 @@ class Scheduler:
         self.rng = rng
         self.writer = writer
         self.pool = pool
+        self.energy = energy
         self._abundance_events: set[str] = set()
         self._birth_records: dict[
             int, tuple[int, tuple[int, int] | None, str, tuple[int, ...]]
@@ -88,7 +92,14 @@ class Scheduler:
         try:
             return self.step(tick)
         except InvariantViolation as error:
-            dump_violation(self.writer.run_dir, tick, error, self.world, self.pool)
+            dump_violation(
+                self.writer.run_dir,
+                tick,
+                error,
+                self.world,
+                self.pool,
+                self.energy,
+            )
             self.writer.append_event(
                 tick=tick,
                 event_type="invariant_violation",
@@ -113,6 +124,8 @@ class Scheduler:
         if isinstance(self.world, SpatialWorld):
             if self.pool is None:
                 raise InvariantViolation("Stage 2 requires a symbol pool")
+            if self.energy is not None:
+                self.energy.advance_field(self.world, self.config.energy)
             facts = run_local_interaction_round(
                 world=self.world,
                 substrate=self.substrate,
@@ -131,8 +144,12 @@ class Scheduler:
                     == ReproductionTrigger.EXACT_COPY.value
                     else None
                 ),
+                energy=self.energy,
+                energy_config=self.config.energy if self.energy is not None else None,
             )
             self.world.ages[self.world.occupied] += 1
+            if self.energy is not None:
+                self.energy.update_starvation(self.world)
             dissolutions = dissolve_candidates(
                 world=self.world,
                 substrate=self.substrate,
@@ -140,6 +157,7 @@ class Scheduler:
                 config=self.config.dissolution,
                 rng=self.rng,
                 tick=tick,
+                energy=self.energy,
             )
             reproduction_active = self.config.reproduction.enabled and (
                 self.config.reproduction.stop_tick == 0
@@ -158,6 +176,9 @@ class Scheduler:
                         triggers=copy_triggers,
                         placement_radius=self.config.reproduction.placement_radius,
                         max_births_per_tick=self.config.reproduction.max_births_per_tick,
+                        energy=self.energy,
+                        birth_energy_cost=self.config.reproduction.birth_energy_cost,
+                        offspring_energy=self.config.reproduction.offspring_energy,
                     )
                 else:
                     reproductions = reproduce_tapes(
@@ -169,6 +190,9 @@ class Scheduler:
                         placement_radius=self.config.reproduction.placement_radius,
                         max_births_per_tick=self.config.reproduction.max_births_per_tick,
                         placement_protocol=self.config.reproduction.placement_protocol,
+                        energy=self.energy,
+                        birth_energy_cost=self.config.reproduction.birth_energy_cost,
+                        offspring_energy=self.config.reproduction.offspring_energy,
                     )
             placements = place_random_tapes(
                 world=self.world,
@@ -213,6 +237,8 @@ class Scheduler:
             if self.pool is None:
                 raise InvariantViolation("Stage 2 requires a symbol pool")
             check_stage2(self.world, self.pool, self.config.substrate.tape_length)
+            if self.energy is not None:
+                check_energy(self.world, self.energy)
         elif self.pool is None:
             check_stage0(self.world, self.config.substrate.tape_length)
         else:
@@ -333,6 +359,12 @@ class Scheduler:
                 event_type="reproduction_trigger_invalidated",
                 details={"count": reproduction_result.invalidated_triggers},
             )
+        if reproduction_result.blocked_energy:
+            self.writer.append_event(
+                tick=tick,
+                event_type="reproduction_blocked_energy",
+                details={"count": reproduction_result.blocked_energy},
+            )
 
     def _write_reproductive_birth(self, birth: ReproductionFact) -> None:
         birth_hash = self.writer.hash_tape(birth.tape)
@@ -426,10 +458,20 @@ class Scheduler:
                     if self.pool is None
                     else self.pool.counts.tolist()
                 ),
-                "energy_field_total": 0.0,
-                "energy_tape_total": 0.0,
-                "energy_dissipated_cum": 0.0,
-                "energy_influx_cum": 0.0,
+                "energy_field_total": (
+                    0.0 if self.energy is None else self.energy.field_total
+                ),
+                "energy_tape_total": (
+                    0.0 if self.energy is None else self.energy.tape_total
+                ),
+                "energy_dissipated_cum": (
+                    0.0
+                    if self.energy is None
+                    else self.energy.dissipated_cumulative
+                ),
+                "energy_influx_cum": (
+                    0.0 if self.energy is None else self.energy.influx_cumulative
+                ),
                 "n_interactions": len(facts),
                 "n_writes_success": sum(
                     fact.writes_success + fact.mutation_writes_success for fact in facts
@@ -438,7 +480,11 @@ class Scheduler:
                     fact.writes_blocked + fact.mutation_writes_blocked for fact in facts
                 ),
                 "n_dissolutions": dissolution_count,
-                "mean_tape_energy": 0.0,
+                "mean_tape_energy": (
+                    0.0
+                    if self.energy is None or len(occupied) == 0
+                    else float(np.mean(self.energy.tapes[occupied]))
+                ),
                 "mean_tape_age": mean_age,
             },
         )
@@ -468,7 +514,11 @@ class Scheduler:
                         "content_hash": content_hash,
                         "count": count,
                         "mean_age": float(np.mean(self.world.ages[indices])),
-                        "mean_energy": 0.0,
+                        "mean_energy": (
+                            0.0
+                            if self.energy is None
+                            else float(np.mean(self.energy.tapes[indices]))
+                        ),
                         "first_seen_tick": self.writer.first_seen[content_hash],
                     },
                 )
@@ -500,7 +550,9 @@ class Scheduler:
                     "cell_x": cell_x,
                     "cell_y": cell_y,
                     "age": int(self.world.ages[index]),
-                    "energy": 0.0,
+                    "energy": (
+                        0.0 if self.energy is None else float(self.energy.tapes[index])
+                    ),
                     "content_hash": hashes[index],
                     "length_nonzero": int(np.count_nonzero(tape)),
                     "byte_histogram": np.bincount(tape, minlength=256).astype(np.int64).tolist(),

@@ -10,6 +10,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from soup.config import Config
+from soup.energy import EnergyLedger
 from soup.ledgers import SymbolPool
 from soup.lineage import write_initial_lineage
 from soup.logging.writer import RunWriter
@@ -94,6 +95,11 @@ class Simulation:
             if config.run.stage >= 1
             else None
         )
+        self.energy = (
+            EnergyLedger.create(self.world, config.energy)
+            if config.energy.enabled and isinstance(self.world, SpatialWorld)
+            else None
+        )
         self.writer = RunWriter(
             config,
             run_dir=run_dir,
@@ -107,6 +113,7 @@ class Simulation:
             rng=self.rng,
             writer=self.writer,
             pool=self.pool,
+            energy=self.energy,
         )
 
     def run(self) -> Path:
