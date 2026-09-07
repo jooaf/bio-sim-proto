@@ -1,6 +1,9 @@
+[sweep]
 name = "stage3_exact_copy_pilot"
-base_config = "experiments/configs/stage3_exact_copy_pilot.toml"
+base_config = "stage3_exact_copy_pilot.toml"
+n_seeds = 3
+start_seed = 202609123
 processes = 3
+output_dir = "sweeps"
 
-[grid]
-"run.seed" = [202609123, 202609124, 202609125]
+[parameters]

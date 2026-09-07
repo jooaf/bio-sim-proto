@@ -1,7 +1,10 @@
+[sweep]
 name = "stage3_vacancy_pilot"
-base_config = "experiments/configs/stage3_vacancy_pilot.toml"
+base_config = "stage3_vacancy_pilot.toml"
+n_seeds = 3
+start_seed = 202609120
 processes = 6
+output_dir = "sweeps"
 
-[grid]
-"run.seed" = [202609120, 202609121, 202609122]
+[parameters]
 "reproduction.placement_radius" = [1, 8]
