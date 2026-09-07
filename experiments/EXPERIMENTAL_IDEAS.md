@@ -189,7 +189,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S3-I003 — Population regulation for a non-clogging birth control
 
-- **Status:** Claimed
+- **Status:** Running
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-07T06:05:00Z
 - **Depends on:** Stage 3 lineage switch-off NO-GO
