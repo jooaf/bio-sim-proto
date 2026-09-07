@@ -145,7 +145,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S3-I001 — Empirical organization identifiability and permutation test
 
-- **Status:** Running
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-07T05:23:17Z (transferred from Mac claim)
 - **Depends on:** completed Stage 3 energy gate; `reports/stage3_causal_phase_synthesis.md`
@@ -170,7 +170,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S3-I002 — Organizational recovery intervention
 
-- **Status:** Blocked
+- **Status:** Abandoned
 - **Owner / machine:** Unclaimed
 - **Claimed at:** —
 - **Depends on:** S3-I001
@@ -181,7 +181,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
   null candidates.
 - **Test:** Define only after S3-I001 identifies a candidate; use held-out seeds
   and freeze perturbation magnitude, recovery endpoint, controls, and horizon.
-- **Preregistration:** blocked
+- **Preregistration:** not opened; S3-I001 missed its frozen prevalence gate
 - **Estimated cost:** unknown
 - **On success:** support bounded empirical self-maintenance and replicate on a
   second representation/substrate.

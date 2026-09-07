@@ -319,10 +319,39 @@ results stay in the registry.
   the completed campaign.
 - **Evidence:** `reports/stage3_lineage_persistence_decision.md`.
 
+### S3-E006 — Empirical organization identifiability diagnostic
+
+- **Hypothesis:** The exact eleven-component composition representation is
+  identifiable in at least 12/15 windows, and closed, exactly balanced active
+  candidates exceed a product-permutation null with candidates in at least 8/15
+  windows.
+- **Test:** Three frozen seeds (`202609170`–`202609172`), 5,000 ticks, 1%
+  deterministic reaction sampling, five 1,000-tick windows per seed, and 199
+  aligned product permutations.
+- **Result:** Identifiability passed in 15/15 windows. Accepted candidates occurred
+  in 5/15 windows, below the frozen 8/15 prevalence requirement. The observed
+  mean was 0.4 candidates versus a null 95th percentile of 0.0 (Monte Carlo
+  `p=0.005`). All 3 runs succeeded and conserved matter, with zero invariant
+  failures and maximum relative energy error `1.831e-11`.
+- **Decision:** **Representation PASS; empirical organization excess NOT
+  SUPPORTED.**
+- **Why:** Although the observed mean exceeded the permutation null, the
+  preregistered prevalence criterion failed. The conjunction required every
+  criterion, so the positive null contrast cannot override that failure.
+- **Limitations:** The result is specific to exact composition species and frozen
+  1,000-tick windows; it neither establishes organism identity nor licenses
+  post-hoc clustering or representation changes.
+- **Follow-up:** S3-I002 abandoned under its stopping rule. Retain the five
+  candidate-bearing windows as descriptive evidence only.
+- **Evidence:** `reports/stage3_organization_report.md`,
+  `reports/stage3_organization_windows.csv`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/stage3_organization_diagnostic`.
+
 ## Current frontier
 
 Stage 3 supports causal neutral lineage clustering, exact matter/energy
-accounting, and energy-constrained scheduled birth. It does **not** support
-endogenous reproduction, trophic organization, self-maintenance, or organism
-identity. The only claimed active experiment is S3-I001 in
+accounting, energy-constrained scheduled birth, and an identifiable exact
+composition representation. It does **not** support endogenous reproduction,
+trophic organization, prevalent empirical organization, self-maintenance, or
+organism identity. No experiment is currently claimed or running in
 `EXPERIMENTAL_IDEAS.md`.
