@@ -2,7 +2,7 @@
 
 This append-only registry summarizes experiments that reached a decision. It is
 not a replacement for preregistrations, manifests, raw artifacts, or full
-reports. Pending work belongs in [`EXPERIMENTAL_IDEAS.md`](EXPERIMENTAL_IDEAS.md).
+reports. Pending work belongs in [`EXPERIMENT_IDEAS.md`](EXPERIMENT_IDEAS.md).
 
 For every new entry include: frozen hypothesis, test and primary endpoint,
 result with uncertainty/test statistic, decision, why that decision follows,
@@ -319,10 +319,33 @@ results stay in the registry.
   the completed campaign.
 - **Evidence:** `reports/stage3_lineage_persistence_decision.md`.
 
+### S3-E006 — Empirical organization identifiability
+
+- **Hypotheses:** Eleven-component opcode-count species are recurrent enough for
+  reaction analysis; closed/self-maintaining active components exceed a
+  product-permutation null with adequate temporal prevalence.
+- **Test:** Three selected-energy runs with deterministic 1% reaction sampling;
+  five fixed 1,000-tick windows/run; 199 product-label permutations/window.
+- **Result:** All 15 windows were identifiable: recurrent-observation fractions
+  were 0.994–0.998 and singleton-species fractions 0.025–0.076. Accepted
+  components appeared in 5/15 windows versus zero throughout the null. The
+  campaign statistic exceeded the null (`p=0.005`) but missed the frozen 8/15
+  prevalence requirement.
+- **Decision:** **Identifiability PASS; integrated organization NO-GO.**
+- **Why:** Composition species solved the exact-hash sparsity problem, but
+  empirically balanced components were too intermittent for the preregistered
+  organization claim. No intervention test was launched.
+- **Follow-up:** S4-I001 through S4-I006; do not retune windows, species, or the
+  failed prevalence threshold.
+- **Evidence:** `reports/stage3_organization_decision.md`,
+  `reports/stage3_organization_report.md`.
+
 ## Current frontier
 
 Stage 3 supports causal neutral lineage clustering, exact matter/energy
 accounting, and energy-constrained scheduled birth. It does **not** support
 endogenous reproduction, trophic organization, self-maintenance, or organism
-identity. The only claimed active experiment is S3-I001 in
-`EXPERIMENTAL_IDEAS.md`.
+identity. The completed exact-copy, long-run persistence, and organization
+NO-GOs remain in the registry. Newly generated Stage 4 ideas are tracked in
+[`EXPERIMENT_IDEAS.md`](EXPERIMENT_IDEAS.md); none is yet an active or
+preregistered experiment.

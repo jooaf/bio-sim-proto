@@ -1,6 +1,6 @@
-# Experiment Ideas — Phase 0 & Phase 1
+# Experiment Ideas — Living Research Backlog
 
-This document provides concrete, actionable experiment plans for the first two stages of the conserved program-soup simulator. Every experiment can be executed with the existing codebase (`experiments/runner.py` supports single runs, replicates, and Cartesian sweeps) and the offline analysis pipeline (`analysis/report.py` and the individual analysis modules).
+This document retains the historical Phase 0/1 experiment plans and now tracks newly generated work beyond the completed Stage 3 causal phase. Completed decisions belong in [`EXPERIMENTS_EXECUTED.md`](EXPERIMENTS_EXECUTED.md); an idea listed here is not active or preregistered unless a separate frozen preregistration says so.
 
 ---
 
@@ -583,3 +583,86 @@ By the end of Phase 1 experiments, we should be able to state:
 - Whether conservation intensifies or retards minimization
 - What the pool exhaustion threshold is
 - Whether the Phase 0 emergence threshold shifts under conservation
+
+---
+
+## Stage 4 frontier — behaviorally accessible energy and ecology
+
+These ideas were generated from the completed Stage 3 results. Stage 3 established exact matter/energy accounting, vacancy-controlled lineage clustering, and energy-constrained **scheduled** birth. It also produced three constraints that Stage 4 must respect: byte-exact BFF copy triggers were absent, continued scheduled birth clogged at 20,000 ticks, and empirical organizations occurred in only 5/15 windows. None of the ideas below may retroactively rescue those NO-GOs.
+
+### S4-I001 — Active energy-uptake positive control
+
+**Question:** Can tape execution, rather than passive occupancy, control access to environmental energy?
+
+**Mechanism idea:** Reserve one currently inert BFF byte as an energy-uptake instruction. Execution transfers a bounded amount from the active tape’s local field cell into that tape, pays an instruction cost, and cannot create energy. Disable passive absorption in the treatment. The exact opcode, transfer cap, seeds, and positive-control tape must be frozen before outcomes are inspected.
+
+**First test:** A mutation-free mechanics assay comparing a deliberately seeded uptake-capable tape with a byte-matched no-uptake control under the same field. Require exact energy balance, nonzero uptake only after opcode execution, and no effect when the feature is disabled.
+
+**Why now:** Uniform passive absorption made energy explicit but could not create differentiated ecological roles.
+
+### S4-I002 — Structured energy-field scale
+
+**Question:** Once uptake is behaviorally accessible, does spatial resource structure generate stable local energy niches?
+
+**Mechanism idea:** Replace uniform influx with a normalized static patch field whose total influx is unchanged. Compare a small preregistered set of correlation lengths spanning below, near, and above the radius-1 interaction scale. Do not select a field by lineage or organization outcomes.
+
+**Endpoints:** Energy acquisition inequality, uptake-event spatial autocorrelation, tape-energy distance decay, occupancy/liveness, and opcode-composition locality. Organization and lineage outcomes remain confirmatory follow-ups, not field-selection metrics.
+
+**Prerequisite:** S4-I001 must provide a viable uptake positive control.
+
+### S4-I003 — Conserved decomposition/predation transaction
+
+**Question:** Can an executed action reclaim a neighbor’s symbols and thereby produce an auditable trophic interaction?
+
+**Mechanism idea:** Add an explicit local decomposition instruction or interaction result that atomically dissolves a target, returns all target bytes to the conserved pool, dissipates or transfers energy by a frozen ledger rule, and records actor/target lineage facts. Failed eligibility must leave both ledgers unchanged.
+
+**Positive controls:** A seeded decomposer must act on an eligible target but not on an ineligible/no-op target. The first campaign is mechanics-only and cannot be called predation until actor-dependent resource acquisition is demonstrated.
+
+**Endpoints:** Directed decomposition graph, actor energy change, reclaimed-symbol flow, target mortality, and mass/energy residuals.
+
+### S4-I004 — Mechanistic population regulation
+
+**Question:** Can resource-limited birth plus starvation/decomposition prevent the continued-birth clog observed at 20,000 ticks?
+
+**Test idea:** After S4-I001 or S4-I003 passes, compare the new resource-coupled ecology with its disabled-mechanism control at the already selected Stage 3 birth settings. Use the original 0.95 occupancy ceiling and a frozen 20,000-tick horizon.
+
+**Rule:** Do not lower the prior birth rate or raise the occupancy ceiling. A pass must come from the newly motivated regulation mechanism, not parameter rescue.
+
+### S4-I005 — Organization-analysis positive-control benchmark
+
+**Question:** Does the empirical organization pipeline recover known persistent organizations and reject matched non-organized reaction streams?
+
+**Test idea:** Feed the unchanged composition-reaction analyzer synthetic balanced cycles, deliberately leaky cycles, count-imbalanced components, and time-shuffled controls at campaign-scale sample counts. Then evaluate a separately established artificial-chemistry organization if a compatible trace is available.
+
+**Purpose:** Calibrate sensitivity and false-positive behavior before any new simulator organization claim. This does not reopen the failed Stage 3 prevalence endpoint.
+
+### S4-I006 — Independently viable replication substrate in the conserved spatial world
+
+**Question:** Does an independently demonstrated copying chemistry retain viable reproduction when coupled to exact matter and energy accounting?
+
+**Candidate direction:** Use a substrate with a preregistered exact-copy positive control—such as the pinned Stringmol mechanism or a validated primordial-soup Forth copier—rather than tuning BFF after its zero-trigger result.
+
+**Required separation:** First establish copying under the substrate’s native semantics, then add conservation, then energy. External Stringmol parasite containment remains external evidence until the mechanism is actually integrated.
+
+### S4-I007 — Patch decay under successful population regulation
+
+**Question:** If S4-I004 prevents clogging and raises turnover, do lineage patches still persist after their causal birth input stops?
+
+**Test idea:** Reuse the frozen modulo-family and exact-root measurements, switch birth off at a preregistered checkpoint, and retain the prior 0.95 occupancy ceiling. This is a new mechanism test, not a rerun or reinterpretation of the Stage 3 persistence NO-GO.
+
+## Stage 4 priority and dependencies
+
+1. **S4-I001** — active uptake mechanics and positive control.
+2. **S4-I003** — explicit decomposition transaction.
+3. **S4-I004** — test whether those mechanisms regulate population without tuning the failed Stage 3 campaign.
+4. **S4-I002** — structured field scale, only after active uptake is viable.
+5. **S4-I005** — organization-analysis calibration before another organization claim.
+6. **S4-I006** — independently viable replication substrate; separate model-development track.
+7. **S4-I007** — lineage persistence only after regulation passes.
+
+## Explicitly closed or deferred ideas
+
+- Do not weaken or extend the frozen BFF exact-copy trigger campaign.
+- Do not change the Stage 3 organization species definition, windows, or 8/15 prevalence threshold to rescue its NO-GO.
+- Do not tune the completed continued-birth arm’s rate or occupancy ceiling.
+- Do not launch a 500,000-tick matched-radius run unless a future gate names a specifically temporal uncertainty that bounded experiments cannot answer.
