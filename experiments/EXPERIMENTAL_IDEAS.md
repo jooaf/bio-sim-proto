@@ -189,9 +189,9 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S3-I003 — Population regulation for a non-clogging birth control
 
-- **Status:** Proposed
-- **Owner / machine:** Unclaimed
-- **Claimed at:** —
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-07T06:05:00Z
 - **Depends on:** Stage 3 lineage switch-off NO-GO
 - **Why:** Continued scheduled birth reached median occupancy 0.971 and failed
   the frozen occupancy ceiling in 9/10 runs. Long-run controls require a
@@ -201,7 +201,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
   births for a lineage-persistence positive control.
 - **Test:** First justify the mechanism; select liveness using mechanics only,
   without inspecting lineage endpoints; then run held-out confirmation.
-- **Preregistration:** pending
+- **Preregistration:** `reports/stage3_population_regulation_preregistration.md`
 - **Estimated cost:** medium
 - **On success:** create a new lineage-persistence experiment rather than
   reopening the failed gate.
