@@ -15,8 +15,9 @@ nu organism-sim/rust/install_release.nu
 ```
 
 The installer runs `uv sync` and builds the optimized Rust extension for the
-current machine. Never copy `.venv`, `target`, or native extension files between
-macOS ARM and Linux x86-64.
+current machine. The project selects Python 3.13 because its current PyO3 release
+does not support Python 3.14; `uv` downloads 3.13 when necessary. Never copy
+`.venv`, `target`, or native extension files between macOS ARM and Linux x86-64.
 
 Before starting a campaign, update and verify the checkout:
 

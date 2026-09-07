@@ -3,7 +3,8 @@ name = "emergent-organism-sim"
 version = "0.1.0"
 description = "Playable prototype of a conserved-matter emergent ecosystem"
 readme = "README.md"
-requires-python = ">=3.11"
+# PyO3 0.23 supports CPython through 3.13.
+requires-python = ">=3.11,<3.14"
 dependencies = [
   "numpy>=2.0",
   "pygame-ce>=2.5",
