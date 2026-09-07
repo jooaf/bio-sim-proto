@@ -11,6 +11,7 @@ from numpy.random import Generator
 from soup.config import EnergyConfig, PairingMode
 from soup.energy import EnergyLedger
 from soup.substrate.base import ByteTape, ExecutionBudget, Substrate, WriteMediator, WriteOutcome
+from soup.substrate.bff import INSTRUCTIONS
 from soup.world import FlatWorld, SpatialWorld, World
 
 
@@ -26,6 +27,18 @@ class ExactCopyTriggerFact:
     source_cell: tuple[int, int] | None
     target_cell: tuple[int, int] | None
     tape: ByteTape
+
+
+@dataclass(frozen=True, slots=True)
+class CompositionReactionFact:
+    """One BFF interaction coarse-grained to opcode-count species."""
+
+    tick: int
+    round_index: int
+    a_before: tuple[int, ...]
+    b_before: tuple[int, ...]
+    a_after: tuple[int, ...]
+    b_after: tuple[int, ...]
 
 
 @dataclass(frozen=True, slots=True)
@@ -56,6 +69,16 @@ class InteractionFact:
 
 
 HashTape = Callable[[np.ndarray[tuple[int], np.dtype[np.uint8]]], str]
+ReactionSampler = Callable[[int, int], bool]
+
+
+def opcode_composition_counts(tape: ByteTape) -> tuple[int, ...]:
+    """Return ten BFF opcode counts plus aggregate non-opcode count."""
+
+    opcode_counts = tuple(
+        int(np.count_nonzero(tape == opcode)) for opcode in INSTRUCTIONS
+    )
+    return (*opcode_counts, len(tape) - sum(opcode_counts))
 
 
 def draw_ordered_pairs(
@@ -130,7 +153,12 @@ def _execute_pair(
     pool: WriteMediator | None,
     hash_tape: HashTape,
     detect_exact_copy: bool,
-) -> tuple[InteractionFact, tuple[ExactCopyTriggerFact, ...]]:
+    collect_composition: bool,
+) -> tuple[
+    InteractionFact,
+    tuple[ExactCopyTriggerFact, ...],
+    CompositionReactionFact | None,
+]:
     """Execute one ordered pair and return factual exact-copy triggers."""
 
     a_before = world.tapes[a_index].copy()
@@ -218,7 +246,19 @@ def _execute_pair(
         b_hash_before=b_hash_before,
         b_hash_after=hash_tape(b_after),
     )
-    return fact, tuple(triggers)
+    reaction = (
+        CompositionReactionFact(
+            tick=tick,
+            round_index=round_index,
+            a_before=opcode_composition_counts(a_before),
+            b_before=opcode_composition_counts(b_before),
+            a_after=opcode_composition_counts(a_after),
+            b_after=opcode_composition_counts(b_after),
+        )
+        if collect_composition
+        else None
+    )
+    return fact, tuple(triggers), reaction
 
 
 def run_interaction_round(
@@ -245,7 +285,7 @@ def run_interaction_round(
         pairing_mode=pairing_mode,
     )
     for round_index, (a_index, b_index) in enumerate(pairs):
-        fact, triggers = _execute_pair(
+        fact, triggers, _ = _execute_pair(
             world=world,
             substrate=substrate,
             rng=rng,
@@ -258,6 +298,7 @@ def run_interaction_round(
             pool=pool,
             hash_tape=hash_tape,
             detect_exact_copy=copy_triggers is not None,
+            collect_composition=False,
         )
         facts.append(fact)
         if copy_triggers is not None:
@@ -280,6 +321,8 @@ def run_local_interaction_round(
     copy_triggers: list[ExactCopyTriggerFact] | None = None,
     energy: EnergyLedger | None = None,
     energy_config: EnergyConfig | None = None,
+    composition_reactions: list[CompositionReactionFact] | None = None,
+    reaction_sampler: ReactionSampler | None = None,
 ) -> list[InteractionFact]:
     """Execute with-replacement interactions between occupied local neighbors."""
 
@@ -313,7 +356,12 @@ def run_local_interaction_round(
             if energy is None or energy_config is None
             else energy.execution_budget(a_index, energy_config, budget.max_steps)
         )
-        fact, triggers = _execute_pair(
+        collect_composition = bool(
+            composition_reactions is not None
+            and reaction_sampler is not None
+            and reaction_sampler(tick, round_index)
+        )
+        fact, triggers, reaction = _execute_pair(
             world=world,
             substrate=substrate,
             rng=rng,
@@ -326,8 +374,11 @@ def run_local_interaction_round(
             pool=pool,
             hash_tape=hash_tape,
             detect_exact_copy=copy_triggers is not None,
+            collect_composition=collect_composition,
         )
         facts.append(fact)
+        if reaction is not None and composition_reactions is not None:
+            composition_reactions.append(reaction)
         if energy is not None:
             energy.spend_execution(a_index, fact.energy_spent)
         if copy_triggers is not None:

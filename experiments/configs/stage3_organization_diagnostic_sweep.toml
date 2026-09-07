@@ -1,0 +1,9 @@
+[sweep]
+name = "stage3_organization_diagnostic"
+base_config = "stage3_organization_diagnostic.toml"
+n_seeds = 3
+start_seed = 202609170
+processes = 3
+output_dir = "sweeps"
+
+[parameters]

@@ -225,6 +225,10 @@ class LoggingConfig:
     tape_snapshot_interval: int = field(default=1, metadata=knob("Epochs between tape census snapshots.", "1..10^9"))
     full_tape_snapshot_interval: int = field(default=100, metadata=knob("Ticks between full-byte snapshots; zero disables.", "0..10^9"))
     interaction_log_rate: float = field(default=1.0, metadata=knob("Deterministic fraction of interactions retained.", "0..1"))
+    reaction_log_rate: float = field(
+        default=0.0,
+        metadata=knob("Deterministic fraction of composition reactions retained as events.", "0..1"),
+    )
     flush_interval: int = field(default=100, metadata=knob("Ticks between Parquet row-group flushes.", "1..10^7"))
     compression: str = field(default="zstd", metadata=knob("Parquet compression codec.", "zstd|snappy|none"))
     abundance_event_threshold: int = field(default=16, metadata=knob("Abundance that emits a notable-type event.", "2..population_size"))
@@ -346,6 +350,7 @@ class Config:
             ("dissolution.spontaneous_rate", self.dissolution.spontaneous_rate),
             ("reproduction.rate", self.reproduction.rate),
             ("logging.interaction_log_rate", self.logging.interaction_log_rate),
+            ("logging.reaction_log_rate", self.logging.reaction_log_rate),
         )
         for rate_name, rate_value in rates:
             if not 0.0 <= rate_value <= 1.0:
@@ -381,6 +386,10 @@ class Config:
             raise ValueError("the first energy-ledger Stage 3 implements only BFF")
         if self.substrate.separate_tapes:
             raise ValueError("separate_tapes is exposed but is not implemented in Stage 0")
+        if self.logging.reaction_log_rate > 0.0 and (
+            self.run.stage < 3 or self.substrate.name != "bff"
+        ):
+            raise ValueError("composition reaction logging requires BFF Stage 3")
         if self.logging.compression not in {"zstd", "snappy", "none"}:
             raise ValueError("logging.compression must be zstd, snappy, or none")
         if self.logging.full_tape_snapshot_interval < 0:

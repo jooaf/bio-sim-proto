@@ -11,6 +11,7 @@ from soup.config import Config, PairingMode, ReproductionTrigger
 from soup.dissolution import DissolutionFact, dissolve_candidates
 from soup.energy import EnergyLedger
 from soup.interactions import (
+    CompositionReactionFact,
     ExactCopyTriggerFact,
     InteractionFact,
     run_interaction_round,
@@ -121,6 +122,7 @@ class Scheduler:
         reproductions = ReproductionResult(0, 0, 0, ())
         placements = PlacementResult(0, 0, ())
         copy_triggers: list[ExactCopyTriggerFact] = []
+        composition_reactions: list[CompositionReactionFact] = []
         if isinstance(self.world, SpatialWorld):
             if self.pool is None:
                 raise InvariantViolation("Stage 2 requires a symbol pool")
@@ -146,6 +148,16 @@ class Scheduler:
                 ),
                 energy=self.energy,
                 energy_config=self.config.energy if self.energy is not None else None,
+                composition_reactions=(
+                    composition_reactions
+                    if self.config.logging.reaction_log_rate > 0.0
+                    else None
+                ),
+                reaction_sampler=(
+                    self.writer.should_log_reaction
+                    if self.config.logging.reaction_log_rate > 0.0
+                    else None
+                ),
             )
             self.world.ages[self.world.occupied] += 1
             if self.energy is not None:
@@ -202,6 +214,7 @@ class Scheduler:
                 tick=tick,
                 reseed_rate=self.config.world.reseed_rate,
             )
+            self._write_composition_reactions(composition_reactions)
             self._write_lifecycle(
                 tick, dissolutions, copy_triggers, reproductions, placements
             )
@@ -243,6 +256,22 @@ class Scheduler:
             check_stage0(self.world, self.config.substrate.tape_length)
         else:
             check_stage1(self.world, self.pool, self.config.substrate.tape_length)
+
+    def _write_composition_reactions(
+        self, reactions: list[CompositionReactionFact]
+    ) -> None:
+        for reaction in reactions:
+            self.writer.append_event(
+                tick=reaction.tick,
+                event_type="composition_reaction",
+                details={
+                    "round_index": reaction.round_index,
+                    "a_before": list(reaction.a_before),
+                    "b_before": list(reaction.b_before),
+                    "a_after": list(reaction.a_after),
+                    "b_after": list(reaction.b_after),
+                },
+            )
 
     def _write_lifecycle(
         self,

@@ -79,6 +79,22 @@ class RunWriter:
         draw = int.from_bytes(hashlib.blake2b(payload, digest_size=8).digest(), "little")
         return draw < int(rate * 2**64)
 
+    def should_log_reaction(self, tick: int, round_index: int) -> bool:
+        """Sample composition reactions without consuming simulation RNG state."""
+
+        rate = self.config.logging.reaction_log_rate
+        if rate <= 0.0:
+            return False
+        if rate >= 1.0:
+            return True
+        payload = struct.pack(
+            "<qqqq", self.config.run.seed, tick, round_index, 1
+        )
+        draw = int.from_bytes(
+            hashlib.blake2b(payload, digest_size=8).digest(), "little"
+        )
+        return draw < int(rate * 2**64)
+
     def append(self, table: str, row: dict[str, Any]) -> None:
         """Buffer one raw fact; no analysis is performed here."""
 
