@@ -1,0 +1,10 @@
+[sweep]
+name = "stage3_regulated_lineage_persistence"
+base_config = "stage3_regulated_lineage_persistence.toml"
+n_seeds = 10
+start_seed = 202609193
+processes = 10
+output_dir = "sweeps"
+
+[parameters]
+"reproduction.stop_tick" = [0, 10000]

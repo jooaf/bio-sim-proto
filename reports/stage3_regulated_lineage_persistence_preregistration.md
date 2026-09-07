@@ -61,11 +61,16 @@ The regulated switch-off result passes only if:
   at least 0.25; nonpositive switch values have undefined retention and fail;
 - at least 8/10 continued-arm final excesses are positive and individually
   significant at `p <= 0.05`;
-- at least 8/10 runs per arm satisfy the already frozen S3-E007 regulation
+- at least 8/10 continued runs satisfy the already frozen S3-E007 regulation
   feasibility criteria: late and final occupancy 0.50–0.90, absolute
   10k-to-19.9k occupancy change at most 0.05, at least 100 births and 100
   dissolutions, lineage depth at least 3, nonzero placement/interactions/writes/
   pool turnover, and pool blocks no greater than births;
+- at least 8/10 stopped runs satisfy a persistence-feasibility criterion:
+  final occupancy 0.40–0.90, at least 100 pre-switch births and 100 total
+  dissolutions, lineage depth at least 3, nonzero placement/interactions/writes/
+  pool turnover, and pool blocks no greater than births. Occupancy stability is
+  intentionally not required after removal of the birth input;
 - all 20 runs exit successfully and conserve symbols exactly; and
 - total invariant failures are zero.
 
