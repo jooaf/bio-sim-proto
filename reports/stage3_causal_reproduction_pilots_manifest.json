@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "preregistration_commit": "9816321",
+  "campaigns": [
+    {
+      "name": "vacancy_first",
+      "index_sha256": "ad76e42e5f00f9acd6190d8d3fcec2fb2f097a52abcf464e62fe956007219ca2",
+      "runs": [
+        {
+          "run_dir": "sweeps/stage3_vacancy_pilot/runs/20260907T013409.478220Z_f781ab0c894f_202609120",
+          "seed": 202609120,
+          "config_hash": "f781ab0c894f",
+          "source_commit": "4aef0e76b8d804df5202c79b5cd62b362e3cbe7c",
+          "exit_status": "success",
+          "invariant_bytes": 0,
+          "manifest_sha256": "79dca5d45209ccc8c6bf4bb4a67d49c17058639cd1e927ba7716f4a4d6a0c8b5"
+        },
+        {
+          "run_dir": "sweeps/stage3_vacancy_pilot/runs/20260907T013409.478364Z_0f33c8870621_202609121",
+          "seed": 202609121,
+          "config_hash": "0f33c8870621",
+          "source_commit": "4aef0e76b8d804df5202c79b5cd62b362e3cbe7c",
+          "exit_status": "success",
+          "invariant_bytes": 0,
+          "manifest_sha256": "1163b9da375dc8fddd274c8b9f2e2190765e31fd7f1f5b261face7e86724705c"
+        },
+        {
+          "run_dir": "sweeps/stage3_vacancy_pilot/runs/20260907T013409.478406Z_ee74f9d31178_202609122",
+          "seed": 202609122,
+          "config_hash": "ee74f9d31178",
+          "source_commit": "4aef0e76b8d804df5202c79b5cd62b362e3cbe7c",
+          "exit_status": "success",
+          "invariant_bytes": 0,
+          "manifest_sha256": "6ddada472eb5a34789c30df398ff9887c9db0ef8f1e1d1863eaf5f40f914edd0"
+        },
+        {
+          "run_dir": "sweeps/stage3_vacancy_pilot/runs/20260907T014437.816446Z_d0f8c95e1ec9_202609120",
+          "seed": 202609120,
+          "config_hash": "d0f8c95e1ec9",
+          "source_commit": "4aef0e76b8d804df5202c79b5cd62b362e3cbe7c",
+          "exit_status": "success",
+          "invariant_bytes": 0,
+          "manifest_sha256": "1a0f4d23a4600916022c990dac4e4b4867354631d09c8715bce16dbc112405ae"
+        },
+        {
+          "run_dir": "sweeps/stage3_vacancy_pilot/runs/20260907T014437.816523Z_c43d494ccb93_202609121",
+          "seed": 202609121,
+          "config_hash": "c43d494ccb93",
+          "source_commit": "4aef0e76b8d804df5202c79b5cd62b362e3cbe7c",
+          "exit_status": "success",
+          "invariant_bytes": 0,
+          "manifest_sha256": "ca22c087c237db5fc28e0cfeeb35d4aa74493acc27fd603ac965035bd6ef24aa"
+        },
+        {
+          "run_dir": "sweeps/stage3_vacancy_pilot/runs/20260907T014437.816454Z_2254056c8854_202609122",
+          "seed": 202609122,
+          "config_hash": "2254056c8854",
+          "source_commit": "4aef0e76b8d804df5202c79b5cd62b362e3cbe7c",
+          "exit_status": "success",
+          "invariant_bytes": 0,
+          "manifest_sha256": "ed7bbc9481c9dee9e11e1bff943b4f12e91b7058eb9d1386d3e3634c8dcc3520"
+        }
+      ]
+    },
+    {
+      "name": "exact_copy",
+      "index_sha256": "eba2de4128a46a7993eae264e265666fdb896a65c8b7437fe19305b0bf068b6d",
+      "runs": [
+        {
+          "run_dir": "sweeps/stage3_exact_copy_pilot/runs/20260907T015500.135491Z_82da2d0b60c7_202609123",
+          "seed": 202609123,
+          "config_hash": "82da2d0b60c7",
+          "source_commit": "4aef0e76b8d804df5202c79b5cd62b362e3cbe7c",
+          "exit_status": "success",
+          "invariant_bytes": 0,
+          "manifest_sha256": "699112d58c3ca6a309739d0555fc8d78db8e8ab7214e2bf7c48cc2edb2c1c11c"
+        },
+        {
+          "run_dir": "sweeps/stage3_exact_copy_pilot/runs/20260907T015500.135491Z_10668c098d37_202609124",
+          "seed": 202609124,
+          "config_hash": "10668c098d37",
+          "source_commit": "4aef0e76b8d804df5202c79b5cd62b362e3cbe7c",
+          "exit_status": "success",
+          "invariant_bytes": 0,
+          "manifest_sha256": "dda3ad4603893390ceeaef5a93051cd7b95b42a0bae523deefdc74ac270c4d23"
+        },
+        {
+          "run_dir": "sweeps/stage3_exact_copy_pilot/runs/20260907T015500.135671Z_baeb6f7679bd_202609125",
+          "seed": 202609125,
+          "config_hash": "baeb6f7679bd",
+          "source_commit": "4aef0e76b8d804df5202c79b5cd62b362e3cbe7c",
+          "exit_status": "success",
+          "invariant_bytes": 0,
+          "manifest_sha256": "9a027457371f7b6610bb0ed5a404ae45edee25bf8ede53ca05994f3a7e2034a5"
+        }
+      ]
+    }
+  ]
+}
