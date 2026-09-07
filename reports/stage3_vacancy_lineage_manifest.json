@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "preregistration_commit": "e97540e",
+  "index_sha256": "d8e001cfc66223f3fc3f608bcdc8f756038b97ee20c4450c55dedec6b0c23814",
+  "raw_apparent_bytes": 281288598,
+  "runs": [
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T022002.775028Z_2703bed49949_202609130",
+      "seed": 202609130,
+      "placement_radius": 1,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "2703bed49949",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "7ce6dfd268236c050bac97a2427066c33b23605d4fdd5d5fb5aaea4070d32f83"
+    },
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T022002.778303Z_49bd90d3d589_202609131",
+      "seed": 202609131,
+      "placement_radius": 1,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "49bd90d3d589",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "4767904dd673cac59c850985a44d46e1e72f0b6e244d0e60891c38df2b5381d1"
+    },
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T022002.780974Z_1cd86055e961_202609132",
+      "seed": 202609132,
+      "placement_radius": 1,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "1cd86055e961",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "35fb227418f4c7e31de9374f79273be1b6e9a15b7aec6c8b8c158c41b92b9394"
+    },
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T022002.789453Z_8fb7da005bfd_202609133",
+      "seed": 202609133,
+      "placement_radius": 1,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "8fb7da005bfd",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "a2b9ac1692e76ff729860b273ae96c01e312656f2ef61c6a0d6988899d807919"
+    },
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T022002.789396Z_a98d8456d3c2_202609134",
+      "seed": 202609134,
+      "placement_radius": 1,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "a98d8456d3c2",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "a64b795c77be67143310b4c4a8e9d68b4fcabfa8c17b3143594ce61171a03ced"
+    },
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T022002.789975Z_466d6a7ed037_202609135",
+      "seed": 202609135,
+      "placement_radius": 1,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "466d6a7ed037",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "8926587a6dc972176c9b842cb25ab8ecc9858bb9810be019dce70a7b9fce697c"
+    },
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T022002.790062Z_5ce459cb8292_202609136",
+      "seed": 202609136,
+      "placement_radius": 1,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "5ce459cb8292",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "31ebc632a136a332a84fab085388604a83a252b96f14a3a809843dbff5883bb0"
+    },
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T022002.790216Z_2ffe7a1655cb_202609137",
+      "seed": 202609137,
+      "placement_radius": 1,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "2ffe7a1655cb",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "d027c1de66050ee9c29fa83f7ae6de1eb56a0264d8f2005ea331adbd060a31c3"
+    },
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T022002.791982Z_bda0b5203503_202609138",
+      "seed": 202609138,
+      "placement_radius": 1,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "bda0b5203503",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "51334ab46a1136a333cb692cdc5ea621b451d435bbc26692b5f37302b18e8944"
+    },
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T022002.792695Z_b64744d56461_202609139",
+      "seed": 202609139,
+      "placement_radius": 1,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "b64744d56461",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "b72f2997f674a50cc22e69bdfc72bbfbd844aaba3fb7ca7def432ad835ae5465"
+    },
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T024503.308920Z_7cb205c151a1_202609130",
+      "seed": 202609130,
+      "placement_radius": 8,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "7cb205c151a1",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "4ca5c21d48339fdbb74105b24d958acbd7dee41d3f5d55391b8eaf1ba2c2e6af"
+    },
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T024503.309090Z_e363000d1b5b_202609131",
+      "seed": 202609131,
+      "placement_radius": 8,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "e363000d1b5b",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "602d481c4e8e0cfa3e0e8bacc3a92f1041c62ccfdd6cf8a76f879d31fec7bc3c"
+    },
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T024503.309017Z_6fe1d967950e_202609132",
+      "seed": 202609132,
+      "placement_radius": 8,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "6fe1d967950e",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "781d9cf4ca151b88500d1b783d438eedb44b742e9eb98441c06f5bfda988c5ba"
+    },
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T024503.309232Z_4edd7f3b16f6_202609133",
+      "seed": 202609133,
+      "placement_radius": 8,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "4edd7f3b16f6",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "7203381a042df533dd73705ccbacdb4df781af224880a8add6a24306509764eb"
+    },
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T024503.309502Z_a946b37b251a_202609134",
+      "seed": 202609134,
+      "placement_radius": 8,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "a946b37b251a",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "6150647c0987789ecc40587d497c53f257aaef9e95376b43b4392c36de3e39aa"
+    },
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T024503.309308Z_176e2017f29c_202609135",
+      "seed": 202609135,
+      "placement_radius": 8,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "176e2017f29c",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "fb8ba75144f05d19285ed302ce8d4eacec3bf51ebca4f66da6cfc069b0fa6986"
+    },
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T024503.309089Z_08c782264a0e_202609136",
+      "seed": 202609136,
+      "placement_radius": 8,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "08c782264a0e",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "ada949a2ef9cb07c429f600a95b4b3189fd8f45b0395f6c134797be66eb8f4a2"
+    },
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T024503.309082Z_1f34d5451b7a_202609137",
+      "seed": 202609137,
+      "placement_radius": 8,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "1f34d5451b7a",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "58e56f7f854aeab88700689911894f64e11897aac19aa7a98a47163ec147d37a"
+    },
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T024503.309081Z_d6639895ea1e_202609138",
+      "seed": 202609138,
+      "placement_radius": 8,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "d6639895ea1e",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "38bd0ec47c40f74f136823f486d8b596dfcdcb51575dd824a74d7d227e563e43"
+    },
+    {
+      "run_dir": "sweeps/stage3_vacancy_lineage/runs/20260907T024503.309686Z_3e3062eac8b5_202609139",
+      "seed": 202609139,
+      "placement_radius": 8,
+      "source_commit": "e97540eb05447e1a6febb4f33db0ed23e0d8a1bd",
+      "config_hash": "3e3062eac8b5",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "73d4b7fcb12b83594920777fcab83be9bc11bedd98b4449be9247b876bbffe46"
+    }
+  ]
+}
