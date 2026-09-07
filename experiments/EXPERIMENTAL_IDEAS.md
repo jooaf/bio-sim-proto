@@ -245,9 +245,9 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S3-I006 — Regulated lineage switch-off persistence
 
-- **Status:** Proposed
-- **Owner / machine:** Unclaimed
-- **Claimed at:** —
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-07T21:14:16Z
 - **Depends on:** completed S3-I003 regulated positive-control confirmation
 - **Why:** Density-independent turnover now prevents the continued-birth control
   from clogging. A new experiment can ask whether neutral lineage patches persist
@@ -259,7 +259,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 - **Test:** Preregister new held-out matched seeds, a fixed switch tick and
   horizon, the unchanged modulo-16 family endpoint, and retention criteria. Keep
   the selected birth and dissolution rates frozen.
-- **Preregistration:** pending
+- **Preregistration:** `reports/stage3_regulated_lineage_persistence_preregistration.md`
 - **Estimated cost:** high; 20 matched 20,000-tick runs
 - **On success:** support turnover-resistant neutral patch persistence only.
 - **On failure:** conclude the earlier persistence was specific to slow turnover
