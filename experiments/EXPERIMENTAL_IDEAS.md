@@ -189,7 +189,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S3-I003 — Population regulation for a non-clogging birth control
 
-- **Status:** Running
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-07T06:05:00Z
 - **Depends on:** Stage 3 lineage switch-off NO-GO
@@ -242,3 +242,25 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 - **Estimated cost:** medium
 - **On success:** design a causal resource-flow experiment.
 - **On failure:** keep the energy ledger as an accounting mechanism only.
+
+### S3-I006 — Regulated lineage switch-off persistence
+
+- **Status:** Proposed
+- **Owner / machine:** Unclaimed
+- **Claimed at:** —
+- **Depends on:** completed S3-I003 regulated positive-control confirmation
+- **Why:** Density-independent turnover now prevents the continued-birth control
+  from clogging. A new experiment can ask whether neutral lineage patches persist
+  after birth stops under materially stronger turnover, without reopening or
+  reinterpreting the failed original gate.
+- **Hypothesis:** With spontaneous dissolution fixed at `2e-5`, local lineage
+  association remains positive after scheduled birth stops and differs from a
+  valid continued-birth positive control.
+- **Test:** Preregister new held-out matched seeds, a fixed switch tick and
+  horizon, the unchanged modulo-16 family endpoint, and retention criteria. Keep
+  the selected birth and dissolution rates frozen.
+- **Preregistration:** pending
+- **Estimated cost:** high; 20 matched 20,000-tick runs
+- **On success:** support turnover-resistant neutral patch persistence only.
+- **On failure:** conclude the earlier persistence was specific to slow turnover
+  and stop neutral lineage-persistence work.

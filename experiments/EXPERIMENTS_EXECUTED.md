@@ -347,11 +347,40 @@ results stay in the registry.
   `reports/stage3_organization_windows.csv`; raw campaign:
   `/home/jojo/bio-sim-results/bazzite/stage3_organization_diagnostic`.
 
+### S3-E007 — Density-independent population regulation
+
+- **Hypothesis:** Increasing neutral spontaneous dissolution without reducing the
+  frozen scheduled-birth rate maintains a partially empty lattice and preserves
+  a valid lineage-clustering positive control.
+- **Test:** A mechanics-only pilot crossed dissolution rates `2e-5`, `3e-5`,
+  `5e-5`, and `1e-4` over three 20,000-tick seeds each. The frozen selected rate
+  was then tested on ten held-out 20,000-tick seeds with 499-permutation final
+  family-neighbor tests.
+- **Result:** Rate `2e-5` was the sole eligible pilot treatment (3/3 feasible),
+  with median occupancy 0.812 and median absolute 10k-to-19.9k occupancy change
+  0.012. Held-out confirmation was feasible in 10/10 runs; median late occupancy
+  was 0.838 and median births were 340. Final family-neighbor excess averaged
+  `+0.088461`, bootstrap interval `[+0.084802,+0.091852]`, exact one-sided
+  `p=0.000977`, positive and individually significant in 10/10 runs.
+- **Decision:** **PASS for a non-clogging neutral lineage positive control.**
+- **Why:** Every frozen mechanics, liveness, conservation, and lineage-control
+  criterion passed on held-out seeds without changing the selected birth rate.
+- **Limitations:** Spontaneous dissolution is exogenous density-independent
+  mortality and scheduled cloning remains exogenous. This result does not show
+  endogenous reproduction, adaptation, or self-maintenance.
+- **Follow-up:** S3-I006, a newly preregistered regulated switch-off experiment;
+  do not reinterpret the failed original switch-off gate.
+- **Evidence:** `reports/stage3_population_regulation_pilot_report.md`,
+  `reports/stage3_population_regulation_confirmation_report.md`; raw campaigns:
+  `/home/jojo/bio-sim-results/bazzite/stage3_population_regulation_pilot` and
+  `/home/jojo/bio-sim-results/bazzite/stage3_population_regulation_confirmation`.
+
 ## Current frontier
 
 Stage 3 supports causal neutral lineage clustering, exact matter/energy
-accounting, energy-constrained scheduled birth, and an identifiable exact
-composition representation. It does **not** support endogenous reproduction,
-trophic organization, prevalent empirical organization, self-maintenance, or
-organism identity. No experiment is currently claimed or running in
-`EXPERIMENTAL_IDEAS.md`.
+accounting, energy-constrained scheduled birth, an identifiable exact
+composition representation, and a non-clogging neutral turnover control. It does
+**not** support endogenous reproduction, trophic organization, prevalent
+empirical organization, self-maintenance, or organism identity. No experiment is
+currently claimed or running in `EXPERIMENTAL_IDEAS.md`; S3-I006 is the next
+proposed lineage-persistence test.
