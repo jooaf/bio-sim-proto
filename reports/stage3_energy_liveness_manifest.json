@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "preregistration_commit": "424b686",
+  "index_sha256": "ab6da4f5a38878ffd9eeda4ba5b01d4325abfe368294cf117298a769a055bf0c",
+  "raw_apparent_bytes": 65262142,
+  "runs": [
+    {
+      "run_dir": "sweeps/stage3_energy_liveness/runs/20260907T032253.861170Z_ec4209b90b34_202609140",
+      "seed": 202609140,
+      "influx_rate": 64.0,
+      "source_commit": "424b6867143fbbc6ab994194b281342a90a621bc",
+      "config_hash": "ec4209b90b34",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "cc5b4d1edb337821f39b2b45982fc11196af4b6ae3393f5bc317609c75128f00"
+    },
+    {
+      "run_dir": "sweeps/stage3_energy_liveness/runs/20260907T032253.865168Z_ab6e47cf6ee7_202609141",
+      "seed": 202609141,
+      "influx_rate": 64.0,
+      "source_commit": "424b6867143fbbc6ab994194b281342a90a621bc",
+      "config_hash": "ab6e47cf6ee7",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "51d4da2fa9a46b70167095a95acd68ea0de555105d1138012eb06eb8b3e7480e"
+    },
+    {
+      "run_dir": "sweeps/stage3_energy_liveness/runs/20260907T032253.868794Z_4d49d8e70bc0_202609142",
+      "seed": 202609142,
+      "influx_rate": 64.0,
+      "source_commit": "424b6867143fbbc6ab994194b281342a90a621bc",
+      "config_hash": "4d49d8e70bc0",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "20c836837816881d0d2076a933dc971e3bd02da15d1dd5797022d94992112144"
+    },
+    {
+      "run_dir": "sweeps/stage3_energy_liveness/runs/20260907T032447.489984Z_3be6867bbfda_202609140",
+      "seed": 202609140,
+      "influx_rate": 256.0,
+      "source_commit": "424b6867143fbbc6ab994194b281342a90a621bc",
+      "config_hash": "3be6867bbfda",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "af27b4b81f772bfc302e3e15a08a9901dea2daaa20b543d932dd209c11053bc3"
+    },
+    {
+      "run_dir": "sweeps/stage3_energy_liveness/runs/20260907T032447.490070Z_c982feb32806_202609141",
+      "seed": 202609141,
+      "influx_rate": 256.0,
+      "source_commit": "424b6867143fbbc6ab994194b281342a90a621bc",
+      "config_hash": "c982feb32806",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "c116181fc5147eebb4804797ca1df53d9ecec6759a0e500543cc944c9c251506"
+    },
+    {
+      "run_dir": "sweeps/stage3_energy_liveness/runs/20260907T032447.490085Z_163659631c0a_202609142",
+      "seed": 202609142,
+      "influx_rate": 256.0,
+      "source_commit": "424b6867143fbbc6ab994194b281342a90a621bc",
+      "config_hash": "163659631c0a",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "de2b13cdaa5da86188e8757cd879dff913405018869b429a2b63d582047f227f"
+    },
+    {
+      "run_dir": "sweeps/stage3_energy_liveness/runs/20260907T032705.698711Z_337d5fb82586_202609140",
+      "seed": 202609140,
+      "influx_rate": 1024.0,
+      "source_commit": "424b6867143fbbc6ab994194b281342a90a621bc",
+      "config_hash": "337d5fb82586",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "2a3a4342b27021012addadfdf93505b4d41c1e2a8aa0d480be137fe2c415356c"
+    },
+    {
+      "run_dir": "sweeps/stage3_energy_liveness/runs/20260907T032705.700461Z_03046844b929_202609141",
+      "seed": 202609141,
+      "influx_rate": 1024.0,
+      "source_commit": "424b6867143fbbc6ab994194b281342a90a621bc",
+      "config_hash": "03046844b929",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "8762c033f5dd758dd4cc932edfca4c3aa7d4edf0711b015212bdcc60e7c6dda1"
+    },
+    {
+      "run_dir": "sweeps/stage3_energy_liveness/runs/20260907T032705.700845Z_370eb4d87d1d_202609142",
+      "seed": 202609142,
+      "influx_rate": 1024.0,
+      "source_commit": "424b6867143fbbc6ab994194b281342a90a621bc",
+      "config_hash": "370eb4d87d1d",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "824aad87d108bad1b921e139f9a925c8acac7ada56aacd5d263d5cc7de03f711"
+    }
+  ]
+}
