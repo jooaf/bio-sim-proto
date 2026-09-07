@@ -145,9 +145,9 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S3-I001 — Empirical organization identifiability and permutation test
 
-- **Status:** Claimed
-- **Owner / machine:** Mac (`Joels-MacBook-Pro-2.local`)
-- **Claimed at:** 2026-09-07 UTC
+- **Status:** Running
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-07T05:23:17Z (transferred from Mac claim)
 - **Depends on:** completed Stage 3 energy gate; `reports/stage3_causal_phase_synthesis.md`
 - **Why:** Neutral lineage patches and energy-constrained scheduled birth are
   mechanism controls, not evidence of self-maintaining organization. The next
