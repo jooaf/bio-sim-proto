@@ -1,0 +1,10 @@
+[sweep]
+name = "stage3_energy_birth"
+base_config = "stage3_energy_birth.toml"
+n_seeds = 10
+start_seed = 202609150
+processes = 10
+output_dir = "sweeps"
+
+[parameters]
+"reproduction.birth_energy_cost" = [0.0, 5.0]
