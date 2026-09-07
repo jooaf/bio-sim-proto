@@ -124,6 +124,7 @@ class App:
             ("Sexual floor on", "sexual_probability_floor_enabled", 0, 1, 1, True),
             ("Sexual floor", "sexual_probability_floor", 0, 0.5, 0.01, True),
             ("Random seasons", "seasons_enabled", 0, 1, 1, False),
+            ("Dynamic chemistry", "dynamic_chemistry_enabled", 0, 1, 1, False),
             ("Season strength", "season_strength", 0, 1, 0.05, False),
             ("Season min", "season_duration_min", 50, 5000, 50, False),
             ("Season max", "season_duration_max", 50, 5000, 50, False),

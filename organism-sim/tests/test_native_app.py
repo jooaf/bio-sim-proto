@@ -5,7 +5,7 @@ from time import monotonic, sleep
 import numpy as np
 import pygame
 
-from organism_sim.config import SimulationConfig
+from organism_sim.config import BehaviorModel, Scheduler, SimulationConfig
 from organism_sim.config_io import build_config, load_config_file
 from organism_sim.native_app import NativeApp
 
@@ -78,6 +78,86 @@ def test_native_sliders_update_pending_config_and_saved_settings(
         assert restored.season_duration_min == 5000
         assert restored.season_duration_max == 5000
         assert restored.seed == app.config.seed
+    finally:
+        pygame.quit()
+
+
+def test_native_cellular_mode_uses_supported_scheduler(monkeypatch) -> None:
+    monkeypatch.setenv("SDL_VIDEODRIVER", "dummy")
+    app = NativeApp(
+        SimulationConfig(
+            behavior_model=BehaviorModel.RECURRENT_INTENT_V2,
+            scheduler=Scheduler.PARALLEL_V3,
+            cellular_emergence_enabled=True,
+            emergence_coordinated_components=True,
+            audit_every=0,
+        ),
+        record=False,
+    )
+    try:
+        assert app.config.scheduler == Scheduler.SERIAL_V2
+    finally:
+        pygame.quit()
+
+
+def test_native_cellular_snapshot_tracks_transient_peaks(monkeypatch) -> None:
+    monkeypatch.setenv("SDL_VIDEODRIVER", "dummy")
+    app = NativeApp(SimulationConfig(audit_every=0), record=False)
+    try:
+        app._observe_cellular_snapshot(
+            {
+                "stats": {
+                    "cellular_affordances_enabled": True,
+                    "largest_bond_component": 3,
+                    "bond_components": 2,
+                    "physical_bonds": 4,
+                }
+            }
+        )
+        app._observe_cellular_snapshot(
+            {
+                "stats": {
+                    "cellular_affordances_enabled": True,
+                    "largest_bond_component": 2,
+                    "bond_components": 5,
+                    "physical_bonds": 1,
+                }
+            }
+        )
+        assert app.cellular_peak_group_size == 3
+        assert app.cellular_peak_groups == 5
+        assert app.cellular_peak_bonds == 4
+    finally:
+        pygame.quit()
+
+
+def test_native_cellular_overlay_draws_joined_group_marker(monkeypatch) -> None:
+    monkeypatch.setenv("SDL_VIDEODRIVER", "dummy")
+    app = NativeApp(SimulationConfig(audit_every=0), record=False)
+    app.snapshot = {
+        "stats": {
+            "cellular_affordances_enabled": True,
+        },
+        "bonds": {
+            "x1": np.array([64]),
+            "y1": np.array([64]),
+            "x2": np.array([65]),
+            "y2": np.array([64]),
+            "strength": np.array([1.0]),
+        },
+    }
+    organisms = {
+        "id": np.array([1, 2], dtype=np.uint32),
+        "x": np.array([64, 65], dtype=np.int64),
+        "y": np.array([64, 64], dtype=np.int64),
+        "component_id": np.array([1, 1], dtype=np.uint32),
+        "component_size": np.array([2, 2], dtype=np.uint32),
+    }
+    try:
+        app.screen.fill((0, 0, 0))
+        app._draw_cellular_overlay(organisms, tile_size=6)
+        pixels = pygame.surfarray.array3d(app.screen)
+        assert np.any(pixels[: app.world_pixels, : app.world_pixels] != 0)
     finally:
         pygame.quit()
 

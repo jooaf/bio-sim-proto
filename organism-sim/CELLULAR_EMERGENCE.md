@@ -93,7 +93,7 @@ uv run organism-sim-headless \
   --set emergence_coordinated_components=true
 ```
 
-The GUI exposes reset-time controls for enablement, module limit, structural mutation, bonding, and engulfment. Bonds are drawn as green lines. The inspector displays only module, localization-tag, bond, and guest facts.
+The GUI exposes reset-time controls for enablement, module limit, structural mutation, bonding, and engulfment. Set **Cell affordances** to `1` and press `R` to start the feature; coordinated groups automatically select the supported serial scheduler. The sidebar explicitly reports `CELLULAR OFF` when the feature is disabled and reports current/peak joined-group size when enabled. Active bonds are drawn as bright cyan links with gold markers (and optional `GROUP ×N` labels when zoomed in); press `B` to toggle those highlights. The inspector displays only module, localization-tag, bond, and guest facts.
 
 ## Run data
 

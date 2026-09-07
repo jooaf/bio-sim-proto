@@ -45,6 +45,11 @@ pub struct World {
     /// O(1) per tick instead of a scan over every accumulated site.
     pub biodeposits: FxHashMap<Position, f64>,
     pub biodeposit_scale: f64,
+    /// Per-cell metabolic byproduct conditions `[catalyst, toxin]`, stored
+    /// divided by `byproduct_scale` (same O(1) decay trick as biodeposits).
+    /// These are scalar *conditions*, not ledgered matter/energy.
+    pub byproducts: FxHashMap<Position, [f64; 2]>,
+    pub byproduct_scale: [f64; 2],
     pub occupied_cells: usize,
     pub generated_elements: Vec<i64>,
     pub generated_energy: f64,
@@ -65,6 +70,8 @@ impl World {
             deposits: FxHashMap::default(),
             biodeposits: FxHashMap::default(),
             biodeposit_scale: 1.0,
+            byproducts: FxHashMap::default(),
+            byproduct_scale: [1.0, 1.0],
             occupied_cells: 0,
             generated_elements: vec![0; element_count],
             generated_energy: 0.0,
@@ -322,6 +329,59 @@ impl World {
         self.biodeposits.values().sum::<f64>() * self.biodeposit_scale
     }
 
+    // ----------------------------------------------------------- byproducts
+
+    /// `(catalyst, toxin)` byproduct conditions at a cell (0.0 if ungenerated).
+    #[inline]
+    pub fn byproduct_at(&self, position: Position) -> (f64, f64) {
+        match self.byproducts.get(&position) {
+            Some(value) => (
+                value[0] * self.byproduct_scale[0],
+                value[1] * self.byproduct_scale[1],
+            ),
+            None => (0.0, 0.0),
+        }
+    }
+
+    pub fn add_byproduct(&mut self, position: Position, catalyst: f64, toxin: f64) {
+        if catalyst > 0.0 || toxin > 0.0 {
+            let entry = self.byproducts.entry(position).or_insert([0.0; 2]);
+            if catalyst > 0.0 {
+                entry[0] += catalyst / self.byproduct_scale[0];
+            }
+            if toxin > 0.0 {
+                entry[1] += toxin / self.byproduct_scale[1];
+            }
+        }
+    }
+
+    pub fn decay_byproducts(&mut self, rate: f64) {
+        if rate <= 0.0 {
+            return;
+        }
+        let factor = (1.0 - rate).clamp(0.0, 1.0);
+        self.byproduct_scale[0] *= factor;
+        self.byproduct_scale[1] *= factor;
+        if self.byproduct_scale.iter().any(|&scale| scale < 1.0e-100) {
+            let scales = self.byproduct_scale;
+            self.byproducts.retain(|_, value| {
+                value[0] *= scales[0];
+                value[1] *= scales[1];
+                value.iter().any(|&component| component > 1.0e-9)
+            });
+            self.byproduct_scale = [1.0, 1.0];
+        }
+    }
+
+    pub fn total_byproducts(&self) -> (f64, f64) {
+        let (mut catalyst, mut toxin) = (0.0f64, 0.0f64);
+        for value in self.byproducts.values() {
+            catalyst += value[0] * self.byproduct_scale[0];
+            toxin += value[1] * self.byproduct_scale[1];
+        }
+        (catalyst, toxin)
+    }
+
     // ------------------------------------------------------------------- heat
 
     pub fn add_heat(&mut self, position: Position, amount: f64) {
@@ -502,5 +562,73 @@ impl World {
             }
         }
         total
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn test_world() -> World {
+        let params = WorldGenParams {
+            region_width: 8,
+            region_height: 8,
+            chunk_size: 8,
+            initial_deposits: 10,
+            batch_min: 1,
+            batch_max: 2,
+            element_count: 3,
+            molecule_weights: None,
+        };
+        World::generate(
+            params,
+            vec![GenMolecule {
+                molecule_id: 0,
+                energy_capacity: 1.0,
+                composition: vec![1, 0, 0],
+            }],
+            7,
+        )
+    }
+
+    #[test]
+    fn byproduct_renormalization_preserves_each_component() {
+        let mut world = test_world();
+        let position = (2, 3);
+        world.byproduct_scale = [1.0e-101, 1.0e-50];
+        world
+            .byproducts
+            .insert(position, [3.0 / 1.0e-101, 4.0 / 1.0e-50]);
+
+        world.decay_byproducts(0.5);
+
+        assert_eq!(world.byproduct_scale, [1.0, 1.0]);
+        assert_eq!(world.byproduct_at(position), (1.5, 2.0));
+    }
+
+    #[test]
+    fn byproducts_accumulate_decay_and_normalize() {
+        let mut world = test_world();
+        assert_eq!(world.byproduct_at((1, 2)), (0.0, 0.0));
+        world.add_byproduct((1, 2), 3.0, 4.0);
+        world.add_byproduct((1, 2), 1.0, 0.5);
+        assert_eq!(world.byproduct_at((1, 2)), (4.0, 4.5));
+        world.decay_byproducts(0.5);
+        assert_eq!(world.byproduct_at((1, 2)), (2.0, 2.25));
+        let (c, t) = world.total_byproducts();
+        assert_eq!((c, t), (2.0, 2.25));
+        // Exercise the renormalization path: repeated decay drives the
+        // scale below 1e-100, which must rescale stored values, reset the
+        // scale to 1.0, and prune negligible cells.
+        for _ in 0..500 {
+            world.decay_byproducts(0.5);
+        }
+        // Renormalization fired once (scale < 1e-100) and reset it to 1.0;
+        // since then the scale decayed further but must stay >= 1e-100.
+        assert!((1e-100..1.0).contains(&world.byproduct_scale[0]));
+        assert!((1e-100..1.0).contains(&world.byproduct_scale[1]));
+        // The entry was pruned at renormalization.
+        let (c, t) = world.byproduct_at((1, 2));
+        assert_eq!((c, t), (0.0, 0.0));
     }
 }

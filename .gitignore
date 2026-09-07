@@ -1,21 +1,48 @@
-.venv/
-dist/
-__pycache__/
+# Python environments and caches
+**/.venv/
+**/__pycache__/
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
 *.py[cod]
-.pytest_cache/
-.mypy_cache/
-runs/*
-!runs/.gitkeep
+
+# Build products and machine-specific binaries
+**/dist/
+**/build/
+**/target/
+*.so
+*.dylib
+*.dll
+*.exe
+
+# Runtime output
+**/runs/**
+!/runs/.gitkeep
 sweeps/
 experiments/phase1_runs/
 experiments/replicator_length_study/results/
 logs/
-notebooks/.ipynb_checkpoints/
 *.pid
-*.csv
+*.log
+*.stdout
+*.stderr
 *.jsonl
-*.json
+*.jsonl.partial
 *.sqllite
+*.sqlite
+*.sqlite3
+*.npz
+*.npy
+
+# Keep prose reports in the organism experiment-results tree, but not data.
+/organism-sim/experiment_results/**
+!/organism-sim/experiment_results/**/
+!/organism-sim/experiment_results/**/*.md
+
+# Generated benchmark data; retain compact Markdown summaries.
+/organism-sim/bench/results/**
+!/organism-sim/bench/results/**/
+!/organism-sim/bench/results/**/*.md
+notebooks/.ipynb_checkpoints/
 nu-tool-output_*.txt
-organism-sim/rust/target/
 .DS_Store

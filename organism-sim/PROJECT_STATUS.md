@@ -213,6 +213,10 @@ The specification defines:
 - Passive and active detoxification
 - Predation based partly on body compatibility
 - Matter recycling through death and environmental deposits
+- Optional element-conserving environmental reactions (`A + B → C`)
+- Sparse catalyst/toxin byproduct fields with scale-based decay
+- Local chemistry fit coupled to digestion, observations, and guest upkeep
+- Bounded internal guests with chemistry-dependent demand/exchange telemetry
 
 ### Energy and mana
 
@@ -546,6 +550,7 @@ Tests cover:
 - Sampled compressed heat/deposit snapshots and committed SQLite every 50 ticks
 - Preserved final detailed and spatial state at run close
 - Added full-fidelity interval overrides through config and CLI
+- Indexed environmental reaction candidates and staged product writes to keep the dynamic phase bounded
 
 The 3,418-tick seed-7 equilibrium run originally completed at approximately 6.3 recorded ticks/second and produced an approximately 363 MB database. The optimized implementation reproduced its exact final state and produced an approximately 125 MB database. A later GUI run reached 1,206 living organisms at tick 5,518 and averaged about 12.1 ticks/second wall-clock. Dense rendering reduced a synthetic 1,200-organism, 4,200-deposit frame from 19.0 ms to 8.2 ms.
 
@@ -555,7 +560,8 @@ A coarse whole-kernel Rust/PyO3 port now owns organisms, chemistry, genomes, the
 
 - The prototype does not implement every full-system detail in `SPEC.md`.
 - Species assignment is online rather than full candidate-lineage clustering.
-- Chemistry uses a simplified generated catalog and compact reactions.
+- Chemistry uses a simplified generated catalog and compact reactions. Dynamic runs reserve a bounded closure of dimer compounds at catalog generation; this is intentional and means dynamic/off runs should be interpreted as paired ecological conditions, not identical molecule catalogs.
+- The dynamic-chemistry association and guest-economy metrics are descriptive; the five-seed study did not produce enough persistent internal guests to support an endosymbiosis claim.
 - Multi-parent sexual reproduction is conceptually supported by genetics but runtime mating usually uses pairs.
 - Colonies are lightweight and do not yet implement full composite reproduction.
 - The neural policy remains future work.
@@ -626,6 +632,12 @@ Summarize the latest run:
 
 ```text
 uv run organism-sim-report
+```
+
+Run the paired dynamic-chemistry study (five seeds per condition):
+
+```text
+nu experiments/run_dynamic_chemistry.nu
 ```
 
 Run tests and lint:

@@ -70,6 +70,9 @@ pub struct Organism {
     pub target_mass: f64,
     pub maintenance_debt: f64,
     pub toxin_load: f64,
+    /// Catalog-derived mean reactivity of the organism's diet signature.
+    /// Filled by the kernel when the phenotype is sampled.
+    pub diet_reactivity_mean: f64,
     pub reproduction_cooldown: u32,
     pub alive: bool,
     pub facing: (i32, i32),
@@ -149,6 +152,7 @@ impl Organism {
             target_mass,
             maintenance_debt: 0.0,
             toxin_load: 0.0,
+            diet_reactivity_mean: 0.0,
             reproduction_cooldown: 0,
             alive: true,
             facing: (1, 0),
@@ -405,4 +409,6 @@ pub struct Stats {
     pub v2_intent_counts: [u64; crate::behavior::intent::INTENT_TYPE_COUNT],
     pub v2_intent_failures: u64,
     pub audit_error: f64,
+    pub environmental_reactions: u64,
+    pub byproduct_emissions: u64,
 }

@@ -22,7 +22,9 @@ use behavior::intent::{
 };
 use behavior::neural::NeuralState;
 use behavior::BehaviorModel;
-use chemistry::{add_batch, inventory_count, inventory_energy, Batch, Catalog, Inventory};
+use chemistry::{
+    add_batch, inventory_count, inventory_energy, Batch, Catalog, Inventory, ReactionRule,
+};
 use config::SimConfig;
 use emergence::{Bond, InternalGuest, ModulePrimitive};
 use entities::{last_action, Colony, Corpse, MagicEffect, Organism, Species, Stats};
@@ -41,7 +43,7 @@ use pyo3::exceptions::{PyRuntimeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::{PyDict, PyList};
 use rayon::prelude::*;
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 use std::sync::Arc;
 
 const CORPSE_TTL: u32 = 200;
@@ -62,6 +64,7 @@ const DIRECTIONS_CLOCKWISE: [(i32, i32); 8] = [
 const EGOCENTRIC_FORWARD: [f32; 8] = [1.0, 0.707, 0.0, -0.707, -1.0, -0.707, 0.0, 0.707];
 const EGOCENTRIC_RIGHT: [f32; 8] = [0.0, 0.707, 1.0, 0.707, 0.0, -0.707, -1.0, -0.707];
 const NO_ORGANISM_INDEX: usize = usize::MAX;
+const NO_BATCH_INDEX: usize = usize::MAX;
 type SharedOffsets = Arc<[(i32, i32)]>;
 type NearbyOffsetCache = FxHashMap<(usize, usize), SharedOffsets>;
 type FoodCandidate = (Position, u16, f64);
@@ -110,6 +113,7 @@ struct ParallelMaintenanceDelta {
     recurrent_brain_paid: f64,
     dirty_old_area: Option<usize>,
     expelled: Option<Batch>,
+    byproduct: Option<(f64, f64)>,
     attrition_kill: bool,
 }
 
@@ -137,6 +141,69 @@ struct ParallelSelfResolutionDelta {
 
 fn unit_f32(value: f64) -> f32 {
     value.clamp(0.0, 1.0) as f32
+}
+
+fn diet_reactivity_mean(phenotype: &Phenotype, catalog: &Catalog) -> f64 {
+    let mut weighted_reactivity = 0.0;
+    let mut total_match = 0.0;
+    for molecule in &catalog.molecules {
+        let dietary_match = genetics::similarity(&molecule.signature, &phenotype.diet_signature);
+        total_match += dietary_match;
+        weighted_reactivity += dietary_match * molecule.reactivity;
+    }
+    if total_match > 0.0 {
+        weighted_reactivity / total_match
+    } else {
+        0.0
+    }
+}
+
+fn chemistry_signals_for(organism: &Organism, world: &World, config: &SimConfig) -> (f64, f64) {
+    if !config.dynamic_chemistry_enabled {
+        return (0.0, 0.0);
+    }
+    let (catalyst, toxin) = world.byproduct_at(organism.position);
+    let diet_reactivity = organism.diet_reactivity_mean;
+    let sensitivity = organism.phenotype.toxin_sensitivity.iter().sum::<f64>() / 4.0;
+    let fit = config.chemistry_coupling
+        * (catalyst * diet_reactivity - toxin * sensitivity).clamp(-1.0, 1.0);
+    (fit, toxin)
+}
+
+fn guest_reactivity_for(organism: &Organism, catalog: &Catalog) -> f64 {
+    let Some(cellular) = &organism.cellular else {
+        return 0.0;
+    };
+    let mut total_units = 0.0;
+    let mut weighted_reactivity = 0.0;
+    for guest in &cellular.guests {
+        for batch in &guest.inventory {
+            if batch.count <= 0 {
+                continue;
+            }
+            let units = batch.count as f64;
+            total_units += units;
+            weighted_reactivity += units * catalog.molecules[batch.molecule_id as usize].reactivity;
+        }
+    }
+    if total_units > 0.0 {
+        (weighted_reactivity / total_units).clamp(0.0, 1.0)
+    } else {
+        0.0
+    }
+}
+
+fn calculate_byproduct_emission(
+    batch: &Batch,
+    reactivity: f64,
+    permeability: f64,
+    strength: f64,
+) -> (f64, f64) {
+    let energy = batch.energy.max(0.0);
+    (
+        energy * strength * (0.25 + reactivity),
+        energy * strength * reactivity * permeability,
+    )
 }
 
 fn energy_tolerance(initial_energy: f64, generated_energy: f64) -> f64 {
@@ -338,10 +405,21 @@ struct EmergenceStats {
     internalizations: u64,
     guest_replications: u64,
     guest_losses: u64,
+    guest_energy_demand: f64,
+    guest_energy_exchange: f64,
     component_actions: u64,
     component_moves: u64,
     propagules: u64,
     propagated_cells: u64,
+}
+
+#[derive(Default, Debug)]
+struct ChemistryMetrics {
+    regime_mean: f64,
+    regime_variance: f64,
+    species_association: f64,
+    guest_regime_delta: f64,
+    guest_hosts: usize,
 }
 
 struct ComponentMovePlan {
@@ -413,6 +491,8 @@ struct CompressibilityMetrics {
 pub struct KernelState {
     config: SimConfig,
     catalog: Catalog,
+    reaction_rules: Vec<ReactionRule>,
+    reaction_reactant_flags: Vec<bool>,
     world: World,
     /// Dense living working set; permanent IDs map through organism_indices.
     organisms: Vec<Organism>,
@@ -455,6 +535,9 @@ pub struct KernelState {
     diffuse_source_index: FxHashMap<(i64, i64), usize>,
     diffuse_scratch: Vec<f64>,
     deposit_positions: Vec<Position>,
+    reaction_positions: Vec<Position>,
+    reaction_batch_indices: Vec<usize>,
+    reaction_products: Vec<Batch>,
     heat_adds: Vec<(Position, f64)>,
     footprint_buf: Vec<Position>,
     action_cells_r1: Vec<Position>,
@@ -628,6 +711,7 @@ fn v3_local_maintenance(
     organism: &mut Organism,
     config: &SimConfig,
     catalog: &Catalog,
+    world: &World,
     reference_energy: f64,
     tick: u32,
     colony_bonus: f64,
@@ -641,6 +725,7 @@ fn v3_local_maintenance(
     );
     let position = organism.position;
     let mut heat = 0.0;
+    let (local_fit, local_toxin) = chemistry_signals_for(organism, world, config);
 
     let decay = organism.mana * config.mana_decay;
     organism.mana -= decay;
@@ -738,6 +823,7 @@ fn v3_local_maintenance(
         organism.integrity <= 0.0 || organism.maintenance_debt > reference_energy * 4.0;
     let mut dirty_old_area = None;
     let mut expelled = None;
+    let mut byproduct = None;
 
     if !attrition_kill
         && !organism.gut.is_empty()
@@ -760,20 +846,41 @@ fn v3_local_maintenance(
         heat += activation;
         let catalysis =
             organism.substrate_module_expression(ModulePrimitive::Catalysis, molecule_id);
+        let guest_boost = if config.dynamic_chemistry_enabled {
+            1.0 + config.guest_niche_coupling * guest_reactivity_for(organism, catalog)
+        } else {
+            1.0
+        };
         let capture_target = (product.energy
             * organism.phenotype.digestion
             * dietary_match
-            * (1.0 + config.emergence_module_effect * catalysis))
-            .min(product.energy);
+            * (1.0 + config.emergence_module_effect * catalysis)
+            * (1.0 + local_fit)
+            * guest_boost)
+            .clamp(0.0, product.energy);
         let captured = organism.add_body_energy(capture_target, catalog);
         let remaining = product.energy - captured;
         let process_heat = remaining * 0.15;
         heat += process_heat;
         product.energy = (remaining - process_heat).max(0.0);
+        if config.dynamic_chemistry_enabled {
+            byproduct = Some(calculate_byproduct_emission(
+                &product,
+                molecule.reactivity,
+                molecule.permeability,
+                config.byproduct_strength,
+            ));
+        }
         let sensitivity: f64 = (0..4)
             .map(|index| molecule.signature[index] * organism.phenotype.toxin_sensitivity[index])
             .sum();
-        organism.toxin_load += molecule.reactivity * molecule.permeability * sensitivity;
+        let environmental_toxin_scale = if config.dynamic_chemistry_enabled {
+            1.0 + (local_toxin * config.chemistry_coupling).clamp(0.0, 2.0)
+        } else {
+            1.0
+        };
+        organism.toxin_load +=
+            molecule.reactivity * molecule.permeability * sensitivity * environmental_toxin_scale;
         let can_grow = (organism.peek_structural_mass(catalog) as f64) < organism.target_mass * 1.3;
         if rng.chance(organism.phenotype.assimilation * dietary_match) && can_grow {
             dirty_old_area = Some(old_area);
@@ -809,6 +916,7 @@ fn v3_local_maintenance(
         recurrent_brain_paid,
         dirty_old_area,
         expelled,
+        byproduct,
         attrition_kill,
     }
 }
@@ -880,6 +988,16 @@ impl KernelState {
         }
         let mut streams = Streams::from_seed(config.seed);
         let catalog = Catalog::generate(&config, &mut streams.chemistry);
+        let reaction_rules = if config.dynamic_chemistry_enabled {
+            catalog.reaction_rules(config.reaction_rule_count)
+        } else {
+            Vec::new()
+        };
+        let mut reaction_reactant_flags = vec![false; catalog.molecules.len()];
+        for rule in &reaction_rules {
+            reaction_reactant_flags[rule.a as usize] = true;
+            reaction_reactant_flags[rule.b as usize] = true;
+        }
         let gen_molecules: Vec<GenMolecule> = catalog
             .molecules
             .iter()
@@ -921,6 +1039,8 @@ impl KernelState {
             reference_energy: catalog.reference_energy,
             config,
             catalog,
+            reaction_rules,
+            reaction_reactant_flags,
             world,
             organisms: Vec::new(),
             organism_indices: Vec::new(),
@@ -956,6 +1076,9 @@ impl KernelState {
             diffuse_source_index: FxHashMap::default(),
             diffuse_scratch: Vec::new(),
             deposit_positions: Vec::new(),
+            reaction_positions: Vec::new(),
+            reaction_batch_indices: Vec::new(),
+            reaction_products: Vec::new(),
             heat_adds: Vec::new(),
             footprint_buf: Vec::new(),
             action_cells_r1: Vec::new(),
@@ -1155,6 +1278,89 @@ impl KernelState {
             metrics.largest_bond_component = metrics.largest_bond_component.max(size);
         }
         metrics
+    }
+
+    /// Summarize spatial association between living populations and the local
+    /// chemical regime. The regime is a bounded catalyst-minus-toxin score;
+    /// this deliberately measures an environmental fact rather than assigning
+    /// an ecological role to an organism.
+    fn chemistry_metrics(&self) -> ChemistryMetrics {
+        if !self.config.dynamic_chemistry_enabled || self.living_ordered.is_empty() {
+            return ChemistryMetrics::default();
+        }
+
+        let population = self.living_ordered.len() as f64;
+        let mut sum = 0.0;
+        let mut sum_squared = 0.0;
+        let mut species_groups: BTreeMap<u32, (usize, f64)> = BTreeMap::new();
+        let mut guest_sum = 0.0;
+        let mut guest_count = 0usize;
+        let mut no_guest_sum = 0.0;
+        let mut no_guest_count = 0usize;
+        for &organism_id in &self.living_ordered {
+            let organism = self.organism(organism_id);
+            let (catalyst, toxin) = self.world.byproduct_at(organism.position);
+            let total = catalyst + toxin;
+            let regime = if total > 0.0 {
+                (catalyst - toxin) / (1.0 + total)
+            } else {
+                0.0
+            };
+            sum += regime;
+            sum_squared += regime * regime;
+            let group = species_groups
+                .entry(organism.species_id)
+                .or_insert((0, 0.0));
+            group.0 += 1;
+            group.1 += regime;
+            let has_guest = organism
+                .cellular
+                .as_ref()
+                .is_some_and(|cellular| !cellular.guests.is_empty());
+            if has_guest {
+                guest_sum += regime;
+                guest_count += 1;
+            } else {
+                no_guest_sum += regime;
+                no_guest_count += 1;
+            }
+        }
+
+        let mean = sum / population;
+        let total_sum_squares = (sum_squared - sum * sum / population).max(0.0);
+        let between_sum_squares = species_groups
+            .values()
+            .map(|&(count, group_sum)| {
+                let count = count as f64;
+                count * (group_sum / count - mean).powi(2)
+            })
+            .sum::<f64>();
+        let species_association = if total_sum_squares > 1.0e-12 {
+            (between_sum_squares / total_sum_squares).clamp(0.0, 1.0)
+        } else {
+            0.0
+        };
+        let guest_mean = if guest_count > 0 {
+            guest_sum / guest_count as f64
+        } else {
+            0.0
+        };
+        let no_guest_mean = if no_guest_count > 0 {
+            no_guest_sum / no_guest_count as f64
+        } else {
+            0.0
+        };
+        ChemistryMetrics {
+            regime_mean: mean,
+            regime_variance: total_sum_squares / population,
+            species_association,
+            guest_regime_delta: if guest_count > 0 && no_guest_count > 0 {
+                guest_mean - no_guest_mean
+            } else {
+                0.0
+            },
+            guest_hosts: guest_count,
+        }
     }
 
     fn compressibility_metrics(&self) -> CompressibilityMetrics {
@@ -1542,6 +1748,8 @@ impl KernelState {
                 body,
                 target_mass,
             );
+            organism.diet_reactivity_mean =
+                diet_reactivity_mean(&organism.phenotype, &self.catalog);
             organism.mana = rng.uniform(0.0, organism.phenotype.mana_capacity * 0.2);
             organism.max_integrity = (4.0
                 + organism.phenotype.adult_area as f64 * organism.phenotype.density * 2.0)
@@ -1725,9 +1933,14 @@ impl KernelState {
             self.produce_deposits();
             self.resolve_effects();
             self.decompose_environment();
+            self.run_environmental_reactions();
             if self.config.biodeposits_enabled {
                 self.world
                     .decay_biodeposits(self.config.biodeposit_decay_rate);
+            }
+            if self.config.dynamic_chemistry_enabled {
+                self.world
+                    .decay_byproducts(self.config.byproduct_decay_rate);
             }
             self.run_organism_loop();
             self.update_cellular_network();
@@ -1768,9 +1981,14 @@ impl KernelState {
 
             let started = Instant::now();
             self.decompose_environment();
+            self.run_environmental_reactions();
             if self.config.biodeposits_enabled {
                 self.world
                     .decay_biodeposits(self.config.biodeposit_decay_rate);
+            }
+            if self.config.dynamic_chemistry_enabled {
+                self.world
+                    .decay_byproducts(self.config.byproduct_decay_rate);
             }
             profile.decomposition_ns += started.elapsed().as_nanos();
 
@@ -2183,7 +2401,16 @@ impl KernelState {
         } else {
             0.0
         };
-        observation.values[O_LOCAL_FOOD] = local_food;
+        if self.config.dynamic_chemistry_enabled {
+            let (local_fit, environmental_toxin) = self.local_chemistry_signals(organism);
+            observation.values[O_LOCAL_FOOD] = unit_f32(local_food as f64 + 0.5 * local_fit);
+            observation.values[O_TOXIN] = unit_f32(
+                organism.toxin_load / organism.phenotype.toxin_tolerance.max(1.0e-9)
+                    + environmental_toxin * self.config.chemistry_coupling,
+            );
+        } else {
+            observation.values[O_LOCAL_FOOD] = local_food;
+        }
         observation.values[O_VISIBLE_FOOD] = directional_food.iter().copied().fold(0.0, f32::max);
         observation.values[O_LOCAL_HEAT] = local_heat;
         observation.values[O_VISIBLE_HEAT] = directional_heat.iter().copied().fold(0.0, f32::max);
@@ -3001,6 +3228,7 @@ impl KernelState {
                         organism,
                         config,
                         catalog,
+                        &self.world,
                         reference_energy,
                         tick,
                         colony_bonus,
@@ -3036,6 +3264,12 @@ impl KernelState {
             }
             if let Some(expelled) = delta.expelled {
                 self.world.deposit_batch_raw(delta.position, expelled);
+            }
+            if let Some((catalyst, toxin)) = delta.byproduct {
+                self.world.add_byproduct(delta.position, catalyst, toxin);
+                if catalyst > 0.0 || toxin > 0.0 {
+                    self.stats.byproduct_emissions += 1;
+                }
             }
             if delta.attrition_kill {
                 kills.push(delta.organism_id);
@@ -3425,11 +3659,19 @@ impl KernelState {
         let catalysis = self
             .organism(oid)
             .substrate_module_expression(ModulePrimitive::Catalysis, molecule_id);
+        let (local_fit, local_toxin) = self.local_chemistry_signals(self.organism(oid));
+        let guest_boost = if self.config.dynamic_chemistry_enabled {
+            1.0 + self.config.guest_niche_coupling * self.guest_reactivity(oid)
+        } else {
+            1.0
+        };
         let capture_target = (product.energy
             * digestion
             * match_
-            * (1.0 + self.config.emergence_module_effect * catalysis))
-            .min(product.energy);
+            * (1.0 + self.config.emergence_module_effect * catalysis)
+            * (1.0 + local_fit)
+            * guest_boost)
+            .clamp(0.0, product.energy);
         let captured = {
             let catalog = &self.catalog;
             self.organisms[self.organism_indices[oid as usize - 1]]
@@ -3441,13 +3683,32 @@ impl KernelState {
         product.energy = (remaining - process_heat).max(0.0);
         let position = self.organism(oid).position;
         self.world.add_heat(position, process_heat);
+        if self.config.dynamic_chemistry_enabled {
+            let (catalyst_emission, toxin_emission) = Self::byproduct_emission(
+                &product,
+                def_reactivity,
+                def_permeability,
+                self.config.byproduct_strength,
+            );
+            self.world
+                .add_byproduct(position, catalyst_emission, toxin_emission);
+            if catalyst_emission > 0.0 || toxin_emission > 0.0 {
+                self.stats.byproduct_emissions += 1;
+            }
+        }
 
         let sensitivity: f64 = (0..4)
             .map(|i| def_signature[i] * toxin_sensitivity[i])
             .sum();
         {
+            let environmental_toxin_scale = if self.config.dynamic_chemistry_enabled {
+                1.0 + (local_toxin * self.config.chemistry_coupling).clamp(0.0, 2.0)
+            } else {
+                1.0
+            };
             let organism = self.organism_mut(oid);
-            organism.toxin_load += def_reactivity * def_permeability * sensitivity;
+            organism.toxin_load +=
+                def_reactivity * def_permeability * sensitivity * environmental_toxin_scale;
         }
 
         let target_mass = {
@@ -3501,13 +3762,65 @@ impl KernelState {
         }
     }
 
+    // ------------------------------------------------ dynamic chemistry
+
+    /// Byproduct emissions from a digested batch. These are scalar local
+    /// conditions, not ledgered matter or energy.
+    fn byproduct_emission(
+        batch: &Batch,
+        reactivity: f64,
+        permeability: f64,
+        strength: f64,
+    ) -> (f64, f64) {
+        calculate_byproduct_emission(batch, reactivity, permeability, strength)
+    }
+
+    fn local_chemistry_signals(&self, organism: &Organism) -> (f64, f64) {
+        chemistry_signals_for(organism, &self.world, &self.config)
+    }
+
+    /// Local byproduct fit in [-1, 1]: catalysts help a reactive diet while
+    /// environmental toxin penalizes sensitive metabolisms.
+    fn local_chemistry_fit(&self, organism: &Organism) -> f64 {
+        self.local_chemistry_signals(organism).0
+    }
+
+    /// Mean reactivity of material held by a host's internal guests.
+    fn guest_reactivity(&self, organism_id: u32) -> f64 {
+        if !self.has_organism(organism_id) {
+            return 0.0;
+        }
+        guest_reactivity_for(self.organism(organism_id), &self.catalog)
+    }
+
     // --------------------------------------------------- environment phases
 
     fn prepare_deposit_positions(&mut self) {
         self.deposit_positions.clear();
-        if self.config.deposit_production_rate > 0.0 || self.config.decomposition_rate > 0.0 {
+        if self.config.deposit_production_rate > 0.0
+            || self.config.decomposition_rate > 0.0
+            || self.config.dynamic_chemistry_enabled
+        {
             self.deposit_positions
                 .extend(self.world.deposits.keys().copied());
+            if self.config.dynamic_chemistry_enabled {
+                self.deposit_positions.sort_unstable();
+                self.reaction_positions.clear();
+                if !self.reaction_rules.is_empty() {
+                    self.reaction_positions
+                        .extend(self.deposit_positions.iter().copied().filter(|position| {
+                            self.world.deposits.get(position).is_some_and(|inventory| {
+                                inventory.iter().any(|batch| {
+                                    self.reaction_reactant_flags
+                                        .get(batch.molecule_id as usize)
+                                        .copied()
+                                        .unwrap_or(false)
+                                        && batch.count > 0
+                                })
+                            })
+                        }));
+                }
+            }
         }
     }
 
@@ -3583,6 +3896,130 @@ impl KernelState {
         for &(position, amount) in self.heat_adds.iter() {
             self.world.add_heat(position, amount);
         }
+    }
+
+    fn run_environmental_reactions(&mut self) {
+        const MAX_REACTIONS_PER_CELL: usize = 2;
+        if !self.config.dynamic_chemistry_enabled
+            || self.reaction_rules.is_empty()
+            || self.config.environmental_reaction_rate <= 0.0
+        {
+            return;
+        }
+
+        let base_rate = self.config.environmental_reaction_rate;
+        let thermodynamics = self.config.reaction_thermodynamics;
+        let reference_energy = self.reference_energy.max(1.0e-9);
+        let mut batch_indices = std::mem::take(&mut self.reaction_batch_indices);
+        batch_indices.resize(self.catalog.molecules.len(), NO_BATCH_INDEX);
+        let mut products = std::mem::take(&mut self.reaction_products);
+
+        for position_index in 0..self.reaction_positions.len() {
+            let position = self.reaction_positions[position_index];
+            batch_indices.fill(NO_BATCH_INDEX);
+            {
+                let Some(inventory) = self.world.deposits.get(&position) else {
+                    continue;
+                };
+                for (index, batch) in inventory.iter().enumerate() {
+                    if batch.count > 0 {
+                        batch_indices[batch.molecule_id as usize] = index;
+                    }
+                }
+            }
+            let heat = self.world.heat_at_peek(position);
+            let (catalyst, _) = self.world.byproduct_at(position);
+            let temperature_factor =
+                (1.0 + (heat / (2.0 * reference_energy)).min(1.0)).clamp(1.0, 2.0);
+            let catalyst_factor = 1.0 + 2.0 * catalyst.clamp(0.0, 1.0);
+            let mut reactions = 0usize;
+            let mut reaction_heat = 0.0;
+            products.clear();
+
+            for rule in self.reaction_rules.iter().copied() {
+                if reactions >= MAX_REACTIONS_PER_CELL {
+                    break;
+                }
+                let a_index = batch_indices[rule.a as usize];
+                let b_index = batch_indices[rule.b as usize];
+                let available = a_index != NO_BATCH_INDEX
+                    && b_index != NO_BATCH_INDEX
+                    && self.world.deposits.get(&position).is_some_and(|inventory| {
+                        if a_index == b_index {
+                            inventory[a_index].count >= 2
+                        } else {
+                            inventory[a_index].count > 0 && inventory[b_index].count > 0
+                        }
+                    });
+                if !available {
+                    continue;
+                }
+                let product_id = rule.c as usize;
+                let season_factor = self
+                    .seasons
+                    .current
+                    .molecule_charge_affinities
+                    .get(product_id)
+                    .copied()
+                    .unwrap_or(1.0)
+                    .clamp(0.25, 2.0);
+                let probability =
+                    (base_rate * temperature_factor * season_factor * catalyst_factor)
+                        .clamp(0.0, 1.0);
+                if !self.rng.chance(probability) {
+                    continue;
+                }
+
+                let Some((released, product)) =
+                    self.world
+                        .deposits
+                        .get_mut(&position)
+                        .and_then(|inventory| {
+                            if inventory[a_index].count <= 0
+                                || inventory[b_index].count <= 0
+                                || (a_index == b_index && inventory[a_index].count < 2)
+                            {
+                                return None;
+                            }
+                            let first = inventory[a_index].take(1);
+                            let second = if a_index == b_index {
+                                inventory[a_index].take(1)
+                            } else {
+                                inventory[b_index].take(1)
+                            };
+                            let input_energy = first.energy + second.energy;
+                            let released = input_energy * thermodynamics;
+                            Some((
+                                released,
+                                Batch {
+                                    molecule_id: rule.c,
+                                    count: 1,
+                                    energy: input_energy - released,
+                                },
+                            ))
+                        })
+                else {
+                    continue;
+                };
+                reaction_heat += released;
+                products.push(product);
+                reactions += 1;
+                self.stats.environmental_reactions += 1;
+            }
+
+            if let Some(inventory) = self.world.deposits.get_mut(&position) {
+                inventory.retain(|batch| batch.count > 0);
+                for product in products.drain(..) {
+                    add_batch(inventory, product);
+                }
+            }
+            if reaction_heat > 0.0 {
+                self.world.add_heat(position, reaction_heat);
+            }
+        }
+
+        self.reaction_batch_indices = batch_indices;
+        self.reaction_products = products;
     }
 
     fn update_cellular_network(&mut self) {
@@ -3807,13 +4244,20 @@ impl KernelState {
             .unwrap_or_default();
         let mut retained = Vec::with_capacity(guests.len());
         let mut offspring = Vec::new();
+        let niche_fit = if self.config.dynamic_chemistry_enabled {
+            self.local_chemistry_fit(self.organism(organism_id))
+        } else {
+            0.0
+        };
         for mut guest in guests.drain(..) {
             guest.age = guest.age.saturating_add(1);
             let demand = self.reference_energy
                 * self.config.emergence_module_cost
-                * (0.05 + 0.15 * (1.0 - tolerance));
+                * (0.05 + 0.15 * (1.0 - tolerance))
+                * (1.0 - self.config.guest_niche_coupling * niche_fit.max(0.0)).max(0.0);
             let paid = Self::debit_guest_energy(&mut guest, demand);
             self.world.add_heat(position, paid);
+            self.emergence_stats.guest_energy_demand += paid;
             let guest_energy = inventory_energy(&guest.inventory) + guest.free_energy;
             if guest_energy <= self.reference_energy * 1.0e-8 {
                 for batch in guest.inventory.drain(..) {
@@ -3824,7 +4268,10 @@ impl KernelState {
                 continue;
             }
 
-            let exchange = self.config.emergence_exchange_rate * guest.exchange as f64 * tolerance;
+            let exchange = self.config.emergence_exchange_rate
+                * guest.exchange as f64
+                * tolerance
+                * (1.0 + self.config.guest_niche_coupling * niche_fit.max(0.0));
             let offered = guest_energy * exchange;
             let transferred = Self::debit_guest_energy(&mut guest, offered);
             let accepted = {
@@ -3833,6 +4280,7 @@ impl KernelState {
                     .add_body_energy(transferred, catalog)
             };
             self.world.add_heat(position, transferred - accepted);
+            self.emergence_stats.guest_energy_exchange += accepted;
 
             if retained.len() + offspring.len() + 1 < self.config.emergence_max_internal_guests
                 && guest_energy > self.reference_energy * 0.5
@@ -4336,7 +4784,16 @@ impl KernelState {
         observation.values[O_SIGHT] =
             unit_f32(effective_sight as f64 / self.config.max_sight.max(1) as f64);
         observation.values[O_COLONY] = if in_colony { 1.0 } else { 0.0 };
-        observation.values[O_LOCAL_FOOD] = local_food;
+        if self.config.dynamic_chemistry_enabled {
+            let (local_fit, environmental_toxin) = self.local_chemistry_signals(self.organism(oid));
+            observation.values[O_LOCAL_FOOD] = unit_f32(local_food as f64 + 0.5 * local_fit);
+            observation.values[O_TOXIN] = unit_f32(
+                toxin_load / phenotype.toxin_tolerance.max(1.0e-9)
+                    + environmental_toxin * self.config.chemistry_coupling,
+            );
+        } else {
+            observation.values[O_LOCAL_FOOD] = local_food;
+        }
         observation.values[O_VISIBLE_FOOD] = directional_food.iter().copied().fold(0.0, f32::max);
         observation.values[O_LOCAL_HEAT] = local_heat;
         observation.values[O_VISIBLE_HEAT] = directional_heat.iter().copied().fold(0.0, f32::max);
@@ -5020,9 +5477,15 @@ impl KernelState {
             None => false,
         };
         let o = self.organism(oid);
+        let local_fit = self.local_chemistry_fit(o);
+        let food_signal = food.as_ref().map(|f| f.2.max(0.0)).unwrap_or(0.0);
         let feature_values: [f64; 10] = [
             hunger,
-            food.as_ref().map(|f| f.2.max(0.0)).unwrap_or(0.0),
+            if self.config.dynamic_chemistry_enabled {
+                (food_signal + 0.5 * local_fit).clamp(0.0, 1.0)
+            } else {
+                food_signal
+            },
             (local_heat / self.reference_energy.max(1e-9)).min(1.0),
             (threat / self.reference_body_mass.max(1.0)).min(1.0),
             if prey.is_some() { 1.0 } else { 0.0 },
@@ -6261,6 +6724,7 @@ impl KernelState {
                 body,
                 target_mass,
             );
+            child.diet_reactivity_mean = diet_reactivity_mean(&child.phenotype, &self.catalog);
             child.max_integrity =
                 (4.0 + child.phenotype.adult_area as f64 * child.phenotype.density * 2.0).max(2.0);
             child.integrity = child.max_integrity;
@@ -6503,6 +6967,7 @@ impl KernelState {
                 child_body,
                 target_mass,
             );
+            child.diet_reactivity_mean = diet_reactivity_mean(&child.phenotype, &self.catalog);
             child.max_integrity =
                 (4.0 + child.phenotype.adult_area as f64 * child.phenotype.density * 2.0).max(2.0);
             child.integrity = child.max_integrity;
@@ -6745,6 +7210,25 @@ impl KernelState {
             organism.invalidate_body_cache();
         }
         self.world.add_heat(position, guest_free_energy);
+        if self.config.dynamic_chemistry_enabled {
+            let death_positions = self
+                .occupancy_dirty
+                .get(&oid)
+                .cloned()
+                .filter(|positions| !positions.is_empty())
+                .unwrap_or_else(|| vec![position]);
+            let mass = self.catalog.inventory_mass(&corpse_inventory) as f64
+                / self.reference_body_mass.max(1.0);
+            let share = mass / death_positions.len() as f64;
+            for death_position in death_positions {
+                let catalyst = share * self.config.byproduct_strength * 0.5;
+                let toxin = share * self.config.byproduct_strength * 0.25;
+                self.world.add_byproduct(death_position, catalyst, toxin);
+                if catalyst > 0.0 || toxin > 0.0 {
+                    self.stats.byproduct_emissions += 1;
+                }
+            }
+        }
         if self.config.biodeposits_enabled {
             let death_positions = self
                 .occupancy_dirty
@@ -7018,6 +7502,29 @@ impl KernelState {
             h.f64(self.config.biodeposit_movement_resistance);
             h.f64(self.config.biodeposit_cover_strength);
             h.f64(self.config.biodeposit_concealment);
+        }
+        if self.config.dynamic_chemistry_enabled {
+            h.bytes(b"dynamic-environmental-chemistry-v1");
+            h.u64(self.config.reaction_rule_count as u64);
+            h.f64(self.config.environmental_reaction_rate);
+            h.f64(self.config.reaction_thermodynamics);
+            h.f64(self.config.byproduct_strength);
+            h.f64(self.config.byproduct_decay_rate);
+            h.f64(self.config.chemistry_coupling);
+            h.f64(self.config.guest_niche_coupling);
+            h.u64(self.reaction_rules.len() as u64);
+            h.f64(self.world.byproduct_scale[0]);
+            h.f64(self.world.byproduct_scale[1]);
+            let mut byproducts: Vec<(&Position, &[f64; 2])> =
+                self.world.byproducts.iter().collect();
+            byproducts.sort_unstable_by_key(|(position, _)| **position);
+            h.u64(byproducts.len() as u64);
+            for (position, value) in byproducts {
+                h.i64(position.0);
+                h.i64(position.1);
+                h.f64(value[0]);
+                h.f64(value[1]);
+            }
         }
         h.u64(self.organisms.len() as u64);
         for organism in &self.organisms {
@@ -8411,6 +8918,53 @@ impl KernelSimulation {
         )?;
         dict.set_item("biodeposits", biodeposits)?;
 
+        let byproducts = PyDict::new(py);
+        let mut byproduct_entries: Vec<(Position, [f64; 2])> = self
+            .state
+            .world
+            .byproducts
+            .iter()
+            .map(|(&position, &value)| {
+                (
+                    position,
+                    [
+                        value[0] * self.state.world.byproduct_scale[0],
+                        value[1] * self.state.world.byproduct_scale[1],
+                    ],
+                )
+            })
+            .collect();
+        byproduct_entries.sort_unstable_by_key(|entry| entry.0);
+        byproducts.set_item(
+            "x",
+            PyArray1::from_vec(
+                py,
+                byproduct_entries.iter().map(|entry| entry.0 .0).collect(),
+            ),
+        )?;
+        byproducts.set_item(
+            "y",
+            PyArray1::from_vec(
+                py,
+                byproduct_entries.iter().map(|entry| entry.0 .1).collect(),
+            ),
+        )?;
+        byproducts.set_item(
+            "catalyst",
+            PyArray1::from_vec(
+                py,
+                byproduct_entries.iter().map(|entry| entry.1[0]).collect(),
+            ),
+        )?;
+        byproducts.set_item(
+            "toxin",
+            PyArray1::from_vec(
+                py,
+                byproduct_entries.iter().map(|entry| entry.1[1]).collect(),
+            ),
+        )?;
+        dict.set_item("byproducts", byproducts)?;
+
         dict.set_item("stats", self.stats_dict(py)?)?;
         dict.set_item("season", self.season_state(py, 0)?)?;
         dict.set_item("action_names", ACTION_NAMES.to_vec())?;
@@ -8419,6 +8973,89 @@ impl KernelSimulation {
             .map(str::to_string)
             .collect();
         dict.set_item("last_action_names", last_action_names)?;
+        Ok(dict)
+    }
+
+    /// Return the current molecule catalog needed to interpret composition rows.
+    ///
+    /// Molecule IDs are run-local, so a recorder must persist their elemental
+    /// compositions alongside any organism inventory observations rather than
+    /// asking consumers to regenerate the catalog from the seed.
+    fn molecule_catalog<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
+        let dict = PyDict::new(py);
+        dict.set_item("schema_version", 1)?;
+        dict.set_item("element_count", self.state.catalog.elements.len())?;
+        dict.set_item("molecule_count", self.state.catalog.molecules.len())?;
+
+        let elements = PyList::empty(py);
+        for (element_id, element) in self.state.catalog.elements.iter().enumerate() {
+            let item = PyDict::new(py);
+            item.set_item("element_id", element_id)?;
+            item.set_item("atomic_mass", element.atomic_mass)?;
+            item.set_item("energy_contribution", element.energy_contribution)?;
+            elements.append(item)?;
+        }
+        dict.set_item("elements", elements)?;
+
+        let molecules = PyList::empty(py);
+        for molecule in &self.state.catalog.molecules {
+            let item = PyDict::new(py);
+            item.set_item("molecule_id", molecule.molecule_id)?;
+            let composition = PyList::empty(py);
+            for &amount in &molecule.composition {
+                composition.append(amount)?;
+            }
+            item.set_item("composition", composition)?;
+            item.set_item("mass", molecule.mass)?;
+            item.set_item("energy_capacity", molecule.energy_capacity)?;
+            molecules.append(item)?;
+        }
+        dict.set_item("molecules", molecules)?;
+        Ok(dict)
+    }
+
+    /// Return sparse molecule batches for every living organism.
+    ///
+    /// Each row represents one non-empty molecule batch in one compartment:
+    /// 0 = body, 1 = gut, 2 = waste. The simulation does not allocate this
+    /// representation during normal stepping; it is built only when an
+    /// observer explicitly requests a composition snapshot.
+    fn organism_composition<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
+        use numpy::PyArray1;
+
+        let mut organism_ids: Vec<u32> = Vec::new();
+        let mut compartments: Vec<u8> = Vec::new();
+        let mut molecule_ids: Vec<u16> = Vec::new();
+        let mut counts: Vec<i64> = Vec::new();
+        let mut energies: Vec<f64> = Vec::new();
+        for organism_id in self.state.living_ordered.iter().copied() {
+            let organism = self.state.organism(organism_id);
+            for (compartment, inventory) in [
+                (0u8, &organism.body),
+                (1u8, &organism.gut),
+                (2u8, &organism.waste),
+            ] {
+                for batch in inventory {
+                    if batch.count <= 0 {
+                        continue;
+                    }
+                    organism_ids.push(organism_id);
+                    compartments.push(compartment);
+                    molecule_ids.push(batch.molecule_id);
+                    counts.push(batch.count);
+                    energies.push(batch.energy);
+                }
+            }
+        }
+
+        let dict = PyDict::new(py);
+        dict.set_item("schema_version", 1)?;
+        dict.set_item("tick", self.state.tick)?;
+        dict.set_item("organism_id", PyArray1::from_vec(py, organism_ids))?;
+        dict.set_item("compartment", PyArray1::from_vec(py, compartments))?;
+        dict.set_item("molecule_id", PyArray1::from_vec(py, molecule_ids))?;
+        dict.set_item("count", PyArray1::from_vec(py, counts))?;
+        dict.set_item("chemical_energy", PyArray1::from_vec(py, energies))?;
         Ok(dict)
     }
 
@@ -8605,7 +9242,29 @@ impl KernelSimulation {
         dict.set_item("v2_intent_counts", s.v2_intent_counts.to_vec())?;
         dict.set_item("v2_intent_failures", s.v2_intent_failures)?;
         dict.set_item("audit_error", s.audit_error)?;
+        dict.set_item(
+            "dynamic_chemistry",
+            self.state.config.dynamic_chemistry_enabled,
+        )?;
+        dict.set_item(
+            "dynamic_chemistry_enabled",
+            self.state.config.dynamic_chemistry_enabled,
+        )?;
+        dict.set_item(
+            "environmental_reaction_rules",
+            self.state.reaction_rules.len(),
+        )?;
+        dict.set_item("environmental_reactions", s.environmental_reactions)?;
+        dict.set_item("byproduct_emissions", s.byproduct_emissions)?;
         dict.set_item("total_organisms_ever", self.state.next_organism_id - 1)?;
+        let max_generation = self
+            .state
+            .organisms
+            .iter()
+            .map(|organism| organism.generation)
+            .max()
+            .unwrap_or(0);
+        dict.set_item("max_generation", max_generation)?;
         dict.set_item("dense_living_slots", self.state.organisms.len())?;
         dict.set_item("dead_records", self.state.dead_records.len())?;
         dict.set_item(
@@ -8692,6 +9351,19 @@ impl KernelSimulation {
         )?;
         dict.set_item("guest_losses", self.state.emergence_stats.guest_losses)?;
         dict.set_item(
+            "guest_energy_demand",
+            self.state.emergence_stats.guest_energy_demand,
+        )?;
+        dict.set_item(
+            "guest_energy_exchange",
+            self.state.emergence_stats.guest_energy_exchange,
+        )?;
+        dict.set_item(
+            "guest_net_energy",
+            self.state.emergence_stats.guest_energy_exchange
+                - self.state.emergence_stats.guest_energy_demand,
+        )?;
+        dict.set_item(
             "coordinated_components_enabled",
             self.state.coordinated_components_enabled(),
         )?;
@@ -8727,6 +9399,19 @@ impl KernelSimulation {
                 .fold(0.0f64, f64::max)
                 * self.state.world.biodeposit_scale,
         )?;
+        dict.set_item("byproduct_positions", self.state.world.byproducts.len())?;
+        let (byproduct_catalyst, byproduct_toxin) = self.state.world.total_byproducts();
+        dict.set_item("byproduct_total_catalyst", byproduct_catalyst)?;
+        dict.set_item("byproduct_total_toxin", byproduct_toxin)?;
+        let chemistry = self.state.chemistry_metrics();
+        dict.set_item("chemistry_regime_mean", chemistry.regime_mean)?;
+        dict.set_item("chemistry_regime_variance", chemistry.regime_variance)?;
+        dict.set_item(
+            "chemistry_species_association",
+            chemistry.species_association,
+        )?;
+        dict.set_item("chemistry_guest_regime_delta", chemistry.guest_regime_delta)?;
+        dict.set_item("chemistry_guest_hosts", chemistry.guest_hosts)?;
         Ok(dict)
     }
 
@@ -8778,6 +9463,9 @@ fn runtime_config_field(name: &str) -> bool {
             | "mutation_multiplier"
             | "reaction_rate"
             | "maintenance_cost_multiplier"
+            | "byproduct_decay_rate"
+            | "chemistry_coupling"
+            | "guest_niche_coupling"
             | "reference_move_cost"
             | "reference_attack_cost"
             | "attack_damage_multiplier"
@@ -8838,6 +9526,30 @@ fn parse_config(dict: &Bound<PyDict>, config: &mut SimConfig) -> PyResult<()> {
     }
     if let Some(value) = dict.get_item("seasons_enabled")? {
         config.seasons_enabled = value.extract()?;
+    }
+    if let Some(value) = dict.get_item("dynamic_chemistry_enabled")? {
+        config.dynamic_chemistry_enabled = value.extract()?;
+    }
+    parse_int!(dict, "reaction_rule_count", config.reaction_rule_count);
+    parse_int!(
+        dict,
+        "environmental_reaction_rate",
+        config.environmental_reaction_rate
+    );
+    parse_int!(
+        dict,
+        "reaction_thermodynamics",
+        config.reaction_thermodynamics
+    );
+    parse_int!(dict, "byproduct_strength", config.byproduct_strength);
+    if let Some(value) = dict.get_item("byproduct_decay_rate")? {
+        config.byproduct_decay_rate = value.extract()?;
+    }
+    if let Some(value) = dict.get_item("chemistry_coupling")? {
+        config.chemistry_coupling = value.extract()?;
+    }
+    if let Some(value) = dict.get_item("guest_niche_coupling")? {
+        config.guest_niche_coupling = value.extract()?;
     }
     if let Some(value) = dict.get_item("cellular_emergence_enabled")? {
         config.cellular_emergence_enabled = value.extract()?;
@@ -10253,6 +10965,90 @@ mod tests {
         for &living_id in &state.living_ordered {
             assert_eq!(state.organism(living_id).organism_id, living_id);
         }
+    }
+
+    #[test]
+    fn environmental_reaction_conserves_elements_and_energy() {
+        let mut config = test_config(4);
+        config.dynamic_chemistry_enabled = true;
+        config.environmental_reaction_rate = 1.0;
+        config.reaction_thermodynamics = 0.25;
+        let mut state = KernelState::new(config).unwrap();
+        let rule = state
+            .reaction_rules
+            .first()
+            .copied()
+            .expect("dynamic catalog should contain a reaction rule");
+        let position = (0, 0);
+        let first_capacity = state.catalog.molecules[rule.a as usize].energy_capacity;
+        let second_capacity = state.catalog.molecules[rule.b as usize].energy_capacity;
+        state.world.deposit_batch_raw(
+            position,
+            Batch {
+                molecule_id: rule.a,
+                count: if rule.a == rule.b { 2 } else { 1 },
+                energy: first_capacity * if rule.a == rule.b { 2.0 } else { 1.0 },
+            },
+        );
+        if rule.a != rule.b {
+            state.world.deposit_batch_raw(
+                position,
+                Batch {
+                    molecule_id: rule.b,
+                    count: 1,
+                    energy: second_capacity,
+                },
+            );
+        }
+        state.deposit_positions.clear();
+        state.deposit_positions.push(position);
+        state.reaction_positions.clear();
+        state.reaction_positions.push(position);
+        let before_elements = state.dynamic_element_totals();
+        let before_energy = state.total_energy();
+        state.run_environmental_reactions();
+        let after_elements = state.dynamic_element_totals();
+        let after_energy = state.total_energy();
+
+        assert_eq!(state.stats.environmental_reactions, 1);
+        assert_eq!(after_elements, before_elements);
+        assert!((after_energy - before_energy).abs() <= 1.0e-9);
+        assert!(state.world.deposits[&position]
+            .iter()
+            .any(|batch| batch.molecule_id == rule.c && batch.count > 0));
+    }
+
+    #[test]
+    fn dynamic_chemistry_is_deterministic_conservative_and_local() {
+        let config = SimConfig {
+            dynamic_chemistry_enabled: true,
+            environmental_reaction_rate: 0.5,
+            ..test_config(60)
+        };
+        let mut left = KernelState::new(config.clone()).unwrap();
+        let mut right = KernelState::new(config).unwrap();
+        left.step(80);
+        right.step(80);
+        assert_eq!(left.digest(), right.digest());
+        let (left_elements, left_energy) = left.audit(false).unwrap();
+        let (right_elements, right_energy) = right.audit(false).unwrap();
+        assert!(left_elements.iter().all(|&error| error == 0));
+        assert!(right_elements.iter().all(|&error| error == 0));
+        assert!(
+            left_energy.abs() <= energy_tolerance(left.initial_energy, left.world.generated_energy)
+        );
+        assert!(
+            right_energy.abs()
+                <= energy_tolerance(right.initial_energy, right.world.generated_energy)
+        );
+        let organism_id = *left.living_ordered.iter().next().unwrap();
+        let position = left.organism(organism_id).position;
+        left.world.add_byproduct(position, 1.0, 0.0);
+        let favorable = left.local_chemistry_fit(left.organism(organism_id));
+        left.world.add_byproduct(position, 0.0, 2.0);
+        let unfavorable = left.local_chemistry_fit(left.organism(organism_id));
+        assert!(favorable > 0.0);
+        assert!(unfavorable < favorable);
     }
 
     #[test]

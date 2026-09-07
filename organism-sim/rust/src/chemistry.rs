@@ -3,6 +3,7 @@
 
 use crate::config::SimConfig;
 use crate::rng::Rng;
+use rustc_hash::FxHashMap;
 
 pub type Signature = [f64; 4];
 
@@ -87,6 +88,19 @@ impl Batch {
     }
 }
 
+/// A recombinational environmental reaction `A + B -> C`.
+///
+/// Validity is guaranteed by construction: `composition(C) ==
+/// composition(A) + composition(B)` exactly, so executing a reaction
+/// conserves every element vector, and (with the kernel's energy
+/// bookkeeping) total chemical energy plus released heat.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct ReactionRule {
+    pub a: u16,
+    pub b: u16,
+    pub c: u16,
+}
+
 /// Inventory kept sorted by molecule_id (Python used insertion-ordered dicts;
 /// sorted order is deterministic and matches every `sorted()`/`min()` use).
 pub type Inventory = Vec<Batch>;
@@ -156,6 +170,36 @@ impl Catalog {
             comp[e] = 1;
             seen.insert(comp.clone());
             compositions.push(comp);
+        }
+
+        // Reserve a small deterministic closure of simple dimer products when
+        // dynamic chemistry is enabled. This guarantees that the bounded
+        // catalog contains real, element-conserving reactions without adding
+        // molecule ids at runtime. The feature remains absent from this path
+        // when it is disabled.
+        if config.dynamic_chemistry_enabled && config.reaction_rule_count > 0 {
+            let mut closure = Vec::new();
+            for e in 0..n_elements {
+                let mut comp = vec![0u8; n_elements];
+                comp[e] = 2;
+                closure.push(comp);
+            }
+            for left in 0..n_elements {
+                for right in (left + 1)..n_elements {
+                    let mut comp = vec![0u8; n_elements];
+                    comp[left] = 1;
+                    comp[right] = 1;
+                    closure.push(comp);
+                }
+            }
+            for comp in closure {
+                if compositions.len() >= config.molecule_count {
+                    break;
+                }
+                if seen.insert(comp.clone()) {
+                    compositions.push(comp);
+                }
+            }
         }
 
         let mut attempts = 0i64;
@@ -230,6 +274,54 @@ impl Catalog {
         ])
     }
 
+    /// Deterministically derive up to `max_rules` recombinational
+    /// environmental reactions from the catalog.
+    ///
+    /// A rule `(a, b, c)` is valid iff `composition(c) ==
+    /// composition(a) + composition(b)` exactly (element vectors, per unit),
+    /// so executing it conserves every element. Pairs satisfy `a <= b`
+    /// (dimerization allowed); results are deterministic for a given
+    /// catalog and `max_rules`.
+    pub fn reaction_rules(&self, max_rules: usize) -> Vec<ReactionRule> {
+        if max_rules == 0 || self.molecules.len() < 3 {
+            return Vec::new();
+        }
+        let mut by_composition: FxHashMap<Vec<u16>, u16> = FxHashMap::default();
+        for molecule in &self.molecules {
+            by_composition.insert(
+                molecule
+                    .composition
+                    .iter()
+                    .map(|&amount| amount as u16)
+                    .collect(),
+                molecule.molecule_id,
+            );
+        }
+        let n = self.molecules.len();
+        let mut rules = Vec::with_capacity(max_rules);
+        'outer: for a in 0..n {
+            for b in a..n {
+                let sum = sum_compositions(
+                    &self.molecules[a].composition,
+                    &self.molecules[b].composition,
+                );
+                if let Some(&c) = by_composition.get(&sum) {
+                    if c != a as u16 && c != b as u16 {
+                        rules.push(ReactionRule {
+                            a: a as u16,
+                            b: b as u16,
+                            c,
+                        });
+                        if rules.len() == max_rules {
+                            break 'outer;
+                        }
+                    }
+                }
+            }
+        }
+        rules
+    }
+
     pub fn validate_batch(&self, batch: &Batch) -> Result<(), String> {
         if batch.count < 0 || batch.energy < -1e-12 {
             return Err(format!("negative molecule batch: {}", batch.molecule_id));
@@ -244,6 +336,13 @@ impl Catalog {
         }
         Ok(())
     }
+}
+
+fn sum_compositions(left: &[u8], right: &[u8]) -> Vec<u16> {
+    left.iter()
+        .zip(right)
+        .map(|(&x, &y)| x as u16 + y as u16)
+        .collect()
 }
 
 fn derive_molecule(
@@ -321,5 +420,54 @@ fn derive_molecule(
         permeability,
         complexity,
         color,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn test_catalog() -> Catalog {
+        let config = SimConfig {
+            dynamic_chemistry_enabled: true,
+            ..SimConfig::default()
+        };
+        let mut rng = Rng::new(42);
+        Catalog::generate(&config, &mut rng)
+    }
+
+    #[test]
+    fn reaction_rules_are_element_conserving_and_deterministic() {
+        let catalog = test_catalog();
+        let rules = catalog.reaction_rules(6);
+        assert!(!rules.is_empty());
+        assert_eq!(rules, catalog.reaction_rules(6));
+        for rule in &rules {
+            let a = &catalog.molecules[rule.a as usize].composition;
+            let b = &catalog.molecules[rule.b as usize].composition;
+            let c = &catalog.molecules[rule.c as usize].composition;
+            assert_eq!(c.len(), a.len());
+            for e in 0..c.len() {
+                assert_eq!(c[e], a[e] + b[e], "element {} in rule {:?}", e, rule);
+            }
+            assert_ne!(rule.c, rule.a);
+            assert_ne!(rule.c, rule.b);
+            assert!(rule.a <= rule.b);
+        }
+    }
+
+    #[test]
+    fn reaction_rules_respect_max_and_empty_cases() {
+        let catalog = test_catalog();
+        assert!(catalog.reaction_rules(0).is_empty());
+        let full = catalog.reaction_rules(32);
+        for max in [1usize, 2, 3, 4, 8, 32] {
+            assert!(catalog.reaction_rules(max).len() <= max);
+        }
+        assert_eq!(catalog.reaction_rules(32), full);
+        assert_eq!(
+            catalog.reaction_rules(8),
+            full.iter().take(8).cloned().collect::<Vec<_>>()
+        );
     }
 }

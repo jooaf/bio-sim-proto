@@ -61,6 +61,20 @@ pub struct SimConfig {
     pub biodeposit_cover_strength: f64,
     pub biodeposit_concealment: f64,
 
+    // Dynamic chemistry: organisms' metabolic byproducts become local
+    // environmental conditions (catalyst / toxin) that feed back on
+    // digestion efficiency, guest upkeep, and niche fit.  The byproduct
+    // fields are scalar conditions, not ledgered matter or energy, so the
+    // conservation invariants are untouched.
+    pub dynamic_chemistry_enabled: bool,
+    pub reaction_rule_count: usize,
+    pub environmental_reaction_rate: f64,
+    pub reaction_thermodynamics: f64,
+    pub byproduct_strength: f64,
+    pub byproduct_decay_rate: f64,
+    pub chemistry_coupling: f64,
+    pub guest_niche_coupling: f64,
+
     pub reference_move_cost: f64,
     pub reference_attack_cost: f64,
     pub attack_damage_multiplier: f64,
@@ -148,6 +162,14 @@ impl Default for SimConfig {
             biodeposit_movement_resistance: 0.25,
             biodeposit_cover_strength: 0.35,
             biodeposit_concealment: 0.10,
+            dynamic_chemistry_enabled: false,
+            reaction_rule_count: 6,
+            environmental_reaction_rate: 0.02,
+            reaction_thermodynamics: 0.10,
+            byproduct_strength: 0.02,
+            byproduct_decay_rate: 0.02,
+            chemistry_coupling: 0.50,
+            guest_niche_coupling: 0.50,
             reference_move_cost: 0.010,
             reference_attack_cost: 0.020,
             attack_damage_multiplier: 2.0,
@@ -256,12 +278,30 @@ impl SimConfig {
         if self.emergence_max_internal_guests > 32 {
             return Err("emergence_max_internal_guests must be in [0, 32]".into());
         }
+        if self.reaction_rule_count > 32 {
+            return Err("reaction_rule_count must be in [0, 32]".into());
+        }
+        if !self.environmental_reaction_rate.is_finite()
+            || !(0.0..=1.0).contains(&self.environmental_reaction_rate)
+        {
+            return Err("environmental_reaction_rate must be finite and in [0, 1]".into());
+        }
+        if !self.reaction_thermodynamics.is_finite()
+            || !(0.0..=0.5).contains(&self.reaction_thermodynamics)
+        {
+            return Err("reaction_thermodynamics must be finite and in [0, 0.5]".into());
+        }
         for (name, value) in [
             ("mana_decay", self.mana_decay),
             ("deposit_production_rate", self.deposit_production_rate),
             ("decomposition_rate", self.decomposition_rate),
             ("mutation_multiplier", self.mutation_multiplier),
             ("reaction_rate", self.reaction_rate),
+            (
+                "environmental_reaction_rate",
+                self.environmental_reaction_rate,
+            ),
+            ("byproduct_strength", self.byproduct_strength),
             (
                 "maintenance_cost_multiplier",
                 self.maintenance_cost_multiplier,
@@ -299,12 +339,18 @@ impl SimConfig {
             ),
             ("biodeposit_cover_strength", self.biodeposit_cover_strength),
             ("biodeposit_concealment", self.biodeposit_concealment),
+            ("byproduct_decay_rate", self.byproduct_decay_rate),
             ("alliance_probability", self.alliance_probability),
             ("colony_bonus_cap", self.colony_bonus_cap),
         ] {
             if !value.is_finite() || value < 0.0 {
                 return Err(format!("{name} must be finite and nonnegative"));
             }
+        }
+        if !self.byproduct_decay_rate.is_finite()
+            || !(0.0..=1.0).contains(&self.byproduct_decay_rate)
+        {
+            return Err("byproduct_decay_rate must be finite and in [0, 1]".into());
         }
         for (name, value) in [
             ("asexual_probability_floor", self.asexual_probability_floor),
@@ -319,6 +365,8 @@ impl SimConfig {
             ),
             ("sexual_colony_max", self.sexual_colony_max),
             ("asexual_colony_min", self.asexual_colony_min),
+            ("chemistry_coupling", self.chemistry_coupling),
+            ("guest_niche_coupling", self.guest_niche_coupling),
         ] {
             if !(0.0..=1.0).contains(&value) {
                 return Err(format!("{name} must be in [0, 1]"));

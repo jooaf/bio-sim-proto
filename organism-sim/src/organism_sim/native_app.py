@@ -8,7 +8,7 @@ import numpy as np
 import pygame
 
 from .app import App, Color, Slider
-from .config import SimulationConfig
+from .config import Scheduler, SimulationConfig
 from .gui_backend import RustGuiWorker
 from .native_recording import NativeGuiRecorder
 from .world import World
@@ -29,6 +29,7 @@ class NativeApp(App):
         pygame.init()
         pygame.display.set_caption("Emergent Organism Simulation — native")
         self.config = config or SimulationConfig()
+        self._normalize_cellular_scheduler()
         self.settings_path = settings_path
         self.world_pixels = 768
         self.screen = pygame.display.set_mode(
@@ -42,6 +43,10 @@ class NativeApp(App):
         self.show_heat = False
         self.show_food = True
         self.species_colors = True
+        self.show_cellular = True
+        self.cellular_peak_group_size = 0
+        self.cellular_peak_groups = 0
+        self.cellular_peak_bonds = 0
         self.show_species_view = False
         self.species_scroll = 0
         self.selected_id: int | None = None
@@ -65,6 +70,22 @@ class NativeApp(App):
         self.recorder = NativeGuiRecorder(self.config) if record else None
         self.run_id = self.recorder.run_id if self.recorder else f"native-{time_ns():x}"
         self.worker = self._new_worker()
+
+    def _normalize_cellular_scheduler(self) -> None:
+        """Use the serial scheduler when coordinated groups are enabled.
+
+        The parallel scheduler deliberately rejects coordinated cellular
+        components because their rigid movement and shared action authority are
+        not yet part of its conflict resolver. Make the GUI slider path
+        usable instead of leaving the user with an opaque reset-time error.
+        """
+
+        if (
+            self.config.cellular_emergence_enabled
+            and self.config.emergence_coordinated_components
+            and self.config.scheduler == Scheduler.PARALLEL_V3
+        ):
+            self.config.scheduler = Scheduler.SERIAL_V2
 
     def _new_worker(self) -> RustGuiWorker:
         return RustGuiWorker(
@@ -97,6 +118,25 @@ class NativeApp(App):
     def _tick(self) -> int:
         return int(self.snapshot["tick"]) if self.snapshot else self.worker.status.tick
 
+    def _observe_cellular_snapshot(self, snapshot: dict[str, Any]) -> None:
+        """Retain sampled peak group facts so brief bonds are still visible in the UI."""
+
+        stats = snapshot.get("stats", {})
+        if not bool(stats.get("cellular_affordances_enabled", False)):
+            return
+        self.cellular_peak_group_size = max(
+            self.cellular_peak_group_size,
+            int(stats.get("largest_bond_component", 0)),
+        )
+        self.cellular_peak_groups = max(
+            self.cellular_peak_groups,
+            int(stats.get("bond_components", 0)),
+        )
+        self.cellular_peak_bonds = max(
+            self.cellular_peak_bonds,
+            int(stats.get("physical_bonds", 0)),
+        )
+
     def _record_applied_config_updates(self) -> None:
         updates = self.worker.drain_applied_config_updates()
         if self.recorder is None:
@@ -113,6 +153,7 @@ class NativeApp(App):
         self.config.founder_archetype_count = min(
             self.config.founder_count, self.config.founder_archetype_count
         )
+        self._normalize_cellular_scheduler()
         try:
             previous_run_id = self.run_id
             self.worker.stop()
@@ -123,6 +164,9 @@ class NativeApp(App):
             self.worker.start()
             self.snapshot = None
             self._snapshot_sequence = 0
+            self.cellular_peak_group_size = 0
+            self.cellular_peak_groups = 0
+            self.cellular_peak_bonds = 0
             self._viewport_key = None
             self.recorder = (
                 NativeGuiRecorder(self.config, previous_run_id=previous_run_id)
@@ -205,6 +249,7 @@ class NativeApp(App):
                 update = self.worker.poll_snapshot(self._snapshot_sequence)
                 if update is not None:
                     self._snapshot_sequence, self.snapshot = update
+                    self._observe_cellular_snapshot(self.snapshot)
                     if self.recorder is not None:
                         self.recorder.record(
                             self.snapshot, self.worker.status.ticks_per_second
@@ -267,6 +312,8 @@ class NativeApp(App):
         elif key == pygame.K_f:
             self.show_food = not self.show_food
             self._viewport_key = None
+        elif key == pygame.K_b:
+            self.show_cellular = not self.show_cellular
         elif key == pygame.K_s:
             self.species_colors = not self.species_colors
         elif key == pygame.K_v:
@@ -535,29 +582,10 @@ class NativeApp(App):
                 1,
             )
 
-        bonds = self.snapshot.get("bonds")
-        if bonds is not None:
-            for x_a, y_a, x_b, y_b, strength in zip(
-                bonds["x1"],
-                bonds["y1"],
-                bonds["x2"],
-                bonds["y2"],
-                bonds["strength"],
-            ):
-                start = screen_xy(int(x_a), int(y_a))
-                end = screen_xy(int(x_b), int(y_b))
-                intensity = 70 + int(150 * float(strength))
-                pygame.draw.line(
-                    self.screen,
-                    (80, min(220, intensity), 170),
-                    (int(start[0] + tile_size / 2), int(start[1] + tile_size / 2)),
-                    (int(end[0] + tile_size / 2), int(end[1] + tile_size / 2)),
-                    1,
-                )
-
         colors = self._species_colors()
         if len(organisms["id"]) >= DENSE_RENDER_THRESHOLD and tile_size <= 4:
             self._draw_dense_organisms(organisms, colors, tile_size)
+            self._draw_cellular_overlay(organisms, tile_size)
             self._draw_native_minimap()
             return
         for index, organism_id in enumerate(organisms["id"]):
@@ -596,7 +624,98 @@ class NativeApp(App):
                         1,
                     )
 
+        self._draw_cellular_overlay(organisms, tile_size)
         self._draw_native_minimap()
+
+    def _draw_cellular_overlay(
+        self,
+        organisms: dict[str, np.ndarray],
+        tile_size: int,
+    ) -> None:
+        """Make active physical groups visible without changing simulation state."""
+
+        assert self.snapshot is not None
+        stats = self.snapshot["stats"]
+        if not self.show_cellular or not bool(stats.get("cellular_affordances_enabled", False)):
+            return
+
+        half_view = self.world_pixels / 2
+
+        def screen_xy(x: int, y: int) -> tuple[float, float]:
+            return (
+                (x - self.camera_x) * tile_size + half_view,
+                (y - self.camera_y) * tile_size + half_view,
+            )
+
+        previous_clip = self.screen.get_clip()
+        self.screen.set_clip(pygame.Rect(0, 0, self.world_pixels, self.world_pixels))
+        try:
+            bonds = self.snapshot.get("bonds")
+            if bonds is not None:
+                width = max(2, min(4, tile_size))
+                for x_a, y_a, x_b, y_b, strength in zip(
+                    bonds["x1"],
+                    bonds["y1"],
+                    bonds["x2"],
+                    bonds["y2"],
+                    bonds["strength"],
+                ):
+                    start = screen_xy(int(x_a), int(y_a))
+                    end = screen_xy(int(x_b), int(y_b))
+                    start = (int(start[0] + tile_size / 2), int(start[1] + tile_size / 2))
+                    end = (int(end[0] + tile_size / 2), int(end[1] + tile_size / 2))
+                    strength_value = min(1.0, max(0.0, float(strength)))
+                    intensity = 170 + int(80 * strength_value)
+                    # Draw the dark underlay after organisms so the link cannot
+                    # disappear into a species-colored footprint.
+                    pygame.draw.line(self.screen, (8, 35, 38), start, end, width + 2)
+                    pygame.draw.line(
+                        self.screen,
+                        (70, intensity, 190),
+                        start,
+                        end,
+                        width,
+                    )
+
+            organism_ids = organisms["id"]
+            component_sizes = np.asarray(
+                organisms.get(
+                    "component_size",
+                    np.ones(len(organism_ids), dtype=np.int64),
+                ),
+                dtype=np.int64,
+            )
+            component_ids = np.asarray(
+                organisms.get(
+                    "component_id",
+                    np.arange(len(organism_ids), dtype=np.int64),
+                ),
+                dtype=np.int64,
+            )
+            labels: dict[int, tuple[int, int, int]] = {}
+            for index, size in enumerate(component_sizes):
+                if int(size) <= 1:
+                    continue
+                sx, sy = screen_xy(
+                    int(organisms["x"][index]),
+                    int(organisms["y"][index]),
+                )
+                center = (int(sx + tile_size / 2), int(sy + tile_size / 2))
+                pygame.draw.circle(
+                    self.screen,
+                    (255, 224, 86),
+                    center,
+                    max(3, tile_size + 2),
+                    max(1, min(3, tile_size)),
+                )
+                labels.setdefault(int(component_ids[index]), (center[0], center[1], int(size)))
+
+            if tile_size >= 4:
+                for x, y, size in list(labels.values())[:24]:
+                    label = self.small_font.render(f"GROUP ×{size}", True, (255, 236, 126))
+                    self.screen.blit(label, (x + 4, y - label.get_height() - 2))
+        finally:
+            self.screen.set_clip(previous_clip)
 
     def _draw_dense_organisms(
         self,
@@ -771,11 +890,13 @@ class NativeApp(App):
             f"{self.snapshot.get('scheduler', 'serial-v2')} "
             f"{self.snapshot.get('effective_parallel_workers', 1)}w"
         )
+        cellular_enabled = bool(stats["cellular_affordances_enabled"])
         cellular_text = (
-            f"modules {stats['module_instances']}  bonds {stats['physical_bonds']} "
-            f"groups {stats['bond_components']} guests {stats['internal_guests']}"
-            if stats["cellular_affordances_enabled"]
-            else f"alliances {self.snapshot['alliances_count']}   colonies {self.snapshot['colonies_count']}"
+            f"CELLULAR ON  groups {stats['bond_components']} "
+            f"max {stats['largest_bond_component']} peak {self.cellular_peak_group_size} "
+            f"formed {stats['bond_formations']}"
+            if cellular_enabled
+            else "CELLULAR OFF — no joined groups can form"
         )
         season_text = (
             f"season {season['index']}  resources ×{season['resource_charge_multiplier']:.2f} "
@@ -804,7 +925,12 @@ class NativeApp(App):
         ]
         y = 18
         for index, line in enumerate(lines):
-            color: Color = (242, 245, 250) if index == 0 else (190, 201, 218)
+            if index == 0:
+                color: Color = (242, 245, 250)
+            elif index == 6:
+                color = (95, 240, 190) if cellular_enabled else (255, 120, 120)
+            else:
+                color = (190, 201, 218)
             self.screen.blit(self.font.render(line, True, color), (panel_x + 20, y))
             y += 23
 
@@ -833,13 +959,13 @@ class NativeApp(App):
             self.screen.set_clip(previous_clip)
 
         settings = self.settings_path.name if self.settings_path else "autosave off"
-        message = self.error_message or f"settings {settings} | T max | Space pause | R apply/reset"
+        message = self.error_message or f"settings {settings} | B groups | T max | R apply/reset"
         color = (255, 105, 105) if self.error_message else (150, 163, 184)
         self.screen.blit(
             self.small_font.render(message[:60], True, color), (panel_x + 20, 736)
         )
         help_lines = (
-            "H heat  F food  S colors  V species  +/- target",
+            "H heat  F food  B groups  S colors  V species",
             "RMB/edges pan  C follow  J child  P parent",
             ", . zoom 1–64   G joined   [ ] reset seed",
         )

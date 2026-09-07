@@ -20,6 +20,11 @@ def _counter(row: MetricRow, name: str) -> int:
     return int(row.get(name, 0))
 
 
+def _peak_counter(rows: list[MetricRow], name: str) -> tuple[int, int]:
+    peak = max(rows, key=lambda row: _counter(row, name))
+    return _counter(peak, name), int(peak["tick"])
+
+
 def _window(rows: list[MetricRow], start_fraction: float, end_fraction: float) -> list[MetricRow]:
     first_tick = int(rows[0]["tick"])
     final_tick = int(rows[-1]["tick"])
@@ -151,19 +156,42 @@ def print_native_report(manifest_path: Path) -> None:
             f"max_density={float(final.get('biodeposit_max_density', 0.0)):.3g}"
         )
 
-    if bool(final.get("cellular_affordances_enabled", False)):
-        print("\nstochastic cellular affordances:")
+    configured_cellular = bool(
+        manifest.get("config", {}).get("cellular_emergence_enabled", False)
+    )
+    cellular_enabled = bool(
+        final.get("cellular_affordances_enabled", configured_cellular)
+    )
+    print("\ncellular emergence:")
+    if not cellular_enabled:
+        print("  status=DISABLED (no modules, bonds, joined groups, or guests can form)")
+    else:
+        peak_bonds, peak_bond_tick = _peak_counter(rows, "physical_bonds")
+        peak_groups, peak_group_tick = _peak_counter(rows, "bond_components")
+        peak_size, peak_size_tick = _peak_counter(rows, "largest_bond_component")
+        peak_bonded_cells, peak_bonded_tick = _peak_counter(rows, "bonded_cells")
+        print(
+            f"  status=ENABLED final_groups={_counter(final, 'bond_components')} "
+            f"final_largest_group={_counter(final, 'largest_bond_component')}"
+        )
+        print(
+            f"  peak_largest_group={peak_size} at_tick={peak_size_tick} "
+            f"peak_groups={peak_groups} at_tick={peak_group_tick}"
+        )
+        print(
+            f"  final_bonds={_counter(final, 'physical_bonds')} "
+            f"peak_bonds={peak_bonds} at_tick={peak_bond_tick} "
+            f"peak_bonded_cells={peak_bonded_cells} at_tick={peak_bonded_tick}"
+        )
         print(
             f"  modules={_counter(final, 'module_instances')} "
             f"expressed={_counter(final, 'expressed_module_instances')} "
-            f"bonds={_counter(final, 'physical_bonds')} "
-            f"bonded_cells={_counter(final, 'bonded_cells')}"
+            f"guests={_counter(final, 'internal_guests')} "
+            f"internalizations={_counter(final, 'internalizations')}"
         )
         print(
-            f"  components={_counter(final, 'bond_components')} "
-            f"largest_component={_counter(final, 'largest_bond_component')} "
-            f"internal_guests={_counter(final, 'internal_guests')} "
-            f"internalizations={_counter(final, 'internalizations')}"
+            f"  bond_formations={_counter(final, 'bond_formations')} "
+            f"bond_breaks={_counter(final, 'bond_breaks')}"
         )
         if bool(final.get("coordinated_components_enabled", False)):
             print(

@@ -3,6 +3,8 @@ schema_version = 1
 [run]
 ticks = 1000
 # runs_dir = "/tmp/organism-runs"
+# record_composition = true
+# composition_every = 100
 
 [simulation]
 seed = 7

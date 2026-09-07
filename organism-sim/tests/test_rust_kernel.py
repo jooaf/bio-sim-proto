@@ -153,6 +153,39 @@ def test_rust_kernel_audit_and_snapshot() -> None:
     assert len(organisms["energy"]) == simulation.population
 
 
+def test_rust_kernel_exposes_sparse_organism_composition() -> None:
+    config = kernel_config(seed=19, founder_count=24, element_count=4, molecule_count=12)
+    simulation = RustKernelSimulation(config)
+
+    composition = simulation.organism_composition()
+    catalog = simulation.molecule_catalog()
+
+    assert composition["schema_version"] == 1
+    assert composition["tick"] == 0
+    row_count = len(composition["organism_id"])
+    assert row_count > 0
+    assert all(
+        len(composition[name]) == row_count
+        for name in ("compartment", "molecule_id", "count", "chemical_energy")
+    )
+    assert {int(value) for value in composition["compartment"]} <= {0, 1, 2}
+    assert all(int(value) > 0 for value in composition["count"])
+    assert all(int(value) >= 0 for value in composition["molecule_id"])
+    assert catalog["schema_version"] == 1
+    assert catalog["element_count"] == config.element_count
+    assert catalog["molecule_count"] == config.molecule_count
+    assert len(catalog["molecules"]) == config.molecule_count
+    assert all(
+        len(molecule["composition"]) == config.element_count
+        for molecule in catalog["molecules"]
+    )
+
+    simulation.step(7)
+    later = simulation.organism_composition()
+    assert later["tick"] == 7
+    assert len(later["organism_id"]) > 0
+
+
 def test_linear_and_recurrent_intent_v2_run_only_in_rust() -> None:
     for behavior_model in (
         BehaviorModel.LINEAR_INTENT_V2,
@@ -355,6 +388,50 @@ def test_stochastic_cellular_affordances_have_no_assigned_higher_level_state() -
     assert left.audit()["energy_ok"] is True
 
 
+def test_dynamic_chemistry_reactions_byproducts_and_conservation() -> None:
+    config = kernel_config(
+        seed=53,
+        founder_count=60,
+        founder_archetype_count=6,
+        initial_deposits=900,
+        dynamic_chemistry_enabled=True,
+        environmental_reaction_rate=1.0,
+        reaction_thermodynamics=0.25,
+        byproduct_strength=0.10,
+        byproduct_decay_rate=0.01,
+        cellular_emergence_enabled=True,
+        emergence_engulfment_rate=1.0,
+    )
+    simulation = RustKernelSimulation(config)
+    simulation.step(80)
+
+    stats = simulation.stats_dict()
+    snapshot = simulation.snapshot()
+    byproducts = snapshot["byproducts"]
+    assert stats["dynamic_chemistry_enabled"] is True
+    assert stats["environmental_reaction_rules"] > 0
+    assert stats["environmental_reactions"] > 0
+    assert stats["byproduct_emissions"] > 0
+    assert stats["byproduct_positions"] > 0
+    assert len(byproducts["x"]) == len(byproducts["catalyst"])
+    assert len(byproducts["x"]) == len(byproducts["toxin"])
+    assert stats["chemistry_regime_variance"] >= 0.0
+    assert simulation.audit()["elements_ok"] is True
+    assert simulation.audit()["energy_ok"] is True
+
+
+def test_dynamic_chemistry_is_disabled_without_runtime_state() -> None:
+    simulation = RustKernelSimulation(kernel_config(seed=54, founder_count=40))
+    simulation.step(20)
+
+    stats = simulation.stats_dict()
+    snapshot = simulation.snapshot()
+    assert stats["dynamic_chemistry_enabled"] is False
+    assert stats["environmental_reaction_rules"] == 0
+    assert stats["environmental_reactions"] == 0
+    assert len(snapshot["byproducts"]["x"]) == 0
+
+
 def test_biodeposit_snapshot_is_observational() -> None:
     config = kernel_config(
         founder_count=40,
@@ -429,6 +506,9 @@ def test_rust_headless_writes_compact_research_record(tmp_path) -> None:
     assert [json.loads(row)["index"] for row in season_rows] == [0, 1, 2]
     assert json.loads(metric_rows[-1])["season_index"] == 2
     assert (run_dir / "final_state.npz").is_file()
+    assert not (run_dir / "organism_composition.jsonl").exists()
+    assert not (run_dir / "molecule_catalog.json").exists()
+    assert manifest["organism_composition_enabled"] is False
     with np.load(run_dir / "final_state.npz") as state:
         assert "organisms_module_offsets" in state
         assert "organisms_module_primitives" in state
@@ -442,7 +522,60 @@ def test_rust_headless_writes_compact_research_record(tmp_path) -> None:
     assert (run_dir / "audit.json").is_file()
 
 
+def test_rust_headless_records_sparse_organism_composition(tmp_path) -> None:
+    config = kernel_config(
+        seed=61,
+        founder_count=40,
+        founder_archetype_count=4,
+        recording_metrics_interval=5,
+    )
+    control = RustKernelSimulation(config)
+    control.step(7)
+    simulation, run_dir, elapsed = run_rust_headless(
+        config,
+        7,
+        runs_root=tmp_path,
+        progress_every=0,
+        record_composition=True,
+        composition_interval=2,
+    )
+
+    manifest = json.loads((run_dir / "manifest.json").read_text())
+    catalog = json.loads((run_dir / "molecule_catalog.json").read_text())
+    rows = [
+        json.loads(line)
+        for line in (run_dir / "organism_composition.jsonl").read_text().splitlines()
+        if line
+    ]
+    assert simulation.tick == 7
+    assert simulation.digest() == control.digest()
+    assert elapsed > 0.0
+    assert manifest["organism_composition_enabled"] is True
+    assert manifest["organism_composition_interval"] == 2
+    assert manifest["organism_composition_schema_version"] == 1
+    assert manifest["organism_composition"] == "organism_composition.jsonl"
+    assert manifest["molecule_catalog"] == "molecule_catalog.json"
+    assert catalog["schema_version"] == 1
+    assert {int(row["tick"]) for row in rows} == {0, 2, 4, 6, 7}
+    assert {row["compartment"] for row in rows} <= {"body", "gut", "waste"}
+    assert all(row["count"] > 0 for row in rows)
+    assert all(0 <= row["molecule_id"] < config.molecule_count for row in rows)
+    assert all(row["organism_id"] > 0 for row in rows)
+
+
 def test_cli_accepts_rust_engine() -> None:
-    args = create_parser().parse_args(["--engine", "rust", "--ticks", "10"])
+    args = create_parser().parse_args(
+        [
+            "--engine",
+            "rust",
+            "--ticks",
+            "10",
+            "--record-composition",
+            "--composition-every",
+            "25",
+        ]
+    )
     assert args.engine == "rust"
+    assert args.record_composition is True
+    assert args.composition_every == 25
     assert args.ticks == 10

@@ -93,6 +93,14 @@ class RustKernelSimulation:
     def snapshot(self) -> dict[str, object]:
         return self._kernel.snapshot()
 
+    def molecule_catalog(self) -> dict[str, object]:
+        """Return the run-local molecule definitions for composition records."""
+        return self._kernel.molecule_catalog()
+
+    def organism_composition(self) -> dict[str, object]:
+        """Return sparse molecule batches for living organisms at this tick."""
+        return self._kernel.organism_composition()
+
     def gui_snapshot(
         self,
         bounds: tuple[int, int, int, int],

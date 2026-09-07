@@ -102,6 +102,26 @@ uv run organism-sim-headless \
   --progress-every 500
 ```
 
+Record sparse per-organism molecule batches without changing simulation dynamics:
+
+```text
+uv run organism-sim-headless \
+  --engine rust \
+  --ticks 10000 \
+  --record-composition \
+  --composition-every 100
+```
+
+This writes `organism_composition.jsonl`, with one row per non-empty `body`,
+`gut`, or `waste` batch for living organisms at tick zero, each requested
+sampling tick, and the final tick. It also writes `molecule_catalog.json`,
+which maps run-local molecule IDs to elemental composition. Recording is
+streamed and disabled by default; `--composition-every` must be positive and
+is also accepted as `run.record_composition` and `run.composition_every` in a
+config file. Each JSONL row contains `tick`, `organism_id`, `compartment`,
+`molecule_id`, `count`, and `chemical_energy`; join `molecule_id` to the
+catalog's `composition` vector to obtain elemental totals.
+
 Run the opt-in versioned parallel scheduler with a V2 intent controller:
 
 ```text
@@ -150,7 +170,22 @@ uv run organism-sim-headless \
   --seasons
 ```
 
-This mode provides chance-mutated generic modules, regulation, physical adhesion, signaling, conservative exchange, coordinated bond-derived components, complete component propagules, and bounded internal guests. Bonded connected components translate and act as one unit without storing a multicellularity flag or assigning a group-fitness bonus. See [`CELLULAR_EMERGENCE.md`](CELLULAR_EMERGENCE.md) for mechanics, telemetry, controls, and limitations.
+This mode provides chance-mutated generic modules, regulation, physical adhesion, signaling, conservative exchange, coordinated bond-derived components, complete component propagules, and bounded internal guests. Bonded connected components translate and act as one unit without storing a multicellularity flag or assigning a group-fitness bonus. In the native GUI, set **Cell affordances** to `1` and press `R`; the sidebar then reports `CELLULAR ON`, current/peak joined-group size, and the run's observed cellular state. Active bonds are drawn as bright cyan links with gold group markers; press `B` to toggle those highlights. If coordinated groups are enabled, the GUI automatically uses the supported serial scheduler. See [`CELLULAR_EMERGENCE.md`](CELLULAR_EMERGENCE.md) for mechanics, telemetry, controls, and limitations.
+
+For a deliberately high-encounter reachability smoke test (not an evolved-biology control), use:
+
+```text
+uv run organism-sim-headless \
+  --engine rust \
+  --ticks 1200 \
+  --founders 300 \
+  --cellular-emergence \
+  --set emergence_bond_rate=0.10 \
+  --set emergence_bond_break_rate=0.0005 \
+  --set emergence_engulfment_rate=1.0 \
+  --set emergence_exchange_rate=0.10 \
+  --set emergence_module_cost=0.001
+```
 
 Enable physical structure from accumulated dead biomass:
 
@@ -322,6 +357,7 @@ For maximum fidelity, use `--metrics-every 1 --detail-every 1 --snapshot-every 1
 - `H`: heat overlay
 - `F`: molecule/food overlay
 - `S`: toggle organism coloring by species
+- `B`: toggle bright joined-cell/bond highlights (native Rust GUI)
 - `V`: open the active-species catalog; recent species show `NEW MUT` or `NEW SEX`, creation tick, and parent species
 - `+` / `-`: simulation speed
 - `,` / `.`: zoom through 1–64 pixels per world tile

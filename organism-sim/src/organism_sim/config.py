@@ -80,6 +80,21 @@ class SimulationConfig:
     biodeposit_cover_strength: float = 0.35
     biodeposit_concealment: float = 0.10
 
+    # Rust-only dynamic chemistry: organism metabolic byproducts become local
+    # environmental conditions (catalyst/toxin fields) that feed back into
+    # digestion efficiency, internal-guest upkeep, and niche fit. These are
+    # scalar conditions, not ledgered matter or energy, so conservation is
+    # unaffected. Organisms influence the environment; the environment
+    # influences organisms.
+    dynamic_chemistry_enabled: bool = False
+    reaction_rule_count: int = 6
+    environmental_reaction_rate: float = 0.02
+    reaction_thermodynamics: float = 0.10
+    byproduct_strength: float = 0.02
+    byproduct_decay_rate: float = 0.02
+    chemistry_coupling: float = 0.50
+    guest_niche_coupling: float = 0.50
+
     reference_move_cost: float = 0.010
     reference_attack_cost: float = 0.020
     attack_damage_multiplier: float = 2.0
@@ -153,6 +168,14 @@ class SimulationConfig:
             raise TypeError("emergence_coordinated_components must be a boolean")
         if not isinstance(self.biodeposits_enabled, bool):
             raise TypeError("biodeposits_enabled must be a boolean")
+        if not isinstance(self.dynamic_chemistry_enabled, bool):
+            raise TypeError("dynamic_chemistry_enabled must be a boolean")
+        if not 0 <= self.reaction_rule_count <= 32:
+            raise ValueError("reaction_rule_count must be in [0, 32]")
+        if not isfinite(self.environmental_reaction_rate) or not 0.0 <= self.environmental_reaction_rate <= 1.0:
+            raise ValueError("environmental_reaction_rate must be finite and in [0, 1]")
+        if not isfinite(self.reaction_thermodynamics) or not 0.0 <= self.reaction_thermodynamics <= 0.5:
+            raise ValueError("reaction_thermodynamics must be finite and in [0, 0.5]")
         if not 1 <= self.emergence_max_modules <= 64:
             raise ValueError("emergence_max_modules must be in [1, 64]")
         if not 0 <= self.emergence_max_internal_guests <= 32:
@@ -165,6 +188,8 @@ class SimulationConfig:
             ("emergence_bond_break_rate", self.emergence_bond_break_rate),
             ("emergence_exchange_rate", self.emergence_exchange_rate),
             ("emergence_engulfment_rate", self.emergence_engulfment_rate),
+            ("environmental_reaction_rate", self.environmental_reaction_rate),
+            ("byproduct_strength", self.byproduct_strength),
             ("biodeposit_decay_rate", self.biodeposit_decay_rate),
             ("biodeposit_movement_resistance", self.biodeposit_movement_resistance),
             ("biodeposit_cover_strength", self.biodeposit_cover_strength),
@@ -210,6 +235,8 @@ class SimulationConfig:
             raise ValueError("primary_production_rate must be in [0, 1]")
         if self.deposit_production_rate < 0.0:
             raise ValueError("deposit_production_rate must be nonnegative")
+        if not isfinite(self.byproduct_decay_rate) or not 0.0 <= self.byproduct_decay_rate <= 1.0:
+            raise ValueError("byproduct_decay_rate must be finite and in [0, 1]")
         if not isinstance(self.deposit_match_ecology, bool):
             raise TypeError("deposit_match_ecology must be a boolean")
         if not 0.0 <= self.asexual_probability_floor <= 1.0:
@@ -226,6 +253,10 @@ class SimulationConfig:
             raise ValueError("new_species_marker_ticks must be nonnegative")
         if not 0.0 <= self.prey_compatibility_threshold <= 1.0:
             raise ValueError("prey_compatibility_threshold must be in [0, 1]")
+        if not 0.0 <= self.chemistry_coupling <= 1.0:
+            raise ValueError("chemistry_coupling must be in [0, 1]")
+        if not 0.0 <= self.guest_niche_coupling <= 1.0:
+            raise ValueError("guest_niche_coupling must be in [0, 1]")
         if self.reproduction_cost_multiplier < 0.0:
             raise ValueError("reproduction_cost_multiplier must be nonnegative")
         if self.reproduction_cooldown_multiplier < 0.0:

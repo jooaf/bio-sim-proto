@@ -90,6 +90,13 @@ runs/<run-id>/
 └── final_state.npz
 ```
 
+With `--record-composition`, the run additionally contains
+`organism_composition.jsonl` and `molecule_catalog.json`. Composition rows are
+sparse and streamed: only non-empty molecule batches for living organisms are
+written, with `compartment` set to `body`, `gut`, or `waste`. The default Rust
+recording path does not request these additional composition scans.
+
+
 GUI selection:
 
 ```text

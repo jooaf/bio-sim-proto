@@ -112,6 +112,85 @@ def test_native_report_surfaces_growth_bottlenecks_and_config_provenance(
     assert "random environment seasons" in output
     assert "resource_multiplier=[0.700,0.700]" in output
     assert "founder diversity collapsed" in output
+    assert "status=DISABLED" in output
+
+
+def test_native_report_surfaces_peak_joined_group_state(tmp_path, capsys) -> None:
+    run_dir = tmp_path / "cellular-run"
+    run_dir.mkdir()
+    _write_json(
+        run_dir / "manifest.json",
+        {
+            "run_id": "cellular-run",
+            "config": {"cellular_emergence_enabled": True},
+            "metrics": "metrics.jsonl",
+        },
+    )
+    rows = [
+        {
+            "tick": 0,
+            "population": 10,
+            "living_species": 2,
+            "cellular_affordances_enabled": True,
+            "bond_components": 0,
+            "largest_bond_component": 0,
+            "physical_bonds": 0,
+            "bonded_cells": 0,
+        },
+        {
+            "tick": 10,
+            "population": 12,
+            "living_species": 2,
+            "cellular_affordances_enabled": True,
+            "bond_components": 2,
+            "largest_bond_component": 3,
+            "physical_bonds": 2,
+            "bonded_cells": 5,
+            "module_instances": 30,
+            "expressed_module_instances": 12,
+            "internal_guests": 0,
+            "internalizations": 0,
+            "bond_formations": 2,
+            "bond_breaks": 0,
+            "coordinated_components_enabled": True,
+            "component_actions": 4,
+            "component_moves": 1,
+            "component_propagules": 0,
+            "propagated_cells": 0,
+        },
+        {
+            "tick": 20,
+            "population": 11,
+            "living_species": 2,
+            "cellular_affordances_enabled": True,
+            "bond_components": 1,
+            "largest_bond_component": 2,
+            "physical_bonds": 1,
+            "bonded_cells": 2,
+            "module_instances": 28,
+            "expressed_module_instances": 10,
+            "internal_guests": 0,
+            "internalizations": 0,
+            "bond_formations": 3,
+            "bond_breaks": 2,
+            "coordinated_components_enabled": True,
+            "component_actions": 5,
+            "component_moves": 1,
+            "component_propagules": 0,
+            "propagated_cells": 0,
+        },
+    ]
+    (run_dir / "metrics.jsonl").write_text(
+        "".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8"
+    )
+
+    print_native_report(run_dir / "manifest.json")
+
+    output = capsys.readouterr().out
+    assert "status=ENABLED final_groups=1 final_largest_group=2" in output
+    assert "peak_largest_group=3 at_tick=10" in output
+    assert "peak_groups=2 at_tick=10" in output
+    assert "peak_bonds=2 at_tick=10" in output
 
 
 def test_native_report_uses_first_zero_population_as_extinction_tick(

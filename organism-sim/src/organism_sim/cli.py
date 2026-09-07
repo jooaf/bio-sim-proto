@@ -9,6 +9,7 @@ from typing import Any
 from .config import BehaviorModel, Scheduler
 from .config_io import build_config, load_config_file
 from .recording import RunRecorder
+from .rust_run import DEFAULT_COMPOSITION_INTERVAL
 from .simulation import Simulation
 
 SLIDER_ARGUMENTS: tuple[tuple[str, str, type, str], ...] = (
@@ -50,6 +51,13 @@ EXTRA_ARGUMENTS: tuple[tuple[str, str, type, str], ...] = (
     ("--season-duration-max", "season_duration_max", int, "maximum random season duration"),
     ("--season-transition", "season_transition_ticks", int, "season profile blend duration"),
     ("--season-strength", "season_strength", float, "environmental season variability in [0, 1]"),
+    ("--reaction-rule-count", "reaction_rule_count", int, "bounded environmental reaction rule count"),
+    ("--environment-reaction-rate", "environmental_reaction_rate", float, "environmental reaction probability scale"),
+    ("--reaction-thermodynamics", "reaction_thermodynamics", float, "fraction of reaction energy released as heat"),
+    ("--byproduct-strength", "byproduct_strength", float, "organism metabolic byproduct emission strength"),
+    ("--byproduct-decay", "byproduct_decay_rate", float, "local byproduct decay rate"),
+    ("--chemistry-coupling", "chemistry_coupling", float, "local chemistry effect on metabolism and behavior"),
+    ("--guest-niche-coupling", "guest_niche_coupling", float, "local chemistry effect on internal guests"),
 )
 
 
@@ -84,6 +92,18 @@ def create_parser() -> argparse.ArgumentParser:
         type=int,
         default=500,
         help="Rust-engine progress interval in ticks (0 disables progress output)",
+    )
+    parser.add_argument(
+        "--record-composition",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="record sparse Rust organism molecule batches (Rust engine only)",
+    )
+    parser.add_argument(
+        "--composition-every",
+        type=int,
+        default=None,
+        help="organism composition sampling interval in ticks (requires --record-composition)",
     )
     parser.add_argument(
         "--set",
@@ -123,6 +143,12 @@ def create_parser() -> argparse.ArgumentParser:
         help="enable physical structure from accumulated dead biomass (Rust engine only)",
     )
     parser.add_argument(
+        "--dynamic-chemistry",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="enable organism-driven environmental reactions and byproduct fields (Rust engine only)",
+    )
+    parser.add_argument(
         "--print-effective-config",
         action="store_true",
         help="print merged configuration and exit without running",
@@ -140,7 +166,10 @@ def main() -> None:
     try:
         if args.config:
             simulation_values, run_values = load_config_file(args.config)
-        unknown_run_fields = sorted(set(run_values) - {"ticks", "runs_dir"})
+        unknown_run_fields = sorted(
+            set(run_values)
+            - {"ticks", "runs_dir", "record_composition", "composition_every"}
+        )
         if unknown_run_fields:
             raise ValueError(f"unknown run configuration fields: {', '.join(unknown_run_fields)}")
         overrides = {
@@ -164,10 +193,32 @@ def main() -> None:
             overrides["cellular_emergence_enabled"] = args.cellular_emergence
         if args.biodeposits is not None:
             overrides["biodeposits_enabled"] = args.biodeposits
+        if args.dynamic_chemistry is not None:
+            overrides["dynamic_chemistry_enabled"] = args.dynamic_chemistry
         config = build_config(simulation_values, overrides, args.set)
         ticks = args.ticks if args.ticks is not None else int(run_values.get("ticks", 1000))
         runs_dir_value = args.runs_dir if args.runs_dir is not None else run_values.get("runs_dir")
         runs_dir = Path(runs_dir_value) if runs_dir_value else None
+        record_composition = (
+            args.record_composition
+            if args.record_composition is not None
+            else run_values.get("record_composition", False)
+        )
+        if not isinstance(record_composition, bool):
+            raise TypeError("run.record_composition must be a boolean")
+        composition_interval = (
+            args.composition_every
+            if args.composition_every is not None
+            else run_values.get("composition_every", DEFAULT_COMPOSITION_INTERVAL)
+        )
+        if isinstance(composition_interval, bool) or not isinstance(composition_interval, int):
+            raise TypeError("run.composition_every must be an integer")
+        if composition_interval < 1:
+            raise ValueError("composition_every must be positive")
+        if args.composition_every is not None and not record_composition:
+            raise ValueError("--composition-every requires --record-composition")
+        if record_composition and args.engine != "rust":
+            raise ValueError("--record-composition requires --engine rust")
         if ticks < 0:
             raise ValueError("ticks must be nonnegative")
     except (TypeError, ValueError) as error:
@@ -183,6 +234,8 @@ def main() -> None:
                         "runs_dir": str(runs_dir) if runs_dir else None,
                         "engine": args.engine,
                         "progress_every": args.progress_every,
+                        "record_composition": record_composition,
+                        "composition_every": composition_interval,
                     },
                 },
                 indent=2,
@@ -199,6 +252,8 @@ def main() -> None:
             ticks,
             runs_root=runs_dir,
             progress_every=args.progress_every,
+            record_composition=record_composition,
+            composition_interval=composition_interval,
         )
         stats = simulation.stats_dict()
         audit = simulation.audit()

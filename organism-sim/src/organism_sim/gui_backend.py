@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+import sys
 from collections.abc import Callable
 from dataclasses import dataclass, replace
-import sys
 from threading import Event, Lock, Thread
 from time import monotonic, perf_counter
 from typing import Any, Protocol

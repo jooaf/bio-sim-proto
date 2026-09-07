@@ -167,6 +167,66 @@ def test_biodeposit_configuration_validation() -> None:
         build_config({"biodeposit_decay_rate": -0.1})
 
 
+def test_dynamic_chemistry_configuration_and_cli_flags() -> None:
+    config = build_config(
+        {},
+        {
+            "dynamic_chemistry_enabled": True,
+            "reaction_rule_count": 12,
+            "environmental_reaction_rate": 0.4,
+            "reaction_thermodynamics": 0.2,
+            "byproduct_strength": 0.03,
+            "byproduct_decay_rate": 0.05,
+            "chemistry_coupling": 0.8,
+            "guest_niche_coupling": 0.7,
+        },
+    )
+    assert config.dynamic_chemistry_enabled is True
+    assert config.reaction_rule_count == 12
+    assert config.environmental_reaction_rate == 0.4
+    assert config.reaction_thermodynamics == 0.2
+    assert config.byproduct_strength == 0.03
+    assert config.byproduct_decay_rate == 0.05
+    assert config.chemistry_coupling == 0.8
+    assert config.guest_niche_coupling == 0.7
+
+    parser = create_parser()
+    args = parser.parse_args(
+        [
+            "--dynamic-chemistry",
+            "--reaction-rule-count",
+            "9",
+            "--environment-reaction-rate",
+            "0.25",
+            "--reaction-thermodynamics",
+            "0.15",
+            "--byproduct-strength",
+            "0.04",
+            "--byproduct-decay",
+            "0.03",
+            "--chemistry-coupling",
+            "0.6",
+            "--guest-niche-coupling",
+            "0.7",
+        ]
+    )
+    assert args.dynamic_chemistry is True
+    assert args.reaction_rule_count == 9
+    assert args.environmental_reaction_rate == 0.25
+    assert args.reaction_thermodynamics == 0.15
+    assert args.byproduct_strength == 0.04
+    assert args.byproduct_decay_rate == 0.03
+    assert args.chemistry_coupling == 0.6
+    assert args.guest_niche_coupling == 0.7
+
+    with pytest.raises(ValueError, match="reaction_rule_count"):
+        build_config({"reaction_rule_count": 33})
+    with pytest.raises(ValueError, match="reaction_thermodynamics"):
+        build_config({"reaction_thermodynamics": 0.51})
+    with pytest.raises(ValueError, match="byproduct_decay_rate"):
+        build_config({"byproduct_decay_rate": 1.1})
+
+
 def test_headless_parser_exposes_gui_slider_flags() -> None:
     parser = create_parser()
     args = parser.parse_args(
