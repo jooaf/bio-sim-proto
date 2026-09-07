@@ -1,11 +1,14 @@
-"""Pool-funded neutral copy birth for the experimental Stage 3R extension."""
+"""Pool-funded copy birth for experimental Stage 3 reproduction modes."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 
+import numpy as np
 from numpy.random import Generator
 
+from soup.config import OffspringPlacement
+from soup.interactions import ExactCopyTriggerFact
 from soup.ledgers import SymbolPool
 from soup.substrate.base import ByteTape
 from soup.world import SpatialWorld
@@ -19,6 +22,9 @@ class ReproductionFact:
     child_cell: tuple[int, int]
     born_tick: int
     tape: ByteTape
+    trigger: str = "scheduled"
+    trigger_target_id: int | None = None
+    trigger_round_index: int | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -27,6 +33,8 @@ class ReproductionResult:
     blocked_no_space: int
     blocked_pool: int
     births: tuple[ReproductionFact, ...]
+    blocked_no_parent: int = 0
+    invalidated_triggers: int = 0
 
 
 def _free_neighbor_cells(
@@ -45,31 +53,48 @@ def _free_neighbor_cells(
     return sorted(index for index in candidates if not world.occupied[index])
 
 
-def reproduce_tapes(
+def _place_parent_copy(
+    *,
+    world: SpatialWorld,
+    pool: SymbolPool,
+    parent_index: int,
+    child_index: int,
+    tick: int,
+    trigger: str,
+    trigger_target_id: int | None = None,
+    trigger_round_index: int | None = None,
+) -> ReproductionFact | None:
+    """Atomically fund and place one exact parent copy."""
+
+    child_tape = world.tapes[parent_index].copy()
+    if not pool.withdraw_tape(child_tape):
+        return None
+    parent_id = int(world.tape_ids[parent_index])
+    parent_cell = world.cell(parent_index)
+    child_id = world.place(child_index, child_tape, tick)
+    return ReproductionFact(
+        parent_id=parent_id,
+        parent_cell=parent_cell,
+        child_id=child_id,
+        child_cell=world.cell(child_index),
+        born_tick=tick,
+        tape=child_tape.copy(),
+        trigger=trigger,
+        trigger_target_id=trigger_target_id,
+        trigger_round_index=trigger_round_index,
+    )
+
+
+def _scheduled_parent_first(
     *,
     world: SpatialWorld,
     pool: SymbolPool,
     rng: Generator,
     tick: int,
-    rate: float,
+    attempted_parents: np.ndarray[tuple[int, ...], np.dtype[np.int64]],
     placement_radius: int,
     max_births_per_tick: int,
 ) -> ReproductionResult:
-    """Attempt neutral exact-copy births from the tick-start live parents."""
-
-    if not 0.0 <= rate <= 1.0:
-        raise ValueError("reproduction rate must be in [0, 1]")
-    if placement_radius <= 0:
-        raise ValueError("placement radius must be positive")
-    if max_births_per_tick <= 0:
-        raise ValueError("max births per tick must be positive")
-    if rate == 0.0 or world.free_cells == 0:
-        return ReproductionResult(0, 0, 0, ())
-
-    parents = world.occupied_indices()
-    attempted_parents = parents[rng.random(len(parents)) < rate]
-    if len(attempted_parents):
-        attempted_parents = rng.permutation(attempted_parents)
     attempted = 0
     blocked_no_space = 0
     blocked_pool = 0
@@ -83,25 +108,175 @@ def reproduce_tapes(
         if not free_cells:
             blocked_no_space += 1
             continue
-        child_tape = world.tapes[parent_index].copy()
-        if not pool.withdraw_tape(child_tape):
-            blocked_pool += 1
-            continue
         child_index = free_cells[int(rng.integers(len(free_cells)))]
-        child_id = world.place(child_index, child_tape, tick)
-        births.append(
-            ReproductionFact(
-                parent_id=int(world.tape_ids[parent_index]),
-                parent_cell=world.cell(parent_index),
-                child_id=child_id,
-                child_cell=world.cell(child_index),
-                born_tick=tick,
-                tape=child_tape.copy(),
-            )
+        birth = _place_parent_copy(
+            world=world,
+            pool=pool,
+            parent_index=parent_index,
+            child_index=child_index,
+            tick=tick,
+            trigger="scheduled",
         )
+        if birth is None:
+            blocked_pool += 1
+        else:
+            births.append(birth)
     return ReproductionResult(
         attempted=attempted,
         blocked_no_space=blocked_no_space,
         blocked_pool=blocked_pool,
         births=tuple(births),
+    )
+
+
+def _scheduled_vacancy_first(
+    *,
+    world: SpatialWorld,
+    pool: SymbolPool,
+    rng: Generator,
+    tick: int,
+    n_attempts: int,
+    placement_radius: int,
+    max_births_per_tick: int,
+) -> ReproductionResult:
+    attempted = 0
+    blocked_no_parent = 0
+    blocked_pool = 0
+    births: list[ReproductionFact] = []
+    for _ in range(n_attempts):
+        if len(births) >= max_births_per_tick or world.free_cells == 0:
+            break
+        attempted += 1
+        free_cells = np.flatnonzero(~world.occupied)
+        child_index = int(free_cells[int(rng.integers(len(free_cells)))])
+        parents = world.neighbor_indices(child_index, placement_radius)
+        if len(parents) == 0:
+            blocked_no_parent += 1
+            continue
+        parent_index = int(parents[int(rng.integers(len(parents)))])
+        birth = _place_parent_copy(
+            world=world,
+            pool=pool,
+            parent_index=parent_index,
+            child_index=child_index,
+            tick=tick,
+            trigger="scheduled",
+        )
+        if birth is None:
+            blocked_pool += 1
+        else:
+            births.append(birth)
+    return ReproductionResult(
+        attempted=attempted,
+        blocked_no_space=0,
+        blocked_pool=blocked_pool,
+        births=tuple(births),
+        blocked_no_parent=blocked_no_parent,
+    )
+
+
+def reproduce_tapes(
+    *,
+    world: SpatialWorld,
+    pool: SymbolPool,
+    rng: Generator,
+    tick: int,
+    rate: float,
+    placement_radius: int,
+    max_births_per_tick: int,
+    placement_protocol: str = OffspringPlacement.PARENT_FIRST.value,
+) -> ReproductionResult:
+    """Attempt scheduled exact-copy births from the current live population."""
+
+    if not 0.0 <= rate <= 1.0:
+        raise ValueError("reproduction rate must be in [0, 1]")
+    if placement_radius <= 0:
+        raise ValueError("placement radius must be positive")
+    if max_births_per_tick <= 0:
+        raise ValueError("max births per tick must be positive")
+    protocol = OffspringPlacement(placement_protocol)
+    if rate == 0.0 or world.free_cells == 0:
+        return ReproductionResult(0, 0, 0, ())
+
+    parents = world.occupied_indices()
+    attempted_parents = parents[rng.random(len(parents)) < rate]
+    if protocol is OffspringPlacement.VACANCY_FIRST:
+        return _scheduled_vacancy_first(
+            world=world,
+            pool=pool,
+            rng=rng,
+            tick=tick,
+            n_attempts=len(attempted_parents),
+            placement_radius=placement_radius,
+            max_births_per_tick=max_births_per_tick,
+        )
+    if len(attempted_parents):
+        attempted_parents = rng.permutation(attempted_parents)
+    return _scheduled_parent_first(
+        world=world,
+        pool=pool,
+        rng=rng,
+        tick=tick,
+        attempted_parents=attempted_parents,
+        placement_radius=placement_radius,
+        max_births_per_tick=max_births_per_tick,
+    )
+
+
+def reproduce_from_copy_triggers(
+    *,
+    world: SpatialWorld,
+    pool: SymbolPool,
+    rng: Generator,
+    tick: int,
+    triggers: list[ExactCopyTriggerFact],
+    placement_radius: int,
+    max_births_per_tick: int,
+) -> ReproductionResult:
+    """Attempt births from still-valid execution-mediated exact-copy triggers."""
+
+    attempted = 0
+    blocked_no_space = 0
+    blocked_pool = 0
+    invalidated = 0
+    births: list[ReproductionFact] = []
+    for trigger in triggers:
+        if len(births) >= max_births_per_tick:
+            break
+        attempted += 1
+        matching = np.flatnonzero(
+            world.occupied & (world.tape_ids == trigger.source_id)
+        )
+        if len(matching) != 1:
+            invalidated += 1
+            continue
+        parent_index = int(matching[0])
+        if not np.array_equal(world.tapes[parent_index], trigger.tape):
+            invalidated += 1
+            continue
+        free_cells = _free_neighbor_cells(world, parent_index, placement_radius)
+        if not free_cells:
+            blocked_no_space += 1
+            continue
+        child_index = free_cells[int(rng.integers(len(free_cells)))]
+        birth = _place_parent_copy(
+            world=world,
+            pool=pool,
+            parent_index=parent_index,
+            child_index=child_index,
+            tick=tick,
+            trigger="exact_copy",
+            trigger_target_id=trigger.target_id,
+            trigger_round_index=trigger.round_index,
+        )
+        if birth is None:
+            blocked_pool += 1
+        else:
+            births.append(birth)
+    return ReproductionResult(
+        attempted=attempted,
+        blocked_no_space=blocked_no_space,
+        blocked_pool=blocked_pool,
+        births=tuple(births),
+        invalidated_triggers=invalidated,
     )

@@ -7,9 +7,14 @@ from collections import defaultdict
 import numpy as np
 from numpy.random import Generator
 
-from soup.config import Config, PairingMode
+from soup.config import Config, PairingMode, ReproductionTrigger
 from soup.dissolution import DissolutionFact, dissolve_candidates
-from soup.interactions import InteractionFact, run_interaction_round, run_local_interaction_round
+from soup.interactions import (
+    ExactCopyTriggerFact,
+    InteractionFact,
+    run_interaction_round,
+    run_local_interaction_round,
+)
 from soup.ledgers import SymbolPool
 from soup.logging.invariants import (
     InvariantViolation,
@@ -20,7 +25,12 @@ from soup.logging.invariants import (
 )
 from soup.logging.writer import RunWriter
 from soup.placement import PlacementFact, PlacementResult, place_random_tapes
-from soup.reproduction import ReproductionFact, ReproductionResult, reproduce_tapes
+from soup.reproduction import (
+    ReproductionFact,
+    ReproductionResult,
+    reproduce_from_copy_triggers,
+    reproduce_tapes,
+)
 from soup.substrate.base import ExecutionBudget, Substrate
 from soup.world import FlatWorld, SpatialWorld, World
 
@@ -99,6 +109,7 @@ class Scheduler:
         dissolutions: list[DissolutionFact] = []
         reproductions = ReproductionResult(0, 0, 0, ())
         placements = PlacementResult(0, 0, ())
+        copy_triggers: list[ExactCopyTriggerFact] = []
         if isinstance(self.world, SpatialWorld):
             if self.pool is None:
                 raise InvariantViolation("Stage 2 requires a symbol pool")
@@ -113,6 +124,13 @@ class Scheduler:
                 mutation_rate=self.config.world.mutation_rate,
                 pool=self.pool,
                 hash_tape=self.writer.hash_tape,
+                copy_triggers=(
+                    copy_triggers
+                    if self.config.reproduction.enabled
+                    and self.config.reproduction.trigger
+                    == ReproductionTrigger.EXACT_COPY.value
+                    else None
+                ),
             )
             self.world.ages[self.world.occupied] += 1
             dissolutions = dissolve_candidates(
@@ -123,16 +141,35 @@ class Scheduler:
                 rng=self.rng,
                 tick=tick,
             )
-            if self.config.reproduction.enabled:
-                reproductions = reproduce_tapes(
-                    world=self.world,
-                    pool=self.pool,
-                    rng=self.rng,
-                    tick=tick,
-                    rate=self.config.reproduction.rate,
-                    placement_radius=self.config.reproduction.placement_radius,
-                    max_births_per_tick=self.config.reproduction.max_births_per_tick,
-                )
+            reproduction_active = self.config.reproduction.enabled and (
+                self.config.reproduction.stop_tick == 0
+                or tick < self.config.reproduction.stop_tick
+            )
+            if reproduction_active:
+                if (
+                    self.config.reproduction.trigger
+                    == ReproductionTrigger.EXACT_COPY.value
+                ):
+                    reproductions = reproduce_from_copy_triggers(
+                        world=self.world,
+                        pool=self.pool,
+                        rng=self.rng,
+                        tick=tick,
+                        triggers=copy_triggers,
+                        placement_radius=self.config.reproduction.placement_radius,
+                        max_births_per_tick=self.config.reproduction.max_births_per_tick,
+                    )
+                else:
+                    reproductions = reproduce_tapes(
+                        world=self.world,
+                        pool=self.pool,
+                        rng=self.rng,
+                        tick=tick,
+                        rate=self.config.reproduction.rate,
+                        placement_radius=self.config.reproduction.placement_radius,
+                        max_births_per_tick=self.config.reproduction.max_births_per_tick,
+                        placement_protocol=self.config.reproduction.placement_protocol,
+                    )
             placements = place_random_tapes(
                 world=self.world,
                 substrate=self.substrate,
@@ -141,7 +178,9 @@ class Scheduler:
                 tick=tick,
                 reseed_rate=self.config.world.reseed_rate,
             )
-            self._write_lifecycle(tick, dissolutions, reproductions, placements)
+            self._write_lifecycle(
+                tick, dissolutions, copy_triggers, reproductions, placements
+            )
         else:
             facts = run_interaction_round(
                 world=self.world,
@@ -183,6 +222,7 @@ class Scheduler:
         self,
         tick: int,
         dissolutions: list[DissolutionFact],
+        copy_triggers: list[ExactCopyTriggerFact],
         reproduction_result: ReproductionResult,
         placement_result: PlacementResult,
     ) -> None:
@@ -210,6 +250,21 @@ class Scheduler:
                 tape_id=death.tape_id,
                 content_hash=death_hash,
                 details={"cell": list(death.cell), "cause": death.cause},
+            )
+        for trigger in copy_triggers:
+            self.writer.append_event(
+                tick=trigger.tick,
+                event_type="exact_copy_trigger",
+                tape_id=trigger.source_id,
+                content_hash=self.writer.hash_tape(trigger.tape),
+                details={
+                    "direction": trigger.direction,
+                    "round_index": trigger.round_index,
+                    "source_id": trigger.source_id,
+                    "target_id": trigger.target_id,
+                    "source_cell": trigger.source_cell,
+                    "target_cell": trigger.target_cell,
+                },
             )
         self._write_reproduction(tick, reproduction_result)
         for birth in placement_result.placements:
@@ -266,6 +321,18 @@ class Scheduler:
                 event_type="reproduction_blocked_pool",
                 details={"count": reproduction_result.blocked_pool},
             )
+        if reproduction_result.blocked_no_parent:
+            self.writer.append_event(
+                tick=tick,
+                event_type="reproduction_blocked_no_parent",
+                details={"count": reproduction_result.blocked_no_parent},
+            )
+        if reproduction_result.invalidated_triggers:
+            self.writer.append_event(
+                tick=tick,
+                event_type="reproduction_trigger_invalidated",
+                details={"count": reproduction_result.invalidated_triggers},
+            )
 
     def _write_reproductive_birth(self, birth: ReproductionFact) -> None:
         birth_hash = self.writer.hash_tape(birth.tape)
@@ -297,6 +364,9 @@ class Scheduler:
                 "parent_id": birth.parent_id,
                 "parent_cell": list(birth.parent_cell),
                 "child_cell": list(birth.child_cell),
+                "trigger": birth.trigger,
+                "trigger_target_id": birth.trigger_target_id,
+                "trigger_round_index": birth.trigger_round_index,
             },
         )
 

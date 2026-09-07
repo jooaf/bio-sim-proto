@@ -9,8 +9,22 @@ import numpy as np
 from numpy.random import Generator
 
 from soup.config import PairingMode
-from soup.substrate.base import ExecutionBudget, Substrate, WriteMediator, WriteOutcome
+from soup.substrate.base import ByteTape, ExecutionBudget, Substrate, WriteMediator, WriteOutcome
 from soup.world import FlatWorld, SpatialWorld, World
+
+
+@dataclass(frozen=True, slots=True)
+class ExactCopyTriggerFact:
+    """Byte-exact execution-mediated copy observed during one interaction."""
+
+    tick: int
+    round_index: int
+    direction: str
+    source_id: int
+    target_id: int
+    source_cell: tuple[int, int] | None
+    target_cell: tuple[int, int] | None
+    tape: ByteTape
 
 
 @dataclass(frozen=True, slots=True)
@@ -114,8 +128,9 @@ def _execute_pair(
     mutation_rate: float,
     pool: WriteMediator | None,
     hash_tape: HashTape,
-) -> InteractionFact:
-    """Execute one ordered pair without changing occupancy."""
+    detect_exact_copy: bool,
+) -> tuple[InteractionFact, tuple[ExactCopyTriggerFact, ...]]:
+    """Execute one ordered pair and return factual exact-copy triggers."""
 
     a_before = world.tapes[a_index].copy()
     b_before = world.tapes[b_index].copy()
@@ -129,13 +144,55 @@ def _execute_pair(
         tape_length=substrate.tape_length,
         pool=pool,
     )
+    execution_before = joint.copy() if detect_exact_copy else None
     result = substrate.execute(joint, pool, budget, None)
     length = substrate.tape_length
     a_after = joint[:length]
     b_after = joint[length:]
     world.tapes[a_index] = a_after
     world.tapes[b_index] = b_after
-    return InteractionFact(
+    triggers: list[ExactCopyTriggerFact] = []
+    if execution_before is not None:
+        a_execution_before = execution_before[:length]
+        b_execution_before = execution_before[length:]
+    else:
+        a_execution_before = a_after
+        b_execution_before = b_after
+    if detect_exact_copy and (
+        np.array_equal(a_execution_before, a_after)
+        and not np.array_equal(b_execution_before, b_after)
+        and np.array_equal(b_after, a_after)
+    ):
+        triggers.append(
+            ExactCopyTriggerFact(
+                tick=tick,
+                round_index=round_index,
+                direction="a_into_b",
+                source_id=int(world.tape_ids[a_index]),
+                target_id=int(world.tape_ids[b_index]),
+                source_cell=world.cell(a_index),
+                target_cell=world.cell(b_index),
+                tape=a_after.copy(),
+            )
+        )
+    if detect_exact_copy and (
+        np.array_equal(b_execution_before, b_after)
+        and not np.array_equal(a_execution_before, a_after)
+        and np.array_equal(a_after, b_after)
+    ):
+        triggers.append(
+            ExactCopyTriggerFact(
+                tick=tick,
+                round_index=round_index,
+                direction="b_into_a",
+                source_id=int(world.tape_ids[b_index]),
+                target_id=int(world.tape_ids[a_index]),
+                source_cell=world.cell(b_index),
+                target_cell=world.cell(a_index),
+                tape=b_after.copy(),
+            )
+        )
+    fact = InteractionFact(
         tick=tick,
         round_index=round_index,
         a_index=a_index,
@@ -160,6 +217,7 @@ def _execute_pair(
         b_hash_before=b_hash_before,
         b_hash_after=hash_tape(b_after),
     )
+    return fact, tuple(triggers)
 
 
 def run_interaction_round(
@@ -174,6 +232,7 @@ def run_interaction_round(
     mutation_rate: float,
     pool: WriteMediator | None,
     hash_tape: HashTape,
+    copy_triggers: list[ExactCopyTriggerFact] | None = None,
 ) -> list[InteractionFact]:
     """Sample and execute one configured flat-world interaction round."""
 
@@ -185,21 +244,23 @@ def run_interaction_round(
         pairing_mode=pairing_mode,
     )
     for round_index, (a_index, b_index) in enumerate(pairs):
-        facts.append(
-            _execute_pair(
-                world=world,
-                substrate=substrate,
-                rng=rng,
-                budget=budget,
-                tick=tick,
-                round_index=round_index,
-                a_index=a_index,
-                b_index=b_index,
-                mutation_rate=mutation_rate,
-                pool=pool,
-                hash_tape=hash_tape,
-            )
+        fact, triggers = _execute_pair(
+            world=world,
+            substrate=substrate,
+            rng=rng,
+            budget=budget,
+            tick=tick,
+            round_index=round_index,
+            a_index=a_index,
+            b_index=b_index,
+            mutation_rate=mutation_rate,
+            pool=pool,
+            hash_tape=hash_tape,
+            detect_exact_copy=copy_triggers is not None,
         )
+        facts.append(fact)
+        if copy_triggers is not None:
+            copy_triggers.extend(triggers)
     return facts
 
 
@@ -215,6 +276,7 @@ def run_local_interaction_round(
     mutation_rate: float,
     pool: WriteMediator,
     hash_tape: HashTape,
+    copy_triggers: list[ExactCopyTriggerFact] | None = None,
 ) -> list[InteractionFact]:
     """Execute with-replacement interactions between occupied local neighbors."""
 
@@ -228,19 +290,21 @@ def run_local_interaction_round(
         if len(neighbors) == 0:
             continue
         b_index = int(neighbors[int(rng.integers(len(neighbors)))])
-        facts.append(
-            _execute_pair(
-                world=world,
-                substrate=substrate,
-                rng=rng,
-                budget=budget,
-                tick=tick,
-                round_index=round_index,
-                a_index=a_index,
-                b_index=b_index,
-                mutation_rate=mutation_rate,
-                pool=pool,
-                hash_tape=hash_tape,
-            )
+        fact, triggers = _execute_pair(
+            world=world,
+            substrate=substrate,
+            rng=rng,
+            budget=budget,
+            tick=tick,
+            round_index=round_index,
+            a_index=a_index,
+            b_index=b_index,
+            mutation_rate=mutation_rate,
+            pool=pool,
+            hash_tape=hash_tape,
+            detect_exact_copy=copy_triggers is not None,
         )
+        facts.append(fact)
+        if copy_triggers is not None:
+            copy_triggers.extend(triggers)
     return facts

@@ -1,0 +1,7 @@
+name = "stage3_vacancy_pilot"
+base_config = "experiments/configs/stage3_vacancy_pilot.toml"
+processes = 6
+
+[grid]
+"run.seed" = [202609120, 202609121, 202609122]
+"reproduction.placement_radius" = [1, 8]

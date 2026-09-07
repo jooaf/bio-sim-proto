@@ -53,6 +53,20 @@ class PairingMode(str, Enum):
     LOCAL_NEIGHBORHOOD = "local_neighborhood"
 
 
+class ReproductionTrigger(str, Enum):
+    """Events allowed to initiate a conserved birth attempt."""
+
+    SCHEDULED = "scheduled"
+    EXACT_COPY = "exact_copy"
+
+
+class OffspringPlacement(str, Enum):
+    """Protocols for selecting a parent and an empty offspring cell."""
+
+    PARENT_FIRST = "parent_first"
+    VACANCY_FIRST = "vacancy_first"
+
+
 def knob(description: str, sane: str) -> dict[str, str]:
     """Return standard metadata for a tunable configuration field."""
 
@@ -143,11 +157,19 @@ class DissolutionConfig:
 class ReproductionConfig:
     enabled: bool = field(
         default=False,
-        metadata=knob("Enable neutral pool-funded copy birth.", "Stage 3R+"),
+        metadata=knob("Enable pool-funded copy birth.", "Stage 3+"),
+    )
+    trigger: str = field(
+        default=ReproductionTrigger.SCHEDULED.value,
+        metadata=knob("Event that initiates birth attempts.", "scheduled|exact_copy"),
+    )
+    placement_protocol: str = field(
+        default=OffspringPlacement.PARENT_FIRST.value,
+        metadata=knob("Order used to select parents and vacancies.", "parent_first|vacancy_first"),
     )
     rate: float = field(
         default=0.0,
-        metadata=knob("Independent birth-attempt probability per live tape per tick.", "0..1"),
+        metadata=knob("Scheduled attempt probability per live tape per tick.", "0..1"),
     )
     placement_radius: int = field(
         default=1,
@@ -156,6 +178,10 @@ class ReproductionConfig:
     max_births_per_tick: int = field(
         default=1,
         metadata=knob("Maximum successful offspring placements per tick.", "1..10^6"),
+    )
+    stop_tick: int = field(
+        default=0,
+        metadata=knob("First tick with reproduction disabled; zero never stops.", "0..10^9"),
     )
 
 
@@ -295,6 +321,25 @@ class Config:
             self.world.width * self.world.height * self.symbols.initial_tape_fill
         ) < 2:
             raise ValueError("Stage 2 initial_tape_fill must create at least two tapes")
+        if self.reproduction.stop_tick < 0:
+            raise ValueError("reproduction.stop_tick must be nonnegative")
+        try:
+            trigger = ReproductionTrigger(self.reproduction.trigger)
+        except ValueError as error:
+            allowed = ", ".join(value.value for value in ReproductionTrigger)
+            raise ValueError(f"reproduction.trigger must be one of: {allowed}") from error
+        try:
+            placement_protocol = OffspringPlacement(self.reproduction.placement_protocol)
+        except ValueError as error:
+            allowed = ", ".join(value.value for value in OffspringPlacement)
+            raise ValueError(
+                f"reproduction.placement_protocol must be one of: {allowed}"
+            ) from error
+        if trigger is ReproductionTrigger.EXACT_COPY:
+            if self.reproduction.rate != 0.0:
+                raise ValueError("exact_copy reproduction requires reproduction.rate = 0")
+            if placement_protocol is not OffspringPlacement.PARENT_FIRST:
+                raise ValueError("exact_copy reproduction requires parent_first placement")
         if self.substrate.name not in {"bff", "ski"}:
             raise ValueError("substrate.name must be 'bff' or 'ski'")
         if self.run.stage == 0 and self.substrate.name != "bff":
