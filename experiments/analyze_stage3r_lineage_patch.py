@@ -109,6 +109,7 @@ def summarize_patch_run(
     births = int((events["event_type"] == "offspring_born").sum())
     blocked_pool = event_count(events, "reproduction_blocked_pool")
     blocked_space = event_count(events, "reproduction_blocked_no_space")
+    blocked_parent = event_count(events, "reproduction_blocked_no_parent")
     family_counts = family_snapshot["content_hash"].value_counts().to_numpy(dtype=np.int64)
     max_depth = lineage_depth(lineage)
     summary.update(
@@ -117,6 +118,10 @@ def summarize_patch_run(
             "reproductive_births": births,
             "reproduction_blocked_pool": blocked_pool,
             "reproduction_blocked_no_space": blocked_space,
+            "reproduction_blocked_no_parent": blocked_parent,
+            "reproduction_attempts_observed": (
+                births + blocked_pool + blocked_space + blocked_parent
+            ),
             "max_lineage_depth": max_depth,
             "live_reproductive_descendant_fraction": sum(tape_id in parents for tape_id in tape_ids) / len(tape_ids),
             "neutral_family_q1": hill_number(family_counts, 1.0),

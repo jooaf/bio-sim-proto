@@ -1,0 +1,10 @@
+[sweep]
+name = "stage3_vacancy_lineage"
+base_config = "stage3_vacancy_lineage.toml"
+n_seeds = 10
+start_seed = 202609130
+processes = 10
+output_dir = "sweeps"
+
+[parameters]
+"reproduction.placement_radius" = [1, 8]
