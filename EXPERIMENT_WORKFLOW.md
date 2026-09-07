@@ -4,6 +4,28 @@ Use GitHub for source, experiment definitions, configuration, lockfiles, and
 compact Markdown reports. Keep generated run data outside Git in one append-only
 results directory.
 
+## Shared commands
+
+The root `justfile` provides the same short commands on macOS and Linux. Run
+`just` to display the available recipes. Common commands are:
+
+```nu
+just setup                     # sync dependencies and build native Rust
+just refresh                   # git pull plus setup
+just test                      # run both test suites
+just smoke 100 7               # 100 ticks with seed 7
+just dynamic 4000 "100,101" 4  # campaign: ticks, seeds, workers
+just publish <run-directory>   # publish using the configured destination
+just herdr                     # local persistent Herdr session
+just herdr-remote              # attach to Herdr on the experiment machine
+```
+
+Install `just` with Homebrew if it is not already available:
+
+```nu
+brew install just
+```
+
 ## Machine setup
 
 Clone and build on each experiment machine:
@@ -59,7 +81,7 @@ From the experiment machine itself:
 
 ```nu
 $env.BIO_SIM_RESULTS_DESTINATION = "/home/jojo/bio-sim-results"
-nu tools/publish_experiment.nu organism-sim/runs/<run-id>
+just publish organism-sim/runs/<run-id>
 ```
 
 You can also pass `--destination` explicitly. Every publication includes a
