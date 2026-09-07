@@ -69,7 +69,7 @@ def mechanics(run_dir: Path) -> dict[str, Any]:
         bool(line)
         for line in invariant_path.read_text(encoding="utf-8").splitlines()
     )
-    result = {
+    result: dict[str, Any] = {
         "run_dir": str(run_dir),
         "seed": config.run.seed,
         "dissolution_rate": config.dissolution.spontaneous_rate,
