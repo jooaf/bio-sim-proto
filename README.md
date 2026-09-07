@@ -65,7 +65,7 @@ Stage 3 can schedule exact-copy birth after dissolution and before random reseed
 
 An optional BFF energy ledger adds uniform field influx, conservative toroidal diffusion, field decay, local absorption, instruction/write expenditure, starvation, death dissipation, and atomic parent-funded birth costs. The invariant checks `field + tapes + dissipation = initial energy + influx` while retaining exact per-byte matter conservation.
 
-The byte-exact execution-gated birth pilot produced zero triggers and remains a NO-GO, so implemented birth is still an exogenous mechanism control rather than endogenous self-replication. See `reports/stage3_causal_reproduction_energy_design.md`, `reports/stage3_vacancy_lineage_decision.md`, `reports/stage3_energy_liveness_decision.md`, and `reports/stage3_energy_birth_decision.md`.
+The byte-exact execution-gated birth pilot produced zero triggers and remains a NO-GO, so implemented birth is still an exogenous mechanism control rather than endogenous self-replication. Opcode-composition reactions are identifiable, but the empirical organization endpoint failed its frozen prevalence requirement. See `reports/stage3_causal_reproduction_energy_design.md`, `reports/stage3_vacancy_lineage_decision.md`, `reports/stage3_energy_birth_decision.md`, and `reports/stage3_organization_decision.md`.
 
 ## Interactive Stage 0 viewer
 

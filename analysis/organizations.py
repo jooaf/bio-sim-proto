@@ -37,10 +37,14 @@ class _UnionFind:
         self.parent = {member: member for member in members}
 
     def find(self, member: Species) -> Species:
-        parent = self.parent[member]
-        if parent != member:
-            self.parent[member] = self.find(parent)
-        return self.parent[member]
+        root = member
+        while self.parent[root] != root:
+            root = self.parent[root]
+        while member != root:
+            parent = self.parent[member]
+            self.parent[member] = root
+            member = parent
+        return root
 
     def union(self, left: Species, right: Species) -> None:
         left_root = self.find(left)

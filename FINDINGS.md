@@ -171,4 +171,6 @@ Frozen outcomes:
 - **Energy-funded scheduled birth — PASS.** A cost of 5 reduced births by a mean 43.9 versus cost 0, 95% interval [38.598,48.900], exact p=0.000977, positive in 10/10 pairs; all 20 runs were matter/energy clean.
 - **Lineage switch-off persistence — integrated NO-GO.** Stopped-arm patches remained strong for 9,900 ticks (mean final excess +0.045945, p=0.000977, retention 0.999), but continued birth clogged the lattice: median occupancy 0.971 and only 1/10 controls met the frozen occupancy ceiling.
 
-These results establish local inheritance and energetic constraint in scheduled-birth controls. They do not establish endogenous reproduction, trophic organization, self-maintenance, or organisms. Organizational-closure analysis remains gated on explicit advanced-algorithm review.
+A final 1%-sampled composition-reaction diagnostic found all 15 windows identifiable, with recurrent-observation fractions above 0.994. Closed/self-maintaining empirical components appeared in 5/15 windows against zero in all product-permutation nulls (`p = 0.005`), but failed the frozen 8/15 prevalence requirement; organization excess is a NO-GO and no intervention test proceeds.
+
+These results establish local inheritance, explicit energy accounting, and energetic constraint in scheduled-birth controls. They do not establish endogenous reproduction, trophic organization, self-maintenance, or organisms.

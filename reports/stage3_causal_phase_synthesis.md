@@ -10,7 +10,7 @@
 | Explicit energy accounting | GO at influx 1024 | max relative error `1.721e-11` |
 | Energy-funded scheduled birth | GO | cost reduced births by 43.9, `p=0.000977`, 10/10 positive |
 | Lineage switch-off persistence | Integrated NO-GO | stopped patches persisted, but continued control clogged |
-| Empirical organization diagnostic | BLOCKED | explicit advanced-algorithm review unavailable without `/engineer` workflow |
+| Empirical organization diagnostic | Identifiability GO; organization NO-GO | 15/15 windows identifiable, but accepted candidates occurred in only 5/15 |
 
 ## What changed scientifically
 
@@ -39,12 +39,10 @@ The switch-off result is informative but does not pass its integrated gate. Line
 - organism identity;
 - indefinitely viable scheduled-birth dynamics.
 
-## Required continuation
+## Organizational diagnostic
 
-The next implementation is the empirical organization identifiability diagnostic described in `reports/stage3_causal_reproduction_energy_design.md`. It uses composition-count reaction species, empirical closure, stoichiometric maintenance, and a permutation null. Because this is an advanced graph/closure algorithm, the repository's engineering workflow requires explicit review. Start it with a command equivalent to:
+A three-run, 1%-reaction-log campaign produced 15/15 identifiable windows under the frozen opcode-count representation. Recurrent observations exceeded 0.994 in every window. Empirically balanced closed components appeared in 5/15 windows versus zero throughout the product-permutation null (`p = 0.005`), but failed the preregistered 8/15 prevalence requirement. Organization excess is therefore a NO-GO and no intervention test is launched.
 
-```text
-/engineer start empirical organization identifiability and closure analysis
-```
+## Recommended continuation
 
-After review, preregister a small 1%-interaction-log energy campaign before inspecting recurrence or closure outcomes. If the representation is non-identifiable, stop rather than changing species definitions post hoc.
+Close the current Stage 3 causal phase without parameter rescue. The strongest next model requirement is a non-uniform, behaviorally accessible energy source or explicit decomposition pathway that can create differentiated ecological roles. Any such Stage 4 extension needs a new design and preregistration; the current uniform-absorption system does not support trophic or organism claims.

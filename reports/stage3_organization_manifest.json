@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "preregistration_commit": "1adcb71",
+  "index_sha256": "16b23959eae0787b019722096117391366e074b8ddf1ddf8effb4b2bf915d562",
+  "raw_apparent_bytes": 23334460,
+  "runs": [
+    {
+      "run_dir": "sweeps/stage3_organization_diagnostic/runs/20260907T051015.203393Z_222dee5b8b78_202609170",
+      "seed": 202609170,
+      "source_commit": "1adcb715d8c54f97891d992b25241714dfa0f81a",
+      "config_hash": "222dee5b8b78",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "1e015e8c4ed6f93ccc034034b66007f0461a6e0229aa506e9f47da2da6e37b20"
+    },
+    {
+      "run_dir": "sweeps/stage3_organization_diagnostic/runs/20260907T051015.203403Z_423d9ea5d95d_202609171",
+      "seed": 202609171,
+      "source_commit": "1adcb715d8c54f97891d992b25241714dfa0f81a",
+      "config_hash": "423d9ea5d95d",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "ee25d55f3750ec646931faa0665a6aaac2d27e3492e03b20c39a9d7b063af87c"
+    },
+    {
+      "run_dir": "sweeps/stage3_organization_diagnostic/runs/20260907T051015.203433Z_f41b5abbaa50_202609172",
+      "seed": 202609172,
+      "source_commit": "1adcb715d8c54f97891d992b25241714dfa0f81a",
+      "config_hash": "f41b5abbaa50",
+      "exit_status": "success",
+      "invariant_bytes": 0,
+      "manifest_sha256": "1200205c0ba3c6cd8c09dcb73f524f8448f5d8848a888537b9d90a4b9c88ff84"
+    }
+  ]
+}
