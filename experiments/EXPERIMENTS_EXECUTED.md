@@ -2,7 +2,7 @@
 
 This append-only registry summarizes experiments that reached a decision. It is
 not a replacement for preregistrations, manifests, raw artifacts, or full
-reports. Pending work belongs in [`EXPERIMENT_IDEAS.md`](EXPERIMENT_IDEAS.md).
+reports. Pending work belongs in [`EXPERIMENTAL_IDEAS.md`](EXPERIMENTAL_IDEAS.md).
 
 For every new entry include: frozen hypothesis, test and primary endpoint,
 result with uncertainty/test statistic, decision, why that decision follows,
@@ -319,33 +319,68 @@ results stay in the registry.
   the completed campaign.
 - **Evidence:** `reports/stage3_lineage_persistence_decision.md`.
 
-### S3-E006 — Empirical organization identifiability
+### S3-E006 — Empirical organization identifiability diagnostic
 
-- **Hypotheses:** Eleven-component opcode-count species are recurrent enough for
-  reaction analysis; closed/self-maintaining active components exceed a
-  product-permutation null with adequate temporal prevalence.
-- **Test:** Three selected-energy runs with deterministic 1% reaction sampling;
-  five fixed 1,000-tick windows/run; 199 product-label permutations/window.
-- **Result:** All 15 windows were identifiable: recurrent-observation fractions
-  were 0.994–0.998 and singleton-species fractions 0.025–0.076. Accepted
-  components appeared in 5/15 windows versus zero throughout the null. The
-  campaign statistic exceeded the null (`p=0.005`) but missed the frozen 8/15
-  prevalence requirement.
-- **Decision:** **Identifiability PASS; integrated organization NO-GO.**
-- **Why:** Composition species solved the exact-hash sparsity problem, but
-  empirically balanced components were too intermittent for the preregistered
-  organization claim. No intervention test was launched.
-- **Follow-up:** S4-I001 through S4-I006; do not retune windows, species, or the
-  failed prevalence threshold.
-- **Evidence:** `reports/stage3_organization_decision.md`,
-  `reports/stage3_organization_report.md`.
+- **Hypothesis:** The exact eleven-component composition representation is
+  identifiable in at least 12/15 windows, and closed, exactly balanced active
+  candidates exceed a product-permutation null with candidates in at least 8/15
+  windows.
+- **Test:** Three frozen seeds (`202609170`–`202609172`), 5,000 ticks, 1%
+  deterministic reaction sampling, five 1,000-tick windows per seed, and 199
+  aligned product permutations.
+- **Result:** Identifiability passed in 15/15 windows. Accepted candidates occurred
+  in 5/15 windows, below the frozen 8/15 prevalence requirement. The observed
+  mean was 0.4 candidates versus a null 95th percentile of 0.0 (Monte Carlo
+  `p=0.005`). All 3 runs succeeded and conserved matter, with zero invariant
+  failures and maximum relative energy error `1.831e-11`.
+- **Decision:** **Representation PASS; empirical organization excess NOT
+  SUPPORTED.**
+- **Why:** Although the observed mean exceeded the permutation null, the
+  preregistered prevalence criterion failed. The conjunction required every
+  criterion, so the positive null contrast cannot override that failure.
+- **Limitations:** The result is specific to exact composition species and frozen
+  1,000-tick windows; it neither establishes organism identity nor licenses
+  post-hoc clustering or representation changes.
+- **Follow-up:** S3-I002 abandoned under its stopping rule. Retain the five
+  candidate-bearing windows as descriptive evidence only.
+- **Evidence:** `reports/stage3_organization_report.md`,
+  `reports/stage3_organization_windows.csv`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/stage3_organization_diagnostic`.
+
+### S3-E007 — Density-independent population regulation
+
+- **Hypothesis:** Increasing neutral spontaneous dissolution without reducing the
+  frozen scheduled-birth rate maintains a partially empty lattice and preserves
+  a valid lineage-clustering positive control.
+- **Test:** A mechanics-only pilot crossed dissolution rates `2e-5`, `3e-5`,
+  `5e-5`, and `1e-4` over three 20,000-tick seeds each. The frozen selected rate
+  was then tested on ten held-out 20,000-tick seeds with 499-permutation final
+  family-neighbor tests.
+- **Result:** Rate `2e-5` was the sole eligible pilot treatment (3/3 feasible),
+  with median occupancy 0.812 and median absolute 10k-to-19.9k occupancy change
+  0.012. Held-out confirmation was feasible in 10/10 runs; median late occupancy
+  was 0.838 and median births were 340. Final family-neighbor excess averaged
+  `+0.088461`, bootstrap interval `[+0.084802,+0.091852]`, exact one-sided
+  `p=0.000977`, positive and individually significant in 10/10 runs.
+- **Decision:** **PASS for a non-clogging neutral lineage positive control.**
+- **Why:** Every frozen mechanics, liveness, conservation, and lineage-control
+  criterion passed on held-out seeds without changing the selected birth rate.
+- **Limitations:** Spontaneous dissolution is exogenous density-independent
+  mortality and scheduled cloning remains exogenous. This result does not show
+  endogenous reproduction, adaptation, or self-maintenance.
+- **Follow-up:** S3-I006, a newly preregistered regulated switch-off experiment;
+  do not reinterpret the failed original switch-off gate.
+- **Evidence:** `reports/stage3_population_regulation_pilot_report.md`,
+  `reports/stage3_population_regulation_confirmation_report.md`; raw campaigns:
+  `/home/jojo/bio-sim-results/bazzite/stage3_population_regulation_pilot` and
+  `/home/jojo/bio-sim-results/bazzite/stage3_population_regulation_confirmation`.
 
 ## Current frontier
 
 Stage 3 supports causal neutral lineage clustering, exact matter/energy
-accounting, and energy-constrained scheduled birth. It does **not** support
-endogenous reproduction, trophic organization, self-maintenance, or organism
-identity. The completed exact-copy, long-run persistence, and organization
-NO-GOs remain in the registry. Newly generated Stage 4 ideas are tracked in
-[`EXPERIMENT_IDEAS.md`](EXPERIMENT_IDEAS.md); none is yet an active or
-preregistered experiment.
+accounting, energy-constrained scheduled birth, an identifiable exact
+composition representation, and a non-clogging neutral turnover control. It does
+**not** support endogenous reproduction, trophic organization, prevalent
+empirical organization, self-maintenance, or organism identity. No experiment is
+currently claimed or running in `EXPERIMENTAL_IDEAS.md`; S3-I006 is the next
+proposed lineage-persistence test.

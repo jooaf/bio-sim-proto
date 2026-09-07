@@ -145,9 +145,9 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S3-I001 — Empirical organization identifiability and permutation test
 
-- **Status:** Claimed
-- **Owner / machine:** Mac (`Joels-MacBook-Pro-2.local`)
-- **Claimed at:** 2026-09-07 UTC
+- **Status:** Complete
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-07T05:23:17Z (transferred from Mac claim)
 - **Depends on:** completed Stage 3 energy gate; `reports/stage3_causal_phase_synthesis.md`
 - **Why:** Neutral lineage patches and energy-constrained scheduled birth are
   mechanism controls, not evidence of self-maintaining organization. The next
@@ -170,7 +170,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S3-I002 — Organizational recovery intervention
 
-- **Status:** Blocked
+- **Status:** Abandoned
 - **Owner / machine:** Unclaimed
 - **Claimed at:** —
 - **Depends on:** S3-I001
@@ -181,7 +181,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
   null candidates.
 - **Test:** Define only after S3-I001 identifies a candidate; use held-out seeds
   and freeze perturbation magnitude, recovery endpoint, controls, and horizon.
-- **Preregistration:** blocked
+- **Preregistration:** not opened; S3-I001 missed its frozen prevalence gate
 - **Estimated cost:** unknown
 - **On success:** support bounded empirical self-maintenance and replicate on a
   second representation/substrate.
@@ -189,9 +189,9 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S3-I003 — Population regulation for a non-clogging birth control
 
-- **Status:** Proposed
-- **Owner / machine:** Unclaimed
-- **Claimed at:** —
+- **Status:** Complete
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-07T06:05:00Z
 - **Depends on:** Stage 3 lineage switch-off NO-GO
 - **Why:** Continued scheduled birth reached median occupancy 0.971 and failed
   the frozen occupancy ceiling in 9/10 runs. Long-run controls require a
@@ -201,7 +201,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
   births for a lineage-persistence positive control.
 - **Test:** First justify the mechanism; select liveness using mechanics only,
   without inspecting lineage endpoints; then run held-out confirmation.
-- **Preregistration:** pending
+- **Preregistration:** `reports/stage3_population_regulation_preregistration.md`
 - **Estimated cost:** medium
 - **On success:** create a new lineage-persistence experiment rather than
   reopening the failed gate.
@@ -242,3 +242,25 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 - **Estimated cost:** medium
 - **On success:** design a causal resource-flow experiment.
 - **On failure:** keep the energy ledger as an accounting mechanism only.
+
+### S3-I006 — Regulated lineage switch-off persistence
+
+- **Status:** Proposed
+- **Owner / machine:** Unclaimed
+- **Claimed at:** —
+- **Depends on:** completed S3-I003 regulated positive-control confirmation
+- **Why:** Density-independent turnover now prevents the continued-birth control
+  from clogging. A new experiment can ask whether neutral lineage patches persist
+  after birth stops under materially stronger turnover, without reopening or
+  reinterpreting the failed original gate.
+- **Hypothesis:** With spontaneous dissolution fixed at `2e-5`, local lineage
+  association remains positive after scheduled birth stops and differs from a
+  valid continued-birth positive control.
+- **Test:** Preregister new held-out matched seeds, a fixed switch tick and
+  horizon, the unchanged modulo-16 family endpoint, and retention criteria. Keep
+  the selected birth and dissolution rates frozen.
+- **Preregistration:** pending
+- **Estimated cost:** high; 20 matched 20,000-tick runs
+- **On success:** support turnover-resistant neutral patch persistence only.
+- **On failure:** conclude the earlier persistence was specific to slow turnover
+  and stop neutral lineage-persistence work.
