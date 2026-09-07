@@ -1,0 +1,5 @@
+dissolution_rate,runs,feasible,median_births,median_dissolutions,median_occupancy,median_abs_change,median_depth,conserved,invariant_failures,eligible,occupancy_distance,turnover_imbalance
+2e-05,3,3,331.0,362.0,0.8121875,0.01171875,3.0,True,0,True,0.06218749999999995,31.0
+3e-05,3,0,287.0,475.0,0.69138671875,0.076171875,3.0,True,0,False,0.05861328124999998,188.0
+5e-05,3,0,247.0,648.0,0.51267578125,0.1171875,3.0,True,0,False,0.23732421874999998,401.0
+0.0001,3,0,180.0,887.0,0.246484375,0.177734375,2.0,True,0,False,0.503515625,707.0
