@@ -33,8 +33,8 @@ class Simulation:
     ) -> None:
         config.apply_stage_gates()
         config.validate()
-        if config.run.stage not in {0, 1, 2, 3}:
-            raise NotImplementedError("this stage gate implements only Stages 0, 1, 2, and experimental 3R")
+        if config.run.stage not in {0, 1, 2, 3, 4}:
+            raise NotImplementedError("this stage gate implements only Stages 0 through 4")
         self.config = config
         self.rng = make_rng(config.run.seed)
         self.substrate: Substrate

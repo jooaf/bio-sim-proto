@@ -269,7 +269,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4-I001 — Active energy-uptake positive control
 
-- **Status:** Claimed
+- **Status:** Running
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-08T00:45:00Z
 - **Depends on:** completed Stage 3 energy ledger

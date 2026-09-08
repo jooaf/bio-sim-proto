@@ -142,6 +142,14 @@ class EnergyConfig:
     diffusion: float = field(default=0.1, metadata=knob("Field diffusion coefficient.", "0..0.25"))
     decay: float = field(default=0.0, metadata=knob("Field fraction dissipated each tick.", "0..1"))
     min_to_interact: float = field(default=0.0, metadata=knob("Minimum held energy for pairing.", "0..capacity"))
+    active_uptake_enabled: bool = field(
+        default=False,
+        metadata=knob("Allow execution of the Stage 4 BFF energy-uptake opcode.", "true|false"),
+    )
+    uptake_amount: float = field(
+        default=1.0,
+        metadata=knob("Maximum local field energy transferred per uptake execution.", ">0"),
+    )
 
 
 @dataclass(slots=True)
@@ -305,6 +313,7 @@ class Config:
             ("energy.per_instruction", self.energy.per_instruction),
             ("energy.per_write", self.energy.per_write),
             ("energy.min_to_interact", self.energy.min_to_interact),
+            ("energy.uptake_amount", self.energy.uptake_amount),
             ("reproduction.birth_energy_cost", self.reproduction.birth_energy_cost),
             ("reproduction.offspring_energy", self.reproduction.offspring_energy),
         )
@@ -313,6 +322,15 @@ class Config:
                 raise ValueError(f"{energy_name} must be nonnegative")
         if self.energy.tape_capacity <= 0.0:
             raise ValueError("energy.tape_capacity must be positive")
+        if self.energy.active_uptake_enabled:
+            if self.run.stage < 4:
+                raise ValueError("active energy uptake requires Stage 4 or later")
+            if not self.energy.enabled:
+                raise ValueError("active energy uptake requires energy.enabled = true")
+            if self.substrate.name != "bff":
+                raise ValueError("active energy uptake currently requires BFF")
+            if self.energy.uptake_amount <= 0.0:
+                raise ValueError("energy.uptake_amount must be positive when uptake is enabled")
         if not 0.0 <= self.energy.diffusion <= 0.25:
             raise ValueError("energy.diffusion must be in 0..0.25")
         if self.energy.min_to_interact > self.energy.tape_capacity:
@@ -416,9 +434,16 @@ class Config:
             gated.append(("reproduction.enabled", self.reproduction.enabled))
             self.reproduction.enabled = False
         if self.run.stage < 4:
-            gated.extend((("signals.enabled", self.signals.enabled), ("task.enabled", self.task.enabled)))
+            gated.extend(
+                (
+                    ("signals.enabled", self.signals.enabled),
+                    ("task.enabled", self.task.enabled),
+                    ("energy.active_uptake_enabled", self.energy.active_uptake_enabled),
+                )
+            )
             self.signals.enabled = False
             self.task.enabled = False
+            self.energy.active_uptake_enabled = False
         for name, was_enabled in gated:
             if was_enabled:
                 warnings.warn(f"{name} is forced off by run.stage={self.run.stage}", stacklevel=2)

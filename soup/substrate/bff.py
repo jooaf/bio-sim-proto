@@ -36,6 +36,7 @@ OP_COPY_01 = 0x2E
 OP_COPY_10 = 0x2C
 OP_LOOP_START = 0x5B
 OP_LOOP_END = 0x5D
+OP_ENERGY_UPTAKE = 0x3A
 INSTRUCTIONS: tuple[int, ...] = (
     OP_DEC_H0,
     OP_INC_H0,
@@ -129,8 +130,6 @@ class BFFSubstrate:
         signals: SignalView | None,
     ) -> ExecutionResult:
         """Execute a joint tape in place, reading one character per step."""
-
-        del signals  # Signals are intentionally unavailable before Stage 4.
         expected_length = 2 * self.tape_length
         if joint.dtype != np.uint8 or joint.ndim != 1 or len(joint) != expected_length:
             raise ValueError(f"joint tape must be a uint8 vector of length {expected_length}")
@@ -142,15 +141,20 @@ class BFFSubstrate:
         energy = 0.0
         writes_success = 0
         writes_blocked = 0
+        uptake_executions = 0
+        energy_absorbed = 0.0
         halt_reason = HaltReason.BUDGET_EXHAUSTED
 
         while steps < budget.max_steps:
+            op = int(joint[pc])
+            if op == OP_ENERGY_UPTAKE and signals is not None:
+                energy_absorbed += signals.uptake_energy()
+                uptake_executions += 1
             instruction_cost = budget.energy_per_instruction
-            if energy + instruction_cost > budget.energy_available:
+            if energy + instruction_cost > budget.energy_available + energy_absorbed:
                 halt_reason = HaltReason.ENERGY_EXHAUSTED
                 break
             energy += instruction_cost
-            op = int(joint[pc])
             steps += 1
             next_pc = pc + 1
 
@@ -188,7 +192,7 @@ class BFFSubstrate:
                     new_value = int(joint[h1])
                     destination = h0
                 write_cost = budget.energy_per_write
-                if energy + write_cost > budget.energy_available:
+                if energy + write_cost > budget.energy_available + energy_absorbed:
                     halt_reason = HaltReason.ENERGY_EXHAUSTED
                     break
                 outcome = self._write(joint, destination, new_value, pool)
@@ -224,6 +228,8 @@ class BFFSubstrate:
             writes_success=writes_success,
             writes_blocked=writes_blocked,
             halt_reason=halt_reason,
+            energy_uptake_executions=uptake_executions,
+            energy_absorbed=energy_absorbed,
         )
 
     def is_inert(self, tape: ByteTape) -> bool:

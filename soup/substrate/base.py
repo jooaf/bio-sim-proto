@@ -57,7 +57,9 @@ class WriteMediator(Protocol):
 
 
 class SignalView(Protocol):
-    """Opaque local signal interface reserved for Stage 4."""
+    """Local Stage 4 execution environment exposed to a substrate."""
+
+    def uptake_energy(self) -> float: ...
 
 
 @dataclass(frozen=True, slots=True)
@@ -77,6 +79,8 @@ class ExecutionResult:
     halt_reason: HaltReason
     signal_reads: int = 0
     signal_writes: int = 0
+    energy_uptake_executions: int = 0
+    energy_absorbed: float = 0.0
 
 
 class Substrate(Protocol):

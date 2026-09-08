@@ -10,7 +10,14 @@ from numpy.random import Generator
 
 from soup.config import EnergyConfig, PairingMode
 from soup.energy import EnergyLedger
-from soup.substrate.base import ByteTape, ExecutionBudget, Substrate, WriteMediator, WriteOutcome
+from soup.substrate.base import (
+    ByteTape,
+    ExecutionBudget,
+    SignalView,
+    Substrate,
+    WriteMediator,
+    WriteOutcome,
+)
 from soup.substrate.bff import INSTRUCTIONS
 from soup.world import FlatWorld, SpatialWorld, World
 
@@ -57,6 +64,8 @@ class InteractionFact:
     mutation_writes_blocked: int
     steps: int
     energy_spent: float
+    energy_uptake_executions: int
+    energy_absorbed: float
     writes_success: int
     writes_blocked: int
     halt_reason: str
@@ -154,6 +163,7 @@ def _execute_pair(
     hash_tape: HashTape,
     detect_exact_copy: bool,
     collect_composition: bool,
+    energy_uptake: SignalView | None,
 ) -> tuple[
     InteractionFact,
     tuple[ExactCopyTriggerFact, ...],
@@ -174,7 +184,7 @@ def _execute_pair(
         pool=pool,
     )
     execution_before = joint.copy() if detect_exact_copy else None
-    result = substrate.execute(joint, pool, budget, None)
+    result = substrate.execute(joint, pool, budget, energy_uptake)
     length = substrate.tape_length
     a_after = joint[:length]
     b_after = joint[length:]
@@ -236,6 +246,8 @@ def _execute_pair(
         mutation_writes_blocked=mutation_blocked,
         steps=result.steps_executed,
         energy_spent=result.energy_consumed,
+        energy_uptake_executions=result.energy_uptake_executions,
+        energy_absorbed=result.energy_absorbed,
         writes_success=result.writes_success,
         writes_blocked=result.writes_blocked,
         halt_reason=result.halt_reason.value,
@@ -299,6 +311,7 @@ def run_interaction_round(
             hash_tape=hash_tape,
             detect_exact_copy=copy_triggers is not None,
             collect_composition=False,
+            energy_uptake=None,
         )
         facts.append(fact)
         if copy_triggers is not None:
@@ -375,6 +388,13 @@ def run_local_interaction_round(
             hash_tape=hash_tape,
             detect_exact_copy=copy_triggers is not None,
             collect_composition=collect_composition,
+            energy_uptake=(
+                energy.uptake_access(a_index, energy_config.uptake_amount)
+                if energy is not None
+                and energy_config is not None
+                and energy_config.active_uptake_enabled
+                else None
+            ),
         )
         facts.append(fact)
         if reaction is not None and composition_reactions is not None:

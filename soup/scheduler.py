@@ -237,6 +237,7 @@ class Scheduler:
             self._check_invariants()
 
         self._write_interactions(facts)
+        self._write_energy_uptake(tick, facts)
         self._write_tick(tick, facts, len(dissolutions))
         if tick % self.config.run.epoch_length == 0:
             epoch = tick // self.config.run.epoch_length
@@ -463,6 +464,21 @@ class Scheduler:
                     "b_hash_after": fact.b_hash_after,
                 },
             )
+
+    def _write_energy_uptake(
+        self, tick: int, facts: list[InteractionFact]
+    ) -> None:
+        executions = sum(fact.energy_uptake_executions for fact in facts)
+        if executions == 0:
+            return
+        self.writer.append_event(
+            tick=tick,
+            event_type="energy_uptake",
+            details={
+                "executions": executions,
+                "energy_absorbed": sum(fact.energy_absorbed for fact in facts),
+            },
+        )
 
     def _write_tick(
         self,

@@ -8,7 +8,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from soup.config import EnergyConfig
-from soup.substrate.base import ExecutionBudget
+from soup.substrate.base import ExecutionBudget, SignalView
 from soup.world import SpatialWorld
 
 
@@ -86,6 +86,22 @@ class EnergyLedger:
             self.field[occupied] -= transfer
             self.tapes[occupied] += transfer
 
+    def uptake_access(self, index: int, amount: float) -> SignalView:
+        """Return execution-scoped access to one tape's local field cell."""
+
+        return LocalEnergyUptake(self, index, amount)
+
+    def uptake(self, index: int, maximum: float) -> float:
+        """Transfer bounded local field energy into one occupied tape."""
+
+        if maximum < 0.0:
+            raise ValueError("uptake maximum must be nonnegative")
+        room = max(0.0, self.tape_capacity - float(self.tapes[index]))
+        transfer = min(float(self.field[index]), maximum, room)
+        self.field[index] -= transfer
+        self.tapes[index] += transfer
+        return transfer
+
     def execution_budget(
         self, index: int, config: EnergyConfig, max_steps: int
     ) -> ExecutionBudget:
@@ -150,3 +166,15 @@ class EnergyLedger:
         self.starved_ticks[index] = 0
         self.dissipated_cumulative += amount
         return amount
+
+
+@dataclass(slots=True)
+class LocalEnergyUptake:
+    """Execution-scoped adapter for one active tape and field cell."""
+
+    ledger: EnergyLedger
+    index: int
+    amount: float
+
+    def uptake_energy(self) -> float:
+        return self.ledger.uptake(self.index, self.amount)
