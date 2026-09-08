@@ -245,7 +245,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S3-I006 — Regulated lineage switch-off persistence
 
-- **Status:** Running
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-07T21:14:16Z
 - **Depends on:** completed S3-I003 regulated positive-control confirmation

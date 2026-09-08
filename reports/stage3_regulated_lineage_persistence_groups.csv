@@ -1,0 +1,3 @@
+stop_tick,runs,feasible,median_births,median_depth,median_occupancy,mean_switch_excess,mean_final_excess,positive_final,significant_final,median_retention,mean_final_root,conserved,invariant_failures
+0,10,10,353.0,4.0,0.8394433593749999,0.05033322183695225,0.08895820036276118,10,10,1.7594948298489823,0.09514302950512338,True,0
+10000,10,10,174.0,3.0,0.7169921875,0.05033322183695225,0.04309722522368115,10,10,0.8811388497418944,0.04937270819502594,True,0

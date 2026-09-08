@@ -375,12 +375,43 @@ results stay in the registry.
   `/home/jojo/bio-sim-results/bazzite/stage3_population_regulation_pilot` and
   `/home/jojo/bio-sim-results/bazzite/stage3_population_regulation_confirmation`.
 
+### S3-E008 — Regulated lineage switch-off persistence
+
+- **Hypothesis:** Under the selected `2e-5` spontaneous dissolution rate, neutral
+  lineage association remains positive after scheduled birth stops, while the
+  continued-birth arm retains a stronger valid positive control.
+- **Test:** Ten new matched seeds (`202609193`–`202609202`), 20,000 ticks,
+  continued versus stop-before-10,000 birth, four frozen checkpoints, 499
+  fixed-occupancy family-label permutations, and Holm correction across stopped
+  persistence and continued-minus-stopped co-primary endpoints.
+- **Result:** Stopped final family excess averaged `+0.043097`, interval
+  `[+0.040045,+0.046359]`; continued-minus-stopped averaged `+0.045861`, interval
+  `[+0.040967,+0.050633]`. Both exact one-sided tests had raw `p=0.000977` and
+  Holm `p=0.001953`. Both arms were positive and individually significant in
+  10/10 runs. Median stopped retention was 0.881; stopped/continued mechanical
+  feasibility was 8/10 and 10/10. All 20 runs succeeded, conserved matter, and
+  had zero invariant failures.
+- **Decision:** **PASS for turnover-resistant neutral lineage-patch persistence.**
+- **Why:** Every frozen integrated criterion passed, including both corrected
+  co-primary tests and the minimum mechanical-feasibility counts.
+- **Limitations:** Population declined after birth removal, as expected, and two
+  stopped runs missed the lineage-depth feasibility threshold. The pattern is a
+  neutral label association under exogenous death and scheduled cloning, not
+  endogenous reproduction or self-maintenance.
+- **Follow-up:** No additional neutral lineage-persistence campaign is justified.
+  Proceed to a preregistered Stage 4 active resource-access mechanism before
+  making ecological claims.
+- **Evidence:** `reports/stage3_regulated_lineage_persistence_report.md`,
+  `reports/stage3_regulated_lineage_persistence_endpoints.csv`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/stage3_regulated_lineage_persistence`.
+
 ## Current frontier
 
 Stage 3 supports causal neutral lineage clustering, exact matter/energy
 accounting, energy-constrained scheduled birth, an identifiable exact
-composition representation, and a non-clogging neutral turnover control. It does
-**not** support endogenous reproduction, trophic organization, prevalent
-empirical organization, self-maintenance, or organism identity. No experiment is
-currently claimed or running in `EXPERIMENTAL_IDEAS.md`; S3-I006 is the next
-proposed lineage-persistence test.
+composition representation, a non-clogging neutral turnover control, and neutral
+patch persistence under stronger turnover. It does **not** support endogenous
+reproduction, trophic organization, prevalent empirical organization,
+self-maintenance, or organism identity. No experiment is currently claimed or
+running in `EXPERIMENTAL_IDEAS.md`; the next model-development priority is a
+preregistered Stage 4 active energy-uptake positive control.
