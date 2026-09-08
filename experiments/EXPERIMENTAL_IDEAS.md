@@ -264,3 +264,27 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 - **On success:** support turnover-resistant neutral patch persistence only.
 - **On failure:** conclude the earlier persistence was specific to slow turnover
   and stop neutral lineage-persistence work.
+
+## Stage 4 — Behaviorally accessible energy and ecology
+
+### S4-I001 — Active energy-uptake positive control
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-08T00:45:00Z
+- **Depends on:** completed Stage 3 energy ledger
+- **Why:** Passive absorption makes energy explicit but gives every occupied tape
+  equal access. A mechanics-positive control must show that executed behavior can
+  control local energy transfer before ecological differentiation is tested.
+- **Hypothesis:** Executing a reserved uptake opcode transfers bounded local field
+  energy into the active tape and closes the energy ledger, while the byte-exact
+  disabled control records no uptake.
+- **Test:** Five matched mutation-free 100-tick seeded assay pairs, active uptake
+  enabled versus disabled, zero passive absorption, exact energy accounting, and
+  frozen positive-control tape bytes.
+- **Preregistration:** `reports/stage4_active_uptake_preregistration.md`
+- **Estimated cost:** low; ten small mechanics runs
+- **On success:** add a held-out differentiated-access or structured-field idea;
+  do not claim ecology from the mechanics assay.
+- **On failure:** stop Stage 4 ecological campaigns and repair only the explicit
+  ledger or execution defect.
