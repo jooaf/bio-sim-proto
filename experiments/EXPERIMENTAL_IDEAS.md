@@ -291,9 +291,9 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4-I002 — Mixed-population differentiated energy access
 
-- **Status:** Proposed
-- **Owner / machine:** Unclaimed
-- **Claimed at:** —
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-09T22:50:16Z
 - **Depends on:** completed S4-I001 uptake mechanics positive control
 - **Why:** The seeded all-uptake assay proves execution-mediated transfer but not
   differentiation between tape types sharing one environment. A mixed assay is
@@ -304,7 +304,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 - **Test:** Freeze mixed placement, immutable type labels, held-out seeds, a
   mutation-free horizon, energy-access endpoints, and disabled-feature controls.
   Do not use reproduction, mortality, or fitness endpoints in the first test.
-- **Preregistration:** pending
+- **Preregistration:** `reports/stage4_mixed_energy_access_preregistration.md`
 - **Estimated cost:** low to medium
 - **On success:** proceed to a preregistered structured-field scale campaign.
 - **On failure:** retain active uptake as an isolated mechanics affordance and
