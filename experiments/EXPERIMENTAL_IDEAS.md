@@ -269,7 +269,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4-I001 — Active energy-uptake positive control
 
-- **Status:** Running
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-08T00:45:00Z
 - **Depends on:** completed Stage 3 energy ledger
@@ -288,3 +288,24 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
   do not claim ecology from the mechanics assay.
 - **On failure:** stop Stage 4 ecological campaigns and repair only the explicit
   ledger or execution defect.
+
+### S4-I002 — Mixed-population differentiated energy access
+
+- **Status:** Proposed
+- **Owner / machine:** Unclaimed
+- **Claimed at:** —
+- **Depends on:** completed S4-I001 uptake mechanics positive control
+- **Why:** The seeded all-uptake assay proves execution-mediated transfer but not
+  differentiation between tape types sharing one environment. A mixed assay is
+  required before introducing structured resource fields or ecological claims.
+- **Hypothesis:** In a shared uniform field with passive absorption disabled,
+  uptake-capable seeded tapes acquire and retain more energy than byte-matched
+  uptake-disabled controls while the exact energy ledger remains closed.
+- **Test:** Freeze mixed placement, immutable type labels, held-out seeds, a
+  mutation-free horizon, energy-access endpoints, and disabled-feature controls.
+  Do not use reproduction, mortality, or fitness endpoints in the first test.
+- **Preregistration:** pending
+- **Estimated cost:** low to medium
+- **On success:** proceed to a preregistered structured-field scale campaign.
+- **On failure:** retain active uptake as an isolated mechanics affordance and
+  stop ecological interpretation.

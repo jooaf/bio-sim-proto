@@ -59,6 +59,7 @@ class BFFSubstrate:
     head_wrap: bool = True
     pc_wrap: bool = False
     noop_density: float = 246.0 / 256.0
+    active_uptake_enabled: bool = False
     name: str = "bff"
     alphabet_size: int = 256
 
@@ -233,17 +234,29 @@ class BFFSubstrate:
         )
 
     def is_inert(self, tape: ByteTape) -> bool:
-        """Conservatively call a tape inert when it contains no write opcode."""
+        """Return whether a tape lacks any enabled state-changing instruction."""
 
-        return not bool(np.isin(tape, np.asarray(tuple(WRITE_OPS), dtype=np.uint8)).any())
+        active_ops = (
+            (*WRITE_OPS, OP_ENERGY_UPTAKE)
+            if self.active_uptake_enabled
+            else tuple(WRITE_OPS)
+        )
+        return not bool(np.isin(tape, np.asarray(active_ops, dtype=np.uint8)).any())
 
     def describe(self, tape: ByteTape) -> dict[str, object]:
         """Return raw inspector facts, not evolutionary conclusions."""
 
         histogram = np.bincount(tape, minlength=256)
+        enabled_instructions = (
+            (*INSTRUCTIONS, OP_ENERGY_UPTAKE)
+            if self.active_uptake_enabled
+            else INSTRUCTIONS
+        )
         return {
             "length": int(len(tape)),
-            "instruction_count": int(np.isin(tape, np.asarray(INSTRUCTIONS, dtype=np.uint8)).sum()),
+            "instruction_count": int(
+                np.isin(tape, np.asarray(enabled_instructions, dtype=np.uint8)).sum()
+            ),
             "nonzero_count": int(np.count_nonzero(tape)),
             "byte_histogram": histogram.tolist(),
             "hex": tape.tobytes().hex(),

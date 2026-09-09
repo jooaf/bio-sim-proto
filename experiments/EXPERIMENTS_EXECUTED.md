@@ -405,13 +405,38 @@ results stay in the registry.
   `reports/stage3_regulated_lineage_persistence_endpoints.csv`; raw campaign:
   `/home/jojo/bio-sim-results/bazzite/stage3_regulated_lineage_persistence`.
 
+## Stage 4 — Behaviorally accessible energy and ecology
+
+### S4-E001 — Active energy-uptake mechanics positive control
+
+- **Hypothesis:** Execution of reserved BFF byte `0x3a` transfers bounded local
+  field energy into the active tape and preserves exact accounting, while the
+  byte-identical feature-disabled control records no uptake.
+- **Test:** Five matched seeds (`202609210`–`202609214`), 100 ticks, eight seeded
+  tapes on a 4×4 lattice, enabled versus disabled active uptake, zero passive
+  absorption, mutation, dissolution, reseeding, and reproduction.
+- **Result:** Enabled runs each recorded 1,600 reached uptake instructions,
+  206.72 gross energy transfer, 78.72 final tape energy, and 12,800 executed
+  steps. Disabled runs recorded exactly zero uptake, zero tape energy, and zero
+  funded steps. All 5/5 matched pairs favored enabled uptake. All 10 runs
+  succeeded with fixed occupancy, zero invariant failures, and maximum relative
+  energy error `3.553e-15`.
+- **Decision:** **PASS for execution-mediated active uptake mechanics.**
+- **Why:** Every frozen positive-control, disabled-control, transfer, occupancy,
+  and ledger criterion passed on all seeds.
+- **Limitations:** Every tape in the enabled arm carried the uptake opcode. This
+  does not yet show differentiated access among coexisting types, fitness,
+  adaptation, trophic ecology, or organism identity.
+- **Follow-up:** S4-I002 mixed-population differentiated-access assay.
+- **Evidence:** `reports/stage4_active_uptake_report.md`,
+  `reports/stage4_active_uptake_runs.csv`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/stage4_active_uptake`.
+
 ## Current frontier
 
-Stage 3 supports causal neutral lineage clustering, exact matter/energy
-accounting, energy-constrained scheduled birth, an identifiable exact
-composition representation, a non-clogging neutral turnover control, and neutral
-patch persistence under stronger turnover. It does **not** support endogenous
-reproduction, trophic organization, prevalent empirical organization,
+Stage 4 now supports an opt-in, execution-mediated, exactly accounted local
+energy-transfer mechanism. Stage 3's neutral lineage and accounting results
+remain bounded as previously stated. The project still does **not** support
+endogenous reproduction, trophic ecology, prevalent empirical organization,
 self-maintenance, or organism identity. No experiment is currently claimed or
-running in `EXPERIMENTAL_IDEAS.md`; the next model-development priority is a
-preregistered Stage 4 active energy-uptake positive control.
+running; S4-I002 is the next proposed mechanics gate.

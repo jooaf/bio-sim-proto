@@ -5,7 +5,7 @@ import pytest
 from numpy.typing import NDArray
 
 from soup.substrate.base import ExecutionBudget, HaltReason
-from soup.substrate.bff import BFFSubstrate
+from soup.substrate.bff import BFFSubstrate, OP_ENERGY_UPTAKE
 
 
 def execute(values: list[int], *, steps: int = 32, head_wrap: bool = True, pc_wrap: bool = False) -> tuple[NDArray[np.uint8], object]:
@@ -15,6 +15,12 @@ def execute(values: list[int], *, steps: int = 32, head_wrap: bool = True, pc_wr
     substrate = BFFSubstrate(tape_length=4, head_wrap=head_wrap, pc_wrap=pc_wrap)
     result = substrate.execute(tape, None, ExecutionBudget(max_steps=steps), None)
     return tape, result
+
+
+def test_uptake_opcode_counts_as_activity_only_when_enabled() -> None:
+    tape = np.asarray([OP_ENERGY_UPTAKE, 0, 0, 0], dtype=np.uint8)
+    assert BFFSubstrate(tape_length=4).is_inert(tape)
+    assert not BFFSubstrate(tape_length=4, active_uptake_enabled=True).is_inert(tape)
 
 
 def test_increment_head0_then_increment_value() -> None:

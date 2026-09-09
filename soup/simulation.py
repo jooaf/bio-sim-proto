@@ -44,6 +44,7 @@ class Simulation:
                 head_wrap=config.substrate.head_wrap,
                 pc_wrap=config.substrate.pc_wrap,
                 noop_density=config.substrate.noop_density,
+                active_uptake_enabled=config.energy.active_uptake_enabled,
             )
         else:
             self.substrate = SKISubstrate(tape_length=config.substrate.tape_length)
