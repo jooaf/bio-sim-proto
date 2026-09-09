@@ -432,11 +432,38 @@ results stay in the registry.
   `reports/stage4_active_uptake_runs.csv`; raw campaign:
   `/home/jojo/bio-sim-results/bazzite/stage4_active_uptake`.
 
+### S4-E002 — Mixed-population differentiated energy access
+
+- **Hypothesis:** Uptake-capable tapes acquire and retain more energy than
+  one-byte matched controls while both coexist in the same uniform field, with
+  passive absorption disabled and exact ledger closure.
+- **Test:** Five matched seeds (`202609220`–`202609224`), 200 ticks, four uptake
+  and four control tapes in alternating seed-crossed positions, globally enabled
+  versus disabled uptake arms, immutable tape types, and no demographic dynamics.
+- **Result:** In every enabled run, uptake tapes finished at mean energy 9.84
+  while coexisting controls remained exactly zero; all five within-run
+  differences were positive (exact one-sided sign `p=0.03125`). Energy-area
+  differences were positive in 5/5, uptake tapes funded 12,320–12,720 steps,
+  and controls funded zero. Both types had zero energy and steps in all disabled
+  runs. All 10 runs succeeded with fixed type counts, zero invariant failures,
+  and maximum relative energy error `5.713e-15`.
+- **Decision:** **PASS for coexisting type-specific energy access.**
+- **Why:** Every frozen differentiation, disabled-control, immutability, and
+  accounting criterion passed.
+- **Limitations:** The types were deliberately seeded and immutable, and energy
+  access had no survival or reproduction consequence. This is differentiated
+  mechanics, not ecological selection.
+- **Follow-up:** S4-I003 structured energy-field scale.
+- **Evidence:** `reports/stage4_mixed_energy_access_report.md`,
+  `reports/stage4_mixed_energy_access_runs.csv`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/stage4_mixed_energy_access`.
+
 ## Current frontier
 
-Stage 4 now supports an opt-in, execution-mediated, exactly accounted local
-energy-transfer mechanism. Stage 3's neutral lineage and accounting results
-remain bounded as previously stated. The project still does **not** support
-endogenous reproduction, trophic ecology, prevalent empirical organization,
-self-maintenance, or organism identity. No experiment is currently claimed or
-running; S4-I002 is the next proposed mechanics gate.
+Stage 4 supports opt-in execution-mediated uptake and differentiated energy
+access among coexisting immutable tape types under uniform supply. Stage 3's
+neutral lineage and accounting results remain bounded as previously stated. The
+project still does **not** support endogenous reproduction, fitness effects,
+trophic ecology, prevalent empirical organization, self-maintenance, or organism
+identity. No experiment is currently claimed or running; S4-I003 is the next
+proposed mechanics campaign.

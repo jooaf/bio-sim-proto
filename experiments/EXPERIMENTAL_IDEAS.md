@@ -291,7 +291,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4-I002 — Mixed-population differentiated energy access
 
-- **Status:** Running
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-09T22:50:16Z
 - **Depends on:** completed S4-I001 uptake mechanics positive control
@@ -309,3 +309,25 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 - **On success:** proceed to a preregistered structured-field scale campaign.
 - **On failure:** retain active uptake as an isolated mechanics affordance and
   stop ecological interpretation.
+
+### S4-I003 — Structured energy-field scale
+
+- **Status:** Proposed
+- **Owner / machine:** Unclaimed
+- **Claimed at:** —
+- **Depends on:** completed S4-I002 mixed-population access gate
+- **Why:** Uptake-capable and control tapes now show differentiated access in a
+  shared uniform field. The next uncertainty is whether spatially structured
+  influx produces persistent local energy niches at scales around the radius-1
+  interaction neighborhood.
+- **Hypothesis:** With total influx fixed, a preregistered static patch field
+  produces stronger spatial autocorrelation and distance decay in uptake events
+  and tape energy than a uniform field.
+- **Test:** First validate normalized static fields mechanically; then freeze a
+  small set of correlation lengths below, near, and above interaction scale.
+  Select no field using lineage, organization, reproduction, or survival.
+- **Preregistration:** pending
+- **Estimated cost:** medium
+- **On success:** test a causal ecological consequence with held-out seeds.
+- **On failure:** retain differentiated uptake under uniform supply and stop
+  spatial-niche claims.
