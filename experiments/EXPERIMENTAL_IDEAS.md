@@ -291,7 +291,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4-I002 — Mixed-population differentiated energy access
 
-- **Status:** Claimed
+- **Status:** Running
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-09T22:50:16Z
 - **Depends on:** completed S4-I001 uptake mechanics positive control
