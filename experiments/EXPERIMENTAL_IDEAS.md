@@ -312,9 +312,9 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4-I003 — Structured energy-field scale
 
-- **Status:** Proposed
-- **Owner / machine:** Unclaimed
-- **Claimed at:** —
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-10T06:05:56Z
 - **Depends on:** completed S4-I002 mixed-population access gate
 - **Why:** Uptake-capable and control tapes now show differentiated access in a
   shared uniform field. The next uncertainty is whether spatially structured
@@ -326,7 +326,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 - **Test:** First validate normalized static fields mechanically; then freeze a
   small set of correlation lengths below, near, and above interaction scale.
   Select no field using lineage, organization, reproduction, or survival.
-- **Preregistration:** pending
+- **Preregistration:** `reports/stage4_structured_field_preregistration.md`
 - **Estimated cost:** medium
 - **On success:** test a causal ecological consequence with held-out seeds.
 - **On failure:** retain differentiated uptake under uniform supply and stop
