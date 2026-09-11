@@ -149,13 +149,20 @@ def write_report(runs: pd.DataFrame, paired: pd.DataFrame, target: Path) -> None
         f"- Exact one-sided sign p: {exact_sign_test_greater(paired['frequency_change'].to_numpy(dtype=np.float64)):.10g}",
         f"- Enabled-minus-disabled differences positive: {int((paired['enabled_minus_disabled'] > 0).sum())}/30",
         f"- Disabled successful births: {int(runs.loc[~runs['active_uptake_enabled'], 'births'].sum())}",
+        f"- Enabled runs below the 16-birth gate: {int((enabled['births'] < 16).sum())}/30",
         f"- Maximum relative energy error: {runs['max_relative_energy_error'].max():.3e}", "",
         "| initial uptake | median initial frequency | median final frequency | median change | minimum births | minimum uptake-parent fraction |",
         "|---:|---:|---:|---:|---:|---:|",
     ]
     for row in cast(list[dict[str, Any]], groups.to_dict(orient="records")):
         lines.append(f"| {int(row['initial_uptake_count'])} | {row['median_initial']:.3f} | {row['median_final']:.3f} | {row['median_change']:.3f} | {int(row['min_births'])} | {row['uptake_birth_fraction']:.3f} |")
-    lines += ["", "This establishes scheduled resource-coupled cloning and frequency change only, not endogenous reproduction, adaptation, competition, organization, self-maintenance, or organism identity.", ""]
+    conclusion = (
+        "The frozen gate passed for scheduled resource-coupled cloning and frequency change only. "
+        "This is not endogenous reproduction, adaptation, competition, organization, self-maintenance, or organism identity."
+        if passes_gate(runs, paired)
+        else "The frozen confirmatory gate failed. Directional frequency changes are retained as descriptive evidence only; no resource-coupled reproduction claim is accepted and no parameter tuning is licensed."
+    )
+    lines += ["", conclusion, ""]
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text("\n".join(lines), encoding="utf-8")
 

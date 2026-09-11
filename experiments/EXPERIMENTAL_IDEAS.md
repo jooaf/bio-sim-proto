@@ -356,7 +356,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4-I005 — Resource-coupled birth and frequency change
 
-- **Status:** Running
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-11T23:40:32Z
 - **Depends on:** completed S4-I004 causal starvation-survival gate

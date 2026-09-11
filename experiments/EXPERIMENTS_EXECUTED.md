@@ -510,11 +510,43 @@ results stay in the registry.
   `reports/stage4_uptake_survival_effects.csv`; raw campaign:
   `/home/jojo/bio-sim-results/bazzite/stage4_uptake_survival`.
 
+### S4-E005 — Resource-coupled birth and frequency change
+
+- **Hypothesis:** Energy acquired by active uptake funds scheduled exact-copy
+  births and increases uptake-type frequency across low, equal, and high initial
+  frequencies.
+- **Test:** Ten held-out seeds (`202609250`–`202609259`), initial uptake counts 8,
+  32, and 56 of 64 tapes, matched uptake-enabled and disabled arms, 500 ticks,
+  static correlation-length-2 influx, and energy-costly vacancy-first cloning.
+  Mortality, mutation, passive absorption, writes, and reseeding were disabled.
+- **Result:** Frequency change and enabled-minus-disabled differences were
+  positive in all 30 matched cases (exact sign `p=9.313e-10`), every successful
+  enabled birth had an uptake parent, and disabled arms had zero births. Median
+  frequency increases were 0.441, 0.261, and 0.054. However, two low-frequency
+  enabled runs fell below the frozen minimum of 16 births, with the overall
+  minimum only 3. All 60 runs succeeded with zero invariant failures and maximum
+  relative energy error `3.809e-13`.
+- **Decision:** **FAIL the frozen confirmatory gate.**
+- **Why:** The mandatory per-run birth-liveness criterion failed in 2/30 enabled
+  runs despite uniformly positive directional effects.
+- **Limitations:** Directional frequency shifts are descriptive evidence only.
+  The preregistered stop rule forbids parameter tuning or a confirmatory claim
+  that uptake drives reproduction.
+- **Follow-up:** Stop the energy-coupled reproduction branch. Retain the completed
+  differentiated-access, spatial-niche, and starvation-survival results; return
+  to the roadmap's structured-signal/event-driven-genome work.
+- **Evidence:** `reports/stage4_resource_birth_report.md`,
+  `reports/stage4_resource_birth_effects.csv`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/stage4_resource_birth`.
+
 ## Current frontier
 
 Stage 4 supports execution-mediated differentiated uptake, static spatial
 energy-access niches, and a causal survival consequence under a frozen
-starvation regime, all with exact accounting. It still does **not** support
-endogenous reproduction, evolved adaptation, competition, trophic ecology,
-prevalent empirical organization, self-maintenance, or organism identity. No
-experiment is currently claimed or running.
+starvation regime, all with exact accounting. The resource-coupled reproduction
+confirmation failed its liveness gate, so no reproduction or frequency-change
+claim is accepted and that branch is stopped. The project still does **not**
+support endogenous reproduction, evolved adaptation, competition, trophic
+ecology, prevalent empirical organization, self-maintenance, or organism
+identity. No experiment is currently claimed or running; the next roadmap branch
+is structured signals and event-driven genomes.
