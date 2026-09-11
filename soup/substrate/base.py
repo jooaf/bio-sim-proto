@@ -61,6 +61,8 @@ class SignalView(Protocol):
 
     def uptake_energy(self) -> float: ...
 
+    def read_signal(self) -> bytes | None: ...
+
 
 @dataclass(frozen=True, slots=True)
 class ExecutionBudget:
@@ -78,6 +80,7 @@ class ExecutionResult:
     writes_blocked: int
     halt_reason: HaltReason
     signal_reads: int = 0
+    signal_dispatches: int = 0
     signal_writes: int = 0
     energy_uptake_executions: int = 0
     energy_absorbed: float = 0.0

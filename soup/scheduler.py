@@ -28,6 +28,7 @@ from soup.logging.invariants import (
 )
 from soup.logging.writer import RunWriter
 from soup.placement import PlacementFact, PlacementResult, place_random_tapes
+from soup.signals import SignalField
 from soup.reproduction import (
     ReproductionFact,
     ReproductionResult,
@@ -58,6 +59,7 @@ class Scheduler:
         writer: RunWriter,
         pool: SymbolPool | None = None,
         energy: EnergyLedger | None = None,
+        signals: SignalField | None = None,
     ) -> None:
         self.config = config
         self.world = world
@@ -66,6 +68,7 @@ class Scheduler:
         self.writer = writer
         self.pool = pool
         self.energy = energy
+        self.signals = signals
         self._abundance_events: set[str] = set()
         self._birth_records: dict[
             int, tuple[int, tuple[int, int] | None, str, tuple[int, ...]]
@@ -148,6 +151,7 @@ class Scheduler:
                 ),
                 energy=self.energy,
                 energy_config=self.config.energy if self.energy is not None else None,
+                signals=self.signals,
                 composition_reactions=(
                     composition_reactions
                     if self.config.logging.reaction_log_rate > 0.0
@@ -238,6 +242,7 @@ class Scheduler:
 
         self._write_interactions(facts)
         self._write_energy_uptake(tick, facts)
+        self._write_signal_dispatch(tick, facts)
         self._write_tick(tick, facts, len(dissolutions))
         if tick % self.config.run.epoch_length == 0:
             epoch = tick // self.config.run.epoch_length
@@ -464,6 +469,33 @@ class Scheduler:
                     "b_hash_after": fact.b_hash_after,
                 },
             )
+
+    def _write_signal_dispatch(
+        self, tick: int, facts: list[InteractionFact]
+    ) -> None:
+        if self.signals is None:
+            return
+        for fact in facts:
+            self.writer.append_event(
+                tick=tick,
+                event_type="signal_dispatch",
+                tape_id=fact.a_id,
+                details={
+                    "round_index": fact.round_index,
+                    "cell": list(fact.a_cell) if fact.a_cell is not None else None,
+                    "reads": fact.signal_reads,
+                    "dispatches": fact.signal_dispatches,
+                },
+            )
+        self.writer.append_event(
+            tick=tick,
+            event_type="signal_dispatch_summary",
+            details={
+                "interactions": len(facts),
+                "reads": sum(fact.signal_reads for fact in facts),
+                "dispatches": sum(fact.signal_dispatches for fact in facts),
+            },
+        )
 
     def _write_energy_uptake(
         self, tick: int, facts: list[InteractionFact]

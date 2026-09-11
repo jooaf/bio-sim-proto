@@ -213,10 +213,11 @@ class EnvironmentConfig:
 
 @dataclass(slots=True)
 class SignalsConfig:
-    enabled: bool = field(default=False, metadata=knob("Enable signal opcodes and field.", "Stage 4+"))
+    enabled: bool = field(default=False, metadata=knob("Enable signal field and exact-tag dispatch.", "Stage 4+"))
     tag_length: int = field(default=4, metadata=knob("Bytes compared in dispatch tags.", "1..64"))
     tag_stride: int = field(default=8, metadata=knob("Bytes between dispatch blocks.", "tag_length..tape_length"))
-    signal_spec: str = field(default="uniform", metadata=knob("Initial/environmental signal field.", "field specification"))
+    signal_spec: str = field(default="uniform", metadata=knob("Environmental signal field.", "uniform"))
+    initial_tag_hex: str = field(default="00000000", metadata=knob("Uniform signal tag encoded as hex bytes.", "2*tag_length hex characters"))
 
 
 @dataclass(slots=True)
@@ -294,6 +295,8 @@ class Config:
             ("dissolution.starved_ticks", self.dissolution.starved_ticks),
             ("reproduction.placement_radius", self.reproduction.placement_radius),
             ("reproduction.max_births_per_tick", self.reproduction.max_births_per_tick),
+            ("signals.tag_length", self.signals.tag_length),
+            ("signals.tag_stride", self.signals.tag_stride),
             ("logging.flush_interval", self.logging.flush_interval),
             ("logging.tape_snapshot_interval", self.logging.tape_snapshot_interval),
             ("viz.cell_px", self.viz.cell_px),
@@ -329,6 +332,20 @@ class Config:
             raise ValueError("environment.correlation_length must be positive")
         if not 0.0 <= self.environment.influx_contrast <= 10.0:
             raise ValueError("environment.influx_contrast must be in 0..10")
+        if self.signals.signal_spec != "uniform":
+            raise ValueError("signals.signal_spec currently supports only uniform")
+        try:
+            signal_tag = bytes.fromhex(self.signals.initial_tag_hex)
+        except ValueError as error:
+            raise ValueError("signals.initial_tag_hex must be valid hexadecimal") from error
+        if len(signal_tag) != self.signals.tag_length:
+            raise ValueError("signals.initial_tag_hex must encode exactly tag_length bytes")
+        if self.signals.tag_stride < self.signals.tag_length:
+            raise ValueError("signals.tag_stride must be at least tag_length")
+        if self.signals.tag_length >= self.substrate.tape_length:
+            raise ValueError("signals.tag_length must leave room for a handler")
+        if self.signals.enabled and (self.run.stage < 4 or self.substrate.name != "bff"):
+            raise ValueError("signals currently require BFF Stage 4")
         if self.energy.active_uptake_enabled:
             if self.run.stage < 4:
                 raise ValueError("active energy uptake requires Stage 4 or later")

@@ -378,7 +378,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4S-I001 — Exact-tag signal dispatch mechanics
 
-- **Status:** Claimed
+- **Status:** Running
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-11T23:51:41Z
 - **Depends on:** completed Stage 4 energy-access subphase

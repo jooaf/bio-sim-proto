@@ -19,6 +19,7 @@ from soup.substrate.base import (
     WriteOutcome,
 )
 from soup.substrate.bff import INSTRUCTIONS
+from soup.signals import LocalExecutionView, SignalField
 from soup.world import FlatWorld, SpatialWorld, World
 
 
@@ -66,6 +67,8 @@ class InteractionFact:
     energy_spent: float
     energy_uptake_executions: int
     energy_absorbed: float
+    signal_reads: int
+    signal_dispatches: int
     writes_success: int
     writes_blocked: int
     halt_reason: str
@@ -248,6 +251,8 @@ def _execute_pair(
         energy_spent=result.energy_consumed,
         energy_uptake_executions=result.energy_uptake_executions,
         energy_absorbed=result.energy_absorbed,
+        signal_reads=result.signal_reads,
+        signal_dispatches=result.signal_dispatches,
         writes_success=result.writes_success,
         writes_blocked=result.writes_blocked,
         halt_reason=result.halt_reason.value,
@@ -334,6 +339,7 @@ def run_local_interaction_round(
     copy_triggers: list[ExactCopyTriggerFact] | None = None,
     energy: EnergyLedger | None = None,
     energy_config: EnergyConfig | None = None,
+    signals: SignalField | None = None,
     composition_reactions: list[CompositionReactionFact] | None = None,
     reaction_sampler: ReactionSampler | None = None,
 ) -> list[InteractionFact]:
@@ -389,10 +395,23 @@ def run_local_interaction_round(
             detect_exact_copy=copy_triggers is not None,
             collect_composition=collect_composition,
             energy_uptake=(
-                energy.uptake_access(a_index, energy_config.uptake_amount)
-                if energy is not None
-                and energy_config is not None
-                and energy_config.active_uptake_enabled
+                LocalExecutionView(
+                    energy=(
+                        energy.uptake_access(a_index, energy_config.uptake_amount)
+                        if energy is not None
+                        and energy_config is not None
+                        and energy_config.active_uptake_enabled
+                        else None
+                    ),
+                    signals=signals,
+                    active_index=a_index,
+                )
+                if signals is not None
+                or (
+                    energy is not None
+                    and energy_config is not None
+                    and energy_config.active_uptake_enabled
+                )
                 else None
             ),
         )

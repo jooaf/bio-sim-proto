@@ -17,6 +17,53 @@ def execute(values: list[int], *, steps: int = 32, head_wrap: bool = True, pc_wr
     return tape, result
 
 
+class FixedExecutionView:
+    def __init__(self, tag: bytes) -> None:
+        self.tag = tag
+        self.reads = 0
+
+    def uptake_energy(self) -> float:
+        return 1.0
+
+    def read_signal(self) -> bytes:
+        self.reads += 1
+        return self.tag
+
+
+def test_exact_signal_tag_dispatches_to_handler() -> None:
+    joint = np.asarray([0xAA, 0xBB, 0xCC, 0xDD, OP_ENERGY_UPTAKE, 0, 0, 0] + [0] * 8, dtype=np.uint8)
+    substrate = BFFSubstrate(
+        tape_length=8,
+        active_uptake_enabled=True,
+        signal_dispatch_enabled=True,
+        signal_tag_length=4,
+        signal_tag_stride=8,
+    )
+    matched = FixedExecutionView(bytes.fromhex("aabbccdd"))
+    result = substrate.execute(joint.copy(), None, ExecutionBudget(max_steps=1), matched)
+    assert result.signal_reads == 1
+    assert result.signal_dispatches == 1
+    assert result.energy_uptake_executions == 1
+
+    mismatched = FixedExecutionView(bytes.fromhex("11223344"))
+    result = substrate.execute(joint.copy(), None, ExecutionBudget(max_steps=1), mismatched)
+    assert result.signal_reads == 1
+    assert result.signal_dispatches == 0
+    assert result.energy_uptake_executions == 0
+
+
+def test_disabled_signal_dispatch_preserves_pc_zero() -> None:
+    joint = np.asarray([0xAA, 0xBB, 0xCC, 0xDD, OP_ENERGY_UPTAKE, 0, 0, 0] + [0] * 8, dtype=np.uint8)
+    view = FixedExecutionView(bytes.fromhex("aabbccdd"))
+    result = BFFSubstrate(tape_length=8, active_uptake_enabled=True).execute(
+        joint, None, ExecutionBudget(max_steps=1), view
+    )
+    assert view.reads == 0
+    assert result.signal_reads == 0
+    assert result.signal_dispatches == 0
+    assert result.energy_uptake_executions == 0
+
+
 def test_uptake_opcode_counts_as_activity_only_when_enabled() -> None:
     tape = np.asarray([OP_ENERGY_UPTAKE, 0, 0, 0], dtype=np.uint8)
     assert BFFSubstrate(tape_length=4).is_inert(tape)

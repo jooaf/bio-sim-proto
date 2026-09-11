@@ -60,6 +60,9 @@ class BFFSubstrate:
     pc_wrap: bool = False
     noop_density: float = 246.0 / 256.0
     active_uptake_enabled: bool = False
+    signal_dispatch_enabled: bool = False
+    signal_tag_length: int = 4
+    signal_tag_stride: int = 8
     name: str = "bff"
     alphabet_size: int = 256
 
@@ -136,6 +139,22 @@ class BFFSubstrate:
             raise ValueError(f"joint tape must be a uint8 vector of length {expected_length}")
 
         pc = 0
+        signal_reads = 0
+        signal_dispatches = 0
+        if self.signal_dispatch_enabled and signals is not None:
+            tag = signals.read_signal()
+            if tag is not None:
+                signal_reads = 1
+                if len(tag) != self.signal_tag_length:
+                    raise ValueError("local signal tag length does not match substrate config")
+                for offset in range(0, self.tape_length, self.signal_tag_stride):
+                    handler = offset + self.signal_tag_length
+                    if handler >= self.tape_length:
+                        continue
+                    if joint[offset:handler].tobytes() == tag:
+                        pc = handler
+                        signal_dispatches = 1
+                        break
         h0 = 0
         h1 = 0
         steps = 0
@@ -229,6 +248,8 @@ class BFFSubstrate:
             writes_success=writes_success,
             writes_blocked=writes_blocked,
             halt_reason=halt_reason,
+            signal_reads=signal_reads,
+            signal_dispatches=signal_dispatches,
             energy_uptake_executions=uptake_executions,
             energy_absorbed=energy_absorbed,
         )

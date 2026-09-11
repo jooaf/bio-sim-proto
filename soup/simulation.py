@@ -16,6 +16,7 @@ from soup.lineage import write_initial_lineage
 from soup.logging.writer import RunWriter
 from soup.rng import make_rng
 from soup.scheduler import Scheduler
+from soup.signals import SignalField
 from soup.substrate.base import Substrate
 from soup.substrate.bff import BFFSubstrate
 from soup.substrate.ski import SKISubstrate
@@ -45,6 +46,9 @@ class Simulation:
                 pc_wrap=config.substrate.pc_wrap,
                 noop_density=config.substrate.noop_density,
                 active_uptake_enabled=config.energy.active_uptake_enabled,
+                signal_dispatch_enabled=config.signals.enabled,
+                signal_tag_length=config.signals.tag_length,
+                signal_tag_stride=config.signals.tag_stride,
             )
         else:
             self.substrate = SKISubstrate(tape_length=config.substrate.tape_length)
@@ -106,6 +110,11 @@ class Simulation:
             if config.energy.enabled and isinstance(self.world, SpatialWorld)
             else None
         )
+        self.signals = (
+            SignalField.create(self.world, config.signals)
+            if config.signals.enabled and isinstance(self.world, SpatialWorld)
+            else None
+        )
         self.writer = RunWriter(
             config,
             run_dir=run_dir,
@@ -120,6 +129,7 @@ class Simulation:
             writer=self.writer,
             pool=self.pool,
             energy=self.energy,
+            signals=self.signals,
         )
 
     def run(self) -> Path:

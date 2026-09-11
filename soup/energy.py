@@ -8,7 +8,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from soup.config import EnergyConfig, EnvironmentConfig
-from soup.substrate.base import ExecutionBudget, SignalView
+from soup.substrate.base import ExecutionBudget
 from soup.world import SpatialWorld
 
 
@@ -129,7 +129,7 @@ class EnergyLedger:
             self.field[occupied] -= transfer
             self.tapes[occupied] += transfer
 
-    def uptake_access(self, index: int, amount: float) -> SignalView:
+    def uptake_access(self, index: int, amount: float) -> LocalEnergyUptake:
         """Return execution-scoped access to one tape's local field cell."""
 
         return LocalEnergyUptake(self, index, amount)
