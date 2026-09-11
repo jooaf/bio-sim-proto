@@ -334,9 +334,9 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4-I004 — Active-uptake survival consequence
 
-- **Status:** Proposed
-- **Owner / machine:** Unclaimed
-- **Claimed at:** —
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-11T21:36:08Z
 - **Depends on:** completed S4-I003 structured-field mechanics gate
 - **Why:** Structured fields create local access niches, but no Stage 4 campaign
   has shown a demographic consequence. Starvation mortality provides an existing
@@ -347,7 +347,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 - **Test:** Freeze patch scale independently of outcomes, mixed placement,
   starvation horizon, held-out seeds, survival endpoints, and enabled/disabled
   feature arms. Keep reproduction, mutation, and reseeding off.
-- **Preregistration:** pending
+- **Preregistration:** `reports/stage4_uptake_survival_preregistration.md`
 - **Estimated cost:** low to medium
 - **On success:** support a bounded causal survival consequence and design a
   resource-coupled birth or competition experiment.
