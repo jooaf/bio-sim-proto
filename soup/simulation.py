@@ -97,7 +97,12 @@ class Simulation:
             else None
         )
         self.energy = (
-            EnergyLedger.create(self.world, config.energy)
+            EnergyLedger.create(
+                self.world,
+                config.energy,
+                environment=config.environment,
+                seed=config.run.seed,
+            )
             if config.energy.enabled and isinstance(self.world, SpatialWorld)
             else None
         )

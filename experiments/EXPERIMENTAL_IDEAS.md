@@ -312,7 +312,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4-I003 — Structured energy-field scale
 
-- **Status:** Claimed
+- **Status:** Running
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-10T06:05:56Z
 - **Depends on:** completed S4-I002 mixed-population access gate

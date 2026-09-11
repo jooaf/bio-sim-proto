@@ -7,7 +7,7 @@ import pandas as pd
 import pytest
 
 from soup.config import Config, PairingMode
-from soup.energy import EnergyLedger
+from soup.energy import EnergyLedger, influx_profile
 from soup.logging.invariants import check_energy
 from soup.simulation import Simulation
 from soup.substrate.base import ExecutionBudget
@@ -23,6 +23,25 @@ def spatial_world(seed: int = 41) -> SpatialWorld:
         substrate=BFFSubstrate(tape_length=8),
         rng=np.random.default_rng(seed),
     )
+
+
+def test_patch_influx_profile_is_deterministic_positive_and_normalized() -> None:
+    world = spatial_world(40)
+    environment = Config().environment
+    environment.influx_spec = "patches"
+    environment.correlation_length = 2.0
+    environment.influx_contrast = 1.0
+
+    first = influx_profile(world, environment, seed=77)
+    second = influx_profile(world, environment, seed=77)
+    other = influx_profile(world, environment, seed=78)
+
+    assert first is not None and second is not None and other is not None
+    assert np.array_equal(first, second)
+    assert not np.array_equal(first, other)
+    assert np.isfinite(first).all()
+    assert (first > 0.0).all()
+    assert float(first.sum()) == pytest.approx(world.capacity, abs=1e-12)
 
 
 def test_energy_flow_balances_influx_absorption_decay_and_diffusion() -> None:
@@ -194,6 +213,7 @@ def test_stage4_uptake_logs_execution_mediated_transfer(tmp_path: Path) -> None:
     uptake = events[events["event_type"] == "energy_uptake"]
     ticks = pd.read_parquet(run_dir / "ticks.parquet")
     assert len(uptake) == 2
+    assert all('"by_cell"' in details for details in uptake["details_json"])
     assert float(ticks.iloc[-1]["energy_tape_total"]) > 0.0
     assert float(ticks.iloc[-1]["energy_dissipated_cum"]) > 0.0
     assert float(ticks.iloc[-1]["energy_influx_cum"]) == pytest.approx(32.0)

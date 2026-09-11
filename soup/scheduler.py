@@ -471,12 +471,27 @@ class Scheduler:
         executions = sum(fact.energy_uptake_executions for fact in facts)
         if executions == 0:
             return
+        by_cell: dict[tuple[int, int], list[float]] = {}
+        for fact in facts:
+            if fact.energy_uptake_executions == 0 or fact.a_cell is None:
+                continue
+            aggregate = by_cell.setdefault(fact.a_cell, [0.0, 0.0])
+            aggregate[0] += fact.energy_uptake_executions
+            aggregate[1] += fact.energy_absorbed
         self.writer.append_event(
             tick=tick,
             event_type="energy_uptake",
             details={
                 "executions": executions,
                 "energy_absorbed": sum(fact.energy_absorbed for fact in facts),
+                "by_cell": [
+                    {
+                        "cell": list(cell),
+                        "executions": int(values[0]),
+                        "energy_absorbed": values[1],
+                    }
+                    for cell, values in sorted(by_cell.items())
+                ],
             },
         )
 

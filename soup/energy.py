@@ -7,9 +7,40 @@ from dataclasses import dataclass
 import numpy as np
 from numpy.typing import NDArray
 
-from soup.config import EnergyConfig
+from soup.config import EnergyConfig, EnvironmentConfig
 from soup.substrate.base import ExecutionBudget, SignalView
 from soup.world import SpatialWorld
+
+
+ENVIRONMENT_SEED_XOR = 0x534634
+
+
+def influx_profile(
+    world: SpatialWorld, config: EnvironmentConfig, seed: int
+) -> NDArray[np.float64] | None:
+    """Return a deterministic normalized static profile, or None for uniform."""
+
+    if config.influx_spec == "uniform":
+        return None
+    if config.influx_spec != "patches":
+        raise ValueError(f"unsupported influx field: {config.influx_spec}")
+    rng = np.random.default_rng(seed ^ ENVIRONMENT_SEED_XOR)
+    noise = rng.standard_normal((world.height, world.width))
+    ky = np.fft.fftfreq(world.height)[:, None]
+    kx = np.fft.rfftfreq(world.width)[None, :]
+    scale = 2.0 * np.pi * config.correlation_length
+    spectral_filter = np.exp(-0.5 * scale * scale * (kx * kx + ky * ky))
+    smooth = np.fft.irfft2(np.fft.rfft2(noise) * spectral_filter, s=noise.shape)
+    deviation = float(smooth.std())
+    if deviation <= np.finfo(np.float64).eps:
+        raise ValueError("patch field has no representable spatial variation")
+    standardized = (smooth - float(smooth.mean())) / deviation
+    weights = np.exp(config.influx_contrast * standardized).reshape(world.capacity)
+    weights *= world.capacity / float(weights.sum())
+    weights[0] += world.capacity - float(weights.sum())
+    if not np.isfinite(weights).all() or bool(np.any(weights <= 0.0)):
+        raise ValueError("patch field weights must be finite and positive")
+    return weights
 
 
 @dataclass(slots=True)
@@ -20,12 +51,19 @@ class EnergyLedger:
     tapes: NDArray[np.float64]
     starved_ticks: NDArray[np.int64]
     tape_capacity: float
+    influx_weights: NDArray[np.float64] | None = None
     initial_total: float = 0.0
     influx_cumulative: float = 0.0
     dissipated_cumulative: float = 0.0
 
     @classmethod
-    def create(cls, world: SpatialWorld, config: EnergyConfig) -> EnergyLedger:
+    def create(
+        cls,
+        world: SpatialWorld,
+        config: EnergyConfig,
+        environment: EnvironmentConfig | None = None,
+        seed: int = 0,
+    ) -> EnergyLedger:
         """Create a zero-energy ledger aligned to the spatial lattice."""
 
         return cls(
@@ -33,6 +71,9 @@ class EnergyLedger:
             tapes=np.zeros(world.capacity, dtype=np.float64),
             starved_ticks=np.zeros(world.capacity, dtype=np.int64),
             tape_capacity=config.tape_capacity,
+            influx_weights=(
+                None if environment is None else influx_profile(world, environment, seed)
+            ),
         )
 
     @property
@@ -57,8 +98,10 @@ class EnergyLedger:
         """Apply uniform influx, conservative diffusion, decay, and absorption."""
 
         if config.influx_rate:
-            per_cell = config.influx_rate / world.capacity
-            self.field += per_cell
+            if self.influx_weights is None:
+                self.field += config.influx_rate / world.capacity
+            else:
+                self.field += config.influx_rate * self.influx_weights / world.capacity
             self.influx_cumulative += config.influx_rate
 
         if config.diffusion:

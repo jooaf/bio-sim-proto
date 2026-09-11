@@ -203,8 +203,9 @@ class ReproductionConfig:
 
 @dataclass(slots=True)
 class EnvironmentConfig:
-    influx_spec: str = field(default="uniform", metadata=knob("Composable energy-influx field specification.", "uniform|gradient|patches|perlin|sum"))
+    influx_spec: str = field(default="uniform", metadata=knob("Energy-influx field specification.", "uniform|patches"))
     correlation_length: float = field(default=8.0, metadata=knob("Spatial field correlation length in cells.", ">0"))
+    influx_contrast: float = field(default=1.0, metadata=knob("Log-space contrast of a static patch field.", "0..10"))
     modulator: str = field(default="static", metadata=knob("Temporal field modulation.", "static|sinusoidal|random_walk|switching"))
     modulator_period: int = field(default=100, metadata=knob("Temporal modulation period in ticks.", "1..10^9"))
     modulator_amplitude: float = field(default=0.0, metadata=knob("Temporal modulation amplitude.", "0..1"))
@@ -322,6 +323,12 @@ class Config:
                 raise ValueError(f"{energy_name} must be nonnegative")
         if self.energy.tape_capacity <= 0.0:
             raise ValueError("energy.tape_capacity must be positive")
+        if self.environment.influx_spec not in {"uniform", "patches"}:
+            raise ValueError("environment.influx_spec must be uniform or patches")
+        if self.environment.correlation_length <= 0.0:
+            raise ValueError("environment.correlation_length must be positive")
+        if not 0.0 <= self.environment.influx_contrast <= 10.0:
+            raise ValueError("environment.influx_contrast must be in 0..10")
         if self.energy.active_uptake_enabled:
             if self.run.stage < 4:
                 raise ValueError("active energy uptake requires Stage 4 or later")
