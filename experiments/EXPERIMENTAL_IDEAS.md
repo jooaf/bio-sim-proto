@@ -353,3 +353,25 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
   resource-coupled birth or competition experiment.
 - **On failure:** retain spatial uptake as mechanics only and stop demographic
   interpretation.
+
+### S4-I005 — Resource-coupled birth and frequency change
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-11T23:40:32Z
+- **Depends on:** completed S4-I004 causal starvation-survival gate
+- **Why:** Uptake now has a survival consequence, but Stage 4 has not shown that
+  acquired energy can fund births and alter type frequency.
+- **Hypothesis:** Under structured influx, scheduled energy-costly birth increases
+  uptake-type frequency across low, equal, and high initial frequencies, while a
+  globally disabled uptake arm produces no births.
+- **Test:** Freeze three initial frequencies, deterministic spatial assignment,
+  held-out seeds, energy-funded vacancy-first birth, enabled/disabled arms, and
+  exact lineage/type/accounting endpoints. Disable mortality and mutation to
+  isolate reproduction.
+- **Preregistration:** `reports/stage4_resource_birth_preregistration.md`
+- **Estimated cost:** medium; 60 matched 500-tick runs
+- **On success:** close the energy-access Stage 4 subphase with a bounded causal
+  synthesis and return to structured signals/event-driven genomes.
+- **On failure:** retain uptake-mediated survival but stop reproduction and
+  frequency-change claims.
