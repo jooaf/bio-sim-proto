@@ -334,7 +334,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4-I004 — Active-uptake survival consequence
 
-- **Status:** Claimed
+- **Status:** Running
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-11T21:36:08Z
 - **Depends on:** completed S4-I003 structured-field mechanics gate
