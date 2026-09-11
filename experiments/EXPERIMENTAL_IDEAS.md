@@ -375,3 +375,23 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
   synthesis and return to structured signals/event-driven genomes.
 - **On failure:** retain uptake-mediated survival but stop reproduction and
   frequency-change claims.
+
+### S4S-I001 — Exact-tag signal dispatch mechanics
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-11T23:51:41Z
+- **Depends on:** completed Stage 4 energy-access subphase
+- **Why:** The original roadmap's structured-signal/event-driven-genome branch
+  has typed configuration but no operational signal field or dispatch semantics.
+- **Hypothesis:** A local exact-match signal tag deterministically dispatches an
+  active BFF tape to its tagged handler, while mismatched and globally disabled
+  controls retain legacy PC-zero execution.
+- **Test:** Implement a deterministic uniform byte-tag field and exact active-tape
+  block scan, then run matched, mismatched, and disabled mechanics arms with a
+  one-step uptake-handler assay. Defer signal writes and ecological endpoints.
+- **Preregistration:** `reports/stage4_signal_dispatch_preregistration.md`
+- **Estimated cost:** low; 15 small mechanics runs
+- **On success:** preregister local signal-write mechanics before any coordination
+  or niche-construction test.
+- **On failure:** stop the signal branch and repair only the dispatch defect.
