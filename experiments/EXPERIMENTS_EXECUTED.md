@@ -458,12 +458,34 @@ results stay in the registry.
   `reports/stage4_mixed_energy_access_runs.csv`; raw campaign:
   `/home/jojo/bio-sim-results/bazzite/stage4_mixed_energy_access`.
 
+### S4-E003 — Structured energy-field scale
+
+- **Hypothesis:** Fixed-total static patch influx produces stronger spatial
+  structure and inequality in execution-mediated uptake than uniform influx.
+- **Test:** Uniform plus patch correlation lengths 0.5, 2, and 8 cells; five
+  matched seeds (`202609230`–`202609234`), 1,000 ticks, fixed occupancy, and
+  mechanics-only uptake, tape-energy, profile, and ledger endpoints.
+- **Result:** Mean-patch uptake Moran effects were positive in 5/5 seeds (exact
+  one-sided sign `p=0.03125`); uptake-CV and tape-energy Moran effects were also
+  positive in 5/5. Median uptake Moran's I was 0.576, 0.840, and 0.887 across
+  increasing patch scales versus 0.360 under uniform influx. All patch profiles
+  were positive and normalized. All 20 runs succeeded with unchanged tapes,
+  zero invariant failures, and maximum relative energy error `3.786e-13`.
+- **Decision:** **PASS for structured local energy-access niches.**
+- **Why:** Every frozen spatial, inequality, profile-integrity, activity, and
+  accounting criterion passed without selecting a favored scale.
+- **Limitations:** Occupancy and tape type were fixed; no survival, reproduction,
+  fitness, lineage, or organization endpoint was tested.
+- **Follow-up:** S4-I004 active-uptake survival consequence, using the
+  near-interaction scale fixed independently rather than selected from outcomes.
+- **Evidence:** `reports/stage4_structured_field_report.md`,
+  `reports/stage4_structured_field_effects.csv`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/stage4_structured_field`.
+
 ## Current frontier
 
-Stage 4 supports opt-in execution-mediated uptake and differentiated energy
-access among coexisting immutable tape types under uniform supply. Stage 3's
-neutral lineage and accounting results remain bounded as previously stated. The
-project still does **not** support endogenous reproduction, fitness effects,
-trophic ecology, prevalent empirical organization, self-maintenance, or organism
-identity. No experiment is currently claimed or running; S4-I003 is the next
-proposed mechanics campaign.
+Stage 4 supports execution-mediated differentiated uptake and static spatial
+energy-access niches under exact accounting. It still does **not** support
+endogenous reproduction, demonstrated fitness effects, trophic ecology,
+prevalent empirical organization, self-maintenance, or organism identity. The
+next proposed gate is S4-I004, a causal starvation-survival consequence.

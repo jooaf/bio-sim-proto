@@ -312,7 +312,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4-I003 — Structured energy-field scale
 
-- **Status:** Running
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-10T06:05:56Z
 - **Depends on:** completed S4-I002 mixed-population access gate
@@ -331,3 +331,25 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 - **On success:** test a causal ecological consequence with held-out seeds.
 - **On failure:** retain differentiated uptake under uniform supply and stop
   spatial-niche claims.
+
+### S4-I004 — Active-uptake survival consequence
+
+- **Status:** Proposed
+- **Owner / machine:** Unclaimed
+- **Claimed at:** —
+- **Depends on:** completed S4-I003 structured-field mechanics gate
+- **Why:** Structured fields create local access niches, but no Stage 4 campaign
+  has shown a demographic consequence. Starvation mortality provides an existing
+  resource-coupled outcome without introducing a new fitness mechanism.
+- **Hypothesis:** In a mixed immutable population under a frozen patch field,
+  active uptake preserves uptake-capable tapes through starvation while matched
+  controls and the feature-disabled population are removed.
+- **Test:** Freeze patch scale independently of outcomes, mixed placement,
+  starvation horizon, held-out seeds, survival endpoints, and enabled/disabled
+  feature arms. Keep reproduction, mutation, and reseeding off.
+- **Preregistration:** pending
+- **Estimated cost:** low to medium
+- **On success:** support a bounded causal survival consequence and design a
+  resource-coupled birth or competition experiment.
+- **On failure:** retain spatial uptake as mechanics only and stop demographic
+  interpretation.
