@@ -482,10 +482,39 @@ results stay in the registry.
   `reports/stage4_structured_field_effects.csv`; raw campaign:
   `/home/jojo/bio-sim-results/bazzite/stage4_structured_field`.
 
+### S4-E004 — Active-uptake survival consequence
+
+- **Hypothesis:** In a mixed immutable population under a static patch field,
+  active uptake preserves uptake-capable tapes through starvation while matched
+  controls and the globally feature-disabled population are removed.
+- **Test:** Ten held-out seeds (`202609240`–`202609249`), matched uptake-enabled
+  and disabled arms, alternating 64/64 uptake and control tapes, correlation
+  length 2, 500 ticks, and the existing 50-tick starvation rule. Reproduction,
+  mutation, writes, passive absorption, and reseeding were disabled.
+- **Result:** Enabled uptake-tape survival was 0.969–1.000 while enabled control
+  survival was zero. The primary difference was positive in 10/10 seeds (exact
+  one-sided sign `p=0.00097656`). Both types reached zero survival in all disabled
+  arms. All 20 runs succeeded; every death was attributed to starvation, tape
+  types remained consistent, invariant failures were zero, and maximum relative
+  energy error was `2.309e-13`.
+- **Decision:** **PASS for a causal starvation-survival consequence.**
+- **Why:** Uptake capability was the only within-population type difference, and
+  the globally disabled arm removed survival for both opcode labels.
+- **Limitations:** This is survival under a deliberately configured starvation
+  regime, not evolved fitness, competition, adaptation, reproduction,
+  organization, self-maintenance, or organism identity.
+- **Follow-up:** A separately preregistered resource-coupled birth or frequency
+  experiment is now justified but is not required to establish this bounded
+  survival result.
+- **Evidence:** `reports/stage4_uptake_survival_report.md`,
+  `reports/stage4_uptake_survival_effects.csv`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/stage4_uptake_survival`.
+
 ## Current frontier
 
-Stage 4 supports execution-mediated differentiated uptake and static spatial
-energy-access niches under exact accounting. It still does **not** support
-endogenous reproduction, demonstrated fitness effects, trophic ecology,
-prevalent empirical organization, self-maintenance, or organism identity. The
-next proposed gate is S4-I004, a causal starvation-survival consequence.
+Stage 4 supports execution-mediated differentiated uptake, static spatial
+energy-access niches, and a causal survival consequence under a frozen
+starvation regime, all with exact accounting. It still does **not** support
+endogenous reproduction, evolved adaptation, competition, trophic ecology,
+prevalent empirical organization, self-maintenance, or organism identity. No
+experiment is currently claimed or running.
