@@ -436,3 +436,24 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 - **On success:** permit a separately preregistered fully connected inter-tape
   response positive control.
 - **On failure:** stop writable-signal work completely.
+
+### S4S-I003 — Structured read-only environmental response
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-12T01:07:26Z
+- **Depends on:** completed S4S-I001 read-only dispatch; independent of failed
+  writable-signal gates
+- **Why:** Exact uniform dispatch works even though writable signaling failed. A
+  deterministic two-region field can test whether one immutable tape expresses
+  spatially conditional behavior without communication.
+- **Hypothesis:** One dual-handler tape executes uptake only in the half-field
+  carrying its uptake tag, while uniform and globally disabled controls establish
+  full and absent response.
+- **Test:** Add deterministic `split_x` two-tag initialization and run identical
+  tapes under split, uniform, and disabled fields with per-cell response logging.
+- **Preregistration:** `reports/stage4_structured_signal_response_preregistration.md`
+- **Estimated cost:** low; 15 small runs
+- **On success:** permit a task-relevant signal-to-interaction experiment, but no
+  communication or coordination claim.
+- **On failure:** stop structured read-only signal-response work.
