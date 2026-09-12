@@ -37,6 +37,7 @@ OP_COPY_10 = 0x2C
 OP_LOOP_START = 0x5B
 OP_LOOP_END = 0x5D
 OP_ENERGY_UPTAKE = 0x3A
+OP_SIGNAL_WRITE = 0x21
 INSTRUCTIONS: tuple[int, ...] = (
     OP_DEC_H0,
     OP_INC_H0,
@@ -63,6 +64,7 @@ class BFFSubstrate:
     signal_dispatch_enabled: bool = False
     signal_tag_length: int = 4
     signal_tag_stride: int = 8
+    signal_writes_enabled: bool = False
     name: str = "bff"
     alphabet_size: int = 256
 
@@ -141,6 +143,7 @@ class BFFSubstrate:
         pc = 0
         signal_reads = 0
         signal_dispatches = 0
+        signal_writes = 0
         if self.signal_dispatch_enabled and signals is not None:
             tag = signals.read_signal()
             if tag is not None:
@@ -178,7 +181,12 @@ class BFFSubstrate:
             steps += 1
             next_pc = pc + 1
 
-            if op in (OP_DEC_H0, OP_INC_H0, OP_DEC_H1, OP_INC_H1):
+            if op == OP_SIGNAL_WRITE and self.signal_writes_enabled and signals is not None:
+                payload_end = pc + 1 + self.signal_tag_length
+                if payload_end <= self.tape_length:
+                    payload = joint[pc + 1 : payload_end].tobytes()
+                    signal_writes += int(signals.write_signal(payload))
+            elif op in (OP_DEC_H0, OP_INC_H0, OP_DEC_H1, OP_INC_H1):
                 delta = -1 if op in (OP_DEC_H0, OP_DEC_H1) else 1
                 if op in (OP_DEC_H0, OP_INC_H0):
                     candidate = h0 + delta
@@ -250,6 +258,7 @@ class BFFSubstrate:
             halt_reason=halt_reason,
             signal_reads=signal_reads,
             signal_dispatches=signal_dispatches,
+            signal_writes=signal_writes,
             energy_uptake_executions=uptake_executions,
             energy_absorbed=energy_absorbed,
         )
@@ -257,22 +266,22 @@ class BFFSubstrate:
     def is_inert(self, tape: ByteTape) -> bool:
         """Return whether a tape lacks any enabled state-changing instruction."""
 
-        active_ops = (
-            (*WRITE_OPS, OP_ENERGY_UPTAKE)
-            if self.active_uptake_enabled
-            else tuple(WRITE_OPS)
-        )
+        active_ops = tuple(WRITE_OPS)
+        if self.active_uptake_enabled:
+            active_ops = (*active_ops, OP_ENERGY_UPTAKE)
+        if self.signal_writes_enabled:
+            active_ops = (*active_ops, OP_SIGNAL_WRITE)
         return not bool(np.isin(tape, np.asarray(active_ops, dtype=np.uint8)).any())
 
     def describe(self, tape: ByteTape) -> dict[str, object]:
         """Return raw inspector facts, not evolutionary conclusions."""
 
         histogram = np.bincount(tape, minlength=256)
-        enabled_instructions = (
-            (*INSTRUCTIONS, OP_ENERGY_UPTAKE)
-            if self.active_uptake_enabled
-            else INSTRUCTIONS
-        )
+        enabled_instructions = INSTRUCTIONS
+        if self.active_uptake_enabled:
+            enabled_instructions = (*enabled_instructions, OP_ENERGY_UPTAKE)
+        if self.signal_writes_enabled:
+            enabled_instructions = (*enabled_instructions, OP_SIGNAL_WRITE)
         return {
             "length": int(len(tape)),
             "instruction_count": int(

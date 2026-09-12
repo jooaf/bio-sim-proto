@@ -29,6 +29,17 @@ class SignalField:
     def tag_at(self, index: int) -> bytes:
         return bytes(self.tags[index])
 
+    def replace_tag(self, index: int, tag: bytes) -> bool:
+        """Atomically replace one tag and return whether its value changed."""
+
+        replacement = np.frombuffer(tag, dtype=np.uint8)
+        if replacement.shape != (self.tags.shape[1],):
+            return False
+        changed = not np.array_equal(self.tags[index], replacement)
+        if changed:
+            self.tags[index] = replacement
+        return changed
+
 
 @dataclass(slots=True)
 class LocalExecutionView:
@@ -37,9 +48,13 @@ class LocalExecutionView:
     energy: LocalEnergyUptake | None = None
     signals: SignalField | None = None
     active_index: int = 0
+    target_index: int = 0
 
     def uptake_energy(self) -> float:
         return 0.0 if self.energy is None else self.energy.uptake_energy()
 
     def read_signal(self) -> bytes | None:
         return None if self.signals is None else self.signals.tag_at(self.active_index)
+
+    def write_signal(self, tag: bytes) -> bool:
+        return False if self.signals is None else self.signals.replace_tag(self.target_index, tag)

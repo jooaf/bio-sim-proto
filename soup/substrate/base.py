@@ -63,6 +63,8 @@ class SignalView(Protocol):
 
     def read_signal(self) -> bytes | None: ...
 
+    def write_signal(self, tag: bytes) -> bool: ...
+
 
 @dataclass(frozen=True, slots=True)
 class ExecutionBudget:

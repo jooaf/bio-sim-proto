@@ -69,6 +69,7 @@ class InteractionFact:
     energy_absorbed: float
     signal_reads: int
     signal_dispatches: int
+    signal_writes: int
     writes_success: int
     writes_blocked: int
     halt_reason: str
@@ -253,6 +254,7 @@ def _execute_pair(
         energy_absorbed=result.energy_absorbed,
         signal_reads=result.signal_reads,
         signal_dispatches=result.signal_dispatches,
+        signal_writes=result.signal_writes,
         writes_success=result.writes_success,
         writes_blocked=result.writes_blocked,
         halt_reason=result.halt_reason.value,
@@ -405,6 +407,7 @@ def run_local_interaction_round(
                     ),
                     signals=signals,
                     active_index=a_index,
+                    target_index=b_index,
                 )
                 if signals is not None
                 or (

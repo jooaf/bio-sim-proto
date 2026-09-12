@@ -5,7 +5,7 @@ import pytest
 from numpy.typing import NDArray
 
 from soup.substrate.base import ExecutionBudget, HaltReason
-from soup.substrate.bff import BFFSubstrate, OP_ENERGY_UPTAKE
+from soup.substrate.bff import BFFSubstrate, OP_ENERGY_UPTAKE, OP_SIGNAL_WRITE
 
 
 def execute(values: list[int], *, steps: int = 32, head_wrap: bool = True, pc_wrap: bool = False) -> tuple[NDArray[np.uint8], object]:
@@ -21,6 +21,7 @@ class FixedExecutionView:
     def __init__(self, tag: bytes) -> None:
         self.tag = tag
         self.reads = 0
+        self.written: list[bytes] = []
 
     def uptake_energy(self) -> float:
         return 1.0
@@ -28,6 +29,27 @@ class FixedExecutionView:
     def read_signal(self) -> bytes:
         self.reads += 1
         return self.tag
+
+    def write_signal(self, tag: bytes) -> bool:
+        self.written.append(tag)
+        return True
+
+
+def test_signal_write_uses_following_active_tape_payload() -> None:
+    active = [0xAA, 0xBB, 0xCC, 0xDD, OP_SIGNAL_WRITE, 0x11, 0x22, 0x33, 0x44] + [0] * 7
+    joint = np.asarray(active + [0] * 16, dtype=np.uint8)
+    view = FixedExecutionView(bytes.fromhex("aabbccdd"))
+    substrate = BFFSubstrate(
+        tape_length=16,
+        signal_dispatch_enabled=True,
+        signal_tag_length=4,
+        signal_tag_stride=16,
+        signal_writes_enabled=True,
+    )
+    result = substrate.execute(joint, None, ExecutionBudget(max_steps=1), view)
+    assert result.signal_dispatches == 1
+    assert result.signal_writes == 1
+    assert view.written == [bytes.fromhex("11223344")]
 
 
 def test_exact_signal_tag_dispatches_to_handler() -> None:

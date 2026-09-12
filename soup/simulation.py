@@ -49,6 +49,7 @@ class Simulation:
                 signal_dispatch_enabled=config.signals.enabled,
                 signal_tag_length=config.signals.tag_length,
                 signal_tag_stride=config.signals.tag_stride,
+                signal_writes_enabled=config.signals.writes_enabled,
             )
         else:
             self.substrate = SKISubstrate(tape_length=config.substrate.tape_length)

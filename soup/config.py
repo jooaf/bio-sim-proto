@@ -218,6 +218,7 @@ class SignalsConfig:
     tag_stride: int = field(default=8, metadata=knob("Bytes between dispatch blocks.", "tag_length..tape_length"))
     signal_spec: str = field(default="uniform", metadata=knob("Environmental signal field.", "uniform"))
     initial_tag_hex: str = field(default="00000000", metadata=knob("Uniform signal tag encoded as hex bytes.", "2*tag_length hex characters"))
+    writes_enabled: bool = field(default=False, metadata=knob("Allow BFF signal-write instructions to replace partner-cell tags.", "true|false"))
 
 
 @dataclass(slots=True)
@@ -346,6 +347,8 @@ class Config:
             raise ValueError("signals.tag_length must leave room for a handler")
         if self.signals.enabled and (self.run.stage < 4 or self.substrate.name != "bff"):
             raise ValueError("signals currently require BFF Stage 4")
+        if self.signals.writes_enabled and not self.signals.enabled:
+            raise ValueError("signal writes require signals.enabled = true")
         if self.energy.active_uptake_enabled:
             if self.run.stage < 4:
                 raise ValueError("active energy uptake requires Stage 4 or later")
@@ -461,11 +464,13 @@ class Config:
             gated.extend(
                 (
                     ("signals.enabled", self.signals.enabled),
+                    ("signals.writes_enabled", self.signals.writes_enabled),
                     ("task.enabled", self.task.enabled),
                     ("energy.active_uptake_enabled", self.energy.active_uptake_enabled),
                 )
             )
             self.signals.enabled = False
+            self.signals.writes_enabled = False
             self.task.enabled = False
             self.energy.active_uptake_enabled = False
         for name, was_enabled in gated:

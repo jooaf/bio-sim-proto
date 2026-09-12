@@ -483,8 +483,12 @@ class Scheduler:
                 details={
                     "round_index": fact.round_index,
                     "cell": list(fact.a_cell) if fact.a_cell is not None else None,
+                    "partner_id": fact.b_id,
+                    "partner_cell": list(fact.b_cell) if fact.b_cell is not None else None,
                     "reads": fact.signal_reads,
                     "dispatches": fact.signal_dispatches,
+                    "writes": fact.signal_writes,
+                    "uptake_executions": fact.energy_uptake_executions,
                 },
             )
         self.writer.append_event(
@@ -494,6 +498,7 @@ class Scheduler:
                 "interactions": len(facts),
                 "reads": sum(fact.signal_reads for fact in facts),
                 "dispatches": sum(fact.signal_dispatches for fact in facts),
+                "writes": sum(fact.signal_writes for fact in facts),
             },
         )
 
