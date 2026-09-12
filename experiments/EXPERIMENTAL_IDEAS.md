@@ -378,7 +378,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4S-I001 — Exact-tag signal dispatch mechanics
 
-- **Status:** Running
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-11T23:51:41Z
 - **Depends on:** completed Stage 4 energy-access subphase
@@ -395,3 +395,25 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 - **On success:** preregister local signal-write mechanics before any coordination
   or niche-construction test.
 - **On failure:** stop the signal branch and repair only the dispatch defect.
+
+### S4S-I002 — Local signal-write mechanics
+
+- **Status:** Proposed
+- **Owner / machine:** Unclaimed
+- **Claimed at:** —
+- **Depends on:** completed S4S-I001 exact-tag dispatch gate
+- **Why:** Exact environmental dispatch now works, but tapes cannot alter their
+  local signal environment; writable signals are required before testing niche
+  construction or coordination.
+- **Hypothesis:** A reserved BFF signal-write opcode deterministically replaces
+  the active cell's tag from declared tape bytes, affects subsequent dispatch,
+  and leaves matter and energy accounting unchanged.
+- **Test:** Freeze atomic write semantics and a two-step writer/responder assay
+  with disabled-opcode and mismatched-tag controls. Measure writes and subsequent
+  dispatch only; defer ecological endpoints.
+- **Preregistration:** pending
+- **Estimated cost:** low
+- **On success:** test whether written local signals causally alter another tape's
+  behavior before any coordination claim.
+- **On failure:** retain read-only exact dispatch and stop niche-construction
+  interpretation.

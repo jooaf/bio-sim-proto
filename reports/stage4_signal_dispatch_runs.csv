@@ -1,0 +1,16 @@
+run_dir,seed,arm,interactions,signal_reads,signal_dispatches,all_reads_one,all_reads_zero,all_dispatches_one,all_dispatches_zero,uptake_executions,gross_uptake,final_tapes,final_mean_energy,unchanged_tapes,successful_exit,invariant_failures,max_relative_energy_error
+sweeps/stage4_signal_dispatch/runs/disabled_seed_202609260,202609260,disabled,800,0,0,False,True,False,True,0,0.0,8,0.0,True,True,0,1.0048079091556972e-15
+sweeps/stage4_signal_dispatch/runs/disabled_seed_202609261,202609261,disabled,800,0,0,False,True,False,True,0,0.0,8,0.0,True,True,0,1.0048079091556972e-15
+sweeps/stage4_signal_dispatch/runs/disabled_seed_202609262,202609262,disabled,800,0,0,False,True,False,True,0,0.0,8,0.0,True,True,0,1.0048079091556972e-15
+sweeps/stage4_signal_dispatch/runs/disabled_seed_202609263,202609263,disabled,800,0,0,False,True,False,True,0,0.0,8,0.0,True,True,0,1.0048079091556972e-15
+sweeps/stage4_signal_dispatch/runs/disabled_seed_202609264,202609264,disabled,800,0,0,False,True,False,True,0,0.0,8,0.0,True,True,0,1.0048079091556972e-15
+sweeps/stage4_signal_dispatch/runs/matched_seed_202609260,202609260,matched,800,800,800,True,False,True,False,800,87.91999999999983,8,9.99,True,True,0,1.885113380588021e-15
+sweeps/stage4_signal_dispatch/runs/matched_seed_202609261,202609261,matched,800,800,800,True,False,True,False,800,87.91999999999985,8,9.99,True,True,0,2.0301221021717147e-15
+sweeps/stage4_signal_dispatch/runs/matched_seed_202609262,202609262,matched,800,800,800,True,False,True,False,800,87.91999999999983,8,9.99,True,True,0,2.0724163126336257e-15
+sweeps/stage4_signal_dispatch/runs/matched_seed_202609263,202609263,matched,800,800,800,True,False,True,False,800,87.91999999999983,8,9.99,True,True,0,1.7763568394002505e-15
+sweeps/stage4_signal_dispatch/runs/matched_seed_202609264,202609264,matched,800,800,800,True,False,True,False,800,87.91999999999983,8,9.99,True,True,0,2.2967037923558796e-15
+sweeps/stage4_signal_dispatch/runs/mismatched_seed_202609260,202609260,mismatched,800,800,0,True,False,False,True,0,0.0,8,0.0,True,True,0,1.0048079091556972e-15
+sweeps/stage4_signal_dispatch/runs/mismatched_seed_202609261,202609261,mismatched,800,800,0,True,False,False,True,0,0.0,8,0.0,True,True,0,1.0048079091556972e-15
+sweeps/stage4_signal_dispatch/runs/mismatched_seed_202609262,202609262,mismatched,800,800,0,True,False,False,True,0,0.0,8,0.0,True,True,0,1.0048079091556972e-15
+sweeps/stage4_signal_dispatch/runs/mismatched_seed_202609263,202609263,mismatched,800,800,0,True,False,False,True,0,0.0,8,0.0,True,True,0,1.0048079091556972e-15
+sweeps/stage4_signal_dispatch/runs/mismatched_seed_202609264,202609264,mismatched,800,800,0,True,False,False,True,0,0.0,8,0.0,True,True,0,1.0048079091556972e-15

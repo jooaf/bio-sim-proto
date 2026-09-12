@@ -539,14 +539,39 @@ results stay in the registry.
   `reports/stage4_resource_birth_effects.csv`; raw campaign:
   `/home/jojo/bio-sim-results/bazzite/stage4_resource_birth`.
 
+### S4S-E001 — Exact-tag signal dispatch mechanics
+
+- **Hypothesis:** A local environmental byte tag can select an exact-matching
+  active-tape handler while mismatched and disabled controls retain PC-zero
+  execution.
+- **Test:** Five held-out seeds (`202609260`–`202609264`), matched, mismatched,
+  and globally disabled arms, 100 ticks, one instruction per interaction, and an
+  immutable tagged uptake-handler tape.
+- **Result:** Matched arms recorded exactly 4,000 reads, 4,000 dispatches, and
+  4,000 uptake executions. Mismatched arms recorded 4,000 reads but zero
+  dispatches and uptake; disabled arms recorded zero reads, dispatches, and
+  uptake. Matched final mean tape energy was 9.99 versus zero in both controls.
+  All 15 runs succeeded with unchanged tapes, zero invariant failures, and
+  maximum relative energy error `2.297e-15`.
+- **Decision:** **PASS for exact local signal dispatch mechanics.**
+- **Why:** Every interaction-level dispatch, mismatch, disabled-feature,
+  immutability, activity, and accounting criterion passed.
+- **Limitations:** Signals are read-only, uniform, and exactly matched. No
+  writing, approximate tag matching, coordination, fitness, adaptation, or
+  organization endpoint was tested.
+- **Follow-up:** S4S-I002 local signal-write mechanics.
+- **Evidence:** `reports/stage4_signal_dispatch_report.md`,
+  `reports/stage4_signal_dispatch_runs.csv`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/stage4_signal_dispatch`.
+
 ## Current frontier
 
 Stage 4 supports execution-mediated differentiated uptake, static spatial
-energy-access niches, and a causal survival consequence under a frozen
-starvation regime, all with exact accounting. The resource-coupled reproduction
-confirmation failed its liveness gate, so no reproduction or frequency-change
-claim is accepted and that branch is stopped. The project still does **not**
-support endogenous reproduction, evolved adaptation, competition, trophic
-ecology, prevalent empirical organization, self-maintenance, or organism
-identity. No experiment is currently claimed or running; the next roadmap branch
-is structured signals and event-driven genomes.
+energy-access niches, a causal starvation-survival consequence, and exact-tag
+local signal dispatch, all with exact accounting. Energy-coupled reproduction
+failed its frozen liveness gate and remains stopped. Writable signals and
+inter-tape response are not yet established, and the project still does **not**
+support endogenous reproduction, evolved adaptation, coordination, competition,
+trophic ecology, prevalent empirical organization, self-maintenance, or organism
+identity. No experiment is currently claimed or running; S4S-I002 local
+signal-write mechanics is the next proposed gate.
