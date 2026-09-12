@@ -678,6 +678,7 @@ energy-coupled reproduction and writable/inter-tape signaling remain stopped.
 The project still does **not** support endogenous reproduction, evolved
 adaptation, communication, coordination, niche construction, competition,
 trophic ecology, prevalent empirical organization, self-maintenance, or organism
-identity. No experiment is currently claimed or running. Progress beyond this
-point requires a new phase design rather than additional nearby confirmatory
-runs.
+identity. No experiment is currently claimed or running. The next proposed work
+is AC-I001 from `reports/conserved_bff_discovery_phase_design.md`: a
+blocked-load-matched test of whether conserved resource composition selectively
+filters functional BFF replicator origin.

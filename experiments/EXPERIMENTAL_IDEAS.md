@@ -475,3 +475,84 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 - **Estimated cost:** medium
 - **On success:** test a bounded demographic consequence with held-out seeds.
 - **On failure:** retain spatial conditional behavior only.
+
+## Conserved BFF artificial-chemistry discovery phase
+
+Design: `reports/conserved_bff_discovery_phase_design.md`. This phase does not
+reopen or reinterpret the integrated Phase 2 NO-GO.
+
+### AC-I001 — Demand-matched class-specific origin filter
+
+- **Status:** Proposed
+- **Owner / machine:** Unclaimed
+- **Claimed at:** —
+- **Depends on:** completed Phase 1 origin-filter diagnostics and paper-scale BFF
+  functional evaluator
+- **Why:** Natural-six exclusion suppressed origin, but the unrelated-symbol
+  control generated less blocked-write friction.
+- **Hypothesis:** Structural-symbol deprivation suppresses functional replicator
+  origin beyond a symbol-independent control with matched blocked-write load.
+- **Test:** Mechanics-only calibration of deterministic nonspecific rejection,
+  followed by 20 held-out 32,768-tape matched seeds across conserved control,
+  natural-six exclusion, and matched friction.
+- **Preregistration:** pending
+- **Estimated cost:** high; calibration plus 60 100,000-epoch confirmation runs
+- **On success:** generate independent established checkpoints and run AC-I002.
+- **On failure:** conclude generic friction or unsupported specificity and stop
+  AC-I002–I004.
+
+### AC-I002 — Independent origin/maintenance hysteresis
+
+- **Status:** Proposed
+- **Owner / machine:** Unclaimed
+- **Claimed at:** —
+- **Depends on:** AC-I001 pass and at least eight independently established
+  checkpoints
+- **Why:** Existing maintenance evidence repeatedly perturbs one natural ecology
+  and cannot establish population-level hysteresis.
+- **Hypothesis:** Natural-six deprivation has a larger adverse effect on origin
+  than on retention of independently established replicator ecologies.
+- **Test:** Continue each independently selected control checkpoint under matched
+  control, natural-six exclusion, and calibrated nonspecific friction; use
+  checkpoint as the replicate and test the origin-by-maintenance interaction.
+- **Preregistration:** pending
+- **Estimated cost:** high, conditional on checkpoint yield
+- **On success:** support robust chemistry-dependent historical contingency and
+  consider AC-I003.
+- **On failure:** stop before attractor-redirection claims.
+
+### AC-I003 — Alternative replicator attractors
+
+- **Status:** Proposed
+- **Owner / machine:** Unclaimed
+- **Claimed at:** —
+- **Depends on:** AC-I002 pass
+- **Why:** A selective origin filter becomes substantially more novel if deprived
+  chemistry redirects replication rather than merely suppressing it.
+- **Hypothesis:** At least two independent deprived-chemistry runs produce a
+  persistent score-64 replicator class outside the canonical composition
+  envelope.
+- **Test:** Frozen extended horizon, unchanged functional criterion, independent
+  recurrence, and transplant positive controls under the same chemistry.
+- **Preregistration:** pending
+- **Estimated cost:** very high and conditional
+- **On success:** proceed to spatial coexistence AC-I004.
+- **On failure:** conclude selective suppression, not alternative life.
+
+### AC-I004 — Spatial resource-class coexistence
+
+- **Status:** Proposed
+- **Owner / machine:** Unclaimed
+- **Claimed at:** —
+- **Depends on:** independently validated canonical and alternative classes from
+  AC-I003
+- **Why:** Distinct resource-compatible replicator classes are required before a
+  meaningful conserved-chemistry ecology test.
+- **Hypothesis:** Complementary conserved resource regions support predictable
+  local persistence or coexistence of the validated classes.
+- **Test:** Frozen rare-invasion placements, heterogeneous versus homogeneous
+  chemistry, class-frequency and transfer endpoints, and exact conservation.
+- **Preregistration:** pending
+- **Estimated cost:** high and conditional
+- **On success:** support a bounded resource-mediated artificial ecology.
+- **On failure:** retain alternative-attractor evidence without coexistence.
