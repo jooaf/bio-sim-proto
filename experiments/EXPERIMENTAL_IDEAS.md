@@ -484,9 +484,9 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### AC-I001 — Demand-matched class-specific origin filter
 
-- **Status:** Proposed
-- **Owner / machine:** Unclaimed
-- **Claimed at:** —
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-12T02:36:41Z
 - **Depends on:** completed Phase 1 origin-filter diagnostics and paper-scale BFF
   functional evaluator
 - **Why:** Natural-six exclusion suppressed origin, but the unrelated-symbol
@@ -496,7 +496,9 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 - **Test:** Mechanics-only calibration of deterministic nonspecific rejection,
   followed by 20 held-out 32,768-tape matched seeds across conserved control,
   natural-six exclusion, and matched friction.
-- **Preregistration:** pending
+- **Preregistration:** calibration frozen at
+  `reports/ac_i001_friction_calibration_preregistration.md`; confirmation pending
+  mechanical selection
 - **Estimated cost:** high; calibration plus 60 100,000-epoch confirmation runs
 - **On success:** generate independent established checkpoints and run AC-I002.
 - **On failure:** conclude generic friction or unsupported specificity and stop
