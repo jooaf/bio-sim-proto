@@ -98,10 +98,16 @@ def write_report(runs: pd.DataFrame, target: Path) -> None:
         reads=("signal_reads", "sum"), dispatches=("signal_dispatches", "sum"),
         writes=("signal_writes", "sum"), final_written=("occupied_final_written", "sum"),
     ).reset_index()
-    lines = ["# Stage 4 local signal-write mechanics", "", "## Decision", "", f"Local partner-cell signal writing supported: **{passes_gate(runs)}**.", "", "| arm | runs | interactions | reads | dispatches | changed writes | runs with written occupied field |", "|---|---:|---:|---:|---:|---:|---:|"]
+    enabled = runs[runs["arm"] == "write_enabled"]
+    lines = ["# Stage 4 local signal-write mechanics", "", "## Decision", "", f"Local partner-cell signal writing supported: **{passes_gate(runs)}**.", "", f"- Write-enabled changed-write range: {int(enabled['signal_writes'].min())}–{int(enabled['signal_writes'].max())} (frozen requirement: exactly 8)", f"- Write-enabled runs with all occupied tags changed: {int(enabled['occupied_final_written'].sum())}/5", "", "| arm | runs | interactions | reads | dispatches | changed writes | runs with written occupied field |", "|---|---:|---:|---:|---:|---:|---:|"]
     for row in cast(list[dict[str, Any]], groups.to_dict(orient="records")):
         lines.append(f"| {row['arm']} | {int(row['runs'])} | {int(row['interactions'])} | {int(row['reads'])} | {int(row['dispatches'])} | {int(row['writes'])} | {int(row['final_written'])} |")
-    lines += ["", "This is an atomic signal-write mechanics result only. Inter-tape response, coordination, niche construction, fitness, and adaptation were not tested.", ""]
+    conclusion = (
+        "The frozen mechanics gate passed; a separately preregistered inter-tape response test is permitted."
+        if passes_gate(runs)
+        else "The frozen mechanics gate failed because isolated occupied cells were not reachable as interaction partners. Observed writes are descriptive only; the stop rule prohibits the planned inter-tape response test and writable-signal claims."
+    )
+    lines += ["", conclusion, ""]
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text("\n".join(lines), encoding="utf-8")
 

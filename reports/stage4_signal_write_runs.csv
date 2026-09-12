@@ -1,0 +1,16 @@
+run_dir,seed,arm,interactions,signal_reads,signal_dispatches,signal_writes,all_reads_one,all_dispatches_one,all_dispatches_zero,occupied_final_written,field_unchanged,empty_cells_unchanged,changed_targets_valid,final_tapes,unchanged_tapes,matter_total_constant,successful_exit,invariant_failures
+sweeps/stage4_signal_write/runs/mismatched_seed_202609270,202609270,mismatched,800,800,0,0,True,False,True,False,True,True,True,8,True,True,True,0
+sweeps/stage4_signal_write/runs/mismatched_seed_202609271,202609271,mismatched,800,800,0,0,True,False,True,False,True,True,True,8,True,True,True,0
+sweeps/stage4_signal_write/runs/mismatched_seed_202609272,202609272,mismatched,800,800,0,0,True,False,True,False,True,True,True,8,True,True,True,0
+sweeps/stage4_signal_write/runs/mismatched_seed_202609273,202609273,mismatched,800,800,0,0,True,False,True,False,True,True,True,8,True,True,True,0
+sweeps/stage4_signal_write/runs/mismatched_seed_202609274,202609274,mismatched,800,800,0,0,True,False,True,False,True,True,True,8,True,True,True,0
+sweeps/stage4_signal_write/runs/write_disabled_seed_202609270,202609270,write_disabled,800,800,800,0,True,True,False,False,True,True,True,8,True,True,True,0
+sweeps/stage4_signal_write/runs/write_disabled_seed_202609271,202609271,write_disabled,800,800,800,0,True,True,False,False,True,True,True,8,True,True,True,0
+sweeps/stage4_signal_write/runs/write_disabled_seed_202609272,202609272,write_disabled,800,800,800,0,True,True,False,False,True,True,True,8,True,True,True,0
+sweeps/stage4_signal_write/runs/write_disabled_seed_202609273,202609273,write_disabled,800,800,800,0,True,True,False,False,True,True,True,8,True,True,True,0
+sweeps/stage4_signal_write/runs/write_disabled_seed_202609274,202609274,write_disabled,800,800,800,0,True,True,False,False,True,True,True,8,True,True,True,0
+sweeps/stage4_signal_write/runs/write_enabled_seed_202609270,202609270,write_enabled,800,800,310,5,True,False,False,False,False,True,True,8,True,True,True,0
+sweeps/stage4_signal_write/runs/write_enabled_seed_202609271,202609271,write_enabled,800,800,212,6,True,False,False,False,False,True,True,8,True,True,True,0
+sweeps/stage4_signal_write/runs/write_enabled_seed_202609272,202609272,write_enabled,800,800,293,5,True,False,False,False,False,True,True,8,True,True,True,0
+sweeps/stage4_signal_write/runs/write_enabled_seed_202609273,202609273,write_enabled,800,800,291,5,True,False,False,False,False,True,True,8,True,True,True,0
+sweeps/stage4_signal_write/runs/write_enabled_seed_202609274,202609274,write_enabled,800,800,212,6,True,False,False,False,False,True,True,8,True,True,True,0

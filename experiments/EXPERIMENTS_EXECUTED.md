@@ -564,14 +564,41 @@ results stay in the registry.
   `reports/stage4_signal_dispatch_runs.csv`; raw campaign:
   `/home/jojo/bio-sim-results/bazzite/stage4_signal_dispatch`.
 
+### S4S-E002 — Local signal-write mechanics
+
+- **Hypothesis:** A tagged writer can atomically replace every occupied
+  interaction-partner cell's signal tag while disabled and mismatched controls
+  leave the field unchanged.
+- **Test:** Five held-out seeds (`202609270`–`202609274`), write-enabled,
+  write-disabled, and dispatch-mismatched arms, 100 ticks, and immutable tagged
+  writer tapes on eight of sixteen cells.
+- **Result:** Write-enabled runs recorded 5–6 changed tags rather than the frozen
+  requirement of exactly eight, and no run changed all occupied tags. The random
+  half-occupied lattice contained isolated tapes that could not be selected as
+  local interaction partners. Write-disabled arms recorded 4,000 dispatches and
+  zero writes; mismatched arms recorded zero dispatches and writes. Empty cells
+  and all tapes remained unchanged, and all 15 runs succeeded with zero invariant
+  failures.
+- **Decision:** **FAIL the frozen writable-signal mechanics gate.**
+- **Why:** The mandatory complete occupied-field transition failed in 5/5 seeds,
+  even though reachable partner-cell writes behaved as implemented.
+- **Limitations:** The outcome identifies a topology/reachability mismatch in the
+  assay; observed writes are descriptive only. The preregistered stop rule does
+  not permit changing occupancy or neighborhood after seeing the result.
+- **Follow-up:** Do not run the planned causal inter-tape response campaign.
+  Retain read-only exact dispatch and stop writable-signal/niche-construction
+  claims under this branch.
+- **Evidence:** `reports/stage4_signal_write_report.md`,
+  `reports/stage4_signal_write_runs.csv`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/stage4_signal_write`.
+
 ## Current frontier
 
-Stage 4 supports execution-mediated differentiated uptake, static spatial
-energy-access niches, a causal starvation-survival consequence, and exact-tag
-local signal dispatch, all with exact accounting. Energy-coupled reproduction
-failed its frozen liveness gate and remains stopped. Writable signals and
-inter-tape response are not yet established, and the project still does **not**
-support endogenous reproduction, evolved adaptation, coordination, competition,
-trophic ecology, prevalent empirical organization, self-maintenance, or organism
-identity. No experiment is currently claimed or running; S4S-I002 local
-signal-write mechanics is the next proposed gate.
+Stage 4 supports differentiated energy access, static spatial energy niches, a
+causal starvation-survival consequence, and read-only exact-tag dispatch. The
+energy-coupled reproduction and writable-signal branches both failed frozen
+confirmatory gates and are stopped. Inter-tape response was therefore not run.
+The project still does **not** support endogenous reproduction, evolved
+adaptation, coordination, niche construction, competition, trophic ecology,
+prevalent empirical organization, self-maintenance, or organism identity. No
+experiment is currently claimed or running.

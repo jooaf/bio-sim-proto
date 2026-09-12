@@ -398,7 +398,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4S-I002 — Local signal-write mechanics
 
-- **Status:** Running
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-12T00:40:14Z
 - **Depends on:** completed S4S-I001 exact-tag dispatch gate
