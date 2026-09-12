@@ -562,7 +562,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### AC-R001 — Mechanics-derived friction validation
 
-- **Status:** Running
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-12T04:43:34Z
 - **Depends on:** failed AC-I001 grid calibration

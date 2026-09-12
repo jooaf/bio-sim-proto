@@ -692,6 +692,25 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
   `reports/ac_i001_friction_calibration_runs.csv`; raw campaign:
   `/home/jojo/bio-sim-results/bazzite/ac_i001_friction_calibration`.
 
+### AC-E002 — Mechanics-derived friction validation
+
+- **Hypothesis:** The mechanics-derived rejection rate
+  `0.27555027572734614` matches natural-six blocked-write load on new seeds.
+- **Test:** Five disjoint seed pairs (`202610010`–`202610014`), 32,768 tapes,
+  5,000 epochs, natural-six exclusion versus histogram-matched friction.
+- **Result:** Natural-six and friction medians were 27,371,804 and 24,004,073
+  blocked writes, ratio 0.876963. All five paired ratios were within the frozen
+  `[0.67, 1.5]` interval. All ten runs succeeded with exact conservation.
+- **Decision:** **PASS for mechanics-matched nonspecific friction.**
+- **Why:** The median ratio passed `[0.8, 1.25]`, all paired criteria passed, and
+  every liveness and conservation condition held.
+- **Limitations:** Emergence-related artifacts were not inspected. This does not
+  establish origin, replication, selection, or a resource-class effect.
+- **Follow-up:** Freeze this rate in a separately preregistered, held-out,
+  three-arm functional-origin confirmation.
+- **Evidence:** `reports/ac_r001_derived_friction_validation_report.md`; raw
+  campaign: `/home/jojo/bio-sim-results/bazzite/ac_r001_derived_friction_validation`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -702,6 +721,7 @@ energy-coupled reproduction and writable/inter-tape signaling remain stopped.
 The project still does **not** support endogenous reproduction, evolved
 adaptation, communication, coordination, niche construction, competition,
 trophic ecology, prevalent empirical organization, self-maintenance, or organism
-identity. AC-I001's frozen friction grid failed mechanically, so its emergence
-confirmation was not launched. A separately designed mechanics-derived rate
-validation is required before the conserved origin-filter question can proceed.
+identity. AC-I001's frozen friction grid failed, but AC-R001 validated the
+separately designed mechanics-derived rate on new seeds. The conserved
+origin-filter question may now proceed only through a separately preregistered,
+held-out functional confirmation.
