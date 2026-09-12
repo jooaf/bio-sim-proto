@@ -322,6 +322,8 @@ class Config:
             ("energy.uptake_amount", self.energy.uptake_amount),
             ("reproduction.birth_energy_cost", self.reproduction.birth_energy_cost),
             ("reproduction.offspring_energy", self.reproduction.offspring_energy),
+            ("task.task_bonus", self.task.task_bonus),
+            ("task.switch_cost_energy", self.task.switch_cost_energy),
         )
         for energy_name, energy_value in nonnegative_energy:
             if energy_value < 0.0:
@@ -356,6 +358,15 @@ class Config:
             raise ValueError("signals currently require BFF Stage 4")
         if self.signals.writes_enabled and not self.signals.enabled:
             raise ValueError("signal writes require signals.enabled = true")
+        if self.task.enabled:
+            if not self.signals.enabled or self.run.stage < 4:
+                raise ValueError("task evaluation requires Stage 4 signals")
+            if self.task.task_spec != "signal_uptake":
+                raise ValueError("task.task_spec currently supports only signal_uptake")
+            if self.task.task_bonus <= 0.0:
+                raise ValueError("task.task_bonus must be positive when tasks are enabled")
+            if self.task.switch_cost_energy != 0.0:
+                raise ValueError("task.switch_cost_energy is not implemented")
         if self.energy.active_uptake_enabled:
             if self.run.stage < 4:
                 raise ValueError("active energy uptake requires Stage 4 or later")

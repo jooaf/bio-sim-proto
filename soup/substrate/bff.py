@@ -142,12 +142,14 @@ class BFFSubstrate:
 
         pc = 0
         signal_reads = 0
+        signal_tag: bytes | None = None
         signal_dispatches = 0
         signal_writes = 0
         if self.signal_dispatch_enabled and signals is not None:
             tag = signals.read_signal()
             if tag is not None:
                 signal_reads = 1
+                signal_tag = tag
                 if len(tag) != self.signal_tag_length:
                     raise ValueError("local signal tag length does not match substrate config")
                 for offset in range(0, self.tape_length, self.signal_tag_stride):
@@ -257,6 +259,7 @@ class BFFSubstrate:
             writes_blocked=writes_blocked,
             halt_reason=halt_reason,
             signal_reads=signal_reads,
+            signal_tag=signal_tag,
             signal_dispatches=signal_dispatches,
             signal_writes=signal_writes,
             energy_uptake_executions=uptake_executions,

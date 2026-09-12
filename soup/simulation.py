@@ -17,6 +17,7 @@ from soup.logging.writer import RunWriter
 from soup.rng import make_rng
 from soup.scheduler import Scheduler
 from soup.signals import SignalField
+from soup.tasks import TaskLedger
 from soup.substrate.base import Substrate
 from soup.substrate.bff import BFFSubstrate
 from soup.substrate.ski import SKISubstrate
@@ -116,6 +117,11 @@ class Simulation:
             if config.signals.enabled and isinstance(self.world, SpatialWorld)
             else None
         )
+        self.task = (
+            TaskLedger.create(self.world)
+            if config.task.enabled and isinstance(self.world, SpatialWorld)
+            else None
+        )
         self.writer = RunWriter(
             config,
             run_dir=run_dir,
@@ -131,6 +137,7 @@ class Simulation:
             pool=self.pool,
             energy=self.energy,
             signals=self.signals,
+            task=self.task,
         )
 
     def run(self) -> Path:

@@ -82,6 +82,7 @@ class ExecutionResult:
     writes_blocked: int
     halt_reason: HaltReason
     signal_reads: int = 0
+    signal_tag: bytes | None = None
     signal_dispatches: int = 0
     signal_writes: int = 0
     energy_uptake_executions: int = 0

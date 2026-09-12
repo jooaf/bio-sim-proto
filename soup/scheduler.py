@@ -29,6 +29,7 @@ from soup.logging.invariants import (
 from soup.logging.writer import RunWriter
 from soup.placement import PlacementFact, PlacementResult, place_random_tapes
 from soup.signals import SignalField
+from soup.tasks import TaskLedger
 from soup.reproduction import (
     ReproductionFact,
     ReproductionResult,
@@ -60,6 +61,7 @@ class Scheduler:
         pool: SymbolPool | None = None,
         energy: EnergyLedger | None = None,
         signals: SignalField | None = None,
+        task: TaskLedger | None = None,
     ) -> None:
         self.config = config
         self.world = world
@@ -69,6 +71,7 @@ class Scheduler:
         self.pool = pool
         self.energy = energy
         self.signals = signals
+        self.task = task
         self._abundance_events: set[str] = set()
         self._birth_records: dict[
             int, tuple[int, tuple[int, int] | None, str, tuple[int, ...]]
@@ -152,6 +155,8 @@ class Scheduler:
                 energy=self.energy,
                 energy_config=self.config.energy if self.energy is not None else None,
                 signals=self.signals,
+                task=self.task,
+                task_bonus=self.config.task.task_bonus,
                 composition_reactions=(
                     composition_reactions
                     if self.config.logging.reaction_log_rate > 0.0
@@ -222,6 +227,15 @@ class Scheduler:
             self._write_lifecycle(
                 tick, dissolutions, copy_triggers, reproductions, placements
             )
+            if self.task is not None:
+                if self.signals is None:
+                    raise InvariantViolation("task evaluation requires signals")
+                self.task.update_signal_uptake(
+                    facts,
+                    self.world,
+                    self.config.signals,
+                    self.config.task,
+                )
         else:
             facts = run_interaction_round(
                 world=self.world,
@@ -243,6 +257,7 @@ class Scheduler:
         self._write_interactions(facts)
         self._write_energy_uptake(tick, facts)
         self._write_signal_dispatch(tick, facts)
+        self._write_task_state(tick)
         self._write_tick(tick, facts, len(dissolutions))
         if tick % self.config.run.epoch_length == 0:
             epoch = tick // self.config.run.epoch_length
@@ -470,6 +485,20 @@ class Scheduler:
                 },
             )
 
+    def _write_task_state(self, tick: int) -> None:
+        if self.task is None:
+            return
+        positive = np.flatnonzero(self.task.scores > 0.0)
+        self.writer.append_event(
+            tick=tick,
+            event_type="task_state",
+            details={
+                "positive_cells": [list(self.world.cell(int(index)) or ()) for index in positive],
+                "positive_count": len(positive),
+                "mean_score": float(self.task.scores.mean()),
+            },
+        )
+
     def _write_signal_dispatch(
         self, tick: int, facts: list[InteractionFact]
     ) -> None:
@@ -486,6 +515,7 @@ class Scheduler:
                     "partner_id": fact.b_id,
                     "partner_cell": list(fact.b_cell) if fact.b_cell is not None else None,
                     "reads": fact.signal_reads,
+                    "tag_hex": fact.signal_tag_hex,
                     "dispatches": fact.signal_dispatches,
                     "writes": fact.signal_writes,
                     "uptake_executions": fact.energy_uptake_executions,

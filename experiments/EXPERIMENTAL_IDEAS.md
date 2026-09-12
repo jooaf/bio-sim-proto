@@ -460,7 +460,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4S-I004 — Task-relevant signal modulation
 
-- **Status:** Claimed
+- **Status:** Running
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-12T01:37:29Z
 - **Depends on:** completed S4S-I003 spatial response gate

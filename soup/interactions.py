@@ -20,6 +20,7 @@ from soup.substrate.base import (
 )
 from soup.substrate.bff import INSTRUCTIONS
 from soup.signals import LocalExecutionView, SignalField
+from soup.tasks import TaskLedger
 from soup.world import FlatWorld, SpatialWorld, World
 
 
@@ -68,6 +69,7 @@ class InteractionFact:
     energy_uptake_executions: int
     energy_absorbed: float
     signal_reads: int
+    signal_tag_hex: str | None
     signal_dispatches: int
     signal_writes: int
     writes_success: int
@@ -253,6 +255,7 @@ def _execute_pair(
         energy_uptake_executions=result.energy_uptake_executions,
         energy_absorbed=result.energy_absorbed,
         signal_reads=result.signal_reads,
+        signal_tag_hex=(None if result.signal_tag is None else result.signal_tag.hex()),
         signal_dispatches=result.signal_dispatches,
         signal_writes=result.signal_writes,
         writes_success=result.writes_success,
@@ -342,6 +345,8 @@ def run_local_interaction_round(
     energy: EnergyLedger | None = None,
     energy_config: EnergyConfig | None = None,
     signals: SignalField | None = None,
+    task: TaskLedger | None = None,
+    task_bonus: float = 0.0,
     composition_reactions: list[CompositionReactionFact] | None = None,
     reaction_sampler: ReactionSampler | None = None,
 ) -> list[InteractionFact]:
@@ -360,8 +365,15 @@ def run_local_interaction_round(
         if len(active) == 0:
             return []
     facts: list[InteractionFact] = []
+    selection_probabilities = (
+        None if task is None else task.active_probabilities(active, task_bonus)
+    )
     for round_index in range(interactions_per_tick):
-        a_index = int(active[int(rng.integers(len(active)))])
+        a_index = (
+            int(active[int(rng.integers(len(active)))])
+            if selection_probabilities is None
+            else int(rng.choice(active, p=selection_probabilities))
+        )
         if (
             energy is not None
             and energy_config is not None
