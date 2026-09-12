@@ -20,10 +20,16 @@ class SignalField:
 
     @classmethod
     def create(cls, world: SpatialWorld, config: SignalsConfig) -> SignalField:
-        if config.signal_spec != "uniform":
+        primary = np.frombuffer(bytes.fromhex(config.initial_tag_hex), dtype=np.uint8)
+        tags = np.tile(primary, (world.capacity, 1))
+        if config.signal_spec == "split_x":
+            secondary = np.frombuffer(bytes.fromhex(config.secondary_tag_hex), dtype=np.uint8)
+            for index in range(world.capacity):
+                x, _ = world.cell(index)
+                if x >= world.width // 2:
+                    tags[index] = secondary
+        elif config.signal_spec != "uniform":
             raise ValueError(f"unsupported signal field: {config.signal_spec}")
-        tag = np.frombuffer(bytes.fromhex(config.initial_tag_hex), dtype=np.uint8)
-        tags = np.tile(tag, (world.capacity, 1))
         return cls(tags=tags)
 
     def tag_at(self, index: int) -> bytes:

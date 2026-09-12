@@ -216,8 +216,9 @@ class SignalsConfig:
     enabled: bool = field(default=False, metadata=knob("Enable signal field and exact-tag dispatch.", "Stage 4+"))
     tag_length: int = field(default=4, metadata=knob("Bytes compared in dispatch tags.", "1..64"))
     tag_stride: int = field(default=8, metadata=knob("Bytes between dispatch blocks.", "tag_length..tape_length"))
-    signal_spec: str = field(default="uniform", metadata=knob("Environmental signal field.", "uniform"))
-    initial_tag_hex: str = field(default="00000000", metadata=knob("Uniform signal tag encoded as hex bytes.", "2*tag_length hex characters"))
+    signal_spec: str = field(default="uniform", metadata=knob("Environmental signal field.", "uniform|split_x"))
+    initial_tag_hex: str = field(default="00000000", metadata=knob("Primary signal tag encoded as hex bytes.", "2*tag_length hex characters"))
+    secondary_tag_hex: str = field(default="ffffffff", metadata=knob("Secondary split-field tag encoded as hex bytes.", "2*tag_length hex characters"))
     writes_enabled: bool = field(default=False, metadata=knob("Allow BFF signal-write instructions to replace partner-cell tags.", "true|false"))
 
 
@@ -333,14 +334,20 @@ class Config:
             raise ValueError("environment.correlation_length must be positive")
         if not 0.0 <= self.environment.influx_contrast <= 10.0:
             raise ValueError("environment.influx_contrast must be in 0..10")
-        if self.signals.signal_spec != "uniform":
-            raise ValueError("signals.signal_spec currently supports only uniform")
+        if self.signals.signal_spec not in {"uniform", "split_x"}:
+            raise ValueError("signals.signal_spec must be uniform or split_x")
         try:
             signal_tag = bytes.fromhex(self.signals.initial_tag_hex)
+            secondary_signal_tag = bytes.fromhex(self.signals.secondary_tag_hex)
         except ValueError as error:
-            raise ValueError("signals.initial_tag_hex must be valid hexadecimal") from error
-        if len(signal_tag) != self.signals.tag_length:
-            raise ValueError("signals.initial_tag_hex must encode exactly tag_length bytes")
+            raise ValueError("signal tags must be valid hexadecimal") from error
+        if len(signal_tag) != self.signals.tag_length or len(secondary_signal_tag) != self.signals.tag_length:
+            raise ValueError("signal tags must encode exactly tag_length bytes")
+        if self.signals.signal_spec == "split_x":
+            if self.world.width % 2 != 0:
+                raise ValueError("split_x signals require an even world width")
+            if signal_tag == secondary_signal_tag:
+                raise ValueError("split_x signal tags must differ")
         if self.signals.tag_stride < self.signals.tag_length:
             raise ValueError("signals.tag_stride must be at least tag_length")
         if self.signals.tag_length >= self.substrate.tape_length:

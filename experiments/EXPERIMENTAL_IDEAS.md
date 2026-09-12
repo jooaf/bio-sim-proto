@@ -439,7 +439,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4S-I003 — Structured read-only environmental response
 
-- **Status:** Claimed
+- **Status:** Running
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-12T01:07:26Z
 - **Depends on:** completed S4S-I001 read-only dispatch; independent of failed
