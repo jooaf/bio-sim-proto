@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+from collections.abc import Iterable
 from typing import Any
 
 import numpy as np
@@ -43,10 +44,15 @@ def profile(simulation: Simulation, occupied: set[int]) -> pd.DataFrame:
     )
 
 
-def run_campaign(config_path: Path, output_root: Path) -> Path:
+def run_campaign(
+    config_path: Path,
+    output_root: Path,
+    seeds: Iterable[int] = SEEDS,
+) -> Path:
     rows: list[dict[str, Any]] = []
+    frozen_seeds = tuple(seeds)
     for arm, writes_enabled, tag_hex in ARMS:
-        for seed in SEEDS:
+        for seed in frozen_seeds:
             config = Config.load(config_path)
             config.run.seed = seed
             config.run.output_dir = str(output_root / "runs")
