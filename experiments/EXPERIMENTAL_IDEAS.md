@@ -460,9 +460,9 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4S-I004 — Task-relevant signal modulation
 
-- **Status:** Proposed
-- **Owner / machine:** Unclaimed
-- **Claimed at:** —
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-12T01:37:29Z
 - **Depends on:** completed S4S-I003 spatial response gate
 - **Why:** One fixed tape now changes behavior by environmental region, but that
   response has not affected interaction opportunity under a declared task.
@@ -471,7 +471,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 - **Test:** First specify a deterministic task score and scheduler weighting with
   disabled-task and shuffled-signal controls; freeze mechanics endpoints before
   any demographic consequence.
-- **Preregistration:** pending
+- **Preregistration:** `reports/stage4_task_modulation_preregistration.md`
 - **Estimated cost:** medium
 - **On success:** test a bounded demographic consequence with held-out seeds.
 - **On failure:** retain spatial conditional behavior only.
