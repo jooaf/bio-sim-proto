@@ -614,15 +614,41 @@ results stay in the registry.
   `reports/stage4_signal_write_reachability_runs.csv`; raw campaign:
   `/home/jojo/bio-sim-results/bazzite/stage4_signal_write_reachability`.
 
+### S4S-E003 — Structured read-only environmental response
+
+- **Hypothesis:** One immutable dual-handler tape expresses uptake only in the
+  spatial region carrying its uptake-handler tag.
+- **Test:** Five held-out seeds (`202609290`–`202609294`), fully occupied 4×4
+  torus, deterministic left/right tags, uniform-primary positive controls, and
+  globally disabled controls. Every tape and all dynamics were otherwise
+  identical.
+- **Result:** Split arms read and dispatched all 8,000 interactions; all 4,035
+  uptake executions occurred in the left half, every left cell had uptake, and
+  every right cell had zero. Final tape energy was 9.99 left and zero right.
+  Uniform arms executed uptake in all 8,000 interactions and ended at 9.99 in
+  both halves; disabled arms had zero reads, dispatches, uptake, and tape energy.
+  All 15 runs succeeded with unchanged tapes, zero invariant failures, and
+  maximum relative energy error `3.268e-15`.
+- **Decision:** **PASS for spatially conditional behavior under read-only
+  environmental signals.**
+- **Why:** Every frozen cell-level response, uniform-control, disabled-control,
+  immutability, and accounting criterion passed.
+- **Limitations:** The field and tapes were deliberately constructed and static.
+  This is not communication, coordination, fitness, adaptation, or organization.
+- **Follow-up:** S4S-I004 task-relevant signal modulation may test whether correct
+  response changes interaction opportunity without direct fitness assignment.
+- **Evidence:** `reports/stage4_structured_signal_response_report.md`,
+  `reports/stage4_structured_signal_response_runs.csv`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/stage4_structured_signal_response`.
+
 ## Current frontier
 
 Stage 4 supports differentiated energy access, static spatial energy niches, a
-causal starvation-survival consequence, and read-only exact-tag dispatch. The
-energy-coupled reproduction and writable-signal branches both failed frozen
-confirmatory gates and are stopped. Inter-tape response was therefore not run.
-The reachability control also failed, so writable signaling and causal inter-tape
-response are stopped. The project still does **not** support endogenous
-reproduction, evolved adaptation, coordination, niche construction, competition,
-trophic ecology, prevalent empirical organization, self-maintenance, or organism
-identity. No experiment is currently claimed or running; a distinct read-only
-structured environmental-response branch remains permissible.
+causal starvation-survival consequence, exact-tag dispatch, and spatially
+conditional behavior by one immutable tape under read-only environmental
+signals. Energy-coupled reproduction and writable/inter-tape signaling failed
+frozen gates and remain stopped. The project still does **not** support
+endogenous reproduction, evolved adaptation, communication, coordination, niche
+construction, competition, trophic ecology, prevalent empirical organization,
+self-maintenance, or organism identity. No experiment is currently claimed or
+running; S4S-I004 task-relevant signal modulation is the next proposed gate.

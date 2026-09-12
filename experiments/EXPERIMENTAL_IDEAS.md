@@ -439,7 +439,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4S-I003 — Structured read-only environmental response
 
-- **Status:** Running
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-12T01:07:26Z
 - **Depends on:** completed S4S-I001 read-only dispatch; independent of failed
@@ -457,3 +457,21 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 - **On success:** permit a task-relevant signal-to-interaction experiment, but no
   communication or coordination claim.
 - **On failure:** stop structured read-only signal-response work.
+
+### S4S-I004 — Task-relevant signal modulation
+
+- **Status:** Proposed
+- **Owner / machine:** Unclaimed
+- **Claimed at:** —
+- **Depends on:** completed S4S-I003 spatial response gate
+- **Why:** One fixed tape now changes behavior by environmental region, but that
+  response has not affected interaction opportunity under a declared task.
+- **Hypothesis:** Correct local signal-handler response can modulate interaction
+  probability without direct fitness assignment or signal writing.
+- **Test:** First specify a deterministic task score and scheduler weighting with
+  disabled-task and shuffled-signal controls; freeze mechanics endpoints before
+  any demographic consequence.
+- **Preregistration:** pending
+- **Estimated cost:** medium
+- **On success:** test a bounded demographic consequence with held-out seeds.
+- **On failure:** retain spatial conditional behavior only.
