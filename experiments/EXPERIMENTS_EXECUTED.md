@@ -7,7 +7,8 @@ reports. Pending work belongs in [`EXPERIMENTAL_IDEAS.md`](EXPERIMENTAL_IDEAS.md
 For every new entry include: frozen hypothesis, test and primary endpoint,
 result with uncertainty/test statistic, decision, why that decision follows,
 limitations, artifact links, and follow-up idea IDs. Negative and invalidated
-results stay in the registry.
+results stay in the registry. A consolidated index of failed and mixed gates is
+maintained at [`reports/failed_experiments_registry.md`](../reports/failed_experiments_registry.md).
 
 ---
 

@@ -4,7 +4,8 @@ This is the shared queue for experiments that have **not** reached a final
 decision. It is organized by research stage so the Mac and remote machine can
 work without duplicating campaigns. Completed or terminated entries move to
 [`EXPERIMENTS_EXECUTED.md`](EXPERIMENTS_EXECUTED.md); any resulting follow-up is
-added here with a new ID.
+added here with a new ID. Failed gates and prohibited reinterpretations are
+indexed in [`reports/failed_experiments_registry.md`](../reports/failed_experiments_registry.md).
 
 ## Coordination protocol
 
