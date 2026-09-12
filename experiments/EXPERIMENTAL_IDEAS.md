@@ -398,9 +398,9 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4S-I002 — Local signal-write mechanics
 
-- **Status:** Proposed
-- **Owner / machine:** Unclaimed
-- **Claimed at:** —
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-12T00:40:14Z
 - **Depends on:** completed S4S-I001 exact-tag dispatch gate
 - **Why:** Exact environmental dispatch now works, but tapes cannot alter their
   local signal environment; writable signals are required before testing niche
@@ -411,7 +411,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 - **Test:** Freeze atomic write semantics and a two-step writer/responder assay
   with disabled-opcode and mismatched-tag controls. Measure writes and subsequent
   dispatch only; defer ecological endpoints.
-- **Preregistration:** pending
+- **Preregistration:** `reports/stage4_signal_write_preregistration.md`
 - **Estimated cost:** low
 - **On success:** test whether written local signals causally alter another tape's
   behavior before any coordination claim.
