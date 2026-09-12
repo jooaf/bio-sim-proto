@@ -417,3 +417,22 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
   behavior before any coordination claim.
 - **On failure:** retain read-only exact dispatch and stop niche-construction
   interpretation.
+
+### S4S-R001 — Signal-write reachability positive control
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-12T01:02:15Z
+- **Depends on:** failed S4S-I002 topology diagnosis
+- **Why:** S4S-I002 mixed opcode semantics with an unreachable-cell requirement.
+  A fully connected positive control can isolate implementation correctness
+  without changing or overturning that failed result.
+- **Hypothesis:** With full occupancy, unchanged partner-cell write semantics
+  replace all signal tags, while disabled and mismatched controls remain static.
+- **Test:** Repeat the byte-exact mechanics arms at full 4×4 occupancy with new
+  seeds and a separate fixed gate. Make no niche-construction claim.
+- **Preregistration:** `reports/stage4_signal_write_reachability_preregistration.md`
+- **Estimated cost:** low; 15 small runs
+- **On success:** permit a separately preregistered fully connected inter-tape
+  response positive control.
+- **On failure:** stop writable-signal work completely.
