@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 from experiments import phase1_probe
 from experiments.paper_probe import score_selfrep_candidates
@@ -71,25 +72,57 @@ def test_functional_observation_saves_first_qualified_checkpoint(
         assert np.array_equal(tape_counts + checkpoint["pool"], checkpoint["conserved_totals"])
     assay_files = sorted((run_dir / "functional_assays").glob("*.npz"))
     assert [path.name for path in assay_files] == ["epoch_000010.npz", "epoch_000011.npz"]
+    with np.load(assay_files[0]) as assay:
+        assert int(assay["local_epoch"][0]) == 10
+        assert assay["observation_version"][0] == phase1_probe.FUNCTIONAL_OBSERVATION_VERSION
+        assert int(assay["scores"][0]) == 64
     with (run_dir / "functional_scores.csv").open(newline="", encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
     assert [int(row["epoch"]) for row in rows] == [10, 11]
     assert all(row["origin_qualified"] == "True" for row in rows)
 
 
-def test_functional_observation_does_not_change_trajectory(tmp_path: Path) -> None:
+def test_functional_scoring_does_not_change_trajectory(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     disabled_final = tmp_path / "disabled.npy"
     enabled_final = tmp_path / "enabled.npy"
+    original_complexity = phase1_probe.complexity_row
+
+    def high_entropy(*args: object, **kwargs: object) -> dict[str, int | float]:
+        row = original_complexity(*args, **kwargs)
+        row["high_order_entropy"] = 1.0
+        return row
+
+    def harmless_scores(
+        values: np.ndarray, counts: np.ndarray
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        candidates, abundances = ranked_functional_candidates(values, counts)
+        return candidates, abundances, np.zeros(len(candidates), dtype=np.int64)
+
     common = dict(
-        population_size=16, epochs=4, seed=19, mutation_rate=1.0 / 64.0,
+        population_size=16, epochs=10, seed=19, mutation_rate=1.0 / 64.0,
         pool_multiplier=2.0, callback_interval=1, max_steps=128,
     )
     run_probe(**common, final_soup=disabled_final, output_dir=tmp_path / "disabled")
+    monkeypatch.setattr(phase1_probe, "complexity_row", high_entropy)
+    monkeypatch.setattr(phase1_probe, "functional_scores", harmless_scores)
     run_probe(
         **common, functional_observation=True, final_soup=enabled_final,
         output_dir=tmp_path / "enabled",
     )
     assert disabled_final.read_bytes() == enabled_final.read_bytes()
+
+
+def test_successful_reuse_rejects_missing_artifact(tmp_path: Path) -> None:
+    kwargs = dict(
+        population_size=16, epochs=2, seed=23, mutation_rate=1.0 / 4096.0,
+        pool_multiplier=2.0, callback_interval=1, max_steps=128, output_dir=tmp_path,
+    )
+    run_dir = run_probe(**kwargs)
+    (run_dir / "writes.csv").unlink()
+    with pytest.raises(RuntimeError, match="missing or corrupt artifacts"):
+        run_probe(**kwargs)
 
 
 def test_friction_rejection_is_deterministic_conserved_and_separate(tmp_path: Path) -> None:

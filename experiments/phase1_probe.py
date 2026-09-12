@@ -10,8 +10,10 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import math
+import shutil
 import subprocess
 import time
 import zlib
@@ -377,8 +379,34 @@ def git_commit() -> str:
     return result.stdout.strip() if result.returncode == 0 else "unknown"
 
 
+def file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def write_manifest(path: Path, values: dict[str, Any]) -> None:
-    path.write_text(json.dumps(values, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_text(json.dumps(values, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    temporary.replace(path)
+
+
+def manifest_artifacts_are_valid(run_dir: Path, manifest: dict[str, Any]) -> bool:
+    if not all((run_dir / relative).exists() for relative in manifest.get("artifacts", [])):
+        return False
+    if not all(
+        (run_dir / relative).is_file() and file_sha256(run_dir / relative) == expected
+        for relative, expected in manifest.get("artifact_checksums", {}).items()
+    ):
+        return False
+    final_path = manifest.get("final_soup_path")
+    final_hash = manifest.get("final_soup_sha256")
+    return not final_path or (
+        final_hash is not None and Path(final_path).is_file()
+        and file_sha256(Path(final_path)) == final_hash
+    )
 
 
 def save_origin_checkpoint(path: Path, **arrays: Any) -> None:
@@ -458,8 +486,9 @@ def run_probe(
         "" if friction_rejection_rate == 0.0
         else f"_fric{format(friction_rejection_rate, '.8g').replace('.', 'p')}"
     )
+    functional_suffix = "_funcv1" if functional_observation else ""
     cont_suffix = "" if initial_soup is None else "_cont"
-    run_dir = output_dir / f"p1_m{multiplier_slug}_n{population_size}_s{seed}{mode_suffix}{friction_suffix}{cont_suffix}"
+    run_dir = output_dir / f"p1_m{multiplier_slug}_n{population_size}_s{seed}{mode_suffix}{friction_suffix}{functional_suffix}{cont_suffix}"
     run_dir.mkdir(parents=True, exist_ok=True)
     manifest_path = run_dir / "manifest.json"
     config = {
@@ -505,7 +534,14 @@ def run_probe(
     if manifest_path.exists():
         existing = json.loads(manifest_path.read_text(encoding="utf-8"))
     if existing.get("exit_status") == "success" and existing.get("config") == config:
-        return run_dir
+        if manifest_artifacts_are_valid(run_dir, existing):
+            return run_dir
+        raise RuntimeError(f"successful run has missing or corrupt artifacts: {run_dir}")
+    if existing and existing.get("config") != config:
+        raise RuntimeError(f"run directory contains an incompatible configuration: {run_dir}")
+    if functional_observation:
+        shutil.rmtree(run_dir / "functional_assays", ignore_errors=True)
+        (run_dir / "origin_checkpoint.npz").unlink(missing_ok=True)
 
     started_at = datetime.now(timezone.utc)
     manifest: dict[str, Any] = {
@@ -525,6 +561,8 @@ def run_probe(
     functional_path = run_dir / "functional_scores.csv"
     functional_assay_dir = run_dir / "functional_assays"
     origin_checkpoint_path = run_dir / "origin_checkpoint.npz"
+    if functional_observation:
+        functional_assay_dir.mkdir(exist_ok=True)
     try:
         if initial_soup is None:
             soup: NDArray[np.uint8] = initialize_soup(population_size, seed)  # type: ignore[assignment, call-arg, type-var]
@@ -720,13 +758,15 @@ def run_probe(
                     }
                     if entropy_streak >= FUNCTIONAL_ENTROPY_STREAK:
                         candidates, abundances, scores = functional_scores(values, counts)
-                        functional_assay_dir.mkdir(exist_ok=True)
                         save_origin_checkpoint(
                             functional_assay_dir / f"epoch_{epoch_index + 1:06d}.npz",
                             candidates=candidates,
                             abundances=abundances,
                             scores=scores,
                             evaluator_seed=np.asarray([FUNCTIONAL_EVALUATOR_SEED], dtype=np.int64),
+                            observation_version=np.asarray([FUNCTIONAL_OBSERVATION_VERSION]),
+                            local_epoch=np.asarray([epoch_index + 1], dtype=np.int64),
+                            absolute_epoch=np.asarray([epoch_offset + epoch_index + 1], dtype=np.int64),
                         )
                         max_score = int(scores.max()) if len(scores) else 0
                         qualified_indices = np.flatnonzero(scores == TAPE_LENGTH)
@@ -781,6 +821,9 @@ def run_probe(
                                 evaluator_seed=np.asarray([FUNCTIONAL_EVALUATOR_SEED], dtype=np.int64),
                                 config_json=np.asarray([json.dumps(config, sort_keys=True)]),
                             )
+                            manifest["functional_origin_epoch"] = origin_epoch
+                            manifest["origin_checkpoint_sha256"] = file_sha256(origin_checkpoint_path)
+                            write_manifest(manifest_path, manifest)
                 withdrawal_total = int(withdrawals.sum())
                 recycled = int(np.maximum(withdrawals - initial_pool, 0).sum())
                 aggregate_writer.writerow(
@@ -840,6 +883,20 @@ def run_probe(
         if final_soup is not None:
             final_soup.parent.mkdir(parents=True, exist_ok=True)
             np.save(final_soup, soup)
+        artifacts = [aggregate_path.name, writes_path.name, symbols_path.name]
+        if functional_observation:
+            artifacts += [functional_path.name, functional_assay_dir.name]
+        if origin_epoch is not None:
+            artifacts.append(origin_checkpoint_path.name)
+        if final_soup is not None:
+            manifest["final_soup_sha256"] = file_sha256(final_soup)
+            manifest["final_soup_path"] = str(final_soup)
+            if final_soup.parent.resolve() == run_dir.resolve():
+                artifacts.append(final_soup.name)
+        checksum_paths = [path for path in run_dir.rglob("*") if path.is_file() and path != manifest_path]
+        artifact_checksums = {
+            str(path.relative_to(run_dir)): file_sha256(path) for path in checksum_paths
+        }
         manifest.update(
             {
                 "status": "success",
@@ -849,10 +906,8 @@ def run_probe(
                 "pool_total": int(pool.sum()),
                 "max_conservation_residual": 0,
                 "functional_origin_epoch": origin_epoch,
-                "artifacts": [aggregate_path.name, writes_path.name, symbols_path.name]
-                + ([functional_path.name, functional_assay_dir.name] if functional_observation else [])
-                + ([origin_checkpoint_path.name] if origin_epoch is not None else [])
-                + ([final_soup.name] if final_soup is not None else []),
+                "artifacts": artifacts,
+                "artifact_checksums": artifact_checksums,
             }
         )
         write_manifest(manifest_path, manifest)
