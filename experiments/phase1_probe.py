@@ -64,6 +64,41 @@ def conserved_write(
     return 1
 
 
+@nb.njit(inline="always")
+def conserved_write_with_friction(
+    joint: NDArray[np.uint8],
+    index: int,
+    new_value: int,
+    pool: NDArray[np.int64],
+    withdrawals: NDArray[np.int64],
+    returns: NDArray[np.int64],
+    blocked_by_symbol: NDArray[np.int64],
+    friction_blocked_by_symbol: NDArray[np.int64],
+    friction_threshold: int,
+    friction_seed: int,
+    changing_write_counter: NDArray[np.int64],
+) -> int:
+    """Apply symbol-independent rejection before an ordinary conserved write.
+
+    Outcomes are 0=no-op, 1=changed, 2=scarcity blocked, 3=friction blocked.
+    """
+
+    value = new_value & 0xFF
+    if int(joint[index]) == value:
+        return 0
+    counter = int(changing_write_counter[0])
+    changing_write_counter[0] += 1
+    if friction_threshold > 0:
+        key = np.uint64(friction_seed) ^ np.uint64(0xAC1001)
+        draw = (splitmix64(key + np.uint64(counter)) >> np.uint64(8)) & np.uint64((1 << 30) - 1)
+        if draw < np.uint64(friction_threshold):
+            friction_blocked_by_symbol[value] += 1
+            return 3
+    return conserved_write(
+        joint, index, value, pool, withdrawals, returns, blocked_by_symbol
+    )
+
+
 @nb.njit
 def execute_bff_conserved(
     joint: NDArray[np.uint8],
@@ -74,7 +109,11 @@ def execute_bff_conserved(
     cross_a_to_b: NDArray[np.int64],
     cross_b_to_a: NDArray[np.int64],
     max_steps: int,
-) -> tuple[int, int, int, int, int]:
+    friction_blocked_by_symbol: NDArray[np.int64],
+    friction_threshold: int,
+    friction_seed: int,
+    changing_write_counter: NDArray[np.int64],
+) -> tuple[int, int, int, int, int, int]:
     """Execute one joint tape with exact pool-mediated writes."""
 
     pc = 0
@@ -82,7 +121,8 @@ def execute_bff_conserved(
     head1 = 0
     steps = 0
     successful = 0
-    blocked = 0
+    scarcity_blocked = 0
+    friction_blocked = 0
     cross_success = 0
     cross_blocked = 0
     while steps < max_steps and 0 <= pc < JOINT_LENGTH:
@@ -113,7 +153,7 @@ def execute_bff_conserved(
                 destination = head0
                 new_value = int(joint[source])
             is_cross_copy = (op == 46 or op == 44) and (source // TAPE_LENGTH != destination // TAPE_LENGTH)
-            outcome = conserved_write(
+            outcome = conserved_write_with_friction(
                 joint,
                 destination,
                 new_value,
@@ -121,9 +161,17 @@ def execute_bff_conserved(
                 withdrawals,
                 returns,
                 blocked_by_symbol,
+                friction_blocked_by_symbol,
+                friction_threshold,
+                friction_seed,
+                changing_write_counter,
             )
             if outcome == 2:
-                blocked += 1
+                scarcity_blocked += 1
+                if is_cross_copy:
+                    cross_blocked += 1
+            elif outcome == 3:
+                friction_blocked += 1
                 if is_cross_copy:
                     cross_blocked += 1
             else:
@@ -159,7 +207,7 @@ def execute_bff_conserved(
                 break
             next_pc = candidate + 2
         pc = next_pc
-    return steps, successful, blocked, cross_success, cross_blocked
+    return steps, successful, scarcity_blocked, friction_blocked, cross_success, cross_blocked
 
 
 @nb.njit
@@ -175,16 +223,22 @@ def mutate_and_execute_conserved_epoch(
     returns: NDArray[np.int64],
     execution_blocked_by_symbol: NDArray[np.int64],
     mutation_blocked_by_symbol: NDArray[np.int64],
+    friction_blocked_by_symbol: NDArray[np.int64],
     cross_a_to_b: NDArray[np.int64],
     cross_b_to_a: NDArray[np.int64],
-) -> tuple[int, int, int, int, int, int, int]:
+    friction_threshold: int,
+    friction_seed: int,
+    changing_write_counter: NDArray[np.int64],
+) -> tuple[int, int, int, int, int, int, int, int, int]:
     """Mutate and execute an ordered Phase 1 epoch serially."""
 
     total_steps = 0
     execution_success = 0
-    execution_blocked = 0
+    execution_scarcity_blocked = 0
+    execution_friction_blocked = 0
     mutation_success = 0
-    mutation_blocked = 0
+    mutation_scarcity_blocked = 0
+    mutation_friction_blocked = 0
     cross_success = 0
     cross_blocked = 0
     population_size = len(soup)
@@ -203,7 +257,7 @@ def mutate_and_execute_conserved_epoch(
             )
             probability_draw = (random_value >> np.uint64(8)) & np.uint64((1 << 30) - 1)
             if probability_draw < np.uint64(mutation_threshold):
-                outcome = conserved_write(
+                outcome = conserved_write_with_friction(
                     joint,
                     byte_index,
                     int(random_value & np.uint64(0xFF)),
@@ -211,12 +265,18 @@ def mutate_and_execute_conserved_epoch(
                     withdrawals,
                     returns,
                     mutation_blocked_by_symbol,
+                    friction_blocked_by_symbol,
+                    friction_threshold,
+                    friction_seed,
+                    changing_write_counter,
                 )
                 if outcome == 2:
-                    mutation_blocked += 1
+                    mutation_scarcity_blocked += 1
+                elif outcome == 3:
+                    mutation_friction_blocked += 1
                 else:
                     mutation_success += 1
-        result = execute_bff_conserved(
+        result: Any = execute_bff_conserved(  # type: ignore[call-arg]
             joint,
             pool,
             withdrawals,
@@ -225,20 +285,27 @@ def mutate_and_execute_conserved_epoch(
             cross_a_to_b,
             cross_b_to_a,
             max_steps,
+            friction_blocked_by_symbol,
+            friction_threshold,
+            friction_seed,
+            changing_write_counter,
         )
         total_steps += result[0]
         execution_success += result[1]
-        execution_blocked += result[2]
-        cross_success += result[3]
-        cross_blocked += result[4]
+        execution_scarcity_blocked += result[2]
+        execution_friction_blocked += result[3]
+        cross_success += result[4]
+        cross_blocked += result[5]
         soup[first] = joint[:TAPE_LENGTH]
         soup[second] = joint[TAPE_LENGTH:]
     return (
         total_steps,
         execution_success,
-        execution_blocked,
+        execution_scarcity_blocked,
+        execution_friction_blocked,
         mutation_success,
-        mutation_blocked,
+        mutation_scarcity_blocked,
+        mutation_friction_blocked,
         cross_success,
         cross_blocked,
     )
@@ -296,6 +363,7 @@ def run_probe(
     initial_soup: Path | None = None,
     epoch_offset: int = 0,
     final_soup: Path | None = None,
+    friction_rejection_rate: float = 0.0,
 ) -> Path:
     """Run one deterministic Phase 1 condition and return its directory."""
 
@@ -305,6 +373,8 @@ def run_probe(
         raise ValueError("epochs and callback_interval must be positive")
     if not 0.0 <= mutation_rate <= 1.0:
         raise ValueError("mutation_rate must be in 0..1")
+    if not 0.0 <= friction_rejection_rate <= 1.0:
+        raise ValueError("friction_rejection_rate must be in 0..1")
     if pool_multiplier < 0.0 or not math.isfinite(pool_multiplier):
         raise ValueError("pool_multiplier must be finite and nonnegative")
     if max_steps <= 0:
@@ -340,8 +410,12 @@ def run_probe(
     else:
         digest = zlib.crc32(bytes(sorted(pool_exclude_symbols))) & 0xFFFFFFFF
         mode_suffix = f"_exlist{len(pool_exclude_symbols)}_{digest:08x}"
+    friction_suffix = (
+        "" if friction_rejection_rate == 0.0
+        else f"_fric{format(friction_rejection_rate, '.8g').replace('.', 'p')}"
+    )
     cont_suffix = "" if initial_soup is None else "_cont"
-    run_dir = output_dir / f"p1_m{multiplier_slug}_n{population_size}_s{seed}{mode_suffix}{cont_suffix}"
+    run_dir = output_dir / f"p1_m{multiplier_slug}_n{population_size}_s{seed}{mode_suffix}{friction_suffix}{cont_suffix}"
     run_dir.mkdir(parents=True, exist_ok=True)
     manifest_path = run_dir / "manifest.json"
     config = {
@@ -356,6 +430,8 @@ def run_probe(
         "max_steps": max_steps,
         "pairing_mode": "paper_splitmix64_shuffled_disjoint",
         "execution_mode": "serial_exact_global_pool",
+        "friction_rejection_rate": friction_rejection_rate,
+        "friction_hash_domain": "splitmix64(seed_xor_0xAC1001_plus_changing_write_counter)",
     }
     if epoch_offset:
         config["epoch_offset"] = epoch_offset
@@ -392,7 +468,7 @@ def run_probe(
     symbols_path = run_dir / "symbols.csv"
     try:
         if initial_soup is None:
-            soup = initialize_soup(population_size, seed)
+            soup: NDArray[np.uint8] = initialize_soup(population_size, seed)  # type: ignore[assignment, call-arg, type-var]
         else:
             loaded = np.load(initial_soup)
             if loaded.shape != (population_size, TAPE_LENGTH) or loaded.dtype != np.uint8:
@@ -438,8 +514,11 @@ def run_probe(
         returns = np.zeros(256, dtype=np.int64)
         execution_blocked_by_symbol = np.zeros(256, dtype=np.int64)
         mutation_blocked_by_symbol = np.zeros(256, dtype=np.int64)
+        friction_blocked_by_symbol = np.zeros(256, dtype=np.int64)
         cross_a_to_b = np.zeros(256, dtype=np.int64)
         cross_b_to_a = np.zeros(256, dtype=np.int64)
+        changing_write_counter = np.zeros(1, dtype=np.int64)
+        friction_threshold = round(friction_rejection_rate * (1 << 30))
 
         aggregate_fields = [
             "epoch", "elapsed_seconds", "character_reads", "byte_entropy", "brotli_size",
@@ -447,22 +526,30 @@ def run_probe(
             "pool_jsd_from_initial", "soup_jsd_from_pool", "soup_jsd_from_uniform",
             "zero_pool_symbols", "dominant_tape_count",
             "dominant_tape_fraction", "distinct_tapes", "active_instruction_fraction",
+            "cumulative_changing_write_attempts",
             "cumulative_execution_writes_success", "cumulative_execution_writes_blocked",
+            "cumulative_execution_scarcity_blocked", "cumulative_execution_friction_blocked",
             "cumulative_mutation_writes_success", "cumulative_mutation_writes_blocked",
+            "cumulative_mutation_scarcity_blocked", "cumulative_mutation_friction_blocked",
             "cumulative_cross_tape_copy_success", "cumulative_cross_tape_copy_blocked",
             "recycled_withdrawal_lower_bound", "max_conservation_residual",
         ]
         write_fields = [
-            "epoch", "character_reads", "execution_writes_success", "execution_writes_blocked",
-            "mutation_writes_success", "mutation_writes_blocked", "cross_tape_copy_success",
-            "cross_tape_copy_blocked", "blocked_fraction", "pool_entropy", "zero_pool_symbols",
+            "epoch", "character_reads", "changing_write_attempts",
+            "execution_writes_success", "execution_writes_blocked",
+            "execution_scarcity_blocked", "execution_friction_blocked",
+            "mutation_writes_success", "mutation_writes_blocked",
+            "mutation_scarcity_blocked", "mutation_friction_blocked",
+            "cross_tape_copy_success", "cross_tape_copy_blocked", "blocked_fraction",
+            "pool_entropy", "zero_pool_symbols",
         ]
         symbol_fields = [
             "epoch", "symbol", "pool_count", "initial_pool_count", "withdrawals", "returns",
-            "execution_blocked", "mutation_blocked", "cross_a_to_b", "cross_b_to_a",
+            "execution_blocked", "mutation_blocked", "friction_blocked",
+            "cross_a_to_b", "cross_b_to_a",
         ]
         started = time.perf_counter()
-        cumulative = np.zeros(7, dtype=np.int64)
+        cumulative = np.zeros(9, dtype=np.int64)
         with (
             aggregate_path.open("w", newline="", encoding="utf-8") as aggregate_handle,
             writes_path.open("w", newline="", encoding="utf-8") as writes_handle,
@@ -476,8 +563,9 @@ def run_probe(
             symbols_writer.writeheader()
 
             for epoch_index in range(epochs):
-                shuffle_indices(order, seed, epoch_index + epoch_offset)
-                interval = mutate_and_execute_conserved_epoch(
+                shuffle_indices(order, seed, epoch_index + epoch_offset)  # type: ignore[call-arg, type-var]
+                changing_before = int(changing_write_counter[0])
+                interval: Any = mutate_and_execute_conserved_epoch(  # type: ignore[call-arg]
                     soup,
                     order,
                     pool,
@@ -489,22 +577,34 @@ def run_probe(
                     returns,
                     execution_blocked_by_symbol,
                     mutation_blocked_by_symbol,
+                    friction_blocked_by_symbol,
                     cross_a_to_b,
                     cross_b_to_a,
+                    friction_threshold,
+                    seed,
+                    changing_write_counter,
                 )
                 cumulative += np.asarray(interval, dtype=np.int64)
-                attempted = interval[1] + interval[2] + interval[3] + interval[4]
+                changing_attempts = int(changing_write_counter[0]) - changing_before
+                execution_blocked = interval[2] + interval[3]
+                mutation_blocked = interval[5] + interval[6]
+                blocked = execution_blocked + mutation_blocked
                 writes_writer.writerow(
                     {
                         "epoch": epoch_index + 1,
                         "character_reads": interval[0],
+                        "changing_write_attempts": changing_attempts,
                         "execution_writes_success": interval[1],
-                        "execution_writes_blocked": interval[2],
-                        "mutation_writes_success": interval[3],
-                        "mutation_writes_blocked": interval[4],
-                        "cross_tape_copy_success": interval[5],
-                        "cross_tape_copy_blocked": interval[6],
-                        "blocked_fraction": 0.0 if attempted == 0 else (interval[2] + interval[4]) / attempted,
+                        "execution_writes_blocked": execution_blocked,
+                        "execution_scarcity_blocked": interval[2],
+                        "execution_friction_blocked": interval[3],
+                        "mutation_writes_success": interval[4],
+                        "mutation_writes_blocked": mutation_blocked,
+                        "mutation_scarcity_blocked": interval[5],
+                        "mutation_friction_blocked": interval[6],
+                        "cross_tape_copy_success": interval[7],
+                        "cross_tape_copy_blocked": interval[8],
+                        "blocked_fraction": 0.0 if changing_attempts == 0 else blocked / changing_attempts,
                         "pool_entropy": pool_entropy(pool),
                         "zero_pool_symbols": int(np.count_nonzero(pool == 0)),
                     }
@@ -541,12 +641,17 @@ def run_probe(
                         "dominant_tape_fraction": float(counts.max() / population_size),
                         "distinct_tapes": int(len(counts)),
                         "active_instruction_fraction": float(np.isin(soup, INSTRUCTIONS).mean()),
+                        "cumulative_changing_write_attempts": int(changing_write_counter[0]),
                         "cumulative_execution_writes_success": int(cumulative[1]),
-                        "cumulative_execution_writes_blocked": int(cumulative[2]),
-                        "cumulative_mutation_writes_success": int(cumulative[3]),
-                        "cumulative_mutation_writes_blocked": int(cumulative[4]),
-                        "cumulative_cross_tape_copy_success": int(cumulative[5]),
-                        "cumulative_cross_tape_copy_blocked": int(cumulative[6]),
+                        "cumulative_execution_writes_blocked": int(cumulative[2] + cumulative[3]),
+                        "cumulative_execution_scarcity_blocked": int(cumulative[2]),
+                        "cumulative_execution_friction_blocked": int(cumulative[3]),
+                        "cumulative_mutation_writes_success": int(cumulative[4]),
+                        "cumulative_mutation_writes_blocked": int(cumulative[5] + cumulative[6]),
+                        "cumulative_mutation_scarcity_blocked": int(cumulative[5]),
+                        "cumulative_mutation_friction_blocked": int(cumulative[6]),
+                        "cumulative_cross_tape_copy_success": int(cumulative[7]),
+                        "cumulative_cross_tape_copy_blocked": int(cumulative[8]),
                         "recycled_withdrawal_lower_bound": 0.0 if withdrawal_total == 0 else recycled / withdrawal_total,
                         "max_conservation_residual": residual,
                     }
@@ -562,6 +667,7 @@ def run_probe(
                             "returns": int(returns[symbol]),
                             "execution_blocked": int(execution_blocked_by_symbol[symbol]),
                             "mutation_blocked": int(mutation_blocked_by_symbol[symbol]),
+                            "friction_blocked": int(friction_blocked_by_symbol[symbol]),
                             "cross_a_to_b": int(cross_a_to_b[symbol]),
                             "cross_b_to_a": int(cross_b_to_a[symbol]),
                         }
@@ -614,6 +720,7 @@ def main() -> None:
     parser.add_argument("--pool-mode", choices=("histogram_matched", "uniform", "excluded_top", "excluded_list"), default="histogram_matched")
     parser.add_argument("--pool-exclude-top", type=int, default=0)
     parser.add_argument("--pool-exclude-symbols", type=str, default="", help="comma-separated byte values for excluded_list mode")
+    parser.add_argument("--friction-rejection-rate", type=float, default=0.0)
     parser.add_argument("--save-final-soup", type=Path)
     parser.add_argument("--initial-soup", type=Path)
     parser.add_argument("--epoch-offset", type=int, default=0)
@@ -636,6 +743,7 @@ def main() -> None:
             initial_soup=args.initial_soup,
             epoch_offset=args.epoch_offset,
             final_soup=args.save_final_soup,
+            friction_rejection_rate=args.friction_rejection_rate,
             output_dir=args.output_dir,
         )
     )

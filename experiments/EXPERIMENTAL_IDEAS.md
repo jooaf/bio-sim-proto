@@ -484,7 +484,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### AC-I001 — Demand-matched class-specific origin filter
 
-- **Status:** Claimed
+- **Status:** Running
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-12T02:36:41Z
 - **Depends on:** completed Phase 1 origin-filter diagnostics and paper-scale BFF
