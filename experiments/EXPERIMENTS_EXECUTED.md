@@ -669,6 +669,29 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
   `reports/stage4_task_modulation_effects.csv`; raw campaign:
   `/home/jojo/bio-sim-results/bazzite/stage4_task_modulation`.
 
+### AC-E001 — Grid-based nonspecific-friction calibration
+
+- **Hypothesis:** One preregistered symbol-independent rejection rate between
+  0.01 and 0.08 can match natural-six deprivation's early blocked-write load.
+- **Test:** Five disjoint calibration seeds (`202610000`–`202610004`), 32,768
+  tapes, 5,000 epochs, natural-six exclusion and five friction rates; mechanics
+  metrics only, with emergence inspection prohibited.
+- **Result:** Natural-six median scarcity blocks were 27,474,045. Friction medians
+  ranged from 1,022,069 at rate 0.01 to 7,691,045 at rate 0.08. The closest ratio
+  was only 0.280, outside the frozen `[0.8, 1.25]` acceptance band. All 30 runs
+  succeeded with zero conservation residual.
+- **Decision:** **FAIL; no rate selected and AC-I001 confirmation not launched.**
+- **Why:** The complete frozen grid underrepresented the approximately 0.26–0.31
+  natural-six blocked fraction.
+- **Limitations:** Emergence, entropy, abundance, and functional replication were
+  not inspected. The grid cannot be expanded under the same experiment ID.
+- **Follow-up:** A new calibration design may derive one continuous rate from
+  these mechanics-only blocked fractions and validate it on new seeds before any
+  emergence confirmation.
+- **Evidence:** `reports/ac_i001_friction_calibration_report.md`,
+  `reports/ac_i001_friction_calibration_runs.csv`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/ac_i001_friction_calibration`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -679,7 +702,6 @@ energy-coupled reproduction and writable/inter-tape signaling remain stopped.
 The project still does **not** support endogenous reproduction, evolved
 adaptation, communication, coordination, niche construction, competition,
 trophic ecology, prevalent empirical organization, self-maintenance, or organism
-identity. No experiment is currently claimed or running. The next proposed work
-is AC-I001 from `reports/conserved_bff_discovery_phase_design.md`: a
-blocked-load-matched test of whether conserved resource composition selectively
-filters functional BFF replicator origin.
+identity. AC-I001's frozen friction grid failed mechanically, so its emergence
+confirmation was not launched. A separately designed mechanics-derived rate
+validation is required before the conserved origin-filter question can proceed.

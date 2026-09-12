@@ -118,6 +118,18 @@ ups are prohibited unless opened as an explicitly new design.
 - **Boundary:** writable signaling and the planned causal inter-tape response are
   stopped. The later read-only structured response does not overturn this.
 
+## AC-I001 — Grid-based nonspecific-friction calibration
+
+- **Decision:** FAIL; confirmation not launched.
+- **Failed criterion:** no preregistered friction rate matched natural-six blocked
+  load within `[0.8, 1.25]`; the closest rate, 0.08, reached only 0.280 of the
+  natural-six median.
+- **Retained:** all 30 mechanics runs succeeded with exact conservation;
+  natural-six deprivation blocked 24.9–32.3 million changing writes in 5,000
+  epochs. Emergence metrics were not inspected.
+- **Boundary:** do not expand the frozen rate grid and call it AC-I001. Any
+  replacement calibration requires a new design and new seeds.
+
 ## Cross-cutting lessons
 
 1. Positive mechanics do not imply ecological or organizational function.
