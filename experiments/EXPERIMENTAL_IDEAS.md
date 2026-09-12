@@ -559,3 +559,21 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 - **Estimated cost:** high and conditional
 - **On success:** support a bounded resource-mediated artificial ecology.
 - **On failure:** retain alternative-attractor evidence without coexistence.
+
+### AC-R001 — Mechanics-derived friction validation
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-12T04:43:34Z
+- **Depends on:** failed AC-I001 grid calibration
+- **Why:** The failed grid established the natural-six blocked fraction directly;
+  a new continuous mechanics-derived control can be validated without inspecting
+  emergence or extending the old grid.
+- **Hypothesis:** Rejection rate `0.27555027572734614` matches natural-six blocked
+  load on new calibration seeds.
+- **Test:** Five new matched 32,768-tape, 5,000-epoch seed pairs with mechanics-
+  only block and conservation endpoints.
+- **Preregistration:** `reports/ac_r001_derived_friction_validation_preregistration.md`
+- **Estimated cost:** medium; 10 calibration runs
+- **On success:** separately preregister the AC origin-filter confirmation.
+- **On failure:** stop demand-matched origin-filter work without another rate.
