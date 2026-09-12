@@ -641,14 +641,43 @@ results stay in the registry.
   `reports/stage4_structured_signal_response_runs.csv`; raw campaign:
   `/home/jojo/bio-sim-results/bazzite/stage4_structured_signal_response`.
 
+### S4S-E004 — Task-relevant signal modulation
+
+- **Hypothesis:** Correct local signal response increases future interaction
+  opportunity without assigning births, survival, or direct fitness.
+- **Test:** Ten held-out seeds (`202609300`–`202609309`), matched task-enabled and
+  disabled arms, eight correct and eight incorrect immutable dual-handler tapes,
+  a fixed split signal field, 200 ticks, and one-tick-delayed score weighting with
+  bonus 3.
+- **Result:** Correct-type selection fraction was 0.794–0.804 with task weighting
+  versus 0.491–0.508 under uniform disabled-task selection. Paired effects were
+  positive in 10/10 seeds (exact one-sided sign `p=0.00097656`). Every response
+  and final task score matched the declared task. All 20 runs succeeded with two
+  immutable types, zero invariant failures, and maximum relative energy error
+  `1.748e-14`.
+- **Decision:** **PASS for task-relevant modulation of interaction opportunity.**
+- **Why:** Every frozen paired-selection, disabled-control, score, behavior,
+  immutability, and accounting criterion passed.
+- **Limitations:** Opportunity weighting is simulator-mediated and caused no
+  demographic outcome. This is not fitness, adaptation, communication,
+  coordination, or organization.
+- **Follow-up:** Close the minimum viable read-only structured-signal phase. A
+  demographic test is deferred until a non-artificial coupling from interaction
+  opportunity to endogenous birth or persistence exists.
+- **Evidence:** `reports/stage4_task_modulation_report.md`,
+  `reports/stage4_task_modulation_effects.csv`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/stage4_task_modulation`.
+
 ## Current frontier
 
-Stage 4 supports differentiated energy access, static spatial energy niches, a
-causal starvation-survival consequence, exact-tag dispatch, and spatially
-conditional behavior by one immutable tape under read-only environmental
-signals. Energy-coupled reproduction and writable/inter-tape signaling failed
-frozen gates and remain stopped. The project still does **not** support
-endogenous reproduction, evolved adaptation, communication, coordination, niche
-construction, competition, trophic ecology, prevalent empirical organization,
-self-maintenance, or organism identity. No experiment is currently claimed or
-running; S4S-I004 task-relevant signal modulation is the next proposed gate.
+The minimum viable structured-signal phase is complete: exact event dispatch,
+spatially conditional behavior by one fixed tape, and task-relevant interaction
+modulation all passed held-out controls. Stage 4 also retains differentiated
+energy access, static energy niches, and causal starvation survival. Failed
+energy-coupled reproduction and writable/inter-tape signaling remain stopped.
+The project still does **not** support endogenous reproduction, evolved
+adaptation, communication, coordination, niche construction, competition,
+trophic ecology, prevalent empirical organization, self-maintenance, or organism
+identity. No experiment is currently claimed or running. Progress beyond this
+point requires a new phase design rather than additional nearby confirmatory
+runs.
