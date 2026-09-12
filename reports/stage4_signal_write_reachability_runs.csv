@@ -1,0 +1,16 @@
+run_dir,seed,arm,interactions,signal_reads,signal_dispatches,signal_writes,all_reads_one,all_dispatches_one,all_dispatches_zero,occupied_final_written,field_unchanged,empty_cells_unchanged,changed_targets_valid,final_tapes,unchanged_tapes,matter_total_constant,successful_exit,invariant_failures
+sweeps/stage4_signal_write_reachability/runs/mismatched_seed_202609280,202609280,mismatched,800,800,0,0,True,False,True,False,True,True,True,16,True,True,True,0
+sweeps/stage4_signal_write_reachability/runs/mismatched_seed_202609281,202609281,mismatched,800,800,0,0,True,False,True,False,True,True,True,16,True,True,True,0
+sweeps/stage4_signal_write_reachability/runs/mismatched_seed_202609282,202609282,mismatched,800,800,0,0,True,False,True,False,True,True,True,16,True,True,True,0
+sweeps/stage4_signal_write_reachability/runs/mismatched_seed_202609283,202609283,mismatched,800,800,0,0,True,False,True,False,True,True,True,16,True,True,True,0
+sweeps/stage4_signal_write_reachability/runs/mismatched_seed_202609284,202609284,mismatched,800,800,0,0,True,False,True,False,True,True,True,16,True,True,True,0
+sweeps/stage4_signal_write_reachability/runs/write_disabled_seed_202609280,202609280,write_disabled,800,800,800,0,True,True,False,False,True,True,True,16,True,True,True,0
+sweeps/stage4_signal_write_reachability/runs/write_disabled_seed_202609281,202609281,write_disabled,800,800,800,0,True,True,False,False,True,True,True,16,True,True,True,0
+sweeps/stage4_signal_write_reachability/runs/write_disabled_seed_202609282,202609282,write_disabled,800,800,800,0,True,True,False,False,True,True,True,16,True,True,True,0
+sweeps/stage4_signal_write_reachability/runs/write_disabled_seed_202609283,202609283,write_disabled,800,800,800,0,True,True,False,False,True,True,True,16,True,True,True,0
+sweeps/stage4_signal_write_reachability/runs/write_disabled_seed_202609284,202609284,write_disabled,800,800,800,0,True,True,False,False,True,True,True,16,True,True,True,0
+sweeps/stage4_signal_write_reachability/runs/write_enabled_seed_202609280,202609280,write_enabled,800,800,125,14,True,False,False,False,False,True,True,16,True,True,True,0
+sweeps/stage4_signal_write_reachability/runs/write_enabled_seed_202609281,202609281,write_enabled,800,800,91,15,True,False,False,False,False,True,True,16,True,True,True,0
+sweeps/stage4_signal_write_reachability/runs/write_enabled_seed_202609282,202609282,write_enabled,800,800,125,14,True,False,False,False,False,True,True,16,True,True,True,0
+sweeps/stage4_signal_write_reachability/runs/write_enabled_seed_202609283,202609283,write_enabled,800,800,132,14,True,False,False,False,False,True,True,16,True,True,True,0
+sweeps/stage4_signal_write_reachability/runs/write_enabled_seed_202609284,202609284,write_enabled,800,800,124,14,True,False,False,False,False,True,True,16,True,True,True,0

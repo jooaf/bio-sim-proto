@@ -46,15 +46,23 @@ def write_report(runs: pd.DataFrame, target: Path) -> None:
         reads=("signal_reads", "sum"), dispatches=("signal_dispatches", "sum"),
         writes=("signal_writes", "sum"), final_written=("occupied_final_written", "sum"),
     ).reset_index()
+    enabled = runs[runs["arm"] == "write_enabled"]
     lines = [
         "# Stage 4 signal-write reachability positive control", "", "## Decision", "",
         f"Fully connected partner-cell signal writing supported: **{passes_gate(runs)}**.", "",
+        f"- Write-enabled changed-write range: {int(enabled['signal_writes'].min())}–{int(enabled['signal_writes'].max())} (frozen requirement: 16)",
+        f"- Complete write-enabled fields: {int(enabled['occupied_final_written'].sum())}/5", "",
         "| arm | runs | interactions | reads | dispatches | changed writes | complete fields |",
         "|---|---:|---:|---:|---:|---:|---:|",
     ]
     for row in cast(list[dict[str, Any]], groups.to_dict(orient="records")):
         lines.append(f"| {row['arm']} | {int(row['runs'])} | {int(row['interactions'])} | {int(row['reads'])} | {int(row['dispatches'])} | {int(row['writes'])} | {int(row['final_written'])} |")
-    lines += ["", "This positive control does not overturn S4S-I002 and establishes mechanics only under a fully connected interaction graph.", ""]
+    conclusion = (
+        "The positive control passed under a fully connected interaction graph; S4S-I002 remains failed."
+        if passes_gate(runs)
+        else "The positive control failed: writers whose own tags were replaced stopped dispatching before every cell changed. Per the frozen rule, writable-signal and inter-tape-response work stops here."
+    )
+    lines += ["", conclusion, ""]
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text("\n".join(lines), encoding="utf-8")
 

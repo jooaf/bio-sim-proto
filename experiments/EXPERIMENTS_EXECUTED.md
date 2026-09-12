@@ -592,13 +592,37 @@ results stay in the registry.
   `reports/stage4_signal_write_runs.csv`; raw campaign:
   `/home/jojo/bio-sim-results/bazzite/stage4_signal_write`.
 
+### S4S-R001 — Signal-write reachability positive control
+
+- **Hypothesis:** Full occupancy removes unreachable interaction partners and
+  permits unchanged writers to replace every signal tag.
+- **Test:** The same write-enabled, write-disabled, and mismatched mechanics arms
+  on a fully occupied 4×4 torus with five new seeds (`202609280`–`202609284`).
+- **Result:** Write-enabled runs changed 14–15 of 16 tags, and no run completed
+  the field. Once a writer's own tag was replaced, exact dispatch stopped that
+  writer; this dynamic deactivation stranded remaining initial tags. Controls
+  behaved exactly as expected, and all 15 runs succeeded with zero invariant
+  failures.
+- **Decision:** **FAIL the reachability positive control.**
+- **Why:** Full static connectivity did not satisfy the frozen 16-tag transition
+  because writing changed future writer eligibility.
+- **Limitations:** This does not alter either prior failure and does not license a
+  different writer tape or dispatch rule.
+- **Follow-up:** Stop writable-signal and causal inter-tape-response work. A new
+  independent branch may still test read-only structured environmental response.
+- **Evidence:** `reports/stage4_signal_write_reachability_report.md`,
+  `reports/stage4_signal_write_reachability_runs.csv`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/stage4_signal_write_reachability`.
+
 ## Current frontier
 
 Stage 4 supports differentiated energy access, static spatial energy niches, a
 causal starvation-survival consequence, and read-only exact-tag dispatch. The
 energy-coupled reproduction and writable-signal branches both failed frozen
 confirmatory gates and are stopped. Inter-tape response was therefore not run.
-The project still does **not** support endogenous reproduction, evolved
-adaptation, coordination, niche construction, competition, trophic ecology,
-prevalent empirical organization, self-maintenance, or organism identity. No
-experiment is currently claimed or running.
+The reachability control also failed, so writable signaling and causal inter-tape
+response are stopped. The project still does **not** support endogenous
+reproduction, evolved adaptation, coordination, niche construction, competition,
+trophic ecology, prevalent empirical organization, self-maintenance, or organism
+identity. No experiment is currently claimed or running; a distinct read-only
+structured environmental-response branch remains permissible.

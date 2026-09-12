@@ -420,7 +420,7 @@ acceptance runs or tune mutation around the successful seed-0 trajectory.
 
 ### S4S-R001 — Signal-write reachability positive control
 
-- **Status:** Running
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-12T01:02:15Z
 - **Depends on:** failed S4S-I002 topology diagnosis
