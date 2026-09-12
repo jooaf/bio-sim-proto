@@ -15,6 +15,7 @@ import math
 import subprocess
 import time
 import zlib
+from contextlib import nullcontext
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -30,11 +31,44 @@ from experiments.paper_probe import (
     complexity_row,
     derived_seed,
     initialize_soup,
+    score_selfrep_candidates,
     shuffle_indices,
     splitmix64,
 )
 
 INSTRUCTIONS = np.asarray([60, 62, 123, 125, 45, 43, 46, 44, 91, 93], dtype=np.uint8)
+FUNCTIONAL_ENTROPY_THRESHOLD = 1.0
+FUNCTIONAL_ENTROPY_STREAK = 10
+FUNCTIONAL_CANDIDATE_LIMIT = 1024
+FUNCTIONAL_EVALUATOR_SEED = 0
+FUNCTIONAL_OBSERVATION_VERSION = "paper-selfrep-v1-top1024-abundance-lex-ties"
+
+
+def ranked_functional_candidates(
+    values: NDArray[np.uint8], counts: NDArray[np.int64], limit: int = FUNCTIONAL_CANDIDATE_LIMIT
+) -> tuple[NDArray[np.uint8], NDArray[np.int64]]:
+    """Return abundance-ranked exact tapes with lexicographic stable ties."""
+
+    rank = np.argsort(-counts, kind="stable")[:limit]
+    return np.ascontiguousarray(values[rank]), np.ascontiguousarray(counts[rank])
+
+
+def functional_scores(
+    values: NDArray[np.uint8], counts: NDArray[np.int64]
+) -> tuple[NDArray[np.uint8], NDArray[np.int64], NDArray[np.int64]]:
+    """Apply the frozen paper evaluator to the frozen candidate ordering."""
+
+    candidates, abundances = ranked_functional_candidates(values, counts)
+    scores = score_selfrep_candidates(candidates, FUNCTIONAL_EVALUATOR_SEED)
+    return candidates, abundances, scores
+
+
+def next_entropy_streak(current: int, entropy: float) -> int:
+    """Advance the contemporaneous functional-origin entropy gate."""
+
+    if not math.isfinite(entropy):
+        raise ValueError("functional observation requires finite high-order entropy")
+    return current + 1 if entropy >= FUNCTIONAL_ENTROPY_THRESHOLD else 0
 
 
 @nb.njit(inline="always")
@@ -347,6 +381,15 @@ def write_manifest(path: Path, values: dict[str, Any]) -> None:
     path.write_text(json.dumps(values, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def save_origin_checkpoint(path: Path, **arrays: Any) -> None:
+    """Atomically save an exact first-qualified conserved state bundle."""
+
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    with temporary.open("wb") as handle:
+        np.savez_compressed(handle, **arrays)
+    temporary.replace(path)
+
+
 def run_probe(
     *,
     population_size: int,
@@ -364,6 +407,7 @@ def run_probe(
     epoch_offset: int = 0,
     final_soup: Path | None = None,
     friction_rejection_rate: float = 0.0,
+    functional_observation: bool = False,
 ) -> Path:
     """Run one deterministic Phase 1 condition and return its directory."""
 
@@ -432,7 +476,19 @@ def run_probe(
         "execution_mode": "serial_exact_global_pool",
         "friction_rejection_rate": friction_rejection_rate,
         "friction_hash_domain": "splitmix64(seed_xor_0xAC1001_plus_changing_write_counter)",
+        "functional_observation": functional_observation,
     }
+    if functional_observation:
+        config["functional_observation_spec"] = {
+            "version": FUNCTIONAL_OBSERVATION_VERSION,
+            "entropy_threshold": FUNCTIONAL_ENTROPY_THRESHOLD,
+            "consecutive_callbacks": FUNCTIONAL_ENTROPY_STREAK,
+            "candidate_limit": FUNCTIONAL_CANDIDATE_LIMIT,
+            "candidate_order": "descending abundance; lexicographic stable ties",
+            "evaluator_seed": FUNCTIONAL_EVALUATOR_SEED,
+            "qualification_score": TAPE_LENGTH,
+            "checkpoint_policy": "first contemporaneous qualifying callback",
+        }
     if epoch_offset:
         config["epoch_offset"] = epoch_offset
     if initial_soup is not None:
@@ -466,6 +522,9 @@ def run_probe(
     aggregate_path = run_dir / "aggregate.csv"
     writes_path = run_dir / "writes.csv"
     symbols_path = run_dir / "symbols.csv"
+    functional_path = run_dir / "functional_scores.csv"
+    functional_assay_dir = run_dir / "functional_assays"
+    origin_checkpoint_path = run_dir / "origin_checkpoint.npz"
     try:
         if initial_soup is None:
             soup: NDArray[np.uint8] = initialize_soup(population_size, seed)  # type: ignore[assignment, call-arg, type-var]
@@ -534,6 +593,17 @@ def run_probe(
             "cumulative_cross_tape_copy_success", "cumulative_cross_tape_copy_blocked",
             "recycled_withdrawal_lower_bound", "max_conservation_residual",
         ]
+        if functional_observation:
+            aggregate_fields += [
+                "functional_entropy_streak", "functional_scoring_performed",
+                "functional_candidate_count", "functional_max_score",
+                "functional_score_64_count", "functional_origin_qualified",
+            ]
+        functional_fields = [
+            "epoch", "absolute_epoch", "entropy_streak", "candidate_count",
+            "max_score", "score_64_count", "origin_qualified",
+            "witness_rank", "witness_abundance", "witness_hex",
+        ]
         write_fields = [
             "epoch", "character_reads", "changing_write_attempts",
             "execution_writes_success", "execution_writes_blocked",
@@ -550,17 +620,29 @@ def run_probe(
         ]
         started = time.perf_counter()
         cumulative = np.zeros(9, dtype=np.int64)
+        entropy_streak = 0
+        origin_epoch: int | None = None
         with (
             aggregate_path.open("w", newline="", encoding="utf-8") as aggregate_handle,
             writes_path.open("w", newline="", encoding="utf-8") as writes_handle,
             symbols_path.open("w", newline="", encoding="utf-8") as symbols_handle,
+            (
+                functional_path.open("w", newline="", encoding="utf-8")
+                if functional_observation else nullcontext(None)
+            ) as functional_handle,
         ):
             aggregate_writer = csv.DictWriter(aggregate_handle, fieldnames=aggregate_fields)
             writes_writer = csv.DictWriter(writes_handle, fieldnames=write_fields)
             symbols_writer = csv.DictWriter(symbols_handle, fieldnames=symbol_fields)
+            functional_writer = (
+                csv.DictWriter(functional_handle, fieldnames=functional_fields)
+                if functional_handle is not None else None
+            )
             aggregate_writer.writeheader()
             writes_writer.writeheader()
             symbols_writer.writeheader()
+            if functional_writer is not None:
+                functional_writer.writeheader()
 
             for epoch_index in range(epochs):
                 shuffle_indices(order, seed, epoch_index + epoch_offset)  # type: ignore[call-arg, type-var]
@@ -617,13 +699,88 @@ def run_probe(
                 if residual != 0:
                     raise RuntimeError(f"symbol conservation residual {residual} at epoch {epoch_index + 1}")
                 values, counts = np.unique(soup, axis=0, return_counts=True)
-                del values
                 complexity = complexity_row(
                     soup,
                     epoch_index + 1,
                     time.perf_counter() - started,
                     int(cumulative[0]),
                 )
+                functional_metrics: dict[str, Any] = {}
+                if functional_observation:
+                    entropy_streak = next_entropy_streak(
+                        entropy_streak, float(complexity["high_order_entropy"])
+                    )
+                    functional_metrics = {
+                        "functional_entropy_streak": entropy_streak,
+                        "functional_scoring_performed": False,
+                        "functional_candidate_count": "",
+                        "functional_max_score": "",
+                        "functional_score_64_count": "",
+                        "functional_origin_qualified": False,
+                    }
+                    if entropy_streak >= FUNCTIONAL_ENTROPY_STREAK:
+                        candidates, abundances, scores = functional_scores(values, counts)
+                        functional_assay_dir.mkdir(exist_ok=True)
+                        save_origin_checkpoint(
+                            functional_assay_dir / f"epoch_{epoch_index + 1:06d}.npz",
+                            candidates=candidates,
+                            abundances=abundances,
+                            scores=scores,
+                            evaluator_seed=np.asarray([FUNCTIONAL_EVALUATOR_SEED], dtype=np.int64),
+                        )
+                        max_score = int(scores.max()) if len(scores) else 0
+                        qualified_indices = np.flatnonzero(scores == TAPE_LENGTH)
+                        qualified = len(qualified_indices) > 0
+                        witness_index = int(qualified_indices[0]) if qualified else -1
+                        assert functional_writer is not None
+                        functional_writer.writerow(
+                            {
+                                "epoch": epoch_index + 1,
+                                "absolute_epoch": epoch_offset + epoch_index + 1,
+                                "entropy_streak": entropy_streak,
+                                "candidate_count": len(candidates),
+                                "max_score": max_score,
+                                "score_64_count": len(qualified_indices),
+                                "origin_qualified": qualified,
+                                "witness_rank": witness_index if qualified else "",
+                                "witness_abundance": int(abundances[witness_index]) if qualified else "",
+                                "witness_hex": candidates[witness_index].tobytes().hex() if qualified else "",
+                            }
+                        )
+                        functional_metrics = {
+                            "functional_entropy_streak": entropy_streak,
+                            "functional_scoring_performed": True,
+                            "functional_candidate_count": len(candidates),
+                            "functional_max_score": max_score,
+                            "functional_score_64_count": len(qualified_indices),
+                            "functional_origin_qualified": qualified,
+                        }
+                        if qualified and origin_epoch is None:
+                            origin_epoch = epoch_index + 1
+                            save_origin_checkpoint(
+                                origin_checkpoint_path,
+                                soup=soup,
+                                pool=pool,
+                                conserved_totals=conserved_totals,
+                                cumulative=cumulative,
+                                withdrawals=withdrawals,
+                                returns=returns,
+                                execution_blocked_by_symbol=execution_blocked_by_symbol,
+                                mutation_blocked_by_symbol=mutation_blocked_by_symbol,
+                                friction_blocked_by_symbol=friction_blocked_by_symbol,
+                                cross_a_to_b=cross_a_to_b,
+                                cross_b_to_a=cross_b_to_a,
+                                changing_write_counter=changing_write_counter,
+                                local_epoch=np.asarray([origin_epoch], dtype=np.int64),
+                                absolute_epoch=np.asarray([epoch_offset + origin_epoch], dtype=np.int64),
+                                entropy_streak=np.asarray([entropy_streak], dtype=np.int64),
+                                witness=candidates[witness_index],
+                                witness_rank=np.asarray([witness_index], dtype=np.int64),
+                                witness_abundance=np.asarray([abundances[witness_index]], dtype=np.int64),
+                                witness_score=np.asarray([scores[witness_index]], dtype=np.int64),
+                                evaluator_seed=np.asarray([FUNCTIONAL_EVALUATOR_SEED], dtype=np.int64),
+                                config_json=np.asarray([json.dumps(config, sort_keys=True)]),
+                            )
                 withdrawal_total = int(withdrawals.sum())
                 recycled = int(np.maximum(withdrawals - initial_pool, 0).sum())
                 aggregate_writer.writerow(
@@ -654,6 +811,7 @@ def run_probe(
                         "cumulative_cross_tape_copy_blocked": int(cumulative[8]),
                         "recycled_withdrawal_lower_bound": 0.0 if withdrawal_total == 0 else recycled / withdrawal_total,
                         "max_conservation_residual": residual,
+                        **functional_metrics,
                     }
                 )
                 for symbol in range(256):
@@ -675,6 +833,8 @@ def run_probe(
                 aggregate_handle.flush()
                 writes_handle.flush()
                 symbols_handle.flush()
+                if functional_handle is not None:
+                    functional_handle.flush()
 
         wall_time = time.perf_counter() - started
         if final_soup is not None:
@@ -688,7 +848,10 @@ def run_probe(
                 "wall_time_s": wall_time,
                 "pool_total": int(pool.sum()),
                 "max_conservation_residual": 0,
+                "functional_origin_epoch": origin_epoch,
                 "artifacts": [aggregate_path.name, writes_path.name, symbols_path.name]
+                + ([functional_path.name, functional_assay_dir.name] if functional_observation else [])
+                + ([origin_checkpoint_path.name] if origin_epoch is not None else [])
                 + ([final_soup.name] if final_soup is not None else []),
             }
         )
@@ -721,6 +884,7 @@ def main() -> None:
     parser.add_argument("--pool-exclude-top", type=int, default=0)
     parser.add_argument("--pool-exclude-symbols", type=str, default="", help="comma-separated byte values for excluded_list mode")
     parser.add_argument("--friction-rejection-rate", type=float, default=0.0)
+    parser.add_argument("--functional-observation", action="store_true")
     parser.add_argument("--save-final-soup", type=Path)
     parser.add_argument("--initial-soup", type=Path)
     parser.add_argument("--epoch-offset", type=int, default=0)
@@ -744,6 +908,7 @@ def main() -> None:
             epoch_offset=args.epoch_offset,
             final_soup=args.save_final_soup,
             friction_rejection_rate=args.friction_rejection_rate,
+            functional_observation=args.functional_observation,
             output_dir=args.output_dir,
         )
     )
