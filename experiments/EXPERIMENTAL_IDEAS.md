@@ -484,7 +484,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### AC-I001 — Demand-matched class-specific origin filter
 
-- **Status:** Running
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-12T02:36:41Z
 - **Depends on:** completed Phase 1 origin-filter diagnostics and paper-scale BFF
@@ -579,3 +579,4 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 - **Estimated cost:** medium; 10 calibration runs
 - **On success:** separately preregister the AC origin-filter confirmation.
 - **On failure:** stop demand-matched origin-filter work without another rate.
+\n### AC-P001 — High-resource functional-origin viability\n\n- **Status:** Claimed\n- **Owner / machine:** Linux remote (`bazzite`)\n- **Claimed at:** 2026-09-14T01:26:22Z\n- **Depends on:** completed AC-I001 failure and verified score-64 observer fixture\n- **Why:** Multiplier-2 controls produced no functional origins; historical entropy-only evidence suggests testing a higher conserved reservoir without weakening the endpoint.\n- **Hypothesis:** Histogram-matched multiplier 16 yields repeatable strict functional origin at the existing scale.\n- **Test:** Ten new 32,768-tape × 100,000-epoch seeds under exact conservation and the unchanged observer.\n- **Preregistration:** `reports/ac_p001_high_resource_origin_viability_preregistration.md`\n- **Estimated cost:** high; ten full-scale runs\n- **On success:** preregister a new held-out multiplier-16 versus multiplier-2 comparison.\n- **On failure:** stop de novo BFF origin work at the tested scale; do not tune the observer or extend selected runs.\n

@@ -394,14 +394,18 @@ def write_manifest(path: Path, values: dict[str, Any]) -> None:
 
 
 def manifest_artifacts_are_valid(run_dir: Path, manifest: dict[str, Any]) -> bool:
-    if not all((run_dir / relative).exists() for relative in manifest.get("artifacts", [])):
+    final_path = manifest.get("final_soup_path")
+    final_name = Path(final_path).name if final_path else None
+    if not all(
+        (Path(final_path).exists() if final_path and relative == final_name else (run_dir / relative).exists())
+        for relative in manifest.get("artifacts", [])
+    ):
         return False
     if not all(
         (run_dir / relative).is_file() and file_sha256(run_dir / relative) == expected
         for relative, expected in manifest.get("artifact_checksums", {}).items()
     ):
         return False
-    final_path = manifest.get("final_soup_path")
     final_hash = manifest.get("final_soup_sha256")
     return not final_path or (
         final_hash is not None and Path(final_path).is_file()
@@ -891,8 +895,7 @@ def run_probe(
         if final_soup is not None:
             manifest["final_soup_sha256"] = file_sha256(final_soup)
             manifest["final_soup_path"] = str(final_soup)
-            if final_soup.parent.resolve() == run_dir.resolve():
-                artifacts.append(final_soup.name)
+            artifacts.append(final_soup.name)
         checksum_paths = [path for path in run_dir.rglob("*") if path.is_file() and path != manifest_path]
         artifact_checksums = {
             str(path.relative_to(run_dir)): file_sha256(path) for path in checksum_paths

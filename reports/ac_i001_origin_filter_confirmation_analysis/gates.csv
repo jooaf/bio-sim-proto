@@ -1,0 +1,6 @@
+gate,pass
+integrity,True
+positive_controls,False
+mechanical_match,False
+selective_incidence_contrast,False
+nonspecific_control_viability,True

@@ -9,6 +9,7 @@ import pytest
 
 from experiments import phase1_probe
 from experiments.paper_probe import score_selfrep_candidates
+from experiments.run_phase2_parasite_control import parasite_tape
 from experiments.phase1_probe import (
     functional_scores,
     next_entropy_streak,
@@ -27,6 +28,16 @@ def test_functional_candidate_order_and_paper_score_agreement() -> None:
     assert np.array_equal(observed_candidates, candidates)
     assert np.array_equal(observed_abundances, abundances)
     assert np.array_equal(observed_scores, score_selfrep_candidates(candidates, 0))
+
+
+def test_functional_observer_detects_known_score64_fixture() -> None:
+    known = parasite_tape().reshape(1, 64)
+    candidates, abundances, scores = functional_scores(
+        known, np.asarray([32], dtype=np.int64)
+    )
+    assert np.array_equal(candidates, known)
+    assert abundances.tolist() == [32]
+    assert scores.tolist() == [64]
 
 
 def test_entropy_streak_is_contemporaneous() -> None:

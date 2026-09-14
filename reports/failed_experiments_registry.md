@@ -130,6 +130,21 @@ ups are prohibited unless opened as an explicitly new design.
 - **Boundary:** do not expand the frozen rate grid and call it AC-I001. Any
   replacement calibration requires a new design and new seeds.
 
+## AC-I001 — Demand-matched functional-origin confirmation
+
+- **Decision:** FAIL; AC-I002–AC-I004 stopped.
+- **Failed criteria:** control and matched-friction positive controls each
+  produced 0/20 strict functional origins; both predicted incidence contrasts
+  were zero (`p=1`). Full-run mechanical matching also failed: median
+  friction/natural-six blocked-load ratio was 1.720 and only 1/20 pairs met the
+  frozen interval.
+- **Retained:** all 60 held-out runs completed with exact conservation and
+  verified artifacts. The strict observer detects a known score-64 fixture, so
+  the null incidence is not treated as a detector implementation failure.
+- **Boundary:** no class-specific chemistry claim, and do not tune the observer,
+  friction rate, seeds, or horizon around this result. New work must ask a new
+  question under a separately preregistered positive-control regime.
+
 ## Cross-cutting lessons
 
 1. Positive mechanics do not imply ecological or organizational function.

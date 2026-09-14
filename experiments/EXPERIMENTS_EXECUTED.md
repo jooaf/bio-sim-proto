@@ -711,6 +711,30 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
 - **Evidence:** `reports/ac_r001_derived_friction_validation_report.md`; raw
   campaign: `/home/jojo/bio-sim-results/bazzite/ac_r001_derived_friction_validation`.
 
+### AC-E003 — Demand-matched functional-origin confirmation
+
+- **Hypothesis:** Natural-six deprivation suppresses strict functional origin
+  relative to both histogram-matched control and mechanics-calibrated
+  symbol-independent friction.
+- **Test:** Twenty held-out matched seeds (`202611000`–`202611019`), three arms,
+  32,768 tapes, 100,000 epochs, and the frozen ten-callback plus score-64 origin
+  definition.
+- **Result:** All three arms produced 0/20 functional origins. Both exact paired
+  predicted-direction tests had `p=1`. Full-run friction/natural-six median
+  blocked-load ratio was 1.720 and only 1/20 pairs met the frozen matching band.
+  All 60 runs completed with exact conservation and verified artifacts.
+- **Decision:** **FAIL; no class-specific support and stop AC-I002–AC-I004.**
+- **Why:** Both mandatory positive controls failed, no incidence contrast existed,
+  and the early mechanics match did not persist over the full horizon.
+- **Limitations:** Missing functional scores denote callbacks that never became
+  eligible, not measured score zero. The strict observer separately detects the
+  known score-64 fixture. This result does not prove functional origin impossible
+  under other preregistered resource regimes.
+- **Follow-up:** AC-P001 separately tests high-resource functional-origin
+  positive-control viability without reusing this failed comparison.
+- **Evidence:** `reports/ac_i001_origin_filter_confirmation_analysis/report.md`;
+  raw campaign: `/home/jojo/bio-sim-results/bazzite/ac_i001_origin_filter_confirmation`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -721,7 +745,7 @@ energy-coupled reproduction and writable/inter-tape signaling remain stopped.
 The project still does **not** support endogenous reproduction, evolved
 adaptation, communication, coordination, niche construction, competition,
 trophic ecology, prevalent empirical organization, self-maintenance, or organism
-identity. AC-I001's frozen friction grid failed, but AC-R001 validated the
-separately designed mechanics-derived rate on new seeds. The conserved
-origin-filter question may now proceed only through a separately preregistered,
-held-out functional confirmation.
+identity. AC-I001's held-out functional confirmation failed with zero origins in
+all arms, so class-specific origin filtering and AC-I002–AC-I004 are closed.
+AC-P001 now asks the distinct positive-control question of whether a larger
+conserved reservoir can yield repeatable strict functional origin at this scale.
