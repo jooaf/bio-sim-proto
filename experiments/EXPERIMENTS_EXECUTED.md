@@ -735,6 +735,27 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
 - **Evidence:** `reports/ac_i001_origin_filter_confirmation_analysis/report.md`;
   raw campaign: `/home/jojo/bio-sim-results/bazzite/ac_i001_origin_filter_confirmation`.
 
+### AC-E004 — High-resource functional-origin viability
+
+- **Hypothesis:** A histogram-matched multiplier-16 conserved pool yields
+  repeatable strict functional origin at the established scale.
+- **Test:** Ten new independent seeds, 32,768 tapes, 100,000 epochs, exact
+  conservation, and the unchanged ten-callback plus score-64 observer.
+- **Result:** Functional origins occurred in 4/10 seeds, at epochs 31,901,
+  40,901, 95,701, and 98,001. Every origin had a persisted score-64 assay and
+  exactly reconciled soup/pool checkpoint. All ten runs passed integrity and
+  conservation checks.
+- **Decision:** **PASS for high-resource functional-origin viability.**
+- **Why:** Incidence exceeded the frozen 3/10 repeatability threshold with all
+  mandatory integrity conditions satisfied.
+- **Limitations:** This single-arm viability gate is not a causal comparison and
+  does not establish why multiplier 16 supported origin. The threshold is a
+  repeatability screen, not a significance test.
+- **Follow-up:** Run AC-P002 on wholly new paired multiplier-16 and multiplier-2
+  seeds; do not reuse AC-I001 controls.
+- **Evidence:** `reports/ac_p001_high_resource_origin_viability_analysis/report.md`;
+  raw campaign: `/home/jojo/bio-sim-results/bazzite/ac_p001_high_resource_origin_viability`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -747,5 +768,6 @@ adaptation, communication, coordination, niche construction, competition,
 trophic ecology, prevalent empirical organization, self-maintenance, or organism
 identity. AC-I001's held-out functional confirmation failed with zero origins in
 all arms, so class-specific origin filtering and AC-I002–AC-I004 are closed.
-AC-P001 now asks the distinct positive-control question of whether a larger
-conserved reservoir can yield repeatable strict functional origin at this scale.
+AC-P001 established repeatable strict functional origin in 4/10 high-resource
+runs. AC-P002 now tests on new matched seeds whether the larger conserved
+reservoir causally increases functional-origin incidence relative to multiplier 2.

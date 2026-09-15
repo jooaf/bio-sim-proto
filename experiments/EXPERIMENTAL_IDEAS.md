@@ -582,7 +582,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### AC-P001 — High-resource functional-origin viability
 
-- **Status:** Running
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-14T01:26:22Z
 - **Depends on:** completed AC-I001 failure and verified score-64 observer fixture
@@ -599,3 +599,21 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
   comparison.
 - **On failure:** stop de novo BFF origin work at the tested scale; do not tune
   the observer or extend selected runs.
+
+### AC-P002 — Conserved-resource abundance and functional origin
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-14
+- **Depends on:** passed AC-P001 high-resource viability gate
+- **Why:** AC-P001 established repeatable strict origin at multiplier 16, while
+  AC-I001's multiplier-2 controls were unusable as positive controls. A new
+  held-out paired comparison can test total resource abundance directly.
+- **Hypothesis:** A histogram-matched multiplier-16 conserved reservoir increases
+  strict functional-origin incidence relative to multiplier 2.
+- **Test:** Twenty new paired seeds, 32,768 tapes × 100,000 epochs, unchanged
+  functional observer and exact conservation.
+- **Preregistration:** `reports/ac_p002_resource_abundance_origin_preregistration.md`
+- **Estimated cost:** very high; forty full-scale runs
+- **On success:** acquire independent m16 checkpoints for a new maintenance test.
+- **On failure:** retain high-resource viability only and stop this comparison.
