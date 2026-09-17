@@ -633,4 +633,23 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 - **Preregistration:** `reports/ac_p003_functional_origin_convergence_preregistration.md`
 - **Estimated cost:** low; analysis of existing immutable checkpoints
 - **On success:** preregister a fresh modal-class transplantation assay.
-- **On failure:** retain structural diversity descriptively and stop class claims.
+- **On failure:** stop class claims; an unevaluable local control requires a new
+  prospective design rather than post-hoc substitution.
+
+### AC-P004 — Prospective controlled functional-origin convergence
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-16
+- **Depends on:** unevaluable AC-P003 and validated strict functional observer
+- **Why:** AC-P003 lacked one mandatory below-64 local control. Prospectively
+  saving the immediately pre-origin assay can test convergence without reusing or
+  repairing the old checkpoint set.
+- **Hypothesis:** At least six new origins have usable temporal controls, and their
+  first score-64 witnesses converge structurally relative to those controls.
+- **Test:** Twenty new multiplier-16 full-scale runs with an opt-in rolling
+  pre-origin snapshot, followed by the frozen opcode/Hamming composite gate.
+- **Preregistration:** `reports/ac_p004_prospective_controlled_convergence_preregistration.md`
+- **Estimated cost:** very high; twenty full-scale runs, six concurrent workers
+- **On success:** preregister a fresh modal-class transplantation assay.
+- **On failure:** stop structural-class claims without adding seeds or controls.
