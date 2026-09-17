@@ -620,7 +620,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### AC-P003 — Independent functional-origin structural convergence
 
-- **Status:** Claimed
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-16
 - **Depends on:** eleven verified first-origin checkpoints from AC-P001/P002

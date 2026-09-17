@@ -776,6 +776,30 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
 - **Evidence:** `reports/ac_p002_resource_abundance_origin_analysis/report.md`;
   raw campaign: `/home/jojo/bio-sim-results/bazzite/ac_p002_resource_abundance_origin`.
 
+### AC-E006 — Independent functional-origin structural convergence
+
+- **Hypothesis:** First score-64 witnesses from ten independent initializations
+  converge on one opcode subsequence and are byte-similar relative to rank-local
+  below-64 assay candidates.
+- **Test:** Eleven verified first-origin checkpoints (ten distinct initial soups),
+  a frozen ten-checkpoint primary subset, exact static opcode signatures, and a
+  deterministic 10,000-replicate rank-local reference model.
+- **Result:** All eleven checkpoints and witnesses passed integrity. The analysis
+  was nevertheless unevaluable because AC-P002 m16 seed `202613001` had no
+  below-64 candidate anywhere in its first-origin top-1,024 assay, leaving a
+  mandatory local control pool empty. The frozen replacement sensitivity had the
+  same missing pool.
+- **Decision:** **UNEVALUABLE; no convergence or diversity claim.**
+- **Why:** The preregistration explicitly required every primary local pool to be
+  nonempty and prohibited substituting another control or candidate.
+- **Limitations:** Missing reference support is not evidence of structural
+  diversity. Static opcode subsequences are not demonstrated functional
+  architectures, and the resource comparison remains failed.
+- **Follow-up:** Retain the verified witness catalog descriptively. Do not tune
+  the null, rank blocks, or thresholds on these checkpoints; any renewed
+  convergence test requires prospectively acquired checkpoints and controls.
+- **Evidence:** `reports/ac_p003_functional_origin_convergence_analysis/report.md`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -790,5 +814,7 @@ identity. AC-I001's held-out functional confirmation failed with zero origins in
 all arms, so class-specific origin filtering and AC-I002–AC-I004 are closed.
 AC-P001 established repeatable strict functional origin in high-resource runs,
 but AC-P002 did not confirm a reservoir-abundance effect (5/20 versus 2/20;
-paired `p=0.1875`). That comparative branch is closed; functional origin itself
-remains a validated but incompletely explained artificial-chemistry phenomenon.
+paired `p=0.1875`). AC-P003's structural-convergence test was unevaluable under
+its frozen local null. Functional origin remains a validated but incompletely
+explained artificial-chemistry phenomenon; resource-effect and structural-class
+claims are unsupported.

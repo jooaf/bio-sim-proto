@@ -157,6 +157,19 @@ ups are prohibited unless opened as an explicitly new design.
 - **Boundary:** the numerical incidence difference is descriptive, not causal
   support. Do not add seeds, reuse AC-I001 controls, or extend selected runs.
 
+## AC-P003 — Independent functional-origin structural convergence
+
+- **Decision:** UNEVALUABLE; no convergence or diversity claim.
+- **Failed prerequisite:** one otherwise valid first-origin assay (AC-P002 m16
+  seed `202613001`) contained no below-64 candidate among its top 1,024 tapes, so
+  the frozen rank-local reference pool was empty. The primary and shared-seed
+  replacement analyses were both blocked.
+- **Retained:** all eleven origin checkpoints, first score-64 witnesses, and
+  artifact/conservation checks were valid.
+- **Boundary:** do not substitute a later callback, score-64 tape, alternative
+  rank block, or post-hoc null. Any new convergence test must acquire prospective
+  checkpoints and controls under a new preregistration.
+
 ## Cross-cutting lessons
 
 1. Positive mechanics do not imply ecological or organizational function.
