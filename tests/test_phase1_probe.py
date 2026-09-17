@@ -72,7 +72,8 @@ def test_functional_observation_saves_first_qualified_checkpoint(
     run_dir = run_probe(
         population_size=16, epochs=11, seed=17, mutation_rate=1.0 / 4096.0,
         pool_multiplier=2.0, callback_interval=1, max_steps=128,
-        functional_observation=True, output_dir=tmp_path,
+        functional_observation=True, prospective_control_observation=True,
+        output_dir=tmp_path,
     )
     manifest = json.loads((run_dir / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["functional_origin_epoch"] == 10
@@ -81,6 +82,13 @@ def test_functional_observation_saves_first_qualified_checkpoint(
         assert int(checkpoint["witness_score"][0]) == 64
         tape_counts = np.bincount(checkpoint["soup"].ravel(), minlength=256)
         assert np.array_equal(tape_counts + checkpoint["pool"], checkpoint["conserved_totals"])
+    with np.load(run_dir / "pre_origin_control.npz") as control:
+        assert int(control["local_epoch"][0]) == 9
+        assert int(control["origin_local_epoch"][0]) == 10
+        assert np.array_equal(
+            control["scores"], score_selfrep_candidates(control["candidates"], 0)
+        )
+    assert "pre_origin_control.npz" in manifest["artifacts"]
     assay_files = sorted((run_dir / "functional_assays").glob("*.npz"))
     assert [path.name for path in assay_files] == ["epoch_000010.npz", "epoch_000011.npz"]
     with np.load(assay_files[0]) as assay:
@@ -91,6 +99,15 @@ def test_functional_observation_saves_first_qualified_checkpoint(
         rows = list(csv.DictReader(handle))
     assert [int(row["epoch"]) for row in rows] == [10, 11]
     assert all(row["origin_qualified"] == "True" for row in rows)
+
+
+def test_prospective_control_requires_functional_observation(tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="requires functional observation"):
+        run_probe(
+            population_size=16, epochs=2, seed=18, mutation_rate=0.0,
+            pool_multiplier=2.0, callback_interval=1, max_steps=128,
+            prospective_control_observation=True, output_dir=tmp_path,
+        )
 
 
 def test_functional_scoring_does_not_change_trajectory(
@@ -119,8 +136,8 @@ def test_functional_scoring_does_not_change_trajectory(
     monkeypatch.setattr(phase1_probe, "complexity_row", high_entropy)
     monkeypatch.setattr(phase1_probe, "functional_scores", harmless_scores)
     run_probe(
-        **common, functional_observation=True, final_soup=enabled_final,
-        output_dir=tmp_path / "enabled",
+        **common, functional_observation=True, prospective_control_observation=True,
+        final_soup=enabled_final, output_dir=tmp_path / "enabled",
     )
     assert disabled_final.read_bytes() == enabled_final.read_bytes()
 

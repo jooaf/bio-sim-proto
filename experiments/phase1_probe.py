@@ -440,6 +440,7 @@ def run_probe(
     final_soup: Path | None = None,
     friction_rejection_rate: float = 0.0,
     functional_observation: bool = False,
+    prospective_control_observation: bool = False,
 ) -> Path:
     """Run one deterministic Phase 1 condition and return its directory."""
 
@@ -451,6 +452,8 @@ def run_probe(
         raise ValueError("mutation_rate must be in 0..1")
     if not 0.0 <= friction_rejection_rate <= 1.0:
         raise ValueError("friction_rejection_rate must be in 0..1")
+    if prospective_control_observation and not functional_observation:
+        raise ValueError("prospective control observation requires functional observation")
     if pool_multiplier < 0.0 or not math.isfinite(pool_multiplier):
         raise ValueError("pool_multiplier must be finite and nonnegative")
     if max_steps <= 0:
@@ -491,8 +494,9 @@ def run_probe(
         else f"_fric{format(friction_rejection_rate, '.8g').replace('.', 'p')}"
     )
     functional_suffix = "_funcv1" if functional_observation else ""
+    prospective_suffix = "_prectrlv1" if prospective_control_observation else ""
     cont_suffix = "" if initial_soup is None else "_cont"
-    run_dir = output_dir / f"p1_m{multiplier_slug}_n{population_size}_s{seed}{mode_suffix}{friction_suffix}{functional_suffix}{cont_suffix}"
+    run_dir = output_dir / f"p1_m{multiplier_slug}_n{population_size}_s{seed}{mode_suffix}{friction_suffix}{functional_suffix}{prospective_suffix}{cont_suffix}"
     run_dir.mkdir(parents=True, exist_ok=True)
     manifest_path = run_dir / "manifest.json"
     config = {
@@ -510,6 +514,7 @@ def run_probe(
         "friction_rejection_rate": friction_rejection_rate,
         "friction_hash_domain": "splitmix64(seed_xor_0xAC1001_plus_changing_write_counter)",
         "functional_observation": functional_observation,
+        "prospective_control_observation": prospective_control_observation,
     }
     if functional_observation:
         config["functional_observation_spec"] = {
@@ -521,6 +526,14 @@ def run_probe(
             "evaluator_seed": FUNCTIONAL_EVALUATOR_SEED,
             "qualification_score": TAPE_LENGTH,
             "checkpoint_policy": "first contemporaneous qualifying callback",
+        }
+    if prospective_control_observation:
+        config["prospective_control_spec"] = {
+            "version": "pre-origin-control-v1",
+            "snapshot": "immediately preceding scheduled callback",
+            "candidate_order": "descending abundance; lexicographic stable ties",
+            "candidate_limit": FUNCTIONAL_CANDIDATE_LIMIT,
+            "evaluator_seed": FUNCTIONAL_EVALUATOR_SEED,
         }
     if epoch_offset:
         config["epoch_offset"] = epoch_offset
@@ -546,6 +559,7 @@ def run_probe(
     if functional_observation:
         shutil.rmtree(run_dir / "functional_assays", ignore_errors=True)
         (run_dir / "origin_checkpoint.npz").unlink(missing_ok=True)
+        (run_dir / "pre_origin_control.npz").unlink(missing_ok=True)
 
     started_at = datetime.now(timezone.utc)
     manifest: dict[str, Any] = {
@@ -565,6 +579,7 @@ def run_probe(
     functional_path = run_dir / "functional_scores.csv"
     functional_assay_dir = run_dir / "functional_assays"
     origin_checkpoint_path = run_dir / "origin_checkpoint.npz"
+    pre_origin_control_path = run_dir / "pre_origin_control.npz"
     if functional_observation:
         functional_assay_dir.mkdir(exist_ok=True)
     try:
@@ -664,6 +679,9 @@ def run_probe(
         cumulative = np.zeros(9, dtype=np.int64)
         entropy_streak = 0
         origin_epoch: int | None = None
+        previous_candidates: NDArray[np.uint8] | None = None
+        previous_abundances: NDArray[np.int64] | None = None
+        previous_callback_epoch: int | None = None
         with (
             aggregate_path.open("w", newline="", encoding="utf-8") as aggregate_handle,
             writes_path.open("w", newline="", encoding="utf-8") as writes_handle,
@@ -741,6 +759,10 @@ def run_probe(
                 if residual != 0:
                     raise RuntimeError(f"symbol conservation residual {residual} at epoch {epoch_index + 1}")
                 values, counts = np.unique(soup, axis=0, return_counts=True)
+                current_candidates: NDArray[np.uint8] | None = None
+                current_abundances: NDArray[np.int64] | None = None
+                if prospective_control_observation:
+                    current_candidates, current_abundances = ranked_functional_candidates(values, counts)
                 complexity = complexity_row(
                     soup,
                     epoch_index + 1,
@@ -801,6 +823,38 @@ def run_probe(
                         }
                         if qualified and origin_epoch is None:
                             origin_epoch = epoch_index + 1
+                            if prospective_control_observation:
+                                if (
+                                    previous_candidates is None
+                                    or previous_abundances is None
+                                    or previous_callback_epoch is None
+                                ):
+                                    raise RuntimeError("functional origin lacks a preceding callback snapshot")
+                                previous_scores = score_selfrep_candidates(
+                                    previous_candidates, FUNCTIONAL_EVALUATOR_SEED
+                                )
+                                save_origin_checkpoint(
+                                    pre_origin_control_path,
+                                    candidates=previous_candidates,
+                                    abundances=previous_abundances,
+                                    scores=previous_scores,
+                                    evaluator_seed=np.asarray(
+                                        [FUNCTIONAL_EVALUATOR_SEED], dtype=np.int64
+                                    ),
+                                    observation_version=np.asarray(
+                                        [FUNCTIONAL_OBSERVATION_VERSION]
+                                    ),
+                                    control_version=np.asarray(["pre-origin-control-v1"]),
+                                    local_epoch=np.asarray(
+                                        [previous_callback_epoch], dtype=np.int64
+                                    ),
+                                    absolute_epoch=np.asarray(
+                                        [epoch_offset + previous_callback_epoch], dtype=np.int64
+                                    ),
+                                    origin_local_epoch=np.asarray(
+                                        [origin_epoch], dtype=np.int64
+                                    ),
+                                )
                             save_origin_checkpoint(
                                 origin_checkpoint_path,
                                 soup=soup,
@@ -827,7 +881,16 @@ def run_probe(
                             )
                             manifest["functional_origin_epoch"] = origin_epoch
                             manifest["origin_checkpoint_sha256"] = file_sha256(origin_checkpoint_path)
+                            if prospective_control_observation:
+                                manifest["pre_origin_control_sha256"] = file_sha256(
+                                    pre_origin_control_path
+                                )
                             write_manifest(manifest_path, manifest)
+                    if prospective_control_observation:
+                        assert current_candidates is not None and current_abundances is not None
+                        previous_candidates = current_candidates
+                        previous_abundances = current_abundances
+                        previous_callback_epoch = epoch_index + 1
                 withdrawal_total = int(withdrawals.sum())
                 recycled = int(np.maximum(withdrawals - initial_pool, 0).sum())
                 aggregate_writer.writerow(
@@ -892,6 +955,8 @@ def run_probe(
             artifacts += [functional_path.name, functional_assay_dir.name]
         if origin_epoch is not None:
             artifacts.append(origin_checkpoint_path.name)
+            if prospective_control_observation:
+                artifacts.append(pre_origin_control_path.name)
         if final_soup is not None:
             manifest["final_soup_sha256"] = file_sha256(final_soup)
             manifest["final_soup_path"] = str(final_soup)
@@ -943,6 +1008,7 @@ def main() -> None:
     parser.add_argument("--pool-exclude-symbols", type=str, default="", help="comma-separated byte values for excluded_list mode")
     parser.add_argument("--friction-rejection-rate", type=float, default=0.0)
     parser.add_argument("--functional-observation", action="store_true")
+    parser.add_argument("--prospective-control-observation", action="store_true")
     parser.add_argument("--save-final-soup", type=Path)
     parser.add_argument("--initial-soup", type=Path)
     parser.add_argument("--epoch-offset", type=int, default=0)
@@ -967,6 +1033,7 @@ def main() -> None:
             final_soup=args.save_final_soup,
             friction_rejection_rate=args.friction_rejection_rate,
             functional_observation=args.functional_observation,
+            prospective_control_observation=args.prospective_control_observation,
             output_dir=args.output_dir,
         )
     )
