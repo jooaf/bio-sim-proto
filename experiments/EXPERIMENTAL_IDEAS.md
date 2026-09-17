@@ -617,3 +617,20 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 - **Estimated cost:** very high; forty full-scale runs
 - **On success:** acquire independent m16 checkpoints for a new maintenance test.
 - **On failure:** retain high-resource viability only and stop this comparison.
+
+### AC-P003 — Independent functional-origin structural convergence
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-16
+- **Depends on:** eleven verified first-origin checkpoints from AC-P001/P002
+- **Why:** Functional origin is repeatable but its structural reproducibility is
+  unknown; this question is independent of the failed resource comparison.
+- **Hypothesis:** First score-64 witnesses converge on one opcode class and are
+  more byte-similar than rank-local nonfunctional checkpoint tapes.
+- **Test:** Frozen eleven-witness analysis with a deterministic 10,000-replicate
+  local null, Hamming effect threshold, and modal opcode-signature gate.
+- **Preregistration:** `reports/ac_p003_functional_origin_convergence_preregistration.md`
+- **Estimated cost:** low; analysis of existing immutable checkpoints
+- **On success:** preregister a fresh modal-class transplantation assay.
+- **On failure:** retain structural diversity descriptively and stop class claims.
