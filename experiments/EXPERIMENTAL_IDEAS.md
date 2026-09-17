@@ -638,7 +638,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### AC-P004 — Prospective controlled functional-origin convergence
 
-- **Status:** Claimed
+- **Status:** Running
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-16
 - **Depends on:** unevaluable AC-P003 and validated strict functional observer
