@@ -9,6 +9,7 @@ import argparse
 import hashlib
 import json
 import math
+from collections.abc import Collection
 from pathlib import Path
 from typing import Any, Callable, cast
 from zipfile import BadZipFile
@@ -41,10 +42,12 @@ def sha256(path: Path) -> str:
         return hashlib.file_digest(handle, "sha256").hexdigest()
 
 
-def validate_config(config: dict[str, Any]) -> None:
+def validate_config(
+    config: dict[str, Any], *, pool_multiplier: int = 16, allowed_seeds: Collection[int] = SEEDS
+) -> None:
     expected = {
         "phase": 1, "population_size": POPULATION, "tape_length": 64,
-        "epochs": EPOCHS, "mutation_rate": 1 / 4096, "pool_multiplier": 16,
+        "epochs": EPOCHS, "mutation_rate": 1 / 4096, "pool_multiplier": pool_multiplier,
         "callback_interval": CALLBACK, "max_steps": 8192,
         "pairing_mode": "paper_splitmix64_shuffled_disjoint",
         "execution_mode": "serial_exact_global_pool",
@@ -53,7 +56,7 @@ def validate_config(config: dict[str, Any]) -> None:
     }
     for key, value in expected.items():
         require(config.get(key) == value, f"unregistered config: {key}")
-    require(config.get("seed") in SEEDS, "unregistered seed")
+    require(config.get("seed") in allowed_seeds, "unregistered seed")
     require(not config.get("initial_soup") and config.get("epoch_offset", 0) == 0,
             "runs must be independently initialized")
     require(config.get("pool_mode", "histogram_matched") == "histogram_matched", "unregistered pool mode")
@@ -193,14 +196,16 @@ def validate_function(root: Path, aggregate: pd.DataFrame, functional: pd.DataFr
     return origin, witnesses
 
 
-def summarize(root: Path) -> tuple[dict[str, Any], pd.DataFrame, list[dict[str, Any]]]:
+def summarize(
+    root: Path, *, pool_multiplier: int = 16, allowed_seeds: Collection[int] = SEEDS
+) -> tuple[dict[str, Any], pd.DataFrame, list[dict[str, Any]]]:
     result: dict[str, Any] = {"run_id": root.name, "seed": None,
                               "integrity": False, "origin": None, "error": ""}
     try:
         manifest = json.loads((root / "manifest.json").read_text())
         config = manifest["config"]
         result.update(seed=config.get("seed"))
-        validate_config(config)
+        validate_config(config, pool_multiplier=pool_multiplier, allowed_seeds=allowed_seeds)
         require(manifest.get("status") == manifest.get("exit_status") == "success", "unsuccessful run")
         require(manifest.get("max_conservation_residual") == 0, "manifest conservation residual")
         verify_artifacts(root, manifest)
@@ -242,7 +247,7 @@ def summarize(root: Path) -> tuple[dict[str, Any], pd.DataFrame, list[dict[str, 
         initial_pool = symbols["initial_pool_count"].to_numpy().reshape(-1, 256)
         pools = symbols["pool_count"].to_numpy().reshape(-1, 256)
         require((initial_pool == initial_pool[0]).all() and (pools >= 0).all(), "invalid pool trajectories")
-        expected_pool = initial * 16
+        expected_pool = initial * pool_multiplier
         require(np.array_equal(initial_pool[0], expected_pool), "unregistered initial pool")
         require(np.array_equal(pools.sum(axis=1), aggregate["pool_total"]) and int(pools[-1].sum()) == manifest["pool_total"], "pool total mismatch")
         require(np.array_equal(symbols["initial_pool_count"] + symbols["returns"] - symbols["withdrawals"], symbols["pool_count"]), "symbol ledger mismatch")

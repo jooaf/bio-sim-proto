@@ -1,0 +1,5 @@
+gate,pass
+integrity,True
+m16_positive_control,True
+paired_difference,False
+exact_test,False

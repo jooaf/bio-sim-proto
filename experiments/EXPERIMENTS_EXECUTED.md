@@ -756,6 +756,26 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
 - **Evidence:** `reports/ac_p001_high_resource_origin_viability_analysis/report.md`;
   raw campaign: `/home/jojo/bio-sim-results/bazzite/ac_p001_high_resource_origin_viability`.
 
+### AC-E005 — Conserved-resource abundance and functional origin
+
+- **Hypothesis:** Multiplier 16 increases strict functional-origin incidence over
+  multiplier 2 in new matched conserved soups.
+- **Test:** Twenty held-out paired seeds, 32,768 tapes, 100,000 epochs, exact
+  conservation, and the unchanged strict observer.
+- **Result:** m16 produced 5/20 origins and m2 produced 2/20. Pairing yielded four
+  m16-only origins, one m2-only origin, one origin in both arms, and 14 in
+  neither. The incidence difference was 0.15 and exact one-sided `p=0.1875`.
+- **Decision:** **FAIL; no confirmatory resource-abundance effect.**
+- **Why:** The m16 positive-control gate passed, but both the frozen 0.20 paired
+  difference and `p <= 0.05` gates failed.
+- **Limitations:** The directional numerical difference is descriptive only and
+  nonsignificance is not equivalence. All 40 runs passed integrity and exact
+  conservation.
+- **Follow-up:** Retain AC-P001's high-resource viability result and stop this
+  comparative branch without adding seeds or extending selected runs.
+- **Evidence:** `reports/ac_p002_resource_abundance_origin_analysis/report.md`;
+  raw campaign: `/home/jojo/bio-sim-results/bazzite/ac_p002_resource_abundance_origin`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -768,6 +788,7 @@ adaptation, communication, coordination, niche construction, competition,
 trophic ecology, prevalent empirical organization, self-maintenance, or organism
 identity. AC-I001's held-out functional confirmation failed with zero origins in
 all arms, so class-specific origin filtering and AC-I002–AC-I004 are closed.
-AC-P001 established repeatable strict functional origin in 4/10 high-resource
-runs. AC-P002 now tests on new matched seeds whether the larger conserved
-reservoir causally increases functional-origin incidence relative to multiplier 2.
+AC-P001 established repeatable strict functional origin in high-resource runs,
+but AC-P002 did not confirm a reservoir-abundance effect (5/20 versus 2/20;
+paired `p=0.1875`). That comparative branch is closed; functional origin itself
+remains a validated but incompletely explained artificial-chemistry phenomenon.

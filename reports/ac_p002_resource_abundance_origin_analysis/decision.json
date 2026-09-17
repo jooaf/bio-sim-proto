@@ -1,0 +1,18 @@
+{
+  "both": 1,
+  "decision": "FAIL \u2014 stop resource-abundance comparison",
+  "favored_only": 4,
+  "gates": {
+    "exact_test": false,
+    "integrity": true,
+    "m16_positive_control": true,
+    "paired_difference": false
+  },
+  "incidence_difference": 0.15,
+  "m16_origins": 5,
+  "m2_origins": 2,
+  "neither": 14,
+  "opposite_only": 1,
+  "p_one_sided": 0.1875,
+  "resource_abundance_support": false
+}

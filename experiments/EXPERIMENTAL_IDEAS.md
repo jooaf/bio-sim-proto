@@ -602,7 +602,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### AC-P002 — Conserved-resource abundance and functional origin
 
-- **Status:** Running
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-14
 - **Depends on:** passed AC-P001 high-resource viability gate

@@ -145,6 +145,18 @@ ups are prohibited unless opened as an explicitly new design.
   friction rate, seeds, or horizon around this result. New work must ask a new
   question under a separately preregistered positive-control regime.
 
+## AC-P002 — Conserved-resource abundance and functional origin
+
+- **Decision:** FAIL; comparative resource-abundance branch stopped.
+- **Failed criteria:** m16 produced 5/20 origins and m2 produced 2/20, but the
+  paired difference was 0.15 rather than the frozen 0.20 and the exact
+  predicted-direction test was `p=0.1875` (four m16-only, one m2-only pair).
+- **Retained:** the m16 positive-control gate passed, all 40 runs completed with
+  exact conservation, and functional origin is now independently observed under
+  both reservoir multipliers.
+- **Boundary:** the numerical incidence difference is descriptive, not causal
+  support. Do not add seeds, reuse AC-I001 controls, or extend selected runs.
+
 ## Cross-cutting lessons
 
 1. Positive mechanics do not imply ecological or organizational function.
