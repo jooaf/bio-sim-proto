@@ -170,6 +170,21 @@ ups are prohibited unless opened as an explicitly new design.
   rank block, or post-hoc null. Any new convergence test must acquire prospective
   checkpoints and controls under a new preregistration.
 
+## AC-P004 — Prospective controlled functional-origin convergence
+
+- **Decision:** VALID NON-PASS; structural-class claims stopped.
+- **Failed criteria:** acquisition passed with 9/20 usable origins, but every
+  witness had a distinct static opcode signature; observed median Hamming was
+  1.0 versus null median 0.984375 (`p=1`), so opcode, Hamming-effect, and Hamming
+  tail gates all failed.
+- **Retained:** all 20 runs passed integrity, ten strict origins occurred, and
+  nine had usable immediate pre-origin controls. Composition JSD was a
+  preregistered secondary signal (`p=0.00009999`) and cannot rescue the failed
+  structural gate.
+- **Boundary:** no shared structural class or transplantation follow-up. Any
+  composition hypothesis requires a new held-out confirmation and must not reuse
+  these witnesses as confirmatory evidence.
+
 ## Cross-cutting lessons
 
 1. Positive mechanics do not imply ecological or organizational function.

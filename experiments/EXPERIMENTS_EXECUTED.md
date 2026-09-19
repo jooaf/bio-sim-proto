@@ -800,6 +800,31 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
   convergence test requires prospectively acquired checkpoints and controls.
 - **Evidence:** `reports/ac_p003_functional_origin_convergence_analysis/report.md`.
 
+### AC-E007 — Prospective controlled functional-origin convergence
+
+- **Hypothesis:** New first score-64 witnesses converge on a shared static opcode
+  class and byte structure relative to immediate pre-origin below-64 controls.
+- **Test:** Twenty new multiplier-16 runs with prospective prior-callback assays,
+  a minimum six-origin acquisition gate, and frozen opcode/Hamming convergence
+  criteria.
+- **Result:** All 20 runs passed integrity; ten produced strict origins and nine
+  had usable controls. All nine witnesses had distinct opcode signatures.
+  Observed median Hamming was 1.0 versus reference median 0.984375, with lower-
+  tail probability 1.0. The acquisition gate passed, but every structural gate
+  failed. Secondary composition JSD was lower than its reference distribution
+  (0.713382 versus median 0.720477; reference-tail probability 0.00009999).
+- **Decision:** **VALID NON-PASS; stop structural-class claims.**
+- **Why:** The mandatory modal-opcode, Hamming effect, and Hamming tail criteria
+  all failed despite adequate prospective acquisition.
+- **Limitations:** The composition result was explicitly secondary and cannot
+  rescue the structural hypothesis. Static signatures are not functional
+  architectures, and reference-tail probabilities are conditional on the frozen
+  local-control model.
+- **Follow-up:** A new held-out experiment may test composition-level convergence
+  as a distinct hypothesis; do not use these witnesses as confirmation data.
+- **Evidence:** `reports/ac_p004_prospective_controlled_convergence_analysis/report.md`;
+  raw campaign: `/home/jojo/bio-sim-results/bazzite/ac_p004_prospective_controlled_convergence`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -814,7 +839,8 @@ identity. AC-I001's held-out functional confirmation failed with zero origins in
 all arms, so class-specific origin filtering and AC-I002–AC-I004 are closed.
 AC-P001 established repeatable strict functional origin in high-resource runs,
 but AC-P002 did not confirm a reservoir-abundance effect (5/20 versus 2/20;
-paired `p=0.1875`). AC-P003's structural-convergence test was unevaluable under
-its frozen local null. Functional origin remains a validated but incompletely
-explained artificial-chemistry phenomenon; resource-effect and structural-class
-claims are unsupported.
+paired `p=0.1875`). AC-P003 was unevaluable, and prospective AC-P004 then
+rejected static structural convergence despite adequate origin acquisition.
+Functional origin remains a validated but incompletely explained artificial-
+chemistry phenomenon; resource-effect and structural-class claims are unsupported.
+A secondary composition-level signal requires independent confirmation.
