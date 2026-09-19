@@ -653,3 +653,22 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 - **Estimated cost:** very high; twenty full-scale runs, six concurrent workers
 - **On success:** preregister a fresh modal-class transplantation assay.
 - **On failure:** stop structural-class claims without adding seeds or controls.
+
+### AC-P005 — Functional-origin compositional convergence replication
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-17
+- **Depends on:** AC-P004 valid non-pass with secondary composition-JSD signal
+- **Why:** AC-P004 rejected structural convergence but identified a small,
+  preregistered secondary composition signal requiring independent replication.
+- **Hypothesis:** New functional witnesses have lower pairwise composition JSD
+  than immediate pre-origin below-64 controls by at least 1%.
+- **Test:** Twenty new multiplier-16 prospective-control runs and the frozen
+  composition-only reference gate.
+- **Preregistration:** `reports/ac_p005_compositional_convergence_replication_preregistration.md`
+- **Estimated cost:** very high; twenty full-scale runs, six concurrent workers
+- **On success:** support bounded composition-level convergence and design a
+  separate causal composition perturbation.
+- **On failure:** retain the prior composition signal as exploratory and stop
+  convergence work.
