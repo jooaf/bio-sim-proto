@@ -656,7 +656,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### AC-P005 — Functional-origin compositional convergence replication
 
-- **Status:** Claimed
+- **Status:** Running
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-17
 - **Depends on:** AC-P004 valid non-pass with secondary composition-JSD signal
