@@ -825,6 +825,29 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
 - **Evidence:** `reports/ac_p004_prospective_controlled_convergence_analysis/report.md`;
   raw campaign: `/home/jojo/bio-sim-results/bazzite/ac_p004_prospective_controlled_convergence`.
 
+### AC-E008 — Functional-origin compositional convergence replication
+
+- **Hypothesis:** New first-origin witnesses have at least 1% lower pairwise
+  composition JSD than immediate pre-origin below-64 local controls.
+- **Test:** Twenty new multiplier-16 prospective-control runs with a frozen
+  composition-only 10,000-replicate reference analysis.
+- **Result:** All 20 runs passed integrity; 12 produced strict origins and 10 had
+  usable controls. Observed median witness composition JSD was 0.713054 versus
+  reference median 0.782539, an 8.88% reduction. No reference replicate was as
+  low; add-one lower-tail probability was `0.00009999`.
+- **Decision:** **PASS for bounded composition-level convergence.**
+- **Why:** Acquisition, positive-reference, 1% effect, and `p <= 0.01` gates all
+  passed on held-out seeds. An independent reviewer recomputed the result.
+- **Limitations:** The probability is conditional on the rank-local temporal
+  reference model. Five local pools were singletons. This does not support one
+  exact tape, opcode class, structural class, heredity, or maintenance; AC-P004's
+  structural non-pass remains unchanged.
+- **Follow-up:** Design a separately preregistered causal assay using original
+  witnesses and composition-preserving shuffled controls in fresh conserved
+  soups.
+- **Evidence:** `reports/ac_p005_compositional_convergence_analysis/report.md`;
+  raw campaign: `/home/jojo/bio-sim-results/bazzite/ac_p005_compositional_convergence`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -843,4 +866,6 @@ paired `p=0.1875`). AC-P003 was unevaluable, and prospective AC-P004 then
 rejected static structural convergence despite adequate origin acquisition.
 Functional origin remains a validated but incompletely explained artificial-
 chemistry phenomenon; resource-effect and structural-class claims are unsupported.
-A secondary composition-level signal requires independent confirmation.
+AC-P005 independently confirmed bounded composition-level convergence relative
+to immediate pre-origin controls; its causal and maintenance significance remains
+untested.

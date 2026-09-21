@@ -1,0 +1,39 @@
+{
+  "acquisition_gate": true,
+  "all_twenty_integrity": true,
+  "campaign": "AC-P005",
+  "decision": "PASS",
+  "errors": {},
+  "expected_runs": 20,
+  "gates": {
+    "acquisition": true,
+    "all_twenty_integrity": true,
+    "composition_effect": true,
+    "composition_tail": true,
+    "positive_reference_median": true
+  },
+  "observed_median": 0.7130542503656206,
+  "order": [
+    "AC-P005_m16_s202615001",
+    "AC-P005_m16_s202615004",
+    "AC-P005_m16_s202615006",
+    "AC-P005_m16_s202615007",
+    "AC-P005_m16_s202615008",
+    "AC-P005_m16_s202615011",
+    "AC-P005_m16_s202615014",
+    "AC-P005_m16_s202615015",
+    "AC-P005_m16_s202615017",
+    "AC-P005_m16_s202615018"
+  ],
+  "origins": 12,
+  "pair_count": 45,
+  "reference_interpretation": "Conditional on the frozen immediate pre-origin local-control model; not a general exchangeability-based significance test.",
+  "reference_quantiles": {
+    "0.025": 0.7502018089762728,
+    "0.5": 0.7825387665277661,
+    "0.975": 0.8292239017173749
+  },
+  "reference_tail_probability": 9.999000099990002e-05,
+  "replicates": 10000,
+  "usable_origins": 10
+}
