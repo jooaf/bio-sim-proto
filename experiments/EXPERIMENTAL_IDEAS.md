@@ -672,3 +672,21 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
   separate causal composition perturbation.
 - **On failure:** retain the prior composition signal as exploratory and stop
   convergence work.
+
+### AC-P006 — Composition-preserving functional-witness transplantation
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-17
+- **Depends on:** passed AC-P005 compositional-convergence replication
+- **Why:** Composition convergence is confirmed, but realized propagation and the
+  role of exact byte ordering remain untested.
+- **Hypothesis:** Exact score-64 witnesses amplify in fresh conserved soups more
+  than deterministic composition-preserving shuffled controls.
+- **Test:** Ten independent witness/recipient pairs, 32-copy inocula, 10,000
+  epochs, exact target tracking, and frozen establishment/AUC gates.
+- **Preregistration:** `reports/ac_p006_composition_preserving_transplant_preregistration.md`
+- **Estimated cost:** high; twenty 10,000-epoch runs, six concurrent workers
+- **On success:** preregister long-term maintenance or competition.
+- **On failure:** retain functional-proxy and composition results but stop this
+  realized-propagation branch.
