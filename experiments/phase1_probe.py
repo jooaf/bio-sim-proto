@@ -39,6 +39,16 @@ from experiments.paper_probe import (
 )
 
 INSTRUCTIONS = np.asarray([60, 62, 123, 125, 45, 43, 46, 44, 91, 93], dtype=np.uint8)
+EXACT_TAPE_TRACKER_VERSION = "exact-tape-v1"
+
+
+def exact_tape_count(soup: NDArray[np.uint8], target: bytes) -> int:
+    """Count full bytewise matches without mutating simulation state."""
+    if len(target) != TAPE_LENGTH:
+        raise ValueError("tracked tape must contain exactly 64 bytes")
+    return int(np.count_nonzero(np.all(soup == np.frombuffer(target, dtype=np.uint8), axis=1)))
+
+
 FUNCTIONAL_ENTROPY_THRESHOLD = 1.0
 FUNCTIONAL_ENTROPY_STREAK = 10
 FUNCTIONAL_CANDIDATE_LIMIT = 1024
@@ -441,9 +451,12 @@ def run_probe(
     friction_rejection_rate: float = 0.0,
     functional_observation: bool = False,
     prospective_control_observation: bool = False,
+    tracked_tape: bytes | None = None,
 ) -> Path:
     """Run one deterministic Phase 1 condition and return its directory."""
 
+    if tracked_tape is not None and (not isinstance(tracked_tape, bytes) or len(tracked_tape) != TAPE_LENGTH):
+        raise ValueError("tracked tape must contain exactly 64 bytes")
     if population_size <= 0 or population_size % 2:
         raise ValueError("population_size must be a positive even number")
     if epochs <= 0 or callback_interval <= 0:
@@ -496,7 +509,10 @@ def run_probe(
     functional_suffix = "_funcv1" if functional_observation else ""
     prospective_suffix = "_prectrlv1" if prospective_control_observation else ""
     cont_suffix = "" if initial_soup is None else "_cont"
-    run_dir = output_dir / f"p1_m{multiplier_slug}_n{population_size}_s{seed}{mode_suffix}{friction_suffix}{functional_suffix}{prospective_suffix}{cont_suffix}"
+    tracker_suffix = "" if tracked_tape is None else "_track_" + hashlib.sha256(
+        EXACT_TAPE_TRACKER_VERSION.encode() + b"\0" + tracked_tape
+    ).hexdigest()
+    run_dir = output_dir / f"p1_m{multiplier_slug}_n{population_size}_s{seed}{mode_suffix}{friction_suffix}{functional_suffix}{prospective_suffix}{cont_suffix}{tracker_suffix}"
     run_dir.mkdir(parents=True, exist_ok=True)
     manifest_path = run_dir / "manifest.json"
     config = {
@@ -516,6 +532,8 @@ def run_probe(
         "functional_observation": functional_observation,
         "prospective_control_observation": prospective_control_observation,
     }
+    if tracked_tape is not None:
+        config["exact_tape_tracker"] = {"version": EXACT_TAPE_TRACKER_VERSION, "target_hex": tracked_tape.hex()}
     if functional_observation:
         config["functional_observation_spec"] = {
             "version": FUNCTIONAL_OBSERVATION_VERSION,
@@ -539,6 +557,8 @@ def run_probe(
         config["epoch_offset"] = epoch_offset
     if initial_soup is not None:
         config["initial_soup"] = str(initial_soup)
+        if tracked_tape is not None:
+            config["initial_soup_sha256"] = file_sha256(initial_soup)
     if pool_mode != "histogram_matched":
         config["pool_mode"] = pool_mode
     if pool_exclude_top:
@@ -593,6 +613,8 @@ def run_probe(
                     f"({population_size}, {TAPE_LENGTH}); got {loaded.dtype} {loaded.shape}"
                 )
             soup = loaded.copy()
+        if tracked_tape is not None:
+            manifest["initial_exact_target_count"] = exact_tape_count(soup, tracked_tape)
         tape_counts_initial = np.bincount(soup.ravel(), minlength=256).astype(np.int64)
         matched_pool = np.rint(tape_counts_initial.astype(np.float64) * pool_multiplier).astype(np.int64)
         if pool_mode == "histogram_matched":
@@ -650,6 +672,8 @@ def run_probe(
             "cumulative_cross_tape_copy_success", "cumulative_cross_tape_copy_blocked",
             "recycled_withdrawal_lower_bound", "max_conservation_residual",
         ]
+        if tracked_tape is not None:
+            aggregate_fields.append("exact_target_count")
         if functional_observation:
             aggregate_fields += [
                 "functional_entropy_streak", "functional_scoring_performed",
@@ -690,6 +714,10 @@ def run_probe(
                 functional_path.open("w", newline="", encoding="utf-8")
                 if functional_observation else nullcontext(None)
             ) as functional_handle,
+            (
+                (run_dir / "tracked_tape.csv").open("w", newline="", encoding="utf-8")
+                if tracked_tape is not None else nullcontext(None)
+            ) as tracker_handle,
         ):
             aggregate_writer = csv.DictWriter(aggregate_handle, fieldnames=aggregate_fields)
             writes_writer = csv.DictWriter(writes_handle, fieldnames=write_fields)
@@ -698,6 +726,10 @@ def run_probe(
                 csv.DictWriter(functional_handle, fieldnames=functional_fields)
                 if functional_handle is not None else None
             )
+            tracker_writer = (csv.writer(tracker_handle) if tracker_handle is not None else None)
+            if tracker_writer is not None:
+                tracker_writer.writerow(["epoch", "exact_target_count"])
+                tracker_writer.writerow([0, manifest["initial_exact_target_count"]])
             aggregate_writer.writeheader()
             writes_writer.writeheader()
             symbols_writer.writeheader()
@@ -754,6 +786,14 @@ def run_probe(
                 if epoch_index % callback_interval != 0 and epoch_index + 1 != epochs:
                     continue
 
+                tracker_metrics: dict[str, int] = {}
+                if tracked_tape is not None:
+                    target_count = exact_tape_count(soup, tracked_tape)
+                    tracker_metrics["exact_target_count"] = target_count
+                    assert tracker_writer is not None
+                    tracker_writer.writerow([epoch_index + 1, target_count])
+                    assert tracker_handle is not None
+                    tracker_handle.flush()
                 tape_counts = np.bincount(soup.ravel(), minlength=256).astype(np.int64)
                 residual = int(np.max(np.abs(tape_counts + pool - conserved_totals)))
                 if residual != 0:
@@ -922,6 +962,7 @@ def run_probe(
                         "recycled_withdrawal_lower_bound": 0.0 if withdrawal_total == 0 else recycled / withdrawal_total,
                         "max_conservation_residual": residual,
                         **functional_metrics,
+                        **tracker_metrics,
                     }
                 )
                 for symbol in range(256):
@@ -951,6 +992,8 @@ def run_probe(
             final_soup.parent.mkdir(parents=True, exist_ok=True)
             np.save(final_soup, soup)
         artifacts = [aggregate_path.name, writes_path.name, symbols_path.name]
+        if tracked_tape is not None:
+            artifacts.append("tracked_tape.csv")
         if functional_observation:
             artifacts += [functional_path.name, functional_assay_dir.name]
         if origin_epoch is not None:
@@ -1010,6 +1053,7 @@ def main() -> None:
     parser.add_argument("--functional-observation", action="store_true")
     parser.add_argument("--prospective-control-observation", action="store_true")
     parser.add_argument("--save-final-soup", type=Path)
+    parser.add_argument("--tracked-tape-hex", help="opt-in exact 64-byte target, encoded as hex")
     parser.add_argument("--initial-soup", type=Path)
     parser.add_argument("--epoch-offset", type=int, default=0)
     parser.add_argument("--output-dir", type=Path, default=Path("experiments/phase1_runs"))
@@ -1028,6 +1072,7 @@ def main() -> None:
             pool_exclude_symbols=tuple(
                 int(value) for value in args.pool_exclude_symbols.split(",") if value.strip()
             ),
+            tracked_tape=None if args.tracked_tape_hex is None else bytes.fromhex(args.tracked_tape_hex),
             initial_soup=args.initial_soup,
             epoch_offset=args.epoch_offset,
             final_soup=args.save_final_soup,
