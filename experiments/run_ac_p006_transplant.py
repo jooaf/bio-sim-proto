@@ -137,10 +137,19 @@ def execute(commands: list[list[str]]) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--source-root", type=Path, required=True)
-    parser.add_argument("--output-dir", type=Path, required=True, help="new preparation directory")
+    parser.add_argument("--source-root", type=Path)
+    parser.add_argument("--output-dir", type=Path, required=True, help="preparation directory")
     parser.add_argument("--execute", action="store_true")
+    parser.add_argument("--resume-prepared", action="store_true")
     args = parser.parse_args()
+    if args.execute and args.resume_prepared:
+        parser.error("--execute and --resume-prepared are mutually exclusive")
+    if args.resume_prepared:
+        prepared = json.loads((args.output_dir / "preparation.json").read_text())
+        execute(prepared["commands"])
+        return
+    if args.source_root is None:
+        parser.error("--source-root is required for preparation")
     commands = prepare(args.source_root, args.output_dir)
     if args.execute:
         execute(commands)

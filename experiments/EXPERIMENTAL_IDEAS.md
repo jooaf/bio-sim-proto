@@ -675,7 +675,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### AC-P006 — Composition-preserving functional-witness transplantation
 
-- **Status:** Claimed
+- **Status:** Running
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-17
 - **Depends on:** passed AC-P005 compositional-convergence replication
