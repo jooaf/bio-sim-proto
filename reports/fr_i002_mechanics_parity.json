@@ -1,0 +1,360 @@
+{
+  "acceptance": "MECHANICS_PASS_WITH_PRIOR_ORGANISM_SUITE_VALIDATION",
+  "checks": {
+    "focused_tests": {
+      "command": [
+        "uv",
+        "run",
+        "pytest",
+        "tests/test_fr_i002_provenance.py",
+        "-q"
+      ],
+      "passed": 233,
+      "status": "PASS"
+    },
+    "mypy": {
+      "command": [
+        "uv",
+        "run",
+        "mypy",
+        "experiments/fr_i002_provenance.py",
+        "experiments/fr_i002_gate.py",
+        "tests/test_fr_i002_provenance.py"
+      ],
+      "scope": "Corrected fixtures, reference pins, and regression tests.",
+      "status": "PASS"
+    },
+    "organism_tests": {
+      "command": [
+        "uv",
+        "run",
+        "--project",
+        "organism-sim",
+        "--group",
+        "dev",
+        "pytest",
+        "organism-sim/tests"
+      ],
+      "prior_passed": 105,
+      "prior_scope": "Passed before the fixture-only and reference-pin corrections; organism code and tests unchanged.",
+      "repeat": "Interrupted at user direction after an unrelated hang; no current repeat pass is claimed.",
+      "status": "PRIOR_PASS_REPEAT_INTERRUPTED"
+    },
+    "root_tests": {
+      "command": [
+        "uv",
+        "run",
+        "pytest"
+      ],
+      "evidence": "Corrected full gate reported root_tests: PASS before entering organism_tests.",
+      "status": "PASS"
+    }
+  },
+  "complete_instrumented_repeats": 2,
+  "configurations": [
+    {
+      "friction": 0.0,
+      "multiplier": 2,
+      "mutation": 0.0,
+      "seed": 202618000,
+      "trajectory_sha256": "5e66b5f96e8834b299b4e48e9287352bce0011cb4ef17ec5794646e076a7a7c3"
+    },
+    {
+      "friction": 0.0,
+      "multiplier": 16,
+      "mutation": 0.0,
+      "seed": 202618000,
+      "trajectory_sha256": "d1f4310a125dd800e707d89b91e72d0fa3ea1d70a1424fc2daa1a0926bbf5858"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 2,
+      "mutation": 0.0,
+      "seed": 202618000,
+      "trajectory_sha256": "78dab13541ff470cfa0b8fe8a3568da76ea4eea0fa6f7f4600a4781b3ea668dc"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 16,
+      "mutation": 0.0,
+      "seed": 202618000,
+      "trajectory_sha256": "2facdf135b1ceed0e367df0718bc7454c7d3fedbc382dd39de6d922cfd629837"
+    },
+    {
+      "friction": 0.0,
+      "multiplier": 2,
+      "mutation": 0.000244140625,
+      "seed": 202618000,
+      "trajectory_sha256": "a50d3e96241451809ea86edc26f12f2188e5bcd46af080758fdab563979a843d"
+    },
+    {
+      "friction": 0.0,
+      "multiplier": 16,
+      "mutation": 0.000244140625,
+      "seed": 202618000,
+      "trajectory_sha256": "b3cbf36cc1061379097a34ad234b2560437dcb99b017786c3103bca4a156ee3e"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 2,
+      "mutation": 0.000244140625,
+      "seed": 202618000,
+      "trajectory_sha256": "baaffc8b534f802aaa03f15f70ad299a1aa7048db36ed633dc2d8eb45cb67266"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 16,
+      "mutation": 0.000244140625,
+      "seed": 202618000,
+      "trajectory_sha256": "d5b748329b8683dd464f5569b5a8fb85c9d42ac53413ed20080ee50c49f36c5c"
+    },
+    {
+      "friction": 0.0,
+      "multiplier": 2,
+      "mutation": 0.0,
+      "seed": 202618001,
+      "trajectory_sha256": "095ac1b0d603557de8282c5f7a52bf5b60c03d98b96496ff3d12e9012bb93e4a"
+    },
+    {
+      "friction": 0.0,
+      "multiplier": 16,
+      "mutation": 0.0,
+      "seed": 202618001,
+      "trajectory_sha256": "88c9c6e59bc98688693586b8aa2be87067768d957c161f21bff1da37687b94fe"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 2,
+      "mutation": 0.0,
+      "seed": 202618001,
+      "trajectory_sha256": "8b688bffc5d1adc8fec5579340642efa2f5b6f6bfaa0e5202c0e4dfeef25781a"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 16,
+      "mutation": 0.0,
+      "seed": 202618001,
+      "trajectory_sha256": "129ee48d4a4f8052fa2fe2db3bd99392e7beb2f6bf2e83929991277979b9aca7"
+    },
+    {
+      "friction": 0.0,
+      "multiplier": 2,
+      "mutation": 0.000244140625,
+      "seed": 202618001,
+      "trajectory_sha256": "d0ff1cc1d9899813a11c16a720591b644460b04d2fb3c2813f42b028090c059b"
+    },
+    {
+      "friction": 0.0,
+      "multiplier": 16,
+      "mutation": 0.000244140625,
+      "seed": 202618001,
+      "trajectory_sha256": "8d396b72389f7e7ae62e477f35c340a892e662bd56375daba179532c0ba4b29e"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 2,
+      "mutation": 0.000244140625,
+      "seed": 202618001,
+      "trajectory_sha256": "ef8544ed011835743cf72c1561b44892eff7df538e3437c41a1453506e504f2a"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 16,
+      "mutation": 0.000244140625,
+      "seed": 202618001,
+      "trajectory_sha256": "1835d27db6b1317fd4916ddf3c25efa8d9764cf7e2d0c149e887dc1ec3468dea"
+    },
+    {
+      "friction": 0.0,
+      "multiplier": 2,
+      "mutation": 0.0,
+      "seed": 202618002,
+      "trajectory_sha256": "3c4e8457c4446c03b601e0ddd3adfa6bad4f049feb7494af388ff6d9d4fdb86e"
+    },
+    {
+      "friction": 0.0,
+      "multiplier": 16,
+      "mutation": 0.0,
+      "seed": 202618002,
+      "trajectory_sha256": "6e60586dfe10f714f402a8a59c4383bd75dbb06cae6d9f0f04b1d7aca5b02fc3"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 2,
+      "mutation": 0.0,
+      "seed": 202618002,
+      "trajectory_sha256": "e4d52e631885a5220ed5f617135efc270a983227367cbc7e9b89cc59211f9ce8"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 16,
+      "mutation": 0.0,
+      "seed": 202618002,
+      "trajectory_sha256": "9c7d5f1f2dced83f00c0c7810f49bba1e7ba24bf413a0dc4cd2009fd0555133a"
+    },
+    {
+      "friction": 0.0,
+      "multiplier": 2,
+      "mutation": 0.000244140625,
+      "seed": 202618002,
+      "trajectory_sha256": "5ba049ad6f004221794e7ce3ae49a4f7296e6214a6fcd37e64ca45d285aa925c"
+    },
+    {
+      "friction": 0.0,
+      "multiplier": 16,
+      "mutation": 0.000244140625,
+      "seed": 202618002,
+      "trajectory_sha256": "9e19aff9c964bda5062d8349ad19e6bfd175c447763d788b542f8bdf40328804"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 2,
+      "mutation": 0.000244140625,
+      "seed": 202618002,
+      "trajectory_sha256": "6cc19d6d0e37c881a75fc27ba8301a441f1a7677ba4d2df360adc633a959c507"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 16,
+      "mutation": 0.000244140625,
+      "seed": 202618002,
+      "trajectory_sha256": "5d30cb1a5b5dba0d18773feef86c09374a3f693706eeb5a123d94b31dc9ae3ec"
+    },
+    {
+      "friction": 0.0,
+      "multiplier": 2,
+      "mutation": 0.0,
+      "seed": 202618003,
+      "trajectory_sha256": "f45ba7a038754177ece1f352ddd29476b5c7d4257324629743cba76d011fae68"
+    },
+    {
+      "friction": 0.0,
+      "multiplier": 16,
+      "mutation": 0.0,
+      "seed": 202618003,
+      "trajectory_sha256": "f2df061caf965cf16627e6047c488eac05bf10c86edd171e8ad8dbb9a9da8d05"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 2,
+      "mutation": 0.0,
+      "seed": 202618003,
+      "trajectory_sha256": "daf48dd35ccb50598f35b41da82628b8b22bee8d28e58cd7750e841dd184f238"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 16,
+      "mutation": 0.0,
+      "seed": 202618003,
+      "trajectory_sha256": "a33cf738f45532670cef1684e01c6b9b56fe3ea6362cb4cb32582f46b3be0b99"
+    },
+    {
+      "friction": 0.0,
+      "multiplier": 2,
+      "mutation": 0.000244140625,
+      "seed": 202618003,
+      "trajectory_sha256": "c2d2179676fda6f2fdc6362bb2c0970baa475a34d00894f567153939084cb574"
+    },
+    {
+      "friction": 0.0,
+      "multiplier": 16,
+      "mutation": 0.000244140625,
+      "seed": 202618003,
+      "trajectory_sha256": "222172ff57f6b50ae8715607286a9e83fb318bd6796247b92129837d57467c5f"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 2,
+      "mutation": 0.000244140625,
+      "seed": 202618003,
+      "trajectory_sha256": "0006f2e7017aaabdb7acbf678d4dfb9a6bad03a95178b938e9f700133df061a6"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 16,
+      "mutation": 0.000244140625,
+      "seed": 202618003,
+      "trajectory_sha256": "1c73baad034a903b8df9dcdfc97590a371254baa2dc169ceab047292e6c3eecf"
+    },
+    {
+      "friction": 0.0,
+      "multiplier": 2,
+      "mutation": 0.0,
+      "seed": 202618004,
+      "trajectory_sha256": "3bf6c288c2f9ba2ee481a0f16ad794b04026ff2a8acc65200298ffbd346019a5"
+    },
+    {
+      "friction": 0.0,
+      "multiplier": 16,
+      "mutation": 0.0,
+      "seed": 202618004,
+      "trajectory_sha256": "f53e561240141f86e3d7d9d9e59fff80ecf729c461e221548925864041e94c05"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 2,
+      "mutation": 0.0,
+      "seed": 202618004,
+      "trajectory_sha256": "3f15b601890453c715a51de68dd72188be899a23e73f4c8006e073253dbf19f1"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 16,
+      "mutation": 0.0,
+      "seed": 202618004,
+      "trajectory_sha256": "83902113a0c82462b6c704ad34558a42bd646a2590a99aad8b6a5ca727ead52d"
+    },
+    {
+      "friction": 0.0,
+      "multiplier": 2,
+      "mutation": 0.000244140625,
+      "seed": 202618004,
+      "trajectory_sha256": "bdd54be63f050d5e846a61905e95115b2034cd02d5bb16f19520e4768a747dc9"
+    },
+    {
+      "friction": 0.0,
+      "multiplier": 16,
+      "mutation": 0.000244140625,
+      "seed": 202618004,
+      "trajectory_sha256": "4378d415b74bf7711afa52ab8926757bb061691b52c64b890141adcb68e599cb"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 2,
+      "mutation": 0.000244140625,
+      "seed": 202618004,
+      "trajectory_sha256": "6a531b5dc28b4e01726b6c41dd2376d79a0058c4ce9f4a1c2396a6d13a802259"
+    },
+    {
+      "friction": 0.27555027572734614,
+      "multiplier": 16,
+      "mutation": 0.000244140625,
+      "seed": 202618004,
+      "trajectory_sha256": "9da9c2b89d881ce9d760a21b5d2fee14e7bd1034d3846920057fbd75ecabb082"
+    }
+  ],
+  "conservation_residual": 0,
+  "directed_interactions": 181,
+  "directed_writes": 168,
+  "epoch_label_fixtures": 6,
+  "epochs_per_configuration": 100,
+  "fixture_sha256": "1e4a767d6fbd8dd53957a94b5a401e9cb057848f5a8e2d09999ef98b8b5266a1",
+  "gate": "FR-I002",
+  "interaction_sha256": "6f61c356b30db4b87814c41ee47d369f530ceb73b178a4fabe00c927899936c9",
+  "inverted_label_mechanics_runs": 1,
+  "mechanics": "PASS",
+  "mechanics_regeneration": "run_gate() invoked directly once; main() not rerun.",
+  "paper_probe_blob": "ee2b67f4ce17d8f78842e5b778abf48d2e32f0e5",
+  "production_blob": "3805a0d4987f2c24ba70fe25e9b688a9f40cb137",
+  "randomized_interactions": 1000,
+  "source_sha256": {
+    "experiments/fr_i002_gate.py": "bb88718d0634f2bb4cb4406e116583dbdca0486b6dbe561bb2a73cc908f36a3d",
+    "experiments/fr_i002_provenance.py": "2c4e1aac57da7d20077652eada7b4828c61993af613e2db0323c8f386789b806",
+    "experiments/paper_probe.py": "72ffde66abcd56428ee59c7c30b036b6b7cf543afb3025ab9e80a741321fca2d",
+    "experiments/phase1_probe.py": "74b8853036694895d26c86d27fb630dc17328cf0def0f5f3f8285f5e317e2314",
+    "reports/fr_i002_conserved_provenance_parity_preregistration.md": "6628a5fcfda8e2ef452958455e298a2526b5db4794c915fe0dcfe9b8ced36991",
+    "tests/test_fr_i002_provenance.py": "54fb8b6b54c1bdc203d5c81f9c50cea03c28126967f01e391a85453dca2103ff"
+  },
+  "transplantation_launched": false,
+  "unchanged_randomized_and_epoch_trajectory_checksums": true
+}
