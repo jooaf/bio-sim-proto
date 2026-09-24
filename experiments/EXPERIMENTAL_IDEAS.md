@@ -690,3 +690,25 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 - **On success:** preregister long-term maintenance or competition.
 - **On failure:** retain functional-proxy and composition results but stop this
   realized-propagation branch.
+
+## Functional-descendant representation phase
+
+### FR-I001 — Functional-descendant representation mechanics gate
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-18
+- **Depends on:** AC-P006 transient amplification with exact-tape extinction
+- **Why:** Exact identity cannot determine whether functional propagation
+  continues through altered descendants. One validated representation gate is
+  required before any further BFF lineage or persistence experiment.
+- **Hypothesis:** Score-64 phenotype plus byte-level informational provenance
+  detects controlled witness descendants with high sensitivity and low shuffled/
+  random false-positive rates.
+- **Test:** Exact executor parity, five-witness threshold calibration, and five
+  held-out witnesses across 13 propagation trials and two negative-control arms.
+- **Preregistration:** `reports/fr_i001_functional_descendant_representation_preregistration.md`
+- **Estimated cost:** low to medium; mechanics assays only
+- **On success:** instrument the conserved kernel and preregister new held-out
+  descendant-aware transplantation.
+- **On failure:** stop BFF lineage/ecology work and pivot to explicit reproduction.
