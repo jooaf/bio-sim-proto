@@ -712,3 +712,20 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 - **On success:** instrument the conserved kernel and preregister new held-out
   descendant-aware transplantation.
 - **On failure:** stop BFF lineage/ecology work and pivot to explicit reproduction.
+
+### FR-I002 — Conserved-kernel provenance parity
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-18
+- **Depends on:** passed FR-I001 controlled representation gate
+- **Why:** Descendant-aware transplantation requires observational labels that do
+  not alter exact conserved BFF mechanics.
+- **Hypothesis:** Frozen value-change provenance can be carried through conserved
+  writes, interactions, mutations, and epochs with exact mechanics parity.
+- **Test:** Directed label fixtures, 1,000 deterministic interaction comparisons,
+  and 40 deterministic 100-epoch production/instrumented comparisons.
+- **Preregistration:** `reports/fr_i002_conserved_provenance_parity_preregistration.md`
+- **Estimated cost:** medium; mechanics only
+- **On success:** preregister held-out descendant-aware transplantation.
+- **On failure:** stop BFF lineage/ecology work and pivot substrates.
