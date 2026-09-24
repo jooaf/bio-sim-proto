@@ -185,6 +185,20 @@ ups are prohibited unless opened as an explicitly new design.
   composition hypothesis requires a new held-out confirmation and must not reuse
   these witnesses as confirmatory evidence.
 
+## AC-P006 — Composition-preserving functional-witness transplantation
+
+- **Decision:** VALID NON-PASS; realized-persistence branch stopped.
+- **Failed criteria:** 0/10 witness transplants and 0/10 shuffled controls met the
+  frozen establishment definition. Every target was extinct by the post-transient
+  window, producing ten tied mean-fold endpoints, sign `p=1`, and median ratio 1.
+- **Retained:** all 20 runs passed integrity and conservation. Witnesses showed
+  large but transient exact-copy amplification in 9/10 pairs (maxima 137–899),
+  while shuffled controls never exceeded their initial count of 32. This was
+  secondary and cannot rescue failed final persistence.
+- **Boundary:** do not shorten the transient cutoff, weaken the final-abundance
+  requirement, or extend selected runs. Score-64 and composition-convergence
+  results remain bounded proxies without established fresh-soup persistence.
+
 ## Cross-cutting lessons
 
 1. Positive mechanics do not imply ecological or organizational function.

@@ -1,0 +1,17 @@
+{
+  "decision": "VALID NON-PASS",
+  "exact_sign_probability": 1.0,
+  "favored_pairs": 0,
+  "gates": {
+    "integrity": true,
+    "median_fold_ratio": false,
+    "paired_direction": false,
+    "shuffle_control": true,
+    "witness_positive_control": false
+  },
+  "median_fold_ratio": 1.0,
+  "opposite_pairs": 0,
+  "shuffle_established": 0,
+  "tied_pairs": 10,
+  "witness_established": 0
+}

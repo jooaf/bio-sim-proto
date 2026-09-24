@@ -848,6 +848,30 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
 - **Evidence:** `reports/ac_p005_compositional_convergence_analysis/report.md`;
   raw campaign: `/home/jojo/bio-sim-results/bazzite/ac_p005_compositional_convergence`.
 
+### AC-E009 — Composition-preserving functional-witness transplantation
+
+- **Hypothesis:** Exact score-64 witnesses show realized amplification and
+  persistence in fresh conserved soups beyond composition-preserving shuffles.
+- **Test:** Ten independent witness/recipient pairs, 32-copy inocula, matched
+  multiplier-16 pools, 10,000 epochs, and exact target tracking.
+- **Result:** All 20 runs passed integrity and conservation. Witness targets
+  transiently reached maxima of 137–899 in 9/10 pairs (the tenth reached 44),
+  while shuffled controls never exceeded 32. Nevertheless every exact target was
+  extinct by epoch 1,001 and at the final callback. Thus 0/10 in each arm met the
+  frozen maximum-plus-final establishment definition; all post-transient paired
+  means tied at zero (`p=1`, median ratio 1).
+- **Decision:** **VALID NON-PASS; no realized persistent propagation.**
+- **Why:** The positive-control, paired-direction, and median-ratio gates all
+  failed despite strong early witness amplification.
+- **Limitations:** Exact sequence tracking does not include mutated descendants.
+  The preregistered final-abundance and post-transient criteria cannot be weakened
+  after observing transient amplification.
+- **Follow-up:** Retain transient amplification descriptively; stop this
+  persistence branch unless a new representation for functional descendant
+  lineages is independently designed and validated.
+- **Evidence:** `reports/ac_p006_composition_preserving_transplant_analysis/report.md`;
+  raw campaign: `/home/jojo/bio-sim-results/bazzite/ac_p006_composition_preserving_transplant`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -867,5 +891,6 @@ rejected static structural convergence despite adequate origin acquisition.
 Functional origin remains a validated but incompletely explained artificial-
 chemistry phenomenon; resource-effect and structural-class claims are unsupported.
 AC-P005 independently confirmed bounded composition-level convergence relative
-to immediate pre-origin controls; its causal and maintenance significance remains
-untested.
+to immediate pre-origin controls. AC-P006 then showed sequence-specific transient
+exact-copy amplification but no post-transient or final persistence, so causal
+maintenance significance remains unsupported.
