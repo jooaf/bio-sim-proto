@@ -729,3 +729,22 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 - **Estimated cost:** medium; mechanics only
 - **On success:** preregister held-out descendant-aware transplantation.
 - **On failure:** stop BFF lineage/ecology work and pivot substrates.
+
+### FR-P001 — Held-out descendant-aware transplantation
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-18
+- **Depends on:** passed FR-I001 representation and FR-I002 mechanics parity
+- **Why:** AC-P006 exact targets vanished, but exact identity cannot detect
+  functional propagation through changed descendants.
+- **Hypothesis:** Fresh score-64 inocula persist as tapes jointly satisfying the
+  frozen score-64 and 0.75 provenance criteria, unlike composition-preserving
+  shuffled controls.
+- **Test:** Nine paired, 10,000-epoch conserved transplantations using P001/P002
+  witnesses held out from representation development, with prospective aggregate
+  descendant observations and final-window persistence.
+- **Preregistration:** `reports/fr_p001_descendant_aware_transplant_preregistration.md`
+- **Estimated cost:** 18 runs; six workers
+- **On success:** permit a separately preregistered heredity perturbation.
+- **On failure:** stop BFF lineage/persistence/ecology and pivot substrates.
