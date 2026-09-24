@@ -872,6 +872,32 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
 - **Evidence:** `reports/ac_p006_composition_preserving_transplant_analysis/report.md`;
   raw campaign: `/home/jojo/bio-sim-results/bazzite/ac_p006_composition_preserving_transplant`.
 
+### FR-E001 — Functional-descendant representation mechanics gate
+
+- **Hypothesis:** The conjunction of paper score 64 and byte-level value-change
+  provenance identifies controlled witness descendants while rejecting shuffled
+  and random parent arms.
+- **Test:** Exact byte/step parity on 1,000 random and directed BFF programs;
+  five-witness threshold calibration; five held-out witnesses, shuffled controls,
+  and random controls across 13 paper propagation trials; two deterministic
+  complete repeats.
+- **Result:** Parity passed. The development rule selected provenance threshold
+  0.75. Held-out detection was 65/65 original-witness trials, 0/65 shuffled, and
+  0/65 random in both repeats. Every classified tape independently satisfied
+  score 64 and the provenance threshold.
+- **Decision:** **PASS for the controlled operational descendant representation.**
+- **Why:** Every frozen parity, sensitivity, specificity, determinism, and
+  classified-tape criterion passed.
+- **Limitations:** Score 64 is a stable-position proxy, provenance tracks only
+  value-change data dependencies, and trials cluster within five preselected
+  parents. This does not establish biological descent, persistence, heredity, or
+  organisms.
+- **Follow-up:** Implement the frozen provenance rules observationally in the
+  conserved kernel and require exact bytes/pool/counter/friction parity before
+  any new descendant-aware transplantation.
+- **Evidence:** `reports/fr_i001_functional_descendant_representation_report.md`;
+  raw campaign: `/home/jojo/bio-sim-results/bazzite/fr_i001_functional_descendant_representation`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -891,6 +917,7 @@ rejected static structural convergence despite adequate origin acquisition.
 Functional origin remains a validated but incompletely explained artificial-
 chemistry phenomenon; resource-effect and structural-class claims are unsupported.
 AC-P005 independently confirmed bounded composition-level convergence relative
-to immediate pre-origin controls. AC-P006 then showed sequence-specific transient
-exact-copy amplification but no post-transient or final persistence, so causal
-maintenance significance remains unsupported.
+to immediate pre-origin controls. AC-P006 showed sequence-specific transient
+exact-copy amplification but no exact-tape persistence. FR-I001 now validates a
+controlled operational descendant representation; conserved-soup parity and
+held-out descendant-aware persistence remain required before any lineage claim.

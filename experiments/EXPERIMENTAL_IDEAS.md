@@ -695,7 +695,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### FR-I001 — Functional-descendant representation mechanics gate
 
-- **Status:** Claimed
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-18
 - **Depends on:** AC-P006 transient amplification with exact-tape extinction
