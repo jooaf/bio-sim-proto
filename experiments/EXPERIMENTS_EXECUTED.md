@@ -898,6 +898,28 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
 - **Evidence:** `reports/fr_i001_functional_descendant_representation_report.md`;
   raw campaign: `/home/jojo/bio-sim-results/bazzite/fr_i001_functional_descendant_representation`.
 
+### FR-E002 — Conserved-kernel provenance parity
+
+- **Hypothesis:** Frozen value-change provenance labels can be carried through the
+  conserved BFF write, interaction, mutation, gather/scatter, and epoch mechanics
+  without changing any production trajectory field.
+- **Test:** Independently specified directed write/interaction/epoch fixtures;
+  1,000 deterministic randomized interactions; 40 deterministic 100-epoch
+  trajectories; two instrumented repeats and inverted-label mechanics runs.
+- **Result:** **PASS.** All 181 directed interactions, 168 directed writes, six
+  epoch-label fixtures, 1,000 interactions, and 4,000 epoch comparisons passed.
+  Bytes, pools, ledgers, counters, block categories, cross-write metrics, order,
+  returned metrics, and conservation matched exactly. Corrected pair-distinct
+  fixtures reject wrong gather and scatter routing. Production and shared helper
+  source blobs were verified.
+- **Decision:** Conserved observational provenance is eligible for a newly
+  preregistered descendant-aware transplantation; no transplantation was run.
+- **Limitations:** This validates mechanics isolation and frozen label transport,
+  not biological ancestry or any persistence, heredity, organism, adaptation,
+  ecology, or organization claim.
+- **Evidence:** `reports/fr_i002_mechanics_decision.md` and
+  `reports/fr_i002_mechanics_parity.json`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -918,6 +940,7 @@ Functional origin remains a validated but incompletely explained artificial-
 chemistry phenomenon; resource-effect and structural-class claims are unsupported.
 AC-P005 independently confirmed bounded composition-level convergence relative
 to immediate pre-origin controls. AC-P006 showed sequence-specific transient
-exact-copy amplification but no exact-tape persistence. FR-I001 now validates a
-controlled operational descendant representation; conserved-soup parity and
-held-out descendant-aware persistence remain required before any lineage claim.
+exact-copy amplification but no exact-tape persistence. FR-I001 validated a
+controlled operational descendant representation, and FR-I002 established exact
+conserved-soup observational parity. A newly preregistered held-out descendant-
+aware transplantation remains required before any lineage or persistence claim.

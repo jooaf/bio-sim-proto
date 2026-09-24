@@ -715,7 +715,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### FR-I002 — Conserved-kernel provenance parity
 
-- **Status:** Claimed
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-18
 - **Depends on:** passed FR-I001 controlled representation gate
