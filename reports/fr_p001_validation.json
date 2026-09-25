@@ -1,0 +1,283 @@
+{
+  "all_18_inputs_unchanged_from_previous_preparation": true,
+  "analyzer_validation": {
+    "analyzer_pins": {
+      "experiments/analyze_fr_p001.py": "17dee3f19500e37d2fa9808250179f382e071a6e36e2237c4bf0c4e6860d959a"
+    },
+    "campaign_outcome_analysis_executed": false,
+    "validation": {
+      "coverage": [
+        "analyzer-only repairs preserve preparation and completed synthetic analysis",
+        "mechanics/runner/observer source drift blocks resume",
+        "frozen source copy tampering rejected",
+        "version changes cannot reuse completed runs",
+        "in-place version repair rejected",
+        "recomputed checksums cannot hide scarcity/friction/cross/write/step inconsistencies",
+        "launcher and standalone process share six slots",
+        "coordination precedes validation/publication",
+        "disk and RAM gates use campaign output for launcher and standalone resume"
+      ],
+      "mypy": "Success: no issues found in 5 source files",
+      "mypy_command": "uv run mypy experiments/fr_p001.py experiments/run_fr_p001.py experiments/analyze_fr_p001.py tests/test_fr_p001.py tests/test_fr_p001_repairs.py",
+      "test_command": "uv run pytest -q tests/test_fr_p001.py tests/test_fr_p001_repairs.py tests/test_fr_i002_provenance.py tests/test_phase1_probe.py tests/test_paper_probe.py",
+      "test_seconds": 23.98,
+      "tests_passed": 282
+    }
+  },
+  "artifact_version": "fr-p001-artifacts-v2",
+  "campaign": "FR-P001",
+  "campaign_runs_executed": 0,
+  "destination_resource_check": {
+    "available_ram_bytes": 21097799680,
+    "elapsed_seconds": 5.375603133812547,
+    "free_disk_bytes": 148866375680,
+    "max_rss_bytes": 312455168,
+    "passed": true,
+    "path": "/var/home/jojo/bio-sim-proto/sweeps/fr_p001/v2/prepared",
+    "projected_seconds": 1628.8077495452017,
+    "required_disk_bytes": 29100081152,
+    "required_ram_bytes": 6169698304
+  },
+  "observation_isolation": {
+    "epochs": 4,
+    "passed": true,
+    "run_pins": {
+      "experiments/analyze_ac_p001_high_resource_origin_viability.py": "6a028e85a6d7d960378b0547c5fed4fcb78598069a6529ab633dea56f359a537",
+      "experiments/analyze_ac_p003_functional_origin_convergence.py": "8137acfc272b3d37e9330c7f11b73a8d17bb6d9cd1b612e259e18e04a30d67fc",
+      "experiments/fr_i002_gate.py": "bb88718d0634f2bb4cb4406e116583dbdca0486b6dbe561bb2a73cc908f36a3d",
+      "experiments/fr_i002_provenance.py": "2c4e1aac57da7d20077652eada7b4828c61993af613e2db0323c8f386789b806",
+      "experiments/fr_p001.py": "a6cced15ed03c8581709d29b793fd3028b63738e4a7730c0dfb63b2784abeca3",
+      "experiments/paper_probe.py": "72ffde66abcd56428ee59c7c30b036b6b7cf543afb3025ab9e80a741321fca2d",
+      "experiments/phase1_probe.py": "74b8853036694895d26c86d27fb630dc17328cf0def0f5f3f8285f5e317e2314",
+      "experiments/run_fr_p001.py": "845788ed4168b085f3ad0f8567ecfc18f30b67bf40da0dcdbc9a22f8e8a7d64c",
+      "reports/fr_p001_descendant_aware_transplant_preregistration.md": "ab1d80ec87be163e759b051ac59402c754179e1d80c895da09bcf3c2109ecdff"
+    },
+    "state_sha256": "352edd1cea2156d723d6002eec6b4a4340c6181e00ddc4190ba8462884938e3a"
+  },
+  "output_version": "v2",
+  "preflight": {
+    "artifact_version": "fr-p001-artifacts-v2",
+    "available_ram_bytes": 21059821568,
+    "campaign": "FR-P001",
+    "elapsed_seconds": 5.375603133812547,
+    "excluded_warmup_seconds": 4.641191098140553,
+    "free_disk_bytes": 148916224000,
+    "max_rss_bytes": 312455168,
+    "passed": true,
+    "projected_seconds": 1628.8077495452017,
+    "repair_policy": {
+      "analyzer_only": "fresh_analysis_report_record_current_analyzer_and_validation_keep_preparation",
+      "mechanics_runner_observer": "fresh_output_version_and_full_rerun_unchanged_inputs",
+      "version": 1
+    },
+    "required_disk_bytes": 29100081152,
+    "required_ram_bytes": 6169698304,
+    "run_pins": {
+      "experiments/analyze_ac_p001_high_resource_origin_viability.py": "6a028e85a6d7d960378b0547c5fed4fcb78598069a6529ab633dea56f359a537",
+      "experiments/analyze_ac_p003_functional_origin_convergence.py": "8137acfc272b3d37e9330c7f11b73a8d17bb6d9cd1b612e259e18e04a30d67fc",
+      "experiments/fr_i002_gate.py": "bb88718d0634f2bb4cb4406e116583dbdca0486b6dbe561bb2a73cc908f36a3d",
+      "experiments/fr_i002_provenance.py": "2c4e1aac57da7d20077652eada7b4828c61993af613e2db0323c8f386789b806",
+      "experiments/fr_p001.py": "a6cced15ed03c8581709d29b793fd3028b63738e4a7730c0dfb63b2784abeca3",
+      "experiments/paper_probe.py": "72ffde66abcd56428ee59c7c30b036b6b7cf543afb3025ab9e80a741321fca2d",
+      "experiments/phase1_probe.py": "74b8853036694895d26c86d27fb630dc17328cf0def0f5f3f8285f5e317e2314",
+      "experiments/run_fr_p001.py": "845788ed4168b085f3ad0f8567ecfc18f30b67bf40da0dcdbc9a22f8e8a7d64c",
+      "reports/fr_p001_descendant_aware_transplant_preregistration.md": "ab1d80ec87be163e759b051ac59402c754179e1d80c895da09bcf3c2109ecdff"
+    },
+    "time_sha256": "4710e03927804a05c7df3c5d7d811605516c93643b6100f1c084ece06e88aba6",
+    "timing_sha256": "0f21a3a03ab6c35ab6581936699ab9983d2e3013377d3467664314e0e245715f",
+    "total_child_wall_seconds": 10.0167942319531
+  },
+  "preparation_path": "/var/home/jojo/bio-sim-proto/sweeps/fr_p001/v2/prepared/preparation.json",
+  "preparation_sha256": "2e3ade63c9e07f326b1ff0820b0e9e6c9ae68945680a81df61004dd3ced58969",
+  "repair_policy": {
+    "analyzer_only": "fresh_analysis_report_record_current_analyzer_and_validation_keep_preparation",
+    "mechanics_runner_observer": "fresh_output_version_and_full_rerun_unchanged_inputs",
+    "version": 1
+  },
+  "run_pins": {
+    "experiments/analyze_ac_p001_high_resource_origin_viability.py": "6a028e85a6d7d960378b0547c5fed4fcb78598069a6529ab633dea56f359a537",
+    "experiments/analyze_ac_p003_functional_origin_convergence.py": "8137acfc272b3d37e9330c7f11b73a8d17bb6d9cd1b612e259e18e04a30d67fc",
+    "experiments/fr_i002_gate.py": "bb88718d0634f2bb4cb4406e116583dbdca0486b6dbe561bb2a73cc908f36a3d",
+    "experiments/fr_i002_provenance.py": "2c4e1aac57da7d20077652eada7b4828c61993af613e2db0323c8f386789b806",
+    "experiments/fr_p001.py": "a6cced15ed03c8581709d29b793fd3028b63738e4a7730c0dfb63b2784abeca3",
+    "experiments/paper_probe.py": "72ffde66abcd56428ee59c7c30b036b6b7cf543afb3025ab9e80a741321fca2d",
+    "experiments/phase1_probe.py": "74b8853036694895d26c86d27fb630dc17328cf0def0f5f3f8285f5e317e2314",
+    "experiments/run_fr_p001.py": "845788ed4168b085f3ad0f8567ecfc18f30b67bf40da0dcdbc9a22f8e8a7d64c",
+    "reports/fr_p001_descendant_aware_transplant_preregistration.md": "ab1d80ec87be163e759b051ac59402c754179e1d80c895da09bcf3c2109ecdff"
+  },
+  "saved_preparation_revalidation": "passed",
+  "source_validation": [
+    {
+      "index": 0,
+      "recipient_seed": 202619000,
+      "shuffle_score": 0,
+      "source_checksums": {
+        "aggregate.csv": "d832873cc713b3249fd3ebc17560e9cf6fc6fc779d3ee6221d03f43109976008",
+        "config.json": "e2844579cc4c970f0ba09b4276c8e96fbb5be26f8d3710919dd9da41ec83062e",
+        "functional_assays/epoch_040901.npz": "0829a5b45ca4de2e6fce36bf671115fa304e28a88522a08fca8c565df3d84b3e",
+        "functional_scores.csv": "df0332e018405fb77ed1f5f145e4414a4fef12e07b6395430a022a61b154c327",
+        "manifest.json": "9d2136ba1a00d94e1cfe541e4a1809a1c3566c09fd1d024b387fdf3a5ef27996",
+        "origin_checkpoint.npz": "781e8d7d11c68df3ee6bb0291986d83809ef4ca67b9184e2dade6c830f52657b",
+        "symbols.csv": "a8bfb4822ad80bee251fc8d5dcba1bd07fa45a2dea58815c9159feaee9580c8d",
+        "writes.csv": "20c0a87d7146305578bbf2ac1fd93d845917cf71dfac03d35db29becd20939fa"
+      },
+      "source_epoch": 40901,
+      "source_rank": 0,
+      "source_seed": 202612001,
+      "witness_score": 64
+    },
+    {
+      "index": 1,
+      "recipient_seed": 202619001,
+      "shuffle_score": 0,
+      "source_checksums": {
+        "aggregate.csv": "0a8b25b8b625d02cd53d7db8d256278b4d48c4bbf11415142012ba81b1b3d507",
+        "config.json": "2bdfab33dcc803be47d31dc3542ae2462c760f11585f0e54c704438f81be94a2",
+        "functional_assays/epoch_098001.npz": "e108a8496c18a81f09fcaa5b5b8913ab4e4dfa9ca53cb0ed2b2f95f66d3c6673",
+        "functional_scores.csv": "a08aee6467440ad9f4a74a40fefea04d6d2544efeb922be53426dbcc5bbdbc43",
+        "manifest.json": "b60007401cb4951d88119570d78aeadcf88249e794909e6bca177fef2383a7c9",
+        "origin_checkpoint.npz": "c0d64dd5b2e894b81bd216e76f240a09a9ec923520ebdd9856a2cf1e9c34b4cd",
+        "symbols.csv": "18977ffa928fbf8a2a05b4bb86c94ff41ebbadf9f6587c67659a07e47c21ae9c",
+        "writes.csv": "738970c3cea3e5336db3dcb031940ed5651bd65ba879f60edf8d0d54b3eb6266"
+      },
+      "source_epoch": 98001,
+      "source_rank": 0,
+      "source_seed": 202612003,
+      "witness_score": 64
+    },
+    {
+      "index": 2,
+      "recipient_seed": 202619002,
+      "shuffle_score": 0,
+      "source_checksums": {
+        "aggregate.csv": "a88894ec830c38dc34eddd8583a85a7f0d66168e7a7952dbb39cc4c83d62c46f",
+        "config.json": "b9ced4736348a1995d77869e654f11920d5536061bce1ce5a824bff50d2b9089",
+        "functional_assays/epoch_031901.npz": "a3ed31fdda6f9707d6320d7667413ee6458e9edc1441150fd0fb38e731d390d1",
+        "functional_scores.csv": "6bd6a435a54f071cc1d10da3b437658e5b6ce07826f02414d7092fb51138b2ed",
+        "manifest.json": "4c1f970bfd01db757973bed39bdcf3c82258e896dd4b55c9e379f1fe703dc58d",
+        "origin_checkpoint.npz": "1c71dd1f191a8a77a37baaf9fa261b24c50c6eb26e9eb72efabb5e1d80d4fe70",
+        "symbols.csv": "8f102c082eb7e431cb5885098a4f0d3d35d4b9dd5c99c438c18cf2bd968b7dd7",
+        "writes.csv": "0448309e4e536293fbb12bcc4721617068b3e7c3edb6d93dc2df62dc80814610"
+      },
+      "source_epoch": 31901,
+      "source_rank": 0,
+      "source_seed": 202612008,
+      "witness_score": 64
+    },
+    {
+      "index": 3,
+      "recipient_seed": 202619003,
+      "shuffle_score": 0,
+      "source_checksums": {
+        "aggregate.csv": "c6dfd9ca3f063671e4f87642d3d98b1d2c900e8432e1ba7c68ac602da7e51005",
+        "config.json": "5d2592fe62cce0c7eb2fd79071afd970aa26317b0ea406c58b68f37c2c6c622a",
+        "functional_assays/epoch_095701.npz": "4d5a171aa967d1f58710517f3c42a669a03dc41da32089687e6af54d13d5bc62",
+        "functional_scores.csv": "05337cb2c12fa8c2388b012b17b956dd5ba29a882aa077bbf6000790057c2e09",
+        "manifest.json": "dd999245fdb6877d89324c3189df864c3c7c67bb899e7c21cb30427591204fa7",
+        "origin_checkpoint.npz": "c192cc971f07a9975d19ff09a62dc4e899ad4b08a242175b226b57c08010dde2",
+        "symbols.csv": "82abbefda425b73245226abc67143ea1a43e4e052569d528158a96c3910a4c41",
+        "writes.csv": "9a1d473289860377d4a929b02b4b7ca0cb4de5d4ad7442cf009803718727e8a0"
+      },
+      "source_epoch": 95701,
+      "source_rank": 0,
+      "source_seed": 202612009,
+      "witness_score": 64
+    },
+    {
+      "index": 4,
+      "recipient_seed": 202619004,
+      "shuffle_score": 0,
+      "source_checksums": {
+        "aggregate.csv": "5ee385edac1b37fca0a3083b5809be4ad4244fc10cd38f14ca693f56e675d2fb",
+        "config.json": "3de4589b9f9b0b2cf7912e8eeb8054a3df3f01422c3ea1d91eea8d9aba50680b",
+        "functional_assays/epoch_045801.npz": "a11c14ad6f854aa36e03e6f73fdc92333466503ac67bd01f4cea18af3e16a652",
+        "functional_scores.csv": "faac464f8fc38d7b47b12c6af459980c805fc0271cc38ca8f43a31c8d763dfb1",
+        "manifest.json": "943b5750ce8c0ba74132fe0409f810bd7dbc1b0f7991654ed649a5b52ab37a76",
+        "origin_checkpoint.npz": "e3885a86a900c17be8ae57512f2f048b0bb592c4b5404e89fc10bce1ceff4a19",
+        "symbols.csv": "689d8db2dae2233ff52383291d90affb07266434cd3420eefdc71449e66b52ea",
+        "writes.csv": "27d1cddbc87931170d6388a4da5475bbb20eb1697cd4264aa9301c76d9df9efe"
+      },
+      "source_epoch": 45801,
+      "source_rank": 0,
+      "source_seed": 202613001,
+      "witness_score": 64
+    },
+    {
+      "index": 5,
+      "recipient_seed": 202619005,
+      "shuffle_score": 0,
+      "source_checksums": {
+        "aggregate.csv": "5bd65cb8169392596b742f47ed63f320f2f24055f1079b46da971dbf22b7f42f",
+        "config.json": "01c3514daed0d9e62679a4dab85550cbe2ac3fde5351f014670a9287ab628667",
+        "functional_assays/epoch_076601.npz": "406755cd8125a90e0acce9e57a26d18c80d2349807852c866287319e936ea9af",
+        "functional_scores.csv": "e081ab7a367655f18b2b0ace86ad146b1998af66a4909de58dadd20067006caf",
+        "manifest.json": "283a78ba86189971be013e976594d1031486db36d49c411ad3cc78ae3fb76d42",
+        "origin_checkpoint.npz": "678d19be5965690f793d154b821f98117c5500ea367f5d7eff9b9994b0483ad1",
+        "symbols.csv": "24de8b12d606e2a49b48ec4f6f1bdd15f647274885bfbf1655f746212cd8a443",
+        "writes.csv": "cba5e769dd35875d0dbf77adfba110f85f57dd46e2ef93caf1532de509a864fd"
+      },
+      "source_epoch": 76601,
+      "source_rank": 85,
+      "source_seed": 202613008,
+      "witness_score": 64
+    },
+    {
+      "index": 6,
+      "recipient_seed": 202619006,
+      "shuffle_score": 0,
+      "source_checksums": {
+        "aggregate.csv": "70ffaf0d742b5acf2f784980fc34d9e090add3f04cd0791d4c5791ad7871291c",
+        "config.json": "1c408bf90d51941256eceef05bc0a476d5e9024d997f076425792e6f58fc47a7",
+        "functional_assays/epoch_028601.npz": "92ef3750e9b60eeab9c3dd309103aa14c3f650f3136c6296988dcf54f660563a",
+        "functional_scores.csv": "271497062df23d35bc23aa8267d13a6930157ddd481e5d49e28bc6370758d8c4",
+        "manifest.json": "055e9c68e7f3945e65d903e4d3ea3369fc5dbe5d19abb6f4dc20669b4c1232c2",
+        "origin_checkpoint.npz": "7595c99368af93445a1b917ab6030dc38d67a8b9209a934f232d2896d1005c79",
+        "symbols.csv": "c3eba23e0b57e22f5faf31f1706dfc821d617f25d0c517d4f9a546072a29c2d0",
+        "writes.csv": "6bf8c1605b40b80fc75503872290de3a8e2723ecaea83b6c5c7c8f9f186b1aad"
+      },
+      "source_epoch": 28601,
+      "source_rank": 0,
+      "source_seed": 202613010,
+      "witness_score": 64
+    },
+    {
+      "index": 7,
+      "recipient_seed": 202619007,
+      "shuffle_score": 0,
+      "source_checksums": {
+        "aggregate.csv": "a91ca852ed38dc743029c66f5b713294bea16913a8167568332fca06bdabcb9f",
+        "config.json": "e207a990fed145a9c9f6983aa35ae4bb4a3433dd243067c0774b3a24953752f7",
+        "functional_assays/epoch_012601.npz": "20bcc56a678782ecc88b95a45aa7c38ecd5a45ca912b50b90be1c4bbecd648e0",
+        "functional_scores.csv": "77ce97d8b662ead755d7d93adb93b2cca61aa226d6c88ec85d9093ba7e0c5c1d",
+        "manifest.json": "612d65399b42f84b4babfbb3176ffb26b31fc53881005dbd359be22ebe45b63f",
+        "origin_checkpoint.npz": "3295e142f917a569cd5930026a3af289735359a135f108ccca78bbc9556ddf8a",
+        "symbols.csv": "e7c35b9f92a59a972b10d982b5ff4363e434ad3ebd30e0cacc37384baa26b3eb",
+        "writes.csv": "e0fe60c3c757a21a61909e69da766b61efceefacfd9825b16718d3a88b3c66ab"
+      },
+      "source_epoch": 12601,
+      "source_rank": 37,
+      "source_seed": 202613013,
+      "witness_score": 64
+    },
+    {
+      "index": 8,
+      "recipient_seed": 202619008,
+      "shuffle_score": 0,
+      "source_checksums": {
+        "aggregate.csv": "eadf05b81fff93c89dde045fdad648990ae31e342ad983ae62bbf333670756f0",
+        "config.json": "220b456c0fdd3e8cbaf871e9daa635c70899d6c7ebca5008896be43735c0c281",
+        "functional_assays/epoch_029201.npz": "b610faa5f3598bb900448dd8366a8a93c6e180f130fb0e7dd9e76617ce4c012c",
+        "functional_scores.csv": "eaaaa245c737ad178e2758232eb179c9e3a9e2a10f6b26fe49b4c9ef88f14057",
+        "manifest.json": "94deebb068bc64e1815b20abac6f4e0ae5045b5f70614d67c2c51e8da8051f31",
+        "origin_checkpoint.npz": "04158f8334c10972d79a1bb4364c458de8110cd706d784e363ba15764bd4e1c9",
+        "symbols.csv": "73b7cd09e8334b6a24f124a0dd4e9b21fb6c53b833b81924124ac5d8e51d8d59",
+        "writes.csv": "fb88458645ae029a0d724eab92fecf2079f5fe99bc2cbc2494761571d54559c6"
+      },
+      "source_epoch": 29201,
+      "source_rank": 0,
+      "source_seed": 202613018,
+      "witness_score": 64
+    }
+  ],
+  "status": "prepared_not_executed"
+}

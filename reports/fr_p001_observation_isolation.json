@@ -1,0 +1,16 @@
+{
+  "epochs": 4,
+  "passed": true,
+  "run_pins": {
+    "experiments/analyze_ac_p001_high_resource_origin_viability.py": "6a028e85a6d7d960378b0547c5fed4fcb78598069a6529ab633dea56f359a537",
+    "experiments/analyze_ac_p003_functional_origin_convergence.py": "8137acfc272b3d37e9330c7f11b73a8d17bb6d9cd1b612e259e18e04a30d67fc",
+    "experiments/fr_i002_gate.py": "bb88718d0634f2bb4cb4406e116583dbdca0486b6dbe561bb2a73cc908f36a3d",
+    "experiments/fr_i002_provenance.py": "2c4e1aac57da7d20077652eada7b4828c61993af613e2db0323c8f386789b806",
+    "experiments/fr_p001.py": "a6cced15ed03c8581709d29b793fd3028b63738e4a7730c0dfb63b2784abeca3",
+    "experiments/paper_probe.py": "72ffde66abcd56428ee59c7c30b036b6b7cf543afb3025ab9e80a741321fca2d",
+    "experiments/phase1_probe.py": "74b8853036694895d26c86d27fb630dc17328cf0def0f5f3f8285f5e317e2314",
+    "experiments/run_fr_p001.py": "845788ed4168b085f3ad0f8567ecfc18f30b67bf40da0dcdbc9a22f8e8a7d64c",
+    "reports/fr_p001_descendant_aware_transplant_preregistration.md": "ab1d80ec87be163e759b051ac59402c754179e1d80c895da09bcf3c2109ecdff"
+  },
+  "state_sha256": "352edd1cea2156d723d6002eec6b4a4340c6181e00ddc4190ba8462884938e3a"
+}
