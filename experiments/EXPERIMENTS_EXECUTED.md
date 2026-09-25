@@ -920,6 +920,31 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
 - **Evidence:** `reports/fr_i002_mechanics_decision.md` and
   `reports/fr_i002_mechanics_parity.json`.
 
+### FR-E003 — Held-out descendant-aware transplantation
+
+- **Hypothesis:** Fresh held-out score-64 inocula retain sustained sampled presence
+  as non-exact tapes satisfying score 64 and at least 0.75 value-change
+  provenance, unlike composition-preserving shuffles.
+- **Test:** Nine paired witness/shuffle transplantations, 32 inoculum copies,
+  32,768 tapes, multiplier-16 pool, 10,000 epochs, and independently reconstructed
+  provenance-aware observations at 101 callbacks.
+- **Result:** **FAIL with valid integrity.** All 18 runs conserved exactly and all
+  audit/snapshot rescoring passed. Every witness beat its paired shuffle in
+  post-transient non-exact load (9/9; descriptive one-sided sign tail 1/512),
+  with loads 4–35,350 versus zero in every shuffle. However, no witness or
+  control had any final non-exact candidate, and 0/9 witnesses met sustained
+  final sampled presence.
+- **Decision:** The witness sampled-presence gate failed while integrity, control
+  specificity, and paired-load gates passed. Per the frozen ladder, stop BFF
+  lineage/persistence/ecology work and pivot to a substrate with explicit atomic
+  reproduction and lineage identity.
+- **Limitations:** The transient operational descendants do not demonstrate
+  continuous lineage continuity, biological ancestry, heredity, or persistent
+  maintenance. Value-change provenance omits control/address dependence.
+- **Evidence:** `reports/fr_p001_descendant_aware_transplant_report.md` and
+  `reports/fr_p001_descendant_aware_transplant_decision.json`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/fr_p001`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -941,6 +966,8 @@ chemistry phenomenon; resource-effect and structural-class claims are unsupporte
 AC-P005 independently confirmed bounded composition-level convergence relative
 to immediate pre-origin controls. AC-P006 showed sequence-specific transient
 exact-copy amplification but no exact-tape persistence. FR-I001 validated a
-controlled operational descendant representation, and FR-I002 established exact
-conserved-soup observational parity. A newly preregistered held-out descendant-
-aware transplantation remains required before any lineage or persistence claim.
+controlled operational descendant representation and FR-I002 established exact
+conserved-soup observational parity. FR-P001 then found strong, perfectly paired
+transient non-exact descendant load but zero sustained final presence in every
+witness. The frozen stop rule closes BFF lineage/persistence/ecology work; the
+next substrate must provide explicit atomic reproduction and lineage identity.

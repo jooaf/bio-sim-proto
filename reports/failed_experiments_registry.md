@@ -1,6 +1,6 @@
 # Failed and mixed experiment registry
 
-**Updated:** 2026-09-12
+**Updated:** 2026-09-18
 
 ## Purpose
 
@@ -199,6 +199,22 @@ ups are prohibited unless opened as an explicitly new design.
   requirement, or extend selected runs. Score-64 and composition-convergence
   results remain bounded proxies without established fresh-soup persistence.
 
+## FR-P001 — Held-out descendant-aware transplantation
+
+- **Decision:** FAIL with valid integrity; BFF lineage/persistence/ecology work
+  stopped.
+- **Failed criterion:** 0/9 witness arms met sustained final sampled non-exact
+  presence; all witness and shuffle final non-exact abundances were zero.
+- **Retained:** all 18 runs conserved exactly and independently reconstructed.
+  Witness post-transient non-exact operational-descendant load exceeded its
+  paired shuffle in 9/9 pairs (loads 4–35,350 versus zero; descriptive one-sided
+  sign tail `1/512`). Integrity, control-specificity, and paired-load gates passed.
+- **Boundary:** transient provenance-linked score-64 candidates do not establish
+  persistent lineage, heredity, or maintenance. Do not shorten the final window,
+  lower the 0.75 provenance threshold, extend selected runs, or substitute
+  integrated transient load for the failed persistence endpoint. Pivot to a
+  substrate with explicit atomic reproduction and lineage identity.
+
 ## Cross-cutting lessons
 
 1. Positive mechanics do not imply ecological or organizational function.
@@ -207,5 +223,6 @@ ups are prohibited unless opened as an explicitly new design.
 3. Descriptive directional effects below a conjunction gate remain descriptive.
 4. New experiments may address a diagnosed confound only with new IDs, held-out
    seeds, and preregistration; the original decision never changes.
-5. The next discovery phase targets BFF conserved-chemistry origin filtering,
-   not retries of failed Phase 2 spatial metrics or Stage 4 writable signaling.
+5. BFF transient amplification and operational descendant load did not produce
+   sustained persistence; further lineage work requires explicit reproduction and
+   lineage identity in a different substrate.

@@ -174,3 +174,27 @@ Frozen outcomes:
 A final 1%-sampled composition-reaction diagnostic found all 15 windows identifiable, with recurrent-observation fractions above 0.994. Closed/self-maintaining empirical components appeared in 5/15 windows against zero in all product-permutation nulls (`p = 0.005`), but failed the frozen 8/15 prevalence requirement; organization excess is a NO-GO and no intervention test proceeds.
 
 These results establish local inheritance, explicit energy accounting, and energetic constraint in scheduled-birth controls. They do not establish endogenous reproduction, trophic organization, self-maintenance, or organisms.
+
+## 2026-09-18 — BFF functional-descendant closeout
+
+Strict score-64 functional origins and composition-level convergence were
+replicated, and composition-preserving witness transplants showed strong
+sequence-specific transient amplification. A byte-level value-change provenance
+representation then passed controlled sensitivity/specificity tests (65/65
+held-out witness trials, 0/130 shuffled/random controls) and exact conserved-
+kernel parity.
+
+The final held-out conserved transplantation nevertheless failed persistence.
+Across nine independent witness/shuffle pairs, every witness had greater
+post-transient non-exact score-64/provenance load than its shuffle (loads 4–35,350
+versus zero; descriptive sign tail 1/512), but all witness and control final
+abundances were zero and 0/9 witnesses met the frozen sustained final-window
+criterion. All 18 runs conserved exactly and passed independent snapshot/audit
+reconstruction.
+
+This retains a bounded result of transient functional, provenance-linked
+propagation but not persistent lineage, heredity, maintenance, ecology, or
+organism identity. The preregistered stop rule closes BFF lineage/persistence
+work. Any continuation should move to a substrate with explicit atomic
+reproduction and lineage identity rather than weakening the final window or
+provenance threshold.

@@ -732,7 +732,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### FR-P001 — Held-out descendant-aware transplantation
 
-- **Status:** Claimed
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-18
 - **Depends on:** passed FR-I001 representation and FR-I002 mechanics parity
