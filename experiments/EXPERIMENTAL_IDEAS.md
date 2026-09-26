@@ -748,3 +748,38 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 - **Estimated cost:** 18 runs; six workers
 - **On success:** permit a separately preregistered heredity perturbation.
 - **On failure:** stop BFF lineage/persistence/ecology and pivot substrates.
+
+### SM-L001 — Native Stringmol reproduction and lineage identity
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-18
+- **Depends on:** FR-P001 stop decision and pinned Spatial Stringmol controls
+- **Why:** The next substrate must expose successful atomic birth and individual
+  parentage rather than infer descent from exact tapes or observational labels.
+- **Hypothesis:** Canonical Stringmol hosts produce persistent multigenerational
+  individual lineages through successful cleavage, while a one-symbol inert
+  control does not, and append-only lineage logging leaves trajectories unchanged.
+- **Test:** Logging-off/on parity and repeat determinism, followed by ten paired
+  host/inert 5,000-step runs on unseen seeds with individual birth DAG and extant
+  ID reconstruction.
+- **Preregistration:** `reports/sm_l001_native_reproduction_lineage_preregistration.md`
+- **Estimated cost:** 20 short Stringmol runs; six workers
+- **On success:** preregister a separate conservation-boundary design.
+- **On failure:** do not add conservation; audit or change substrate under a new
+  baseline.
+
+### Deferred — Comparative language semantics under conservation
+
+- **Status:** Not claimed; do not execute now
+- **Question:** Do in-place tape languages like BFF systematically produce
+  transient propagation or ecological collapse under exact matter conservation,
+  relative to substrates with explicit allocation, birth, and lineage identity?
+- **Required design:** A prospective factorial comparison separating overwrite
+  versus atomic offspring, inferred versus native lineage, fixed slots versus
+  birth/death, conserved versus unconserved execution, and global versus local
+  interaction. Each substrate needs its own positive reproduction control before
+  comparison.
+- **Note:** `reports/bff_failure_and_comparative_language_note.md`
+- **Boundary:** BFF preserved exact physical conservation; the failed outcome was
+  sustained lineage/ecological persistence, not conservation accounting.
