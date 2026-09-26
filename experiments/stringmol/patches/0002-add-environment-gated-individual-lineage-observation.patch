@@ -1,0 +1,110 @@
+--- a/src/sm_spatial.cpp
++++ b/src/sm_spatial.cpp
+@@ -41,10 +41,75 @@
+ 
+ #include "lodepng.h"
+ #include <iostream>
++#include <algorithm>
+ #include "setupSM.h"
+ 
+ 
+ 
++
++
++// SM-L001: observation only; no RNG, agent writes, or species updates.
++namespace {
++FILE *lineage_events = NULL;
++FILE *lineage_snapshots = NULL;
++
++void lineage_hex(FILE *fp, const s_ag *agent) {
++    if (agent)
++        for (const unsigned char *p = reinterpret_cast<const unsigned char *>(agent->S); *p; ++p)
++            fprintf(fp, "%02X", static_cast<unsigned int>(*p));
++}
++
++void lineage_event(const char *event, unsigned int tick, const s_ag *child,
++                   const s_ag *active, const s_ag *passive) {
++    if (!lineage_events) return;
++    fprintf(lineage_events, "%s,%u,-1,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,",
++            event, tick, child->idx, active ? active->idx : -1, passive ? passive->idx : -1,
++            child->spp ? child->spp->spp : -1,
++            active && active->spp ? active->spp->spp : -1,
++            passive && passive->spp ? passive->spp->spp : -1,
++            child->label, active ? active->label : -1, passive ? passive->label : -1,
++            child->x, child->y);
++    lineage_hex(lineage_events, child); fputc(',', lineage_events);
++    lineage_hex(lineage_events, active); fputc(',', lineage_events);
++    lineage_hex(lineage_events, passive); fputc('\n', lineage_events);
++}
++
++void lineage_begin(unsigned int tick, const s_ag *head) {
++    const char *enabled = getenv("STRINGMOL_LINEAGE_LOG");
++    if (!enabled || strcmp(enabled, "1")) return;
++    lineage_events = fopen("lineage_events001.csv", "a");
++    lineage_snapshots = fopen("lineage_snapshots001.csv", "a");
++    if (lineage_events) {
++        fputs("event,timestep,population,child_id,active_id,passive_id,child_species,active_species,passive_species,child_label,active_label,passive_label,x,y,child_sequence_hex,active_sequence_hex,passive_sequence_hex\n", lineage_events);
++        for (const s_ag *p = head; p; p = p->next)
++            lineage_event("INIT", tick, p, NULL, NULL);
++    }
++    if (lineage_snapshots)
++        fputs("tick,id,species,label,x,y,sequence_hex\n", lineage_snapshots);
++}
++
++void lineage_snapshot(unsigned int tick, const s_ag *head) {
++    if (!lineage_snapshots) return;
++    std::vector<const s_ag *> agents;
++    for (const s_ag *p = head; p; p = p->next) agents.push_back(p);
++    std::sort(agents.begin(), agents.end(), [](const s_ag *a, const s_ag *b) { return a->idx < b->idx; });
++    for (const s_ag *p : agents) {
++        fprintf(lineage_snapshots, "%u,%d,%d,%d,%d,%d,", tick, p->idx,
++                p->spp ? p->spp->spp : -1, p->label, p->x, p->y);
++        lineage_hex(lineage_snapshots, p); fputc('\n', lineage_snapshots);
++    }
++}
++
++void lineage_end(unsigned int tick, int population) {
++    if (lineage_events) {
++        fprintf(lineage_events, "END,%u,%d,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,,,\n", tick, population);
++        fclose(lineage_events); lineage_events = NULL;
++    }
++    if (lineage_snapshots) {
++        fclose(lineage_snapshots); lineage_snapshots = NULL;
++    }
++}
++}
+ 
+ Stringmol_Spatial::Stringmol_Spatial(SMspp * pSP)
+ : stringPM(pSP)
+@@ -78,6 +143,7 @@
+ 
+ 	randseed = RandomSeedInitFromFile(argv[2],0);
+ 	ConfigureFromFile(argv[2],&run,1);
++	lineage_begin(timestep, nowhead);
+ 
+ 	int bt,ct{0};
+ 	ct = AgentsCount(nowhead,-1);
+@@ -137,6 +203,7 @@
+ 			fclose(fp);
+ 
+ 			spl->SpeciesPrintCounts(nowhead,popdyfn,timestep);
++			lineage_snapshot(timestep, nowhead);
+ 		}
+ 
+ 		TimestepIncrementSpatial();
+@@ -160,6 +227,7 @@
+ 
+ 	}
+ 
++	lineage_end(timestep, ct);
+ 	printf("FINISHED smspatial\n");
+ 	fflush(stdout);
+ 	return 0;
+@@ -896,6 +964,7 @@
+ 
+ 			//TODO: place the new agent on the grid
+ 			if((AgentPlaceInMooreNeighbourhood(c,act->x,act->y))!=NULL){//,x,y))!=NULL){
++				lineage_event("BIRTH", timestep, c, act, pass);
+ 				//append the agent to nexthead
+ 				AgentAppend(&(nexthead),c);
+ 			}

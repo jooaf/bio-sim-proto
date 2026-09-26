@@ -10,7 +10,7 @@ from typing import Literal
 
 HOST = "WWGEWLHHHRLUEUWJJJRJXUUUDYGRHJLRWWRE$BLUBO^B>C$=?>$$BLUBO%}OYHOB"
 PARASITE_R = "WWGEWLHHHRLUERWWRE$BLUBO^B>C$=?>$$BLUBO%}OYHOB"
-Condition = Literal["host-only", "parasite-only", "mixed"]
+Condition = Literal["host-only", "inert", "parasite-only", "mixed"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -28,7 +28,7 @@ class StringmolControlConfig:
     image_every: int = 1_000_000
 
     def validate(self) -> None:
-        if self.condition not in {"host-only", "parasite-only", "mixed"}:
+        if self.condition not in {"host-only", "inert", "parasite-only", "mixed"}:
             raise ValueError("unknown Stringmol control condition")
         if self.seed < 0 or self.nsteps <= 0:
             raise ValueError("seed must be nonnegative and nsteps positive")
@@ -58,6 +58,8 @@ def render_config(config: StringmolControlConfig, matrix_path: Path) -> str:
     agents: list[tuple[str, str, tuple[int, int]]]
     if config.condition == "host-only":
         agents = [(HOST, "Q", cell) for cell in host_cells]
+    elif config.condition == "inert":
+        agents = [("B", "B", cell) for cell in host_cells]
     elif config.condition == "parasite-only":
         agents = [(PARASITE_R, "R", cell) for cell in parasite_cells]
     else:
@@ -92,7 +94,7 @@ def render_config(config: StringmolControlConfig, matrix_path: Path) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--condition", choices=("host-only", "parasite-only", "mixed"), required=True)
+    parser.add_argument("--condition", choices=("host-only", "inert", "parasite-only", "mixed"), required=True)
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--interaction-radius", type=int, choices=(0, 1), required=True)
     parser.add_argument("--placement-radius", type=int, choices=(0, 1), required=True)
