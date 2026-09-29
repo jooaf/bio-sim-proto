@@ -751,7 +751,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### SM-L001 — Native Stringmol reproduction and lineage identity
 
-- **Status:** Claimed
+- **Status:** Complete
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-18
 - **Depends on:** FR-P001 stop decision and pinned Spatial Stringmol controls

@@ -945,6 +945,29 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
   `reports/fr_p001_descendant_aware_transplant_decision.json`; raw campaign:
   `/home/jojo/bio-sim-results/bazzite/fr_p001`.
 
+### SM-E001 — Native Stringmol reproduction and lineage identity
+
+- **Hypothesis:** Canonical hosts create persistent multigenerational individual
+  lineages through successful cleavage, while one-symbol `B` controls do not;
+  append-only observation does not alter trajectories.
+- **Test:** Exact baseline/logging-off/logging-on isolation plus ten paired
+  host/inert 5,000-step global runs on unseen seeds, with explicit individual IDs,
+  two-parent birth DAGs, snapshots, and complete artifact inventories.
+- **Result:** **PASS.** All 20 runs passed integrity. All ten host seeds jointly
+  passed the frozen criteria, recording 3,730–5,193 successful births, maximum
+  two-parent depths 18–70, 1,183–1,596 final strict descendants, and final
+  descendant fractions 0.98996–0.99750. All ten inert runs had zero births and
+  depth zero. Observation isolation and deterministic repeat were byte-exact.
+- **Decision:** Native successful cleavage birth and individual lineage identity
+  are validated. A separately preregistered conservation-boundary design is now
+  eligible.
+- **Limitations:** Seeded, unconserved positive control only; no spontaneous
+  origin, conserved reproduction, energetic closure, heredity fidelity,
+  adaptation, self-maintenance, ecology, or organism claim.
+- **Evidence:** `reports/sm_l001_native_reproduction_lineage_report.md` and
+  `reports/sm_l001_native_reproduction_lineage_decision.json`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/sm_l001_review_fixes`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -969,5 +992,7 @@ exact-copy amplification but no exact-tape persistence. FR-I001 validated a
 controlled operational descendant representation and FR-I002 established exact
 conserved-soup observational parity. FR-P001 then found strong, perfectly paired
 transient non-exact descendant load but zero sustained final presence in every
-witness. The frozen stop rule closes BFF lineage/persistence/ecology work; the
-next substrate must provide explicit atomic reproduction and lineage identity.
+witness. The frozen stop rule closes BFF lineage/persistence/ecology work.
+SM-L001 has now validated explicit successful cleavage birth and persistent
+individual lineage identity in pinned Stringmol. The next frontier is a separately
+preregistered conservation boundary, not reinterpretation of BFF.

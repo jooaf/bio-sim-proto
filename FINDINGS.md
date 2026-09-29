@@ -198,3 +198,25 @@ organism identity. The preregistered stop rule closes BFF lineage/persistence
 work. Any continuation should move to a substrate with explicit atomic
 reproduction and lineage identity rather than weakening the final window or
 provenance threshold.
+
+## 2026-09-18 — Stringmol native reproduction/lineage pivot
+
+Pinned Spatial Stringmol passed the replacement-substrate baseline. An
+append-only observer records successful placed cleavage births with native
+individual IDs and active/passive parents, while report-aligned snapshots retain
+extant identity. Baseline, logging-disabled, logging-enabled, and repeated-enabled
+runs had byte-identical shared outputs; both fresh source builds passed their
+upstream suites.
+
+Across ten unseen canonical-host seeds, every run jointly passed the frozen birth,
+multigenerational-depth, and final-descendant criteria. Hosts produced 3,730–5,193
+successful births, reached two-parent depths 18–70, and ended with 1,183–1,596
+strict non-initial descendants (fractions 0.98996–0.99750). Ten paired one-symbol
+`B` controls produced zero births and depth zero. All 20 process, identity-DAG,
+snapshot/species, and artifact-integrity checks passed.
+
+This validates seeded native cleavage reproduction and persistent individual
+lineage identity—precisely the mechanics absent from BFF. It remains unconserved
+and does not establish spontaneous origin, energetic closure, heredity fidelity,
+adaptation, self-maintenance, ecology, or organisms. A Stringmol conservation
+boundary now requires its own prospective design.
