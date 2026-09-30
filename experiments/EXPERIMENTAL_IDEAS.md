@@ -806,3 +806,34 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 - **Decision:** `reports/sm_c001_stringmol_conservation_decision.json`
 - **Raw results:** `/home/jojo/bio-sim-results/bazzite/sm_c001_exact_conservation/bazzite.attlocal.net/prepared`
 - **Next:** a separate regulation or energetic-boundary design is eligible.
+
+### SM-C002 — Causal decay-recycling gate
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-30
+- **Depends on:** passed SM-C001 exact symbol-conservation boundary
+- **Why:** SM-C001 m0 retained substantial copying and lineage while native decay
+  returned 14,347–18,534 bytes; accessibility of this turnover is not isolated.
+- **Hypothesis:** Routing decayed symbols to the accessible pool, rather than an
+  exactly conserved inert waste ledger, causally sustains late copy growth and
+  cleavage-lineage production.
+- **Test:** Frozen mechanics/isolation/replay gates followed by 20 paired m0
+  recycle/sequester runs on unseen seeds `202622000`–`202622019`.
+- **Preregistration:** `reports/sm_c002_decay_recycling_preregistration.md`
+- **On success:** permit a separately preregistered functional-descendant or
+  energetic boundary.
+- **On failure:** stop before energy/ecology and retain the component-specific
+  negative result.
+
+### Stringmol–BFF comparative deep dive
+
+- **Status:** Prospective staged program; no cross-substrate causal result claimed
+- **Why:** Stringmol now supports seeded conserved lineage persistence where BFF
+  showed only transient provenance-linked functional propagation.
+- **Program:** `reports/stringmol_bff_comparative_deep_dive_program.md`
+- **Order:** measurement/partner context; mutation baseline; birth-boundary ×
+  parent-preservation × admission; catalyst/template assays; locality/scarcity;
+  length/turnover; longer-horizon confirmation.
+- **Constraint:** infer causes from randomized within-substrate interventions and
+  triangulated ablation/rescue, never from direct historical pass-rate comparison.
