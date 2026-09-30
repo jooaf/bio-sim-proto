@@ -1,0 +1,473 @@
+--- a/src/sm_spatial.cpp
++++ b/src/sm_spatial.cpp
+@@ -143,6 +143,18 @@
+ 
+ 	randseed = RandomSeedInitFromFile(argv[2],0);
+ 	ConfigureFromFile(argv[2],&run,1);
++	const char *conserve = getenv("STRINGMOL_CONSERVATION");
++	if (conserve && !strcmp(conserve, "1")) {
++		int listed = 0, placed = 0;
++		for (s_ag *a = nowhead; a; a = a->next) {
++			if (a->x < 0 || a->y < 0 || a->x >= grid->gridx || a->y >= grid->gridy || grid->grid[a->x][a->y] != a)
++				SpatialConservation::fail("initial placement mismatch");
++			++listed;
++		}
++		for (int x = 0; x < grid->gridx; ++x) for (int y = 0; y < grid->gridy; ++y) if (grid->grid[x][y]) ++placed;
++		if (listed != placed) SpatialConservation::fail("initial placement count");
++	}
++	conservation.init(nowhead, maxl0, blosum->key);
+ 	lineage_begin(timestep, nowhead);
+ 
+ 	int bt,ct{0};
+@@ -204,6 +216,7 @@
+ 
+ 			spl->SpeciesPrintCounts(nowhead,popdyfn,timestep);
+ 			lineage_snapshot(timestep, nowhead);
++			conservation.observe(timestep, "CHECKPOINT", nowhead);
+ 		}
+ 
+ 		TimestepIncrementSpatial();
+@@ -227,6 +240,7 @@
+ 
+ 	}
+ 
++	conservation.observe(timestep, "END", nowhead);
+ 	lineage_end(timestep, ct);
+ 	printf("FINISHED smspatial\n");
+ 	fflush(stdout);
+@@ -723,6 +737,7 @@
+ int Stringmol_Spatial::ReactionExecuteOpcode_Spatial(s_ag *act, s_ag *pass){//, int x, int y){
+ 
+ 	bool safe_append=true;
++	if (conservation.enabled) conservation.instruction(act, pass);
+ 
+ 	switch(*(act->i[act->it])){//*iptr[it]){
+ 
+@@ -746,7 +761,9 @@
+ 	 *   HCOPY  *
+ 	 ************/
+ 	case '='://h-copy
+-		OpcodeCopy(act,domut,indelrate,subrate,maxl,
++		if (conservation.enabled)
++			conservation.copy(act,domut,indelrate,subrate,blosum,granular_1,biomass,spl,timestep);
++		else OpcodeCopy(act,domut,indelrate,subrate,maxl,
+ 						blosum,granular_1,biomass,
+ 						spl,timestep);
+ 		break;
+@@ -827,6 +844,11 @@
+ 		AgentAppend(&(nexthead),pass);
+ 	}
+ 	energy--;
++	// Preserve native completion first, then reject an un-dispatchable result.
++	// In particular, deletion at the final data byte advances i to one-past.
++	// Fail here even if the molecule would decay before its next dispatch.
++	if (conservation.enabled && safe_append && act->status == B_ACTIVE)
++		conservation.instruction(act, pass);
+ 
+ 	return 1;
+ }
+@@ -879,6 +901,7 @@
+ 		grid->grid[(*pag)->x][(*pag)->y]=NULL;
+ 		grid->status[(*pag)->x][(*pag)->y]=G_EMPTY;
+ 
++		if (conservation.enabled) conservation.release(conservation.count(*pag), conservation.decay);
+ 		AgentFreeAndNull(pag);
+ 		//TODO: sort this null-ing of free'd agents out!
+ 		//pag = NULL;
+@@ -889,6 +912,7 @@
+ 			grid->grid[bag->x][bag->y]=NULL;
+ 			grid->status[bag->x][bag->y]=G_EMPTY;
+ 
++			if (conservation.enabled) conservation.release(conservation.count(bag), conservation.decay);
+ 			AgentFreeAndNull(&bag);
+ 			//bag = NULL;
+ 		}
+@@ -922,9 +946,18 @@
+ 	c = NULL;
+ 	pass = act->pass;
+ 
++	SpatialConservation::Counts before{};
++	if (conservation.enabled) before = SpatialConservation::sum(conservation.count(act), conservation.count(pass));
++
++	if (conservation.enabled && act->ft != 0 && act->ft != 1)
++		SpatialConservation::fail("invalid cleavage toggle");
+ 	//pick the mol containing the cleave site:
+ 	csite = act->ft?act:pass;
+ 
++	// Prove the complete allocated range before native pointer subtraction.
++	// In-buffer flow heads at/beyond the visible end remain native no-change.
++	if (conservation.enabled)
++		SpatialConservation::allocated_offset(act->f[act->ft], csite->S, maxl0);
+ 	if(act->f[act->ft]-csite->S < csite->len){
+ 
+ 		//1: MAKE THE NEW MOLECULE FROM THE CLEAVE POINT
+@@ -933,6 +966,7 @@
+ 		//Copy the cleaved string to the agent
+ 		char *cs;
+ 		c->S =(char *) malloc(maxl0*sizeof(char));
++		if (conservation.enabled && !c->S) SpatialConservation::fail("child allocation");
+ 		memset(c->S,0,maxl0*sizeof(char));
+ 		cs = csite->S;
+ 		cpy = strlen(cs);
+@@ -1052,6 +1086,7 @@
+ 		act->i[act->it]++;
+ 	}
+ 
++	if (conservation.enabled) conservation.cleave(before, act, pass, c);
+ 	return dac;
+ }
+ 
+@@ -1162,3 +1197,81 @@
+ 	}
+ 	*/
+ }
++
++// Plans byte changes without modifying either molecule. RNG floats and branch
++// movements deliberately match OpcodeCopy, including the mutation-disabled draw.
++void SpatialConservation::copy(s_ag *act, bool domut, float indelrate, float subrate,
++        smith_waterman_table *blosum, int granular, long &biomass,
++        SMspp *spl, unsigned long tick) {
++    s_ag *pass = act->pass;
++    count(act); count(pass); // Validate full buffers and reserved terminators first.
++    attempts = add(attempts, 1);
++    act->len = strlen(act->S); pass->len = strlen(pass->S);
++    const auto offset = [](char *p, char *base) -> int64_t {
++        return static_cast<int64_t>(reinterpret_cast<uintptr_t>(p)) - static_cast<int64_t>(reinterpret_cast<uintptr_t>(base));
++    };
++    int64_t w = offset(act->w[act->wt], act->wt ? act->S : pass->S);
++    int64_t r = offset(act->r[act->rt], act->rt ? act->S : pass->S);
++    bool bad_w = w < 0 || w >= size-1, bad_r = r < 0 || r >= size-1;
++    if (bad_w || bad_r) {
++        printf("%s head out of bounds: %" PRId64 "\n", bad_w ? "Write" : "Read", bad_w ? w : r);
++        categories[BOUNDARY] = add(categories[BOUNDARY], 1);
++        act->i[act->it]++;
++        spl->SpeciesListUpdate(act,'A',1,act->spp,pass->spp,AgentUnbind(act),tick,size);
++        spl->SpeciesListUpdate(pass,'P',1,act->spp,pass->spp,AgentUnbind(pass),tick,size);
++        return;
++    }
++    if (!domut) indelrate = subrate = 0;
++    std::vector<std::pair<char *, char> > writes;
++    if (!*act->r[act->rt]) categories[READ_NULL] = add(categories[READ_NULL], 1);
++    else {
++        float draw = RandomBetween0And1();
++        if (draw < indelrate) {
++            draw = RandomBetween0And1();
++            if (draw < 0.5) {
++                if (w + 1 >= size-1) {
++                    printf("Write head out of bounds: %" PRId64 "\n", w + 1);
++                    categories[BOUNDARY] = add(categories[BOUNDARY], 1);
++                    // Selected insertion completes, but no symbol RNG or byte writes.
++                } else {
++                    writes.push_back(std::make_pair(act->w[act->wt], *act->r[act->rt]));
++                    int index = static_cast<int>(static_cast<float>(RandomBetween0And1()) * blosum->N);
++                    writes.push_back(std::make_pair(act->w[act->wt] + 1, blosum->key[index]));
++                }
++                act->w[act->wt]++;
++                if (!granular) act->w[act->wt]++;
++            } else {
++                categories[DELETION] = add(categories[DELETION], 1);
++                act->i[act->it]++;
++            }
++            if (!granular) act->r[act->rt]++;
++        } else {
++            char proposed = draw < subrate + indelrate ? adjacent(*act->r[act->rt], blosum) : *act->r[act->rt];
++            writes.push_back(std::make_pair(act->w[act->wt], proposed));
++            if (!granular) { act->w[act->wt]++; act->r[act->rt]++; }
++        }
++        if (!writes.empty()) transaction(writes);
++    }
++    act->len = strlen(act->S); pass->len = strlen(pass->S);
++    act->i[act->it]++;
++    act->biomass++; biomass++;
++}
++
++// Enabled substitution keeps the native draw even for an invalid rank, but
++// checks it before indexing the alphabet. Disabled execution uses upstream code.
++char SpatialConservation::adjacent(char x, smith_waterman_table *table) {
++    int idx = OpcodeIndex(x, table);
++    float draw = RandomBetween0And1();
++    if (idx < 0 || idx >= table->N) fail("invalid substitution source index");
++    int count = 0;
++    for (int i = 0; i < table->N; ++i)
++        if (table->adj[idx][i] == 1) ++count;
++    int rank = ceil(static_cast<float>(count) * draw);
++    if (rank <= 0 || rank > count) fail("invalid substitution rank");
++    int i = 0;
++    while (rank) {
++        if (i >= table->N) fail("invalid substitution adjacency");
++        if (table->adj[idx][i++] == 1) --rank;
++    }
++    return table->key[i - 1];
++}
+--- a/src/sm_spatial.h
++++ b/src/sm_spatial.h
+@@ -24,12 +24,15 @@
+ 
+ 
+ 
++#include "sm_conservation.h"
++
+ class Stringmol_Spatial: public stringPM
+ {
+ 
+ private:
+ 
+ public:
++	SpatialConservation conservation;
+ 
+ 	explicit Stringmol_Spatial(SMspp * pSP);
+ 
+--- a/src/agent.cpp
++++ b/src/agent.cpp
+@@ -247,6 +247,11 @@
+ 		const unsigned int maxl0){
+ 
+ 
++	const char *conserve = getenv("STRINGMOL_CONSERVATION");
++	if (conserve && !strcmp(conserve, "1") && strlen(seq) >= maxl0) {
++		fprintf(stderr, "SM-C001 integrity failure: initial sequence exceeds data buffer\n");
++		exit(EXIT_FAILURE);
++	}
+ 	if(strlen(seq) > maxl0){
+ 		printf("Unable to allocate enough space for this agent: \n%s\nConsider specifying MAXL in your config\n",seq);
+ 		exit(SEQ_LEN_ERROR);
+@@ -256,6 +261,10 @@
+ 		ag = AgentMake(label,agct);//,maxl0);
+ 
+ 		ag->S =(char *) malloc(maxl0*sizeof(char));
++		if (conserve && !strcmp(conserve, "1") && !ag->S) {
++			fprintf(stderr, "SM-C001 integrity failure: initial buffer allocation\n");
++			exit(EXIT_FAILURE);
++		}
+ 		memset(ag->S,0,maxl0*sizeof(char));
+ 		strncpy(ag->S,seq,maxl0-1);//active_string));
+ 		ag->len = strlen(ag->S);
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -165,7 +165,7 @@
+ 	$(CC) -c stringPM.cpp -o $(OUTPUT_DIR)/stringPM.o
+ 
+ 
+-$(OUTPUT_DIR)/sm_spatial.o: sm_spatial.cpp sm_spatial.h
++$(OUTPUT_DIR)/sm_spatial.o: sm_spatial.cpp sm_spatial.h sm_conservation.h
+ 	$(CC) -c sm_spatial.cpp -o $(OUTPUT_DIR)/sm_spatial.o
+ 	
+ 	
+--- /dev/null
++++ b/src/sm_conservation.h
+@@ -0,0 +1,215 @@
++// SM-C001 spatial full-buffer conservation. Independent of lineage observation.
++#ifndef SM_CONSERVATION_H
++#define SM_CONSERVATION_H
++#include <array>
++#include <vector>
++#include <utility>
++#include <algorithm>
++#include <stdint.h>
++#include <inttypes.h>
++#include <limits.h>
++#include <string.h>
++#include <stdlib.h>
++#include <stdio.h>
++
++struct SpatialConservation {
++    typedef std::array<int64_t, 33> Counts;
++    enum Category { BOUNDARY, READ_NULL, DELETION, NOOP, ACCEPTED, BLOCKED };
++    bool enabled = false, initialized = false;
++    unsigned int size = 0;
++    Counts pool{}, initial{}, initial_pool{}, minimum{}, withdrawals{}, returns{},
++           decay{}, failed{}, discard{}, missing{};
++    int64_t attempts = 0, growth = 0;
++    std::array<int64_t, 6> categories{};
++    FILE *aggregate = NULL, *buffers = NULL;
++    static const char *key() { return "ABC$DEF%GH^IJK?LMN}OPQ>RST=UVWXYZ"; }
++    static void fail(const char *message) {
++        fprintf(stderr, "SM-C001 integrity failure: %s\n", message);
++        exit(EXIT_FAILURE);
++    }
++    // Compare integer addresses before any pointer subtraction/dereference.
++    // The reserved terminator is allocated and may be dispatched as native END.
++    static unsigned int allocated_offset(const char *p, const char *base,
++                                         unsigned int allocation) {
++        uintptr_t address = reinterpret_cast<uintptr_t>(p);
++        uintptr_t start = reinterpret_cast<uintptr_t>(base);
++        if (!p || !base || address < start || address - start >= allocation)
++            fail("pointer outside allocated sequence buffer");
++        return static_cast<unsigned int>(address - start);
++    }
++    void instruction(const s_ag *act, const s_ag *pass) const {
++        if (act->it != 0 && act->it != 1) fail("invalid instruction toggle");
++        allocated_offset(act->i[act->it], act->it ? act->S : pass->S, size);
++    }
++    // Same float draw and ceil/rank traversal as native OpcodeAdjacent. A zero
++    // rank has no native symbol (key[-1]); it is an integrity failure, not a
++    // replacement symbol, a clamped draw, or a redraw.
++    static char adjacent(char x, smith_waterman_table *table);
++    static int64_t add(int64_t a, int64_t b) {
++        if (a < 0 || b < 0 || b > INT64_MAX - a) fail("integer overflow");
++        return a + b;
++    }
++    static int symbol(unsigned char c) {
++        if (!c) return -1;
++        const char *p = strchr(key(), c);
++        if (!p) fail("non-ALXII byte");
++        return p - key();
++    }
++    static int64_t amount(const char *s) {
++        if (!s || !*s || (s[0] == '0' && s[1])) fail("noncanonical pool amount");
++        int64_t n = 0;
++        for (; *s; ++s) {
++            if (*s < '0' || *s > '9' || n > (INT64_MAX - (*s - '0')) / 10)
++                fail("invalid/overflow pool amount");
++            n = n * 10 + (*s - '0');
++        }
++        return n;
++    }
++    Counts count(const s_ag *agent) const {
++        Counts result{};
++        if (!agent) return result;
++        if (!agent->S || size < 2 || agent->S[size-1]) fail("invalid buffer/terminator");
++        for (unsigned int i = 0; i < size; ++i) {
++            int s = symbol(static_cast<unsigned char>(agent->S[i]));
++            if (s >= 0) result[s] = add(result[s], 1);
++        }
++        return result;
++    }
++    static Counts sum(const Counts &a, const Counts &b) {
++        Counts c{};
++        for (int s = 0; s < 33; ++s) c[s] = add(a[s], b[s]);
++        return c;
++    }
++    void init(const s_ag *head, unsigned int maxl0, const char *alphabet) {
++        const char *flag = getenv("STRINGMOL_CONSERVATION");
++        if (!flag || strcmp(flag, "1")) return;
++        if (initialized) fail("duplicate initialization");
++        const char *mode = getenv("STRINGMOL_POOL_MODE");
++        if (!mode || (strcmp(mode, "histogram") && strcmp(mode, "uniform"))) fail("invalid pool mode");
++        int64_t n = amount(getenv("STRINGMOL_POOL_AMOUNT"));
++        if (!alphabet || strcmp(alphabet, key())) fail("noncanonical alphabet");
++        if (maxl0 < 2) fail("invalid allocated buffer size");
++        size = maxl0;
++        Counts molecular{};
++        for (const s_ag *a = head; a; a = a->next) molecular = sum(molecular, count(a));
++        for (int s = 0; s < 33; ++s) {
++            int64_t factor = !strcmp(mode, "histogram") ? molecular[s] : 1;
++            if (factor && n > INT64_MAX / factor) fail("pool multiplication overflow");
++            pool[s] = initial_pool[s] = minimum[s] = factor * n;
++            initial[s] = add(molecular[s], pool[s]);
++        }
++        initialized = enabled = true;
++    }
++    void release(const Counts &units, Counts &ledger) {
++        if (!enabled) return;
++        Counts next{}, next_ledger{};
++        for (int s = 0; s < 33; ++s) {
++            next[s] = add(pool[s], units[s]); next_ledger[s] = add(ledger[s], units[s]);
++        }
++        pool = next; ledger = next_ledger;
++        minima();
++    }
++    void minima() {
++        for (int s = 0; s < 33; ++s) minimum[s] = std::min(minimum[s], pool[s]);
++    }
++    // Ordered writes are resolved BEFORE any gross exchange, including aliasing.
++    void transaction(const std::vector<std::pair<char *, char> > &ordered) {
++        std::vector<std::pair<char *, char> > final;
++        for (const auto &w : ordered) {
++            auto it = std::find_if(final.begin(), final.end(), [&w](const std::pair<char *, char> &p) { return p.first == w.first; });
++            if (it == final.end()) final.push_back(w); else it->second = w.second;
++        }
++        Counts in{}, out{};
++        bool changed = false;
++        int delta = 0;
++        for (const auto &w : final) {
++            int old = symbol(*w.first), proposed = symbol(w.second);
++            if (*w.first == w.second) continue;
++            changed = true;
++            if (old >= 0) { ++in[old]; --delta; }
++            if (proposed >= 0) { ++out[proposed]; ++delta; }
++        }
++        if (!changed) { categories[NOOP] = add(categories[NOOP], 1); return; }
++        bool blocked = false;
++        Counts available{}, next_missing = missing;
++        for (int s = 0; s < 33; ++s) {
++            available[s] = add(pool[s], in[s]);
++            if (out[s] > available[s]) {
++                blocked = true;
++                next_missing[s] = add(missing[s], out[s] - available[s]);
++            }
++        }
++        if (blocked) { missing = next_missing; categories[BLOCKED] = add(categories[BLOCKED], 1); return; }
++        Counts next_returns = sum(returns, in), next_withdrawals = sum(withdrawals, out);
++        for (const auto &w : final) *w.first = w.second;
++        for (int s = 0; s < 33; ++s) pool[s] = available[s] - out[s];
++        returns = next_returns; withdrawals = next_withdrawals;
++        categories[ACCEPTED] = add(categories[ACCEPTED], 1);
++        if (delta > 0) growth = add(growth, 1);
++        minima();
++    }
++    void cleave(const Counts &before, const s_ag *act, const s_ag *pass, const s_ag *child) {
++        if (!enabled) return;
++        Counts after = sum(sum(count(act), count(pass)), count(child)), released{};
++        for (int s = 0; s < 33; ++s) {
++            if (after[s] > before[s]) fail("stable cleavage molecular gain");
++            released[s] = before[s] - after[s];
++        }
++        release(released, child ? discard : failed);
++    }
++    void copy(s_ag *act, bool domut, float indelrate, float subrate,
++              smith_waterman_table *blosum, int granular, long &biomass,
++              SMspp *spl, unsigned long tick);
++    static void fields(FILE *f, const char *prefix) {
++        for (int s = 0; s < 33; ++s) fprintf(f, ",%s_%02X", prefix, static_cast<unsigned int>(key()[s]));
++    }
++    static void values(FILE *f, const Counts &c) {
++        for (int s = 0; s < 33; ++s) fprintf(f, ",%" PRId64, c[s]);
++    }
++    void observe(unsigned int tick, const char *event, const s_ag *head) {
++        if (!enabled) return;
++        if (!aggregate) {
++            aggregate = fopen("conservation001.csv", "wx");
++            buffers = fopen("conservation_buffers001.csv", "wx");
++            if (!aggregate || !buffers) fail("observation open");
++            fputs("tick,event", aggregate);
++            for (const char *p : {"molecular", "pool", "initial"}) fields(aggregate, p);
++            fputs(",max_residual,attempts,boundary_error,read_null,deletion_no_write,final_byte_noop,accepted_changed,scarcity_blocked,accepted_positive_growth", aggregate);
++            for (const char *p : {"copy_withdrawals", "copy_returns", "decay_returns", "failed_placement_returns", "cleavage_discard_returns", "missing_blocked_units"}) fields(aggregate, p);
++            fputs(",molecular_bytes,free_bytes", aggregate); fields(aggregate, "pool_minimum"); fputc('\n', aggregate);
++            fputs("tick,event,id,full_buffer_hex\n", buffers);
++        }
++        std::vector<const s_ag *> agents;
++        Counts molecular{};
++        for (const s_ag *a = head; a; a = a->next) { agents.push_back(a); molecular = sum(molecular, count(a)); }
++        std::sort(agents.begin(), agents.end(), [](const s_ag *a, const s_ag *b) { return a->idx < b->idx; });
++        int64_t molecular_bytes = 0, free_bytes = 0, partition = 0;
++        for (int s = 0; s < 33; ++s) {
++            if (add(molecular[s], pool[s]) != initial[s]) fail("nonzero residual");
++            // Reconciliation uses a wide intermediate; each persisted ledger is int64.
++            __int128 reconciled = static_cast<__int128>(initial_pool[s]) - withdrawals[s] + returns[s] + decay[s] + failed[s] + discard[s];
++            if (reconciled != pool[s] || minimum[s] < 0 || minimum[s] > pool[s]) fail("pool reconciliation");
++            molecular_bytes = add(molecular_bytes, molecular[s]); free_bytes = add(free_bytes, pool[s]);
++        }
++        for (int64_t n : categories) partition = add(partition, n);
++        if (partition != attempts || growth > categories[ACCEPTED]) fail("copy partition");
++        fprintf(aggregate, "%u,%s", tick, event);
++        values(aggregate, molecular); values(aggregate, pool); values(aggregate, initial);
++        fprintf(aggregate, ",0,%" PRId64, attempts);
++        for (int64_t n : categories) fprintf(aggregate, ",%" PRId64, n);
++        fprintf(aggregate, ",%" PRId64, growth);
++        for (const Counts *c : {&withdrawals, &returns, &decay, &failed, &discard, &missing}) values(aggregate, *c);
++        fprintf(aggregate, ",%" PRId64 ",%" PRId64, molecular_bytes, free_bytes); values(aggregate, minimum); fputc('\n', aggregate);
++        for (const s_ag *a : agents) {
++            fprintf(buffers, "%u,%s,%d,", tick, event, a->idx);
++            for (unsigned int i = 0; i < size; ++i) fprintf(buffers, "%02X", static_cast<unsigned int>(static_cast<unsigned char>(a->S[i])));
++            fputc('\n', buffers);
++        }
++        if (fflush(aggregate) || fflush(buffers) || ferror(aggregate) || ferror(buffers)) fail("observation write");
++        if (!strcmp(event, "END")) {
++            if (fclose(aggregate) || fclose(buffers)) fail("observation close");
++            aggregate = buffers = NULL;
++        }
++    }
++};
++#endif

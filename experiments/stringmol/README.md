@@ -113,3 +113,55 @@ of introduced identities or the last snapshot's population plus births at or
 after that snapshot's tick, since snapshots precede tick execution. These bounds
 do not replace the authoritative tick-4900
 endpoint or change the later-extinction rule.
+
+## SM-C001 conservation preparation
+
+`patches/0003-add-exact-spatial-symbol-conservation.patch` applies after 0001 and
+0002. It adds spatial full-buffer symbol accounting, atomic copy transactions,
+stable-state cleavage differences, and full-buffer decay returns. Conservation
+is enabled only by `STRINGMOL_CONSERVATION=1`, with canonical
+`STRINGMOL_POOL_MODE` and `STRINGMOL_POOL_AMOUNT`. The original disabled copy path
+remains available for byte-for-byte compatibility checks. Enabled substitution
+rejects native draw-zero invalid indexing as an integrity failure. Dispatch and
+cleavage validate allocated pointer bounds before access; deletion retains native
+completion effects before rejecting an unsafe resulting instruction pointer.
+These faults exit nonzero. Upper-endpoint insertion still selects native NUL and
+may contract a buffer; the analyzer imposes no positive-net-growth assumption.
+
+The two additional files are `conservation001.csv` and
+`conservation_buffers001.csv`. Their schema uses ALXII order, hex-encoded symbol
+column suffixes, canonical decimal integers, ASCII LF lines, and uppercase
+`2 * maxl0` buffer hex. Checksums cover exact raw file bytes. The independent
+analyzer reconstructs every checkpoint and END histogram, validates lineage
+identity/prefix evidence, reconciles gross pool exchanges, rejects boundary
+errors, and checks reported all-time minima against initial/observed pools and
+interval withdrawals. Directed source fixtures verify minima updates between
+observations, native branch/RNG parity, and scarcity rollback.
+
+Build, gate, prepare, and execute are separate actions. Example preparation
+(the directories must be new):
+
+```bash
+python -m experiments.stringmol.lineage_workflow build --root runs/smc/lineage-builds
+python -m experiments.stringmol.lineage_workflow isolation \
+  --build runs/smc/lineage-builds/build.json --root runs/smc/lineage-isolation
+python -m experiments.stringmol.conservation_workflow build --root runs/smc/builds
+python -m experiments.stringmol.conservation_workflow gates \
+  --build runs/smc/builds/build.json --root runs/smc/gates \
+  --lineage-build runs/smc/lineage-builds/build.json \
+  --lineage-gate runs/smc/lineage-isolation/isolation.json
+python -m experiments.stringmol.conservation_workflow prepare \
+  --build runs/smc/builds/build.json --gates runs/smc/gates/gates.json \
+  --root runs/smc/prepared
+```
+
+The gate action runs focused pytest/mypy, the C++ mechanics fixtures, and all
+500-step compatibility variants. Preparation verifies committed SM-C001 and
+inherited SM-L001 pins, source/build/patch/test inventories, every release object,
+the exact directed-test linkage receipt, gate artifacts,
+configs, sanitized environments, commands, and initial buffers/pools/totals.
+It creates twenty read-only input configs and a sealed preparation manifest;
+it launches no scientific simulation. The separately invoked `run` action uses
+six workers, preserves failed processes in the denominator, and rejects resume
+or selective retry. `analyze_conservation` validates completed inventories and
+reports the frozen paired outcomes with ties retained in the ten-pair denominator.
