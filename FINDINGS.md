@@ -220,3 +220,24 @@ lineage identity—precisely the mechanics absent from BFF. It remains unconserv
 and does not establish spontaneous origin, energetic closure, heredity fidelity,
 adaptation, self-maintenance, ecology, or organisms. A Stringmol conservation
 boundary now requires its own prospective design.
+
+## 2026-09-30 — Exact Stringmol symbol conservation
+
+Pinned Spatial Stringmol passed SM-C001's prospective conservation boundary. An
+atomic copy transaction, stable-state cleavage accounting, and full-buffer decay
+returns conserved every ALXII symbol exactly across molecules plus a free pool.
+All 20 unseen paired m16/m0 runs passed integrity; 1,020 independently
+reconstructed checkpoint/END rows had zero residual, nonnegative pools, and zero
+boundary errors.
+
+All ten m16 runs jointly passed reproduction and lineage criteria: 3,764–4,282
+successful births, two-parent depths 16–24, 1,265–1,593 strict final descendants,
+and final fractions 0.98751–0.99563. Initial free-pool abundance was causally
+active under the frozen comparison: m16 had more births and m0 had more scarcity
+blocks in 10/10 pairs (fixed-ten fair-coin tail 1/1024 for each direction).
+
+This validates seeded native cleavage reproduction and persistent individual
+lineage under exact per-symbol material conservation. It does not establish
+spontaneous origin, energetic closure, heredity fidelity, adaptation, ecology,
+self-maintenance, or organisms. The next eligible frontier is a separately
+preregistered resource-regulation or energetic boundary.

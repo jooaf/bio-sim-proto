@@ -968,6 +968,31 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
   `reports/sm_l001_native_reproduction_lineage_decision.json`; raw campaign:
   `/home/jojo/bio-sim-results/bazzite/sm_l001_review_fixes`.
 
+### SM-E002 — Exact Stringmol symbol-conservation boundary
+
+- **Hypothesis:** Transactional per-symbol copy accounting plus cleavage/decay
+  returns can preserve exact matter while retaining seeded native reproduction
+  and lineage under m16, with active scarcity under m0.
+- **Test:** Disabled and uniform no-scarcity parity, directed mechanics fixtures,
+  then ten paired m16/m0 canonical-host runs on unseen seeds with independent
+  full-buffer, pool, counter, lineage, and inventory reconstruction.
+- **Result:** **PASS.** All 20 runs passed integrity and all 1,020 checkpoint/END
+  rows had exact per-symbol residual zero. All ten m16 seeds jointly passed, with
+  3,764–4,282 births, depths 16–24, 1,265–1,593 strict final descendants, and
+  final fractions 0.98751–0.99563. m16 births exceeded m0 and m0 scarcity blocks
+  exceeded m16 in 10/10 pairs (fixed-ten fair-coin tail 1/1024 each).
+- **Decision:** Exact conserved native Stringmol reproduction/lineage is
+  validated. A separately preregistered resource-regulation or energetic-boundary
+  experiment is eligible.
+- **Limitations:** Seeded material-pool system only. m0 obtained material through
+  observed decay returns and copy exchanges and was not a no-reproduction control;
+  failed-placement returns were permitted but absent. No spontaneous origin,
+  energetic closure, heredity fidelity, adaptation, ecology, self-maintenance, or
+  organism claim.
+- **Evidence:** `reports/sm_c001_stringmol_conservation_report.md` and
+  `reports/sm_c001_stringmol_conservation_decision.json`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/sm_c001_exact_conservation/bazzite.attlocal.net/prepared`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -993,6 +1018,9 @@ controlled operational descendant representation and FR-I002 established exact
 conserved-soup observational parity. FR-P001 then found strong, perfectly paired
 transient non-exact descendant load but zero sustained final presence in every
 witness. The frozen stop rule closes BFF lineage/persistence/ecology work.
-SM-L001 has now validated explicit successful cleavage birth and persistent
-individual lineage identity in pinned Stringmol. The next frontier is a separately
-preregistered conservation boundary, not reinterpretation of BFF.
+SM-L001 validated explicit successful cleavage birth and persistent individual
+lineage identity in pinned Stringmol. SM-C001 now validates the same seeded
+mechanics under exact per-symbol material conservation and confirms an active
+free-pool scarcity contrast. The next frontier is a separately preregistered
+resource-regulation or energetic boundary, not reinterpretation of BFF or a claim
+that the symbol pool is energy.

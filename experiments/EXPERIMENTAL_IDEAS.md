@@ -786,7 +786,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### SM-C001 — Exact Stringmol symbol-conservation boundary
 
-- **Status:** Mechanics passed; sealed scientific matrix prepared
+- **Status:** Completed — pass (2026-09-30)
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-18
 - **Depends on:** passed SM-L001 native birth/lineage gate
@@ -800,6 +800,9 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
   lineage and conservation reconstruction.
 - **Preregistration:** `reports/sm_c001_stringmol_conservation_boundary_preregistration.md`
 - **Implementation:** `reports/sm_c001_stringmol_conservation_implementation.md`
-- **Estimated cost:** two compatibility controls plus 20 short Stringmol runs
-- **On success:** permit a separate regulation or energetic-boundary design.
-- **On failure:** stop before energy/ecology and retain the bounded failure.
+- **Result:** 20/20 exact conserved runs; m16 joint lineage gate 10/10; paired
+  birth and scarcity directions 10/10 each.
+- **Report:** `reports/sm_c001_stringmol_conservation_report.md`
+- **Decision:** `reports/sm_c001_stringmol_conservation_decision.json`
+- **Raw results:** `/home/jojo/bio-sim-results/bazzite/sm_c001_exact_conservation/bazzite.attlocal.net/prepared`
+- **Next:** a separate regulation or energetic-boundary design is eligible.
