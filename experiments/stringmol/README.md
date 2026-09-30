@@ -165,3 +165,54 @@ it launches no scientific simulation. The separately invoked `run` action uses
 six workers, preserves failed processes in the denominator, and rejects resume
 or selective retry. `analyze_conservation` validates completed inventories and
 reports the frozen paired outcomes with ties retained in the ten-pair denominator.
+
+## SM-C002 decay routing (preparation only)
+
+The committed protocol is `reports/sm_c002_decay_recycling_preregistration.md`.
+Apply `0004-add-decay-routing-and-material-journal.patch` after unchanged patches
+0001–0003. `STRINGMOL_DECAY_DESTINATION=recycle|sequester` is effective only with
+`STRINGMOL_CONSERVATION=1`. Missing routing retains conservation-v1 outputs;
+disabled conservation ignores routing. Invalid enabled routing/configuration
+fails before simulation. Only native decay enters waste; copy, failed placement,
+and cleavage discard still return to the accessible pool.
+
+Explicit routing emits exactly `conservation002.csv`,
+`conservation_buffers002.csv`, and `material_events002.csv`. The v2 aggregate
+retains the v1 columns as its prefix; `decay_returns` in that prefix is the total
+removed histogram, identical to `decay_removed`, while `decay_to_pool` and
+`decay_to_waste` give its destination. Waste, per-symbol zero residuals, growth
+and contraction **byte** totals, and event count follow the v1 prefix. There is
+no route metadata in these files, so the no-decay serializer fixture requires
+all output bytes to match. `STRINGMOL_CONSERVATION_LOG=0` suppresses all three
+files while retaining conservation checks and native/lineage behavior.
+
+The journal begins from the canonical tick-zero full buffers. Each row contains
+sorted before/after participating IDs, sparse `ID:offset:old:new` byte changes
+(including `00`), and an uncommitted proposal for scarcity-blocked copies.
+Removed IDs are zeroed; new IDs start from an all-zero allocated buffer.
+`CLEAVE/PLACED`, `CLEAVE/FAILED`, and `CLEAVE/NO_CHANGE` describe stable outcomes;
+the difference between their full-buffer histograms records every actual
+cleavage-discard or failed-placement return. Transient child duplication is
+excluded. Each decay member has a separate ordered removal. All copy completion
+categories are recorded, so replay derives the entire counter partition as well
+as exchanges, growth, contraction, lifecycle, and both material ledgers.
+
+Use `python -m experiments.stringmol.decay_workflow` with separate `build`,
+`gates`, and `prepare` actions. Gates require fresh SM-L001 build/isolation
+manifests via `--lineage-build` and `--lineage-gate`. Preparation verifies the
+committed protocol, all build inputs and release objects, development gates,
+schemas, and prior seed use, then seals forty read-only configurations for paired
+seeds 202622000–202622019. It never executes them. The separate `run` action
+pins the intended `origin` URL and `refs/heads/main` at preparation, then requires
+HEAD to equal a direct `git ls-remote` observation of that remote/ref at launch.
+A stale local tracking ref cannot authorize execution; missing, ambiguous,
+unreachable, changed-URL, or mismatched remote observations fail closed.
+Immediately before the final `launch.json` seal, it repeats the held-out freshness
+audit, excluding only the verified manifest, digest, and forty config files.
+Other artifacts inside that directory remain in scope. The launch seal binds
+full audit evidence and its canonical hash, remote URL/ref/observed revision and
+raw query response, and the exact committed input bytes. Verification checks
+these bindings and historical audit input hashes without treating later
+scientific outputs as earlier seed use. The runner refuses
+resume/selective retry, and limits concurrency to six. Analyze a completed
+campaign with `python -m experiments.stringmol.analyze_decay MANIFEST`.

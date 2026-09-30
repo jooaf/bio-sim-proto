@@ -809,7 +809,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### SM-C002 — Causal decay-recycling gate
 
-- **Status:** Claimed
+- **Status:** Mechanics passed; sealed scientific matrix prepared
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-30
 - **Depends on:** passed SM-C001 exact symbol-conservation boundary
@@ -821,6 +821,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 - **Test:** Frozen mechanics/isolation/replay gates followed by 20 paired m0
   recycle/sequester runs on unseen seeds `202622000`–`202622019`.
 - **Preregistration:** `reports/sm_c002_decay_recycling_preregistration.md`
+- **Implementation:** `reports/sm_c002_decay_recycling_implementation.md`
 - **On success:** permit a separately preregistered functional-descendant or
   energetic boundary.
 - **On failure:** stop before energy/ecology and retain the component-specific

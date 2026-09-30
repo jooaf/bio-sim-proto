@@ -1,0 +1,295 @@
+--- a/src/sm_conservation.h
++++ b/src/sm_conservation.h
+@@ -2,6 +2,9 @@
+ #ifndef SM_CONSERVATION_H
+ #define SM_CONSERVATION_H
+ #include <array>
++#include <map>
++#include <string>
++#include <sstream>
+ #include <vector>
+ #include <utility>
+ #include <algorithm>
+@@ -21,6 +24,11 @@
+            decay{}, failed{}, discard{}, missing{};
+     int64_t attempts = 0, growth = 0;
+     std::array<int64_t, 6> categories{};
++    bool routed = false, sequester = false, logging = true;
++    Counts waste{}, decay_pool{}, decay_waste{}, stable_molecular{};
++    int64_t positive_bytes = 0, contraction_bytes = 0, event_index = 0;
++    FILE *journal = NULL;
++    std::vector<std::pair<char *, char> > proposal;
+     FILE *aggregate = NULL, *buffers = NULL;
+     static const char *key() { return "ABC$DEF%GH^IJK?LMN}OPQ>RST=UVWXYZ"; }
+     static void fail(const char *message) {
+@@ -82,7 +90,16 @@
+     }
+     void init(const s_ag *head, unsigned int maxl0, const char *alphabet) {
+         const char *flag = getenv("STRINGMOL_CONSERVATION");
++        if (getenv("STRINGMOL_DECAY_DESTINATION") && flag && strcmp(flag,"0") && strcmp(flag,"1")) fail("malformed conservation flag");
+         if (!flag || strcmp(flag, "1")) return;
++        const char *route = getenv("STRINGMOL_DECAY_DESTINATION");
++        if (route) {
++            if (strcmp(route, "recycle") && strcmp(route, "sequester")) fail("invalid decay destination");
++            routed = true; sequester = !strcmp(route, "sequester");
++            const char *log = getenv("STRINGMOL_CONSERVATION_LOG");
++            if (log && strcmp(log, "0") && strcmp(log, "1")) fail("invalid conservation log flag");
++            logging = !log || strcmp(log, "0");
++        }
+         if (initialized) fail("duplicate initialization");
+         const char *mode = getenv("STRINGMOL_POOL_MODE");
+         if (!mode || (strcmp(mode, "histogram") && strcmp(mode, "uniform"))) fail("invalid pool mode");
+@@ -98,6 +115,7 @@
+             pool[s] = initial_pool[s] = minimum[s] = factor * n;
+             initial[s] = add(molecular[s], pool[s]);
+         }
++        stable_molecular = molecular;
+         initialized = enabled = true;
+     }
+     void release(const Counts &units, Counts &ledger) {
+@@ -119,6 +137,7 @@
+             auto it = std::find_if(final.begin(), final.end(), [&w](const std::pair<char *, char> &p) { return p.first == w.first; });
+             if (it == final.end()) final.push_back(w); else it->second = w.second;
+         }
++        proposal = final;
+         Counts in{}, out{};
+         bool changed = false;
+         int delta = 0;
+@@ -146,6 +165,10 @@
+         returns = next_returns; withdrawals = next_withdrawals;
+         categories[ACCEPTED] = add(categories[ACCEPTED], 1);
+         if (delta > 0) growth = add(growth, 1);
++        if (routed) {
++            positive_bytes = add(positive_bytes, std::max(0, delta));
++            contraction_bytes = add(contraction_bytes, std::max(0, -delta));
++        }
+         minima();
+     }
+     void cleave(const Counts &before, const s_ag *act, const s_ag *pass, const s_ag *child) {
+@@ -156,6 +179,87 @@
+             released[s] = before[s] - after[s];
+         }
+         release(released, child ? discard : failed);
++    }
++    typedef std::map<int, std::string> State;
++    State state(const s_ag *a, const s_ag *b = NULL, const s_ag *c = NULL) const {
++        State result;
++        if (routed) for (const s_ag *p : {a, b, c}) if (p) {
++            count(p); result[p->idx] = std::string(p->S, size);
++        }
++        return result;
++    }
++    Counts histogram(const State &m) const {
++        Counts c{};
++        for (const auto &a : m) for (unsigned char b : a.second) {
++            int s = symbol(b); if (s >= 0) c[s] = add(c[s], 1);
++        }
++        return c;
++    }
++    void decay_release(const s_ag *a) {
++        Counts units = count(a);
++        if (!routed) { release(units, decay); return; }
++        Counts next_decay = sum(decay, units);
++        if (sequester) {
++            Counts next_waste = sum(waste, units), next_route = sum(decay_waste, units);
++            waste = next_waste; decay_waste = next_route;
++        } else release(units, decay_pool);
++        decay = next_decay;
++    }
++    void open_journal() {
++        if (journal || !logging) return;
++        journal = fopen("material_events002.csv", "wx");
++        if (!journal) fail("journal open");
++        fputs("tick,index,event,outcome,before_ids,after_ids,changes,proposal\n", journal);
++    }
++    static std::string ids(const State &m) {
++        std::ostringstream out; bool first = true;
++        for (const auto &a : m) { if (!first) out << ';'; first = false; out << a.first; }
++        return out.str();
++    }
++    std::string changes(const State &before, const State &after) const {
++        State both = before; both.insert(after.begin(), after.end());
++        std::ostringstream out; bool first = true;
++        for (const auto &a : both) for (unsigned int i=0; i<size; ++i) {
++            unsigned int old = before.count(a.first) ? static_cast<unsigned char>(before.at(a.first)[i]) : 0;
++            unsigned int now = after.count(a.first) ? static_cast<unsigned char>(after.at(a.first)[i]) : 0;
++            if (old == now) continue;
++            char text[96]; snprintf(text, sizeof(text), "%d:%u:%02X:%02X", a.first, i, old, now);
++            if (!first) out << ';'; first = false; out << text;
++        }
++        return out.str();
++    }
++    std::string proposed(const s_ag *a, const s_ag *b) const {
++        State before = state(a,b), after = before;
++        for (const auto &w : proposal) {
++            bool found = false;
++            for (const s_ag *p : {a,b}) {
++                uintptr_t addr = reinterpret_cast<uintptr_t>(w.first), base = reinterpret_cast<uintptr_t>(p->S);
++                if (addr >= base && addr-base < size) {
++                    after[p->idx][addr-base] = w.second; found = true; break;
++                }
++            }
++            if (!found) fail("proposal outside participating buffers");
++        }
++        return changes(before, after);
++    }
++    void material(unsigned int tick, const char *event, const char *outcome,
++                  const State &before, const State &after, const std::string &plan = "") {
++        if (!routed) return;
++        Counts old = histogram(before), now = histogram(after);
++        for (int s=0; s<33; ++s) {
++            if (stable_molecular[s] < old[s]) fail("journal negative molecular");
++            stable_molecular[s] = add(stable_molecular[s]-old[s], now[s]);
++            if (add(add(stable_molecular[s], pool[s]), waste[s]) != initial[s]) fail("operation residual");
++            if (decay[s] != add(decay_pool[s],decay_waste[s]) || waste[s] != decay_waste[s]) fail("decay reconciliation");
++            __int128 p = static_cast<__int128>(initial_pool[s])-withdrawals[s]+returns[s]+decay_pool[s]+failed[s]+discard[s];
++            if (p != pool[s]) fail("operation pool reconciliation");
++        }
++        event_index = add(event_index, 1);
++        if (!logging) return;
++        open_journal();
++        fprintf(journal, "%u,%" PRId64 ",%s,%s,%s,%s,%s,%s\n", tick, event_index, event, outcome,
++                ids(before).c_str(), ids(after).c_str(), changes(before,after).c_str(), plan.c_str());
++        if (fflush(journal) || ferror(journal)) fail("journal write");
+     }
+     void copy(s_ag *act, bool domut, float indelrate, float subrate,
+               smith_waterman_table *blosum, int granular, long &biomass,
+@@ -167,16 +271,22 @@
+         for (int s = 0; s < 33; ++s) fprintf(f, ",%" PRId64, c[s]);
+     }
+     void observe(unsigned int tick, const char *event, const s_ag *head) {
+-        if (!enabled) return;
++        if (!enabled || (routed && !logging)) return;
+         if (!aggregate) {
+-            aggregate = fopen("conservation001.csv", "wx");
+-            buffers = fopen("conservation_buffers001.csv", "wx");
++            aggregate = fopen(routed ? "conservation002.csv" : "conservation001.csv", "wx");
++            buffers = fopen(routed ? "conservation_buffers002.csv" : "conservation_buffers001.csv", "wx");
+             if (!aggregate || !buffers) fail("observation open");
+             fputs("tick,event", aggregate);
+             for (const char *p : {"molecular", "pool", "initial"}) fields(aggregate, p);
+             fputs(",max_residual,attempts,boundary_error,read_null,deletion_no_write,final_byte_noop,accepted_changed,scarcity_blocked,accepted_positive_growth", aggregate);
+             for (const char *p : {"copy_withdrawals", "copy_returns", "decay_returns", "failed_placement_returns", "cleavage_discard_returns", "missing_blocked_units"}) fields(aggregate, p);
+-            fputs(",molecular_bytes,free_bytes", aggregate); fields(aggregate, "pool_minimum"); fputc('\n', aggregate);
++            fputs(",molecular_bytes,free_bytes", aggregate); fields(aggregate, "pool_minimum");
++            if (routed) {
++                for (const char *p : {"waste", "decay_removed", "decay_to_pool", "decay_to_waste", "residual"}) fields(aggregate, p);
++                fputs(",waste_bytes,positive_growth_bytes,contraction_bytes,event_count", aggregate);
++                open_journal();
++            }
++            fputc('\n', aggregate);
+             fputs("tick,event,id,full_buffer_hex\n", buffers);
+         }
+         std::vector<const s_ag *> agents;
+@@ -185,9 +295,9 @@
+         std::sort(agents.begin(), agents.end(), [](const s_ag *a, const s_ag *b) { return a->idx < b->idx; });
+         int64_t molecular_bytes = 0, free_bytes = 0, partition = 0;
+         for (int s = 0; s < 33; ++s) {
+-            if (add(molecular[s], pool[s]) != initial[s]) fail("nonzero residual");
++            if (add(add(molecular[s], pool[s]), waste[s]) != initial[s]) fail("nonzero residual");
+             // Reconciliation uses a wide intermediate; each persisted ledger is int64.
+-            __int128 reconciled = static_cast<__int128>(initial_pool[s]) - withdrawals[s] + returns[s] + decay[s] + failed[s] + discard[s];
++            __int128 reconciled = static_cast<__int128>(initial_pool[s]) - withdrawals[s] + returns[s] + (routed ? decay_pool[s] : decay[s]) + failed[s] + discard[s];
+             if (reconciled != pool[s] || minimum[s] < 0 || minimum[s] > pool[s]) fail("pool reconciliation");
+             molecular_bytes = add(molecular_bytes, molecular[s]); free_bytes = add(free_bytes, pool[s]);
+         }
+@@ -199,7 +309,16 @@
+         for (int64_t n : categories) fprintf(aggregate, ",%" PRId64, n);
+         fprintf(aggregate, ",%" PRId64, growth);
+         for (const Counts *c : {&withdrawals, &returns, &decay, &failed, &discard, &missing}) values(aggregate, *c);
+-        fprintf(aggregate, ",%" PRId64 ",%" PRId64, molecular_bytes, free_bytes); values(aggregate, minimum); fputc('\n', aggregate);
++        fprintf(aggregate, ",%" PRId64 ",%" PRId64, molecular_bytes, free_bytes); values(aggregate, minimum);
++        if (routed) {
++            if (molecular != stable_molecular) fail("journal molecular mismatch");
++            for (const Counts *c : {&waste, &decay, &decay_pool, &decay_waste}) values(aggregate, *c);
++            values(aggregate, Counts{});
++            int64_t waste_bytes = 0;
++            for (auto n : waste) waste_bytes = add(waste_bytes, n);
++            fprintf(aggregate, ",%" PRId64 ",%" PRId64 ",%" PRId64 ",%" PRId64, waste_bytes, positive_bytes, contraction_bytes, event_index);
++        }
++        fputc('\n', aggregate);
+         for (const s_ag *a : agents) {
+             fprintf(buffers, "%u,%s,%d,", tick, event, a->idx);
+             for (unsigned int i = 0; i < size; ++i) fprintf(buffers, "%02X", static_cast<unsigned int>(static_cast<unsigned char>(a->S[i])));
+@@ -209,6 +328,8 @@
+         if (!strcmp(event, "END")) {
+             if (fclose(aggregate) || fclose(buffers)) fail("observation close");
+             aggregate = buffers = NULL;
++            if (journal && fclose(journal)) fail("journal close");
++            journal = NULL;
+         }
+     }
+ };
+--- a/src/sm_spatial.cpp
++++ b/src/sm_spatial.cpp
+@@ -761,8 +761,16 @@
+ 	 *   HCOPY  *
+ 	 ************/
+ 	case '='://h-copy
+-		if (conservation.enabled)
+-			conservation.copy(act,domut,indelrate,subrate,blosum,granular_1,biomass,spl,timestep);
++		if (conservation.enabled) {
++            auto before = conservation.state(act, pass);
++            auto categories = conservation.categories;
++            conservation.proposal.clear();
++            conservation.copy(act,domut,indelrate,subrate,blosum,granular_1,biomass,spl,timestep);
++            const char *names[] = {"BOUNDARY", "READ_NULL", "DELETION", "NOOP", "ACCEPTED", "BLOCKED"};
++            if (conservation.routed) for (int k=0;k<6;++k) if (categories[k] != conservation.categories[k])
++                conservation.material(timestep, "COPY", names[k], before, conservation.state(act,pass),
++                    k == SpatialConservation::BLOCKED ? conservation.proposed(act,pass) : "");
++        }
+ 		else OpcodeCopy(act,domut,indelrate,subrate,maxl,
+ 						blosum,granular_1,biomass,
+ 						spl,timestep);
+@@ -901,7 +909,11 @@
+ 		grid->grid[(*pag)->x][(*pag)->y]=NULL;
+ 		grid->status[(*pag)->x][(*pag)->y]=G_EMPTY;
+ 
+-		if (conservation.enabled) conservation.release(conservation.count(*pag), conservation.decay);
++		if (conservation.enabled) {
++            auto before = conservation.state(*pag);
++            conservation.decay_release(*pag);
++            conservation.material(timestep, "DECAY", "REMOVED", before, SpatialConservation::State{});
++        }
+ 		AgentFreeAndNull(pag);
+ 		//TODO: sort this null-ing of free'd agents out!
+ 		//pag = NULL;
+@@ -912,7 +924,11 @@
+ 			grid->grid[bag->x][bag->y]=NULL;
+ 			grid->status[bag->x][bag->y]=G_EMPTY;
+ 
+-			if (conservation.enabled) conservation.release(conservation.count(bag), conservation.decay);
++			if (conservation.enabled) {
++                auto before = conservation.state(bag);
++                conservation.decay_release(bag);
++                conservation.material(timestep, "DECAY", "REMOVED", before, SpatialConservation::State{});
++            }
+ 			AgentFreeAndNull(&bag);
+ 			//bag = NULL;
+ 		}
+@@ -946,6 +962,8 @@
+ 	c = NULL;
+ 	pass = act->pass;
+ 
++	auto material_before = conservation.state(act, pass);
++	bool attempted_placement = false;
+ 	SpatialConservation::Counts before{};
+ 	if (conservation.enabled) before = SpatialConservation::sum(conservation.count(act), conservation.count(pass));
+ 
+@@ -997,6 +1015,7 @@
+ 			act->biomass=0; //reset this; we might continue to make stuff!
+ 
+ 			//TODO: place the new agent on the grid
++			attempted_placement = true;
+ 			if((AgentPlaceInMooreNeighbourhood(c,act->x,act->y))!=NULL){//,x,y))!=NULL){
+ 				lineage_event("BIRTH", timestep, c, act, pass);
+ 				//append the agent to nexthead
+@@ -1087,6 +1106,8 @@
+ 	}
+ 
+ 	if (conservation.enabled) conservation.cleave(before, act, pass, c);
++    conservation.material(timestep, "CLEAVE", c ? "PLACED" : attempted_placement ? "FAILED" : "NO_CHANGE",
++        material_before, conservation.state(act,pass,c));
+ 	return dac;
+ }
+ 
