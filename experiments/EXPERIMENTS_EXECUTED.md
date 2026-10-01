@@ -993,6 +993,31 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
   `reports/sm_c001_stringmol_conservation_decision.json`; raw campaign:
   `/home/jojo/bio-sim-results/bazzite/sm_c001_exact_conservation/bazzite.attlocal.net/prepared`.
 
+### SM-E003 — Causal decay-recycling gate
+
+- **Hypothesis:** With zero initial free pool, routing native-decay matter to the
+  accessible pool rather than conserved inert waste sustains late copy growth and
+  cleavage-lineage production.
+- **Test:** Exact routing/isolation/replay gates followed by 20 paired
+  recycle/sequester 5,000-tick runs on unseen seeds, with molecular + pool + waste
+  conservation and ordered material-event replay.
+- **Result:** **FULL PASS.** All 40 runs passed integrity/exposure. The same 20/20
+  pairs passed every frozen component. Recycle produced 3,098–6,047 late growth
+  bytes, 265–530 late births, 499–814 total births, depths 7–14, and 278–472
+  strict final descendants. Sequester produced zero positive growth bytes and zero
+  births, ending with 7,744–8,704 bytes in inaccessible waste.
+- **Decision:** Access to decay-released matter causally supported late material
+  throughput and cleavage-lineage production under the pinned conditions. A
+  functional-descendant gate is eligible before energetic or organism claims.
+- **Limitations:** Imposed routing, not regulated recycling or metabolism. Later
+  occupancy, encounter, and mortality differences are downstream parts of the
+  total intervention effect and are not separately identified. No energetic
+  closure, functional heredity, self-maintenance, adaptation, ecology, organism,
+  or general Stringmol-over-BFF claim.
+- **Evidence:** `reports/sm_c002_decay_recycling_report.md` and
+  `reports/sm_c002_decay_recycling_decision.json`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/sm_c002_decay_recycling/bazzite.attlocal.net/prepared`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -1019,8 +1044,10 @@ conserved-soup observational parity. FR-P001 then found strong, perfectly paired
 transient non-exact descendant load but zero sustained final presence in every
 witness. The frozen stop rule closes BFF lineage/persistence/ecology work.
 SM-L001 validated explicit successful cleavage birth and persistent individual
-lineage identity in pinned Stringmol. SM-C001 now validates the same seeded
-mechanics under exact per-symbol material conservation and confirms an active
-free-pool scarcity contrast. The next frontier is a separately preregistered
-resource-regulation or energetic boundary, not reinterpretation of BFF or a claim
+lineage identity in pinned Stringmol. SM-C001 validated the same seeded mechanics
+under exact per-symbol material conservation. SM-C002 now shows that access to
+decay-released matter causally sustains late copy growth and cleavage-lineage
+production. The next frontier is a separately preregistered descendant-
+reproductive-competence gate. The comparative Stringmol–BFF program will proceed
+through within-substrate interventions, not reinterpretation of BFF or a claim
 that the symbol pool is energy.

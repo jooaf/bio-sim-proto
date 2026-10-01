@@ -241,3 +241,26 @@ lineage under exact per-symbol material conservation. It does not establish
 spontaneous origin, energetic closure, heredity fidelity, adaptation, ecology,
 self-maintenance, or organisms. The next eligible frontier is a separately
 preregistered resource-regulation or energetic boundary.
+
+## 2026-09-30 — Causal Stringmol decay recycling
+
+SM-C002 isolated the accessibility of matter released by native decay while
+preserving exact molecular + accessible-pool + inert-waste conservation. All 40
+runs passed event-journal replay, full-buffer, pool/waste, lineage, bounds, and
+artifact checks. The same 20/20 paired zero-initial-pool seeds passed every frozen
+material, birth, lineage, and decay-funding criterion.
+
+Recycle produced 3,098–6,047 late positive-growth bytes, 265–530 late births,
+499–814 total births, depths 7–14, and 278–472 strict final descendants.
+Sequestering identical decay outputs in inaccessible waste produced zero positive
+growth bytes and zero births, ending with only 4–19 founders and 7,744–8,704 bytes
+of waste. Thus access to decay-released matter causally supported late copying and
+cleavage-lineage production under the pinned conditions.
+
+This is an imposed material-routing result, not regulated recycling, metabolism,
+energetic closure, functional heredity, self-maintenance, ecology, or organisms.
+The next boundary is descendant reproductive competence. A staged prospective
+Stringmol–BFF program now separates partner context, mutation, offspring
+separation, parent preservation, admission, catalyst/template roles, locality,
+scarcity, workspace, and horizon instead of attributing the historical contrast
+to language identity.

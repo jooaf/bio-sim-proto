@@ -809,7 +809,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### SM-C002 — Causal decay-recycling gate
 
-- **Status:** Mechanics passed; sealed scientific matrix prepared
+- **Status:** Completed — full pass (2026-09-30)
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-30
 - **Depends on:** passed SM-C001 exact symbol-conservation boundary
@@ -822,10 +822,12 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
   recycle/sequester runs on unseen seeds `202622000`–`202622019`.
 - **Preregistration:** `reports/sm_c002_decay_recycling_preregistration.md`
 - **Implementation:** `reports/sm_c002_decay_recycling_implementation.md`
-- **On success:** permit a separately preregistered functional-descendant or
-  energetic boundary.
-- **On failure:** stop before energy/ecology and retain the component-specific
-  negative result.
+- **Result:** 40/40 exact runs; all 20 pairs passed material, birth, lineage, and
+  decay-funding criteria. Sequester produced zero growth bytes and zero births.
+- **Report:** `reports/sm_c002_decay_recycling_report.md`
+- **Decision:** `reports/sm_c002_decay_recycling_decision.json`
+- **Raw results:** `/home/jojo/bio-sim-results/bazzite/sm_c002_decay_recycling/bazzite.attlocal.net/prepared`
+- **Next:** a separately preregistered functional-descendant gate is eligible.
 
 ### Stringmol–BFF comparative deep dive
 
