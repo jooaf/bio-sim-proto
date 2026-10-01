@@ -843,7 +843,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### SM-H001 — Descendant reproductive-renewal gate
 
-- **Status:** Analysis/mechanics passed; sealed scientific matrix prepared
+- **Status:** Completed — pass (2026-09-30)
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-30
 - **Depends on:** passed SM-C002 causal decay-recycling gate
@@ -855,6 +855,10 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
   runs plus ten inert controls, with no simulator mechanics change.
 - **Preregistration:** `reports/sm_h001_reproductive_renewal_preregistration.md`
 - **Implementation:** `reports/sm_h001_reproductive_renewal_implementation.md`
-- **On success:** preregister causal sequence perturbation/transplant assays.
-- **On failure:** stop the Stringmol heredity branch without weakening source,
-  renewal, retention, or late-window definitions.
+- **Result:** 30/30 valid; inert controls 10/10 exact negatives; the same 18/20
+  hosts passed productive source birth, renewal, serial birth, depth, late, and
+  retention criteria.
+- **Report:** `reports/sm_h001_reproductive_renewal_report.md`
+- **Decision:** `reports/sm_h001_reproductive_renewal_decision.json`
+- **Raw results:** `/home/jojo/bio-sim-results/bazzite/sm_h001_reproductive_renewal/bazzite.attlocal.net/prepared`
+- **Next:** preregister causal sequence perturbation/transplant assays.

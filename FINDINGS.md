@@ -264,3 +264,24 @@ Stringmol–BFF program now separates partner context, mutation, offspring
 separation, parent preservation, admission, catalyst/template roles, locality,
 scarcity, workspace, and horizon instead of attributing the historical contrast
 to language identity.
+
+## 2026-09-30 — Stringmol descendant reproductive renewal
+
+SM-H001 prospectively separated native ancestry from descendants that themselves
+reproduce. All 30 conserved-recycle runs passed independent source/suffix replay,
+exact conservation, lineage, and artifact integrity. Ten inert controls had zero
+births or renewal. The same 18/20 host runs passed every frozen component.
+
+Hosts produced 528–902 population-increasing source births. They contained 8–38
+renewing descendants, 53–293 births sourced by qualifying noninitial descendants,
+and source-lineage depths 2–3. Late-born renewal occurred in 2–18 descendants per
+run; the two runs below the frozen late/renewal floors remained valid non-passes.
+Renewing descendants retained 0.984375–1.0 of inherited birth bytes before first
+source reproduction.
+
+This supports finite-horizon operational reproductive renewal with inherited
+sequence continuity, rather than ancestry alone or inert-product accumulation. It
+does not establish that retained sequence is causally necessary for competence,
+functional heredity under perturbation, adaptation, or organisms. The next gate
+is a prospective exact-sequence versus perturbation/transplant assay under
+standardized partner and material conditions.

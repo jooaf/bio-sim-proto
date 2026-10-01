@@ -1018,6 +1018,30 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
   `reports/sm_c002_decay_recycling_decision.json`; raw campaign:
   `/home/jojo/bio-sim-results/bazzite/sm_c002_decay_recycling/bazzite.attlocal.net/prepared`.
 
+### SM-E004 — Descendant reproductive-renewal gate
+
+- **Hypothesis:** Noninitial descendants themselves become surviving material
+  sources of later population-increasing births while retaining inherited birth
+  sequence, including late-born cohorts.
+- **Test:** Independent source/suffix replay on 20 unseen conserved-recycle host
+  runs and ten inert controls, with qualifying source lineage, whole-transfer
+  exclusion, late renewal, and positional retention fixed prospectively.
+- **Result:** **PASS.** All 30 runs passed integrity; inert controls were exact
+  negatives. The same 18/20 hosts passed every component. Hosts recorded 528–902
+  productive source births, 8–38 renewing descendants, 53–293 serial source
+  births, depth 2–3, and 2–18 retained late renewals. First-source inherited-byte
+  retention was 0.984375–1.0.
+- **Decision:** Finite-horizon operational reproductive renewal with inherited
+  sequence continuity is supported. Causal perturbation/transplant testing is now
+  eligible.
+- **Limitations:** Retention and renewed reproduction are observational with
+  respect to sequence function. They do not establish causal sequence necessity,
+  functional heredity under perturbation, adaptation, indefinite persistence,
+  self-maintenance, or organisms.
+- **Evidence:** `reports/sm_h001_reproductive_renewal_report.md` and
+  `reports/sm_h001_reproductive_renewal_decision.json`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/sm_h001_reproductive_renewal/bazzite.attlocal.net/prepared`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -1044,10 +1068,11 @@ conserved-soup observational parity. FR-P001 then found strong, perfectly paired
 transient non-exact descendant load but zero sustained final presence in every
 witness. The frozen stop rule closes BFF lineage/persistence/ecology work.
 SM-L001 validated explicit successful cleavage birth and persistent individual
-lineage identity in pinned Stringmol. SM-C001 validated the same seeded mechanics
-under exact per-symbol material conservation. SM-C002 now shows that access to
-decay-released matter causally sustains late copy growth and cleavage-lineage
-production. The next frontier is a separately preregistered descendant-
-reproductive-competence gate. The comparative Stringmol–BFF program will proceed
-through within-substrate interventions, not reinterpretation of BFF or a claim
-that the symbol pool is energy.
+lineage identity in pinned Stringmol. SM-C001 validated exact per-symbol material
+conservation, and SM-C002 showed that accessible decay matter causally sustains
+late copy growth and lineage production. SM-H001 now establishes that qualifying
+descendants themselves produce later population-increasing children while
+retaining inherited sequence. The next frontier is a separately preregistered
+causal sequence perturbation/transplant gate. The comparative Stringmol–BFF
+program proceeds through within-substrate interventions, not historical pass-rate
+comparison or a claim that the symbol pool is energy.
