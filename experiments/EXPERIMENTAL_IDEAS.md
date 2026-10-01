@@ -843,7 +843,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### SM-H001 — Descendant reproductive-renewal gate
 
-- **Status:** Claimed
+- **Status:** Analysis/mechanics passed; sealed scientific matrix prepared
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-09-30
 - **Depends on:** passed SM-C002 causal decay-recycling gate
@@ -854,6 +854,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 - **Test:** Independent source/suffix replay on 20 unseen conserved-recycle host
   runs plus ten inert controls, with no simulator mechanics change.
 - **Preregistration:** `reports/sm_h001_reproductive_renewal_preregistration.md`
+- **Implementation:** `reports/sm_h001_reproductive_renewal_implementation.md`
 - **On success:** preregister causal sequence perturbation/transplant assays.
 - **On failure:** stop the Stringmol heredity branch without weakening source,
   renewal, retention, or late-window definitions.
