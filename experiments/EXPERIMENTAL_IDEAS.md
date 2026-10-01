@@ -840,3 +840,20 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
   length/turnover; longer-horizon confirmation.
 - **Constraint:** infer causes from randomized within-substrate interventions and
   triangulated ablation/rescue, never from direct historical pass-rate comparison.
+
+### SM-H001 — Descendant reproductive-renewal gate
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-09-30
+- **Depends on:** passed SM-C002 causal decay-recycling gate
+- **Why:** Native ancestry counts include products that may never reproduce.
+- **Hypothesis:** Noninitial descendants later become the material source of
+  population-increasing births while retaining at least 90% of inherited birth
+  bytes, including descendants born in the late half of the run.
+- **Test:** Independent source/suffix replay on 20 unseen conserved-recycle host
+  runs plus ten inert controls, with no simulator mechanics change.
+- **Preregistration:** `reports/sm_h001_reproductive_renewal_preregistration.md`
+- **On success:** preregister causal sequence perturbation/transplant assays.
+- **On failure:** stop the Stringmol heredity branch without weakening source,
+  renewal, retention, or late-window definitions.
