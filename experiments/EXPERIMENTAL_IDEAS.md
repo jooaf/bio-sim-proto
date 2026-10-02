@@ -865,7 +865,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### SM-H002 — Descendant sequence-order perturbation screen
 
-- **Status:** Claimed
+- **Status:** Mechanics/source/configuration gates passed; 60 assays sealed
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-10-01
 - **Depends on:** passed SM-H001 reproductive-renewal gate
@@ -878,5 +878,6 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
   exact/shuffle × self/canonical-support conditions on paired unseen seeds (60
   conserved-recycle runs).
 - **Preregistration:** `reports/sm_h002_descendant_sequence_perturbation_preregistration.md`
+- **Implementation:** `reports/sm_h002_descendant_sequence_perturbation_implementation.md`
 - **On success:** preregister an unseen-seed replication in passing contexts.
 - **On failure:** retain genotype-level effects and stop functional-heredity claims.

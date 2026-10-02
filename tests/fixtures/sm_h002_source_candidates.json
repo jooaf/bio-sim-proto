@@ -1,0 +1,4826 @@
+{
+  "runs": [
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 64,
+          "birth_tick": 2530,
+          "death_tick": 3432,
+          "first_source_index": 35008,
+          "first_source_tick": 3041,
+          "id": 428,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2556,
+          "death_tick": null,
+          "first_source_index": 33436,
+          "first_source_tick": 2822,
+          "id": 432,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2761,
+          "death_tick": 3278,
+          "first_source_index": 34181,
+          "first_source_tick": 2922,
+          "id": 447,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3112,
+          "death_tick": 4435,
+          "first_source_index": 36066,
+          "first_source_tick": 3200,
+          "id": 503,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3173,
+          "death_tick": 4771,
+          "first_source_index": 39860,
+          "first_source_tick": 3832,
+          "id": 513,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3182,
+          "death_tick": null,
+          "first_source_index": 37736,
+          "first_source_tick": 3468,
+          "id": 515,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3245,
+          "death_tick": null,
+          "first_source_index": 37292,
+          "first_source_tick": 3390,
+          "id": 528,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3486,
+          "death_tick": null,
+          "first_source_index": 39137,
+          "first_source_tick": 3707,
+          "id": 556,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3654,
+          "death_tick": 4349,
+          "first_source_index": 41489,
+          "first_source_tick": 4124,
+          "id": 586,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3823,
+          "death_tick": 4680,
+          "first_source_index": 41414,
+          "first_source_tick": 4111,
+          "id": 606,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4123,
+          "death_tick": null,
+          "first_source_index": 42152,
+          "first_source_tick": 4243,
+          "id": 630,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4229,
+          "death_tick": null,
+          "first_source_index": 42585,
+          "first_source_tick": 4318,
+          "id": 648,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        }
+      ],
+      "seed": 202623000,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 428,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2530
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 432,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2556
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 447,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2761
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 503,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3112
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 513,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3173
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 515,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3182
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 528,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3245
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 556,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3486
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 586,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3654
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 606,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3823
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 630,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4123
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555554A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 648,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4229
+        }
+      ]
+    },
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 64,
+          "birth_tick": 3147,
+          "death_tick": null,
+          "first_source_index": 32308,
+          "first_source_tick": 3233,
+          "id": 565,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4092,
+          "death_tick": null,
+          "first_source_index": 37161,
+          "first_source_tick": 4332,
+          "id": 683,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        }
+      ],
+      "seed": 202623001,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 565,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3147
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 683,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4092
+        }
+      ]
+    },
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 64,
+          "birth_tick": 2587,
+          "death_tick": 3186,
+          "first_source_index": 28943,
+          "first_source_tick": 2674,
+          "id": 492,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2763,
+          "death_tick": null,
+          "first_source_index": 31977,
+          "first_source_tick": 3104,
+          "id": 509,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2876,
+          "death_tick": 3860,
+          "first_source_index": 31831,
+          "first_source_tick": 3084,
+          "id": 523,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3045,
+          "death_tick": 3994,
+          "first_source_index": 32405,
+          "first_source_tick": 3162,
+          "id": 550,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3247,
+          "death_tick": 4265,
+          "first_source_index": 33819,
+          "first_source_tick": 3389,
+          "id": 571,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3384,
+          "death_tick": 4089,
+          "first_source_index": 35709,
+          "first_source_tick": 3707,
+          "id": 589,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3556,
+          "death_tick": 4652,
+          "first_source_index": 35655,
+          "first_source_tick": 3694,
+          "id": 607,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3712,
+          "death_tick": 4668,
+          "first_source_index": 37156,
+          "first_source_tick": 3952,
+          "id": 629,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3958,
+          "death_tick": 4978,
+          "first_source_index": 38699,
+          "first_source_tick": 4220,
+          "id": 653,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4193,
+          "death_tick": null,
+          "first_source_index": 39773,
+          "first_source_tick": 4426,
+          "id": 678,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4440,
+          "death_tick": null,
+          "first_source_index": 41814,
+          "first_source_tick": 4857,
+          "id": 711,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        }
+      ],
+      "seed": 202623002,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 492,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2587
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484C4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 509,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2763
+        },
+        {
+          "birth_buffer_hex": "57574745454C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 523,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2876
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 550,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3045
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484C525257524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F424200",
+          "child": 571,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3247
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 589,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3384
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 607,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3556
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 629,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3712
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 653,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3958
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 678,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4193
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 711,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4440
+        }
+      ]
+    },
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 64,
+          "birth_tick": 2599,
+          "death_tick": null,
+          "first_source_index": 32075,
+          "first_source_tick": 2730,
+          "id": 426,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2665,
+          "death_tick": null,
+          "first_source_index": 33082,
+          "first_source_tick": 2845,
+          "id": 434,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2696,
+          "death_tick": 3625,
+          "first_source_index": 34943,
+          "first_source_tick": 3083,
+          "id": 442,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2704,
+          "death_tick": 3731,
+          "first_source_index": 34938,
+          "first_source_tick": 3081,
+          "id": 444,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2705,
+          "death_tick": null,
+          "first_source_index": 39509,
+          "first_source_tick": 3690,
+          "id": 445,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2720,
+          "death_tick": 3143,
+          "first_source_index": 34903,
+          "first_source_tick": 3076,
+          "id": 448,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2904,
+          "death_tick": null,
+          "first_source_index": 38213,
+          "first_source_tick": 3515,
+          "id": 469,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3111,
+          "death_tick": 4866,
+          "first_source_index": 35766,
+          "first_source_tick": 3192,
+          "id": 496,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3164,
+          "death_tick": null,
+          "first_source_index": 39027,
+          "first_source_tick": 3625,
+          "id": 503,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3217,
+          "death_tick": null,
+          "first_source_index": 36729,
+          "first_source_tick": 3319,
+          "id": 509,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3290,
+          "death_tick": 4046,
+          "first_source_index": 37174,
+          "first_source_tick": 3378,
+          "id": 526,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3688,
+          "death_tick": null,
+          "first_source_index": 40158,
+          "first_source_tick": 3800,
+          "id": 573,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3773,
+          "death_tick": null,
+          "first_source_index": 40838,
+          "first_source_tick": 3909,
+          "id": 599,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3925,
+          "death_tick": 4901,
+          "first_source_index": 42300,
+          "first_source_tick": 4151,
+          "id": 624,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3996,
+          "death_tick": null,
+          "first_source_index": 42394,
+          "first_source_tick": 4165,
+          "id": 633,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4173,
+          "death_tick": 4650,
+          "first_source_index": 43059,
+          "first_source_tick": 4288,
+          "id": 658,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4704,
+          "death_tick": null,
+          "first_source_index": 46787,
+          "first_source_tick": 4982,
+          "id": 732,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        }
+      ],
+      "seed": 202623003,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 426,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2599
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 434,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 2665
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 442,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 2696
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 444,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2704
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 445,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2705
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 448,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2720
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 469,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2904
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 496,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3111
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 503,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3164
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 509,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3217
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 526,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3290
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 573,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3688
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 599,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3773
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 624,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3925
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 633,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3996
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 658,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 4173
+        },
+        {
+          "birth_buffer_hex": "484848524C55485548524C5545554A4A524A58555555445944594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 732,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4704
+        }
+      ]
+    },
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 64,
+          "birth_tick": 2551,
+          "death_tick": 4343,
+          "first_source_index": 30809,
+          "first_source_tick": 2759,
+          "id": 425,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2719,
+          "death_tick": 2903,
+          "first_source_index": 31674,
+          "first_source_tick": 2874,
+          "id": 436,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2862,
+          "death_tick": 3640,
+          "first_source_index": 32070,
+          "first_source_tick": 2931,
+          "id": 451,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3064,
+          "death_tick": 3640,
+          "first_source_index": 33559,
+          "first_source_tick": 3139,
+          "id": 481,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3312,
+          "death_tick": 3821,
+          "first_source_index": 36590,
+          "first_source_tick": 3617,
+          "id": 524,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3378,
+          "death_tick": null,
+          "first_source_index": 36062,
+          "first_source_tick": 3525,
+          "id": 532,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3553,
+          "death_tick": null,
+          "first_source_index": 37052,
+          "first_source_tick": 3699,
+          "id": 549,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3692,
+          "death_tick": 4044,
+          "first_source_index": 38690,
+          "first_source_tick": 3999,
+          "id": 573,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4005,
+          "death_tick": null,
+          "first_source_index": 39130,
+          "first_source_tick": 4086,
+          "id": 614,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        }
+      ],
+      "seed": 202623004,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 425,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2551
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 436,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2719
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 451,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2862
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 481,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3064
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 524,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3312
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 532,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3378
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 549,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3553
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 573,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3692
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 614,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4005
+        }
+      ]
+    },
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 65,
+          "birth_tick": 2755,
+          "death_tick": null,
+          "first_source_index": 28050,
+          "first_source_tick": 2886,
+          "id": 483,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 0.9846153846153847,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3031,
+          "death_tick": 3568,
+          "first_source_index": 29971,
+          "first_source_tick": 3218,
+          "id": 510,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3317,
+          "death_tick": null,
+          "first_source_index": 31099,
+          "first_source_tick": 3431,
+          "id": 543,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3469,
+          "death_tick": null,
+          "first_source_index": 31872,
+          "first_source_tick": 3600,
+          "id": 573,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3593,
+          "death_tick": 4075,
+          "first_source_index": 32301,
+          "first_source_tick": 3696,
+          "id": 582,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3746,
+          "death_tick": null,
+          "first_source_index": 32900,
+          "first_source_tick": 3829,
+          "id": 607,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3878,
+          "death_tick": null,
+          "first_source_index": 33821,
+          "first_source_tick": 4044,
+          "id": 633,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4228,
+          "death_tick": null,
+          "first_source_index": 34766,
+          "first_source_tick": 4311,
+          "id": 686,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        }
+      ],
+      "seed": 202623005,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544595952484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F424200",
+          "child": 483,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2755
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 510,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3031
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 543,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3317
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 573,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3469
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 582,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3593
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 607,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3746
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 633,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3878
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 686,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4228
+        }
+      ]
+    },
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 64,
+          "birth_tick": 2679,
+          "death_tick": null,
+          "first_source_index": 29599,
+          "first_source_tick": 2829,
+          "id": 447,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2714,
+          "death_tick": 3148,
+          "first_source_index": 29479,
+          "first_source_tick": 2807,
+          "id": 451,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2750,
+          "death_tick": null,
+          "first_source_index": 29931,
+          "first_source_tick": 2869,
+          "id": 460,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2782,
+          "death_tick": null,
+          "first_source_index": 30779,
+          "first_source_tick": 2999,
+          "id": 466,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2897,
+          "death_tick": null,
+          "first_source_index": 31060,
+          "first_source_tick": 3045,
+          "id": 489,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3232,
+          "death_tick": 4209,
+          "first_source_index": 32584,
+          "first_source_tick": 3314,
+          "id": 540,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3300,
+          "death_tick": 3389,
+          "first_source_index": 33001,
+          "first_source_tick": 3384,
+          "id": 554,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3526,
+          "death_tick": null,
+          "first_source_index": 34928,
+          "first_source_tick": 3762,
+          "id": 583,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3733,
+          "death_tick": null,
+          "first_source_index": 36525,
+          "first_source_tick": 4080,
+          "id": 605,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3944,
+          "death_tick": 4267,
+          "first_source_index": 37272,
+          "first_source_tick": 4234,
+          "id": 626,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4321,
+          "death_tick": 4850,
+          "first_source_index": 38323,
+          "first_source_tick": 4480,
+          "id": 678,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4372,
+          "death_tick": null,
+          "first_source_index": 38828,
+          "first_source_tick": 4597,
+          "id": 687,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4868,
+          "death_tick": null,
+          "first_source_index": 40296,
+          "first_source_tick": 4949,
+          "id": 745,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        }
+      ],
+      "seed": 202623006,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 447,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2679
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 451,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2714
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 460,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2750
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 466,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2782
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 489,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2897
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 540,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3232
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 554,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3300
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 583,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3526
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 605,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3733
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 626,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3944
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 678,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 4321
+        },
+        {
+          "birth_buffer_hex": "575747454C484848524C55454555554A4A4A4A524A58555555445952484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 687,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4372
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 745,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4868
+        }
+      ]
+    },
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 64,
+          "birth_tick": 2564,
+          "death_tick": null,
+          "first_source_index": 32453,
+          "first_source_tick": 2802,
+          "id": 406,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2601,
+          "death_tick": null,
+          "first_source_index": 32717,
+          "first_source_tick": 2836,
+          "id": 410,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2621,
+          "death_tick": null,
+          "first_source_index": 33649,
+          "first_source_tick": 2952,
+          "id": 414,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2795,
+          "death_tick": 3125,
+          "first_source_index": 33287,
+          "first_source_tick": 2905,
+          "id": 430,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2833,
+          "death_tick": null,
+          "first_source_index": 34278,
+          "first_source_tick": 3031,
+          "id": 437,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2836,
+          "death_tick": 3631,
+          "first_source_index": 35228,
+          "first_source_tick": 3157,
+          "id": 440,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2859,
+          "death_tick": 4341,
+          "first_source_index": 34299,
+          "first_source_tick": 3033,
+          "id": 447,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2940,
+          "death_tick": 3221,
+          "first_source_index": 34486,
+          "first_source_tick": 3057,
+          "id": 462,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2958,
+          "death_tick": 3335,
+          "first_source_index": 34404,
+          "first_source_tick": 3047,
+          "id": 466,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2960,
+          "death_tick": null,
+          "first_source_index": 38824,
+          "first_source_tick": 3672,
+          "id": 467,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3029,
+          "death_tick": null,
+          "first_source_index": 37941,
+          "first_source_tick": 3528,
+          "id": 481,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3157,
+          "death_tick": null,
+          "first_source_index": 36079,
+          "first_source_tick": 3267,
+          "id": 499,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3162,
+          "death_tick": null,
+          "first_source_index": 36105,
+          "first_source_tick": 3271,
+          "id": 501,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3187,
+          "death_tick": null,
+          "first_source_index": 37072,
+          "first_source_tick": 3405,
+          "id": 509,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3364,
+          "death_tick": null,
+          "first_source_index": 38930,
+          "first_source_tick": 3689,
+          "id": 527,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3672,
+          "death_tick": 4616,
+          "first_source_index": 42743,
+          "first_source_tick": 4261,
+          "id": 574,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3672,
+          "death_tick": null,
+          "first_source_index": 39447,
+          "first_source_tick": 3763,
+          "id": 575,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3717,
+          "death_tick": 4321,
+          "first_source_index": 42006,
+          "first_source_tick": 4151,
+          "id": 582,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": false
+        }
+      ],
+      "seed": 202623007,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 406,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2564
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 410,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2601
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 414,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2621
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 430,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2795
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 437,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2833
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 440,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2836
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 447,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2859
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 462,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2940
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 466,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2958
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 467,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2960
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 481,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3029
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 499,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3157
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 501,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3162
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 509,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3187
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 527,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3364
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 574,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3672
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 575,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3672
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 582,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3717
+        }
+      ]
+    },
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 64,
+          "birth_tick": 2584,
+          "death_tick": null,
+          "first_source_index": 31621,
+          "first_source_tick": 2761,
+          "id": 412,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2656,
+          "death_tick": 3695,
+          "first_source_index": 33231,
+          "first_source_tick": 2950,
+          "id": 424,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2683,
+          "death_tick": null,
+          "first_source_index": 31760,
+          "first_source_tick": 2777,
+          "id": 430,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2763,
+          "death_tick": 4347,
+          "first_source_index": 33800,
+          "first_source_tick": 3022,
+          "id": 440,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2924,
+          "death_tick": 3335,
+          "first_source_index": 35869,
+          "first_source_tick": 3295,
+          "id": 463,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2978,
+          "death_tick": null,
+          "first_source_index": 34970,
+          "first_source_tick": 3168,
+          "id": 471,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3222,
+          "death_tick": null,
+          "first_source_index": 37087,
+          "first_source_tick": 3457,
+          "id": 520,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3278,
+          "death_tick": 4595,
+          "first_source_index": 37512,
+          "first_source_tick": 3508,
+          "id": 533,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3306,
+          "death_tick": 3942,
+          "first_source_index": 38137,
+          "first_source_tick": 3590,
+          "id": 544,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3321,
+          "death_tick": null,
+          "first_source_index": 38074,
+          "first_source_tick": 3580,
+          "id": 547,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3326,
+          "death_tick": 4263,
+          "first_source_index": 37718,
+          "first_source_tick": 3539,
+          "id": 550,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3343,
+          "death_tick": 3505,
+          "first_source_index": 36843,
+          "first_source_tick": 3422,
+          "id": 552,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3443,
+          "death_tick": 3606,
+          "first_source_index": 38035,
+          "first_source_tick": 3575,
+          "id": 573,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3529,
+          "death_tick": null,
+          "first_source_index": 38030,
+          "first_source_tick": 3574,
+          "id": 585,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3573,
+          "death_tick": null,
+          "first_source_index": 38387,
+          "first_source_tick": 3627,
+          "id": 601,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3662,
+          "death_tick": 4580,
+          "first_source_index": 39203,
+          "first_source_tick": 3743,
+          "id": 631,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3996,
+          "death_tick": null,
+          "first_source_index": 42184,
+          "first_source_tick": 4257,
+          "id": 748,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4597,
+          "death_tick": null,
+          "first_source_index": 44517,
+          "first_source_tick": 4766,
+          "id": 938,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": true
+        }
+      ],
+      "seed": 202623008,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 412,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2584
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 424,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2656
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 430,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2683
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 440,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2763
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 463,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2924
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 471,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2978
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 520,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3222
+        },
+        {
+          "birth_buffer_hex": "4848524C574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 533,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3278
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 544,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3306
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 547,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3321
+        },
+        {
+          "birth_buffer_hex": "4848524C574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 550,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3326
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 552,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3343
+        },
+        {
+          "birth_buffer_hex": "4857524C574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 573,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3443
+        },
+        {
+          "birth_buffer_hex": "4848524C57524C5548524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 585,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3529
+        },
+        {
+          "birth_buffer_hex": "4857524C574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 601,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3573
+        },
+        {
+          "birth_buffer_hex": "4848524C574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 631,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3662
+        },
+        {
+          "birth_buffer_hex": "57574745574C4C4848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 748,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3996
+        },
+        {
+          "birth_buffer_hex": "574C4745574C4C5545554C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 938,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 4597
+        }
+      ]
+    },
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 64,
+          "birth_tick": 2581,
+          "death_tick": 4487,
+          "first_source_index": 32404,
+          "first_source_tick": 2769,
+          "id": 476,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2638,
+          "death_tick": 3795,
+          "first_source_index": 31867,
+          "first_source_tick": 2694,
+          "id": 482,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2874,
+          "death_tick": 4516,
+          "first_source_index": 33529,
+          "first_source_tick": 2943,
+          "id": 534,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3247,
+          "death_tick": null,
+          "first_source_index": 35898,
+          "first_source_tick": 3325,
+          "id": 575,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3318,
+          "death_tick": null,
+          "first_source_index": 41533,
+          "first_source_tick": 4364,
+          "id": 582,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3327,
+          "death_tick": 3681,
+          "first_source_index": 36757,
+          "first_source_tick": 3466,
+          "id": 587,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3334,
+          "death_tick": null,
+          "first_source_index": 38333,
+          "first_source_tick": 3730,
+          "id": 590,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3807,
+          "death_tick": null,
+          "first_source_index": 39496,
+          "first_source_tick": 3950,
+          "id": 665,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3944,
+          "death_tick": null,
+          "first_source_index": 39885,
+          "first_source_tick": 4028,
+          "id": 689,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3999,
+          "death_tick": 4805,
+          "first_source_index": 41348,
+          "first_source_tick": 4327,
+          "id": 697,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4298,
+          "death_tick": null,
+          "first_source_index": 41580,
+          "first_source_tick": 4379,
+          "id": 733,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4377,
+          "death_tick": 4670,
+          "first_source_index": 41943,
+          "first_source_tick": 4458,
+          "id": 751,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4497,
+          "death_tick": null,
+          "first_source_index": 42510,
+          "first_source_tick": 4583,
+          "id": 769,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": true
+        }
+      ],
+      "seed": 202623009,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 476,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2581
+        },
+        {
+          "birth_buffer_hex": "57574745584C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 482,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2638
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 534,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 2874
+        },
+        {
+          "birth_buffer_hex": "57574745584C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 575,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3247
+        },
+        {
+          "birth_buffer_hex": "57574745584C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 582,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3318
+        },
+        {
+          "birth_buffer_hex": "57574745584C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 587,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3327
+        },
+        {
+          "birth_buffer_hex": "57574745584C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 590,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3334
+        },
+        {
+          "birth_buffer_hex": "57574745584C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 665,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3807
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 689,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3944
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 697,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3999
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 733,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 4298
+        },
+        {
+          "birth_buffer_hex": "57574745584C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 751,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4377
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 769,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 4497
+        }
+      ]
+    },
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 64,
+          "birth_tick": 2531,
+          "death_tick": null,
+          "first_source_index": 29674,
+          "first_source_tick": 2767,
+          "id": 504,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2576,
+          "death_tick": 3488,
+          "first_source_index": 30003,
+          "first_source_tick": 2819,
+          "id": 517,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2751,
+          "death_tick": 3449,
+          "first_source_index": 30435,
+          "first_source_tick": 2884,
+          "id": 530,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2961,
+          "death_tick": 3641,
+          "first_source_index": 31375,
+          "first_source_tick": 3037,
+          "id": 567,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3228,
+          "death_tick": null,
+          "first_source_index": 33634,
+          "first_source_tick": 3463,
+          "id": 604,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": true
+        }
+      ],
+      "seed": 202623010,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 504,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2531
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 517,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2576
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544584752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 530,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2751
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544584752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 567,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 2961
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 604,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3228
+        }
+      ]
+    },
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 64,
+          "birth_tick": 2536,
+          "death_tick": null,
+          "first_source_index": 35188,
+          "first_source_tick": 3559,
+          "id": 432,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2547,
+          "death_tick": null,
+          "first_source_index": 31110,
+          "first_source_tick": 2946,
+          "id": 433,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2566,
+          "death_tick": null,
+          "first_source_index": 32520,
+          "first_source_tick": 3151,
+          "id": 438,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2577,
+          "death_tick": 3433,
+          "first_source_index": 29992,
+          "first_source_tick": 2790,
+          "id": 442,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2578,
+          "death_tick": null,
+          "first_source_index": 33771,
+          "first_source_tick": 3339,
+          "id": 443,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2793,
+          "death_tick": 3717,
+          "first_source_index": 30564,
+          "first_source_tick": 2869,
+          "id": 474,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2820,
+          "death_tick": 3230,
+          "first_source_index": 30779,
+          "first_source_tick": 2901,
+          "id": 481,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2958,
+          "death_tick": null,
+          "first_source_index": 33872,
+          "first_source_tick": 3352,
+          "id": 518,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2963,
+          "death_tick": null,
+          "first_source_index": 35997,
+          "first_source_tick": 3696,
+          "id": 520,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3287,
+          "death_tick": 4609,
+          "first_source_index": 35213,
+          "first_source_tick": 3564,
+          "id": 548,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3522,
+          "death_tick": 3643,
+          "first_source_index": 35461,
+          "first_source_tick": 3608,
+          "id": 576,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4414,
+          "death_tick": null,
+          "first_source_index": 39773,
+          "first_source_tick": 4499,
+          "id": 717,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        }
+      ],
+      "seed": 202623011,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 432,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2536
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 433,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2547
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 438,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2566
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 442,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2577
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 443,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2578
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 474,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2793
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 481,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2820
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 518,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2958
+        },
+        {
+          "birth_buffer_hex": "57574745574C484847524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 520,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 2963
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 548,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3287
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 576,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3522
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 717,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4414
+        }
+      ]
+    },
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 64,
+          "birth_tick": 2675,
+          "death_tick": 3910,
+          "first_source_index": 34289,
+          "first_source_tick": 3206,
+          "id": 470,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2699,
+          "death_tick": null,
+          "first_source_index": 30748,
+          "first_source_tick": 2780,
+          "id": 475,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2872,
+          "death_tick": null,
+          "first_source_index": 32303,
+          "first_source_tick": 2959,
+          "id": 485,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3068,
+          "death_tick": null,
+          "first_source_index": 33879,
+          "first_source_tick": 3156,
+          "id": 503,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3069,
+          "death_tick": 3890,
+          "first_source_index": 38512,
+          "first_source_tick": 3766,
+          "id": 505,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3707,
+          "death_tick": null,
+          "first_source_index": 44981,
+          "first_source_tick": 4713,
+          "id": 564,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3752,
+          "death_tick": null,
+          "first_source_index": 40546,
+          "first_source_tick": 4055,
+          "id": 572,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3766,
+          "death_tick": 4686,
+          "first_source_index": 44460,
+          "first_source_tick": 4635,
+          "id": 576,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3780,
+          "death_tick": null,
+          "first_source_index": 39351,
+          "first_source_tick": 3883,
+          "id": 578,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3863,
+          "death_tick": null,
+          "first_source_index": 39786,
+          "first_source_tick": 3945,
+          "id": 586,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3908,
+          "death_tick": null,
+          "first_source_index": 42926,
+          "first_source_tick": 4400,
+          "id": 593,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3947,
+          "death_tick": null,
+          "first_source_index": 41576,
+          "first_source_tick": 4206,
+          "id": 602,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": true
+        }
+      ],
+      "seed": 202623012,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 470,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2675
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 475,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2699
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 485,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2872
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 503,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3068
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555554A4A4A524A5855555544595952484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 505,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3069
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 564,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3707
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555554A4A4A524A5855555544595952484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 572,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3752
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555554A4A4A524A5855555544595952484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 576,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3766
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555554A4A4A524A5855555544595952484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 578,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3780
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555554A4A4A524A5855555544595952484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 586,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3863
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 593,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3908
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 602,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3947
+        }
+      ]
+    },
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 64,
+          "birth_tick": 2625,
+          "death_tick": null,
+          "first_source_index": 32612,
+          "first_source_tick": 2996,
+          "id": 495,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2784,
+          "death_tick": null,
+          "first_source_index": 36040,
+          "first_source_tick": 3579,
+          "id": 504,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2973,
+          "death_tick": 4233,
+          "first_source_index": 33901,
+          "first_source_tick": 3209,
+          "id": 533,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3092,
+          "death_tick": null,
+          "first_source_index": 33702,
+          "first_source_tick": 3175,
+          "id": 557,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3332,
+          "death_tick": null,
+          "first_source_index": 36950,
+          "first_source_tick": 3729,
+          "id": 594,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3560,
+          "death_tick": 4654,
+          "first_source_index": 39663,
+          "first_source_tick": 4194,
+          "id": 613,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        }
+      ],
+      "seed": 202623013,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 495,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2625
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 504,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2784
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 533,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2973
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 557,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3092
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 594,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3332
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 613,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3560
+        }
+      ]
+    },
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 64,
+          "birth_tick": 2606,
+          "death_tick": null,
+          "first_source_index": 34227,
+          "first_source_tick": 2966,
+          "id": 451,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2724,
+          "death_tick": null,
+          "first_source_index": 34871,
+          "first_source_tick": 3048,
+          "id": 457,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2832,
+          "death_tick": null,
+          "first_source_index": 40725,
+          "first_source_tick": 3900,
+          "id": 462,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2843,
+          "death_tick": 2950,
+          "first_source_index": 33948,
+          "first_source_tick": 2927,
+          "id": 465,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2846,
+          "death_tick": null,
+          "first_source_index": 33985,
+          "first_source_tick": 2932,
+          "id": 467,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2861,
+          "death_tick": null,
+          "first_source_index": 35997,
+          "first_source_tick": 3205,
+          "id": 471,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2987,
+          "death_tick": null,
+          "first_source_index": 37300,
+          "first_source_tick": 3387,
+          "id": 490,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3092,
+          "death_tick": 3782,
+          "first_source_index": 36845,
+          "first_source_tick": 3322,
+          "id": 505,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3715,
+          "death_tick": null,
+          "first_source_index": 40076,
+          "first_source_tick": 3802,
+          "id": 570,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3884,
+          "death_tick": null,
+          "first_source_index": 42844,
+          "first_source_tick": 4226,
+          "id": 593,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3885,
+          "death_tick": null,
+          "first_source_index": 44109,
+          "first_source_tick": 4442,
+          "id": 594,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3991,
+          "death_tick": null,
+          "first_source_index": 44165,
+          "first_source_tick": 4450,
+          "id": 605,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        }
+      ],
+      "seed": 202623014,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 451,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2606
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 457,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2724
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 462,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2832
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 465,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2843
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 467,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2846
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 471,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2861
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 490,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2987
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 505,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3092
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 570,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3715
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 593,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3884
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 594,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3885
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 605,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3991
+        }
+      ]
+    },
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 64,
+          "birth_tick": 2514,
+          "death_tick": null,
+          "first_source_index": 33772,
+          "first_source_tick": 2718,
+          "id": 382,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2581,
+          "death_tick": 4854,
+          "first_source_index": 37266,
+          "first_source_tick": 3141,
+          "id": 393,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2848,
+          "death_tick": null,
+          "first_source_index": 40832,
+          "first_source_tick": 3581,
+          "id": 432,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2896,
+          "death_tick": null,
+          "first_source_index": 36027,
+          "first_source_tick": 2983,
+          "id": 437,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3116,
+          "death_tick": 4108,
+          "first_source_index": 43806,
+          "first_source_tick": 3981,
+          "id": 467,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3121,
+          "death_tick": 3560,
+          "first_source_index": 40005,
+          "first_source_tick": 3482,
+          "id": 468,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3128,
+          "death_tick": 3919,
+          "first_source_index": 37835,
+          "first_source_tick": 3210,
+          "id": 472,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3182,
+          "death_tick": null,
+          "first_source_index": 39550,
+          "first_source_tick": 3426,
+          "id": 479,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3211,
+          "death_tick": null,
+          "first_source_index": 39980,
+          "first_source_tick": 3479,
+          "id": 482,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3615,
+          "death_tick": null,
+          "first_source_index": 42333,
+          "first_source_tick": 3778,
+          "id": 511,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3766,
+          "death_tick": 4792,
+          "first_source_index": 46207,
+          "first_source_tick": 4354,
+          "id": 534,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4058,
+          "death_tick": null,
+          "first_source_index": 45398,
+          "first_source_tick": 4220,
+          "id": 558,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4063,
+          "death_tick": null,
+          "first_source_index": 46391,
+          "first_source_tick": 4383,
+          "id": 559,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4367,
+          "death_tick": null,
+          "first_source_index": 46875,
+          "first_source_tick": 4461,
+          "id": 602,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4519,
+          "death_tick": null,
+          "first_source_index": 48600,
+          "first_source_tick": 4741,
+          "id": 617,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4548,
+          "death_tick": null,
+          "first_source_index": 47792,
+          "first_source_tick": 4615,
+          "id": 619,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4653,
+          "death_tick": null,
+          "first_source_index": 48452,
+          "first_source_tick": 4716,
+          "id": 636,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        }
+      ],
+      "seed": 202623015,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 382,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2514
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 393,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2581
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 432,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2848
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 437,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2896
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 467,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3116
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 468,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 3121
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 472,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3128
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 479,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3182
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 482,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3211
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 511,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3615
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 534,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3766
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A58555555445952484A4C4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 558,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 4058
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 559,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4063
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 602,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4367
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 617,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4519
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 619,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4548
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 636,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4653
+        }
+      ]
+    },
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 64,
+          "birth_tick": 2783,
+          "death_tick": 4910,
+          "first_source_index": 29011,
+          "first_source_tick": 2977,
+          "id": 550,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2819,
+          "death_tick": 3915,
+          "first_source_index": 28591,
+          "first_source_tick": 2903,
+          "id": 562,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3351,
+          "death_tick": 3489,
+          "first_source_index": 31080,
+          "first_source_tick": 3414,
+          "id": 645,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        }
+      ],
+      "seed": 202623016,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 550,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2783
+        },
+        {
+          "birth_buffer_hex": "484848524C55455548524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 562,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2819
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 645,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3351
+        }
+      ]
+    },
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 63,
+          "birth_tick": 2546,
+          "death_tick": null,
+          "first_source_index": 34145,
+          "first_source_tick": 2707,
+          "id": 372,
+          "late": true,
+          "retained_bytes": 63,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2671,
+          "death_tick": null,
+          "first_source_index": 38675,
+          "first_source_tick": 3224,
+          "id": 395,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2928,
+          "death_tick": null,
+          "first_source_index": 37125,
+          "first_source_tick": 3040,
+          "id": 428,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3179,
+          "death_tick": 4532,
+          "first_source_index": 43645,
+          "first_source_tick": 3853,
+          "id": 460,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3197,
+          "death_tick": 4651,
+          "first_source_index": 42477,
+          "first_source_tick": 3699,
+          "id": 468,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3244,
+          "death_tick": 4452,
+          "first_source_index": 46486,
+          "first_source_tick": 4257,
+          "id": 480,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3263,
+          "death_tick": 4332,
+          "first_source_index": 46225,
+          "first_source_tick": 4206,
+          "id": 484,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3567,
+          "death_tick": 4131,
+          "first_source_index": 43297,
+          "first_source_tick": 3806,
+          "id": 504,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3585,
+          "death_tick": null,
+          "first_source_index": 42503,
+          "first_source_tick": 3703,
+          "id": 509,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3595,
+          "death_tick": 4442,
+          "first_source_index": 42280,
+          "first_source_tick": 3672,
+          "id": 512,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4034,
+          "death_tick": null,
+          "first_source_index": 46134,
+          "first_source_tick": 4195,
+          "id": 561,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4168,
+          "death_tick": null,
+          "first_source_index": 46531,
+          "first_source_tick": 4263,
+          "id": 574,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4553,
+          "death_tick": null,
+          "first_source_index": 49806,
+          "first_source_tick": 4825,
+          "id": 632,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        }
+      ],
+      "seed": 202623017,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F00",
+          "child": 372,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2546
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 395,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2671
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 428,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2928
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 460,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3179
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 468,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3197
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 480,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3244
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 484,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3263
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 504,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3567
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 509,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3585
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 512,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3595
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 561,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4034
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 574,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4168
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 632,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4553
+        }
+      ]
+    },
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 64,
+          "birth_tick": 2560,
+          "death_tick": 3460,
+          "first_source_index": 34633,
+          "first_source_tick": 3184,
+          "id": 483,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2882,
+          "death_tick": null,
+          "first_source_index": 38469,
+          "first_source_tick": 3870,
+          "id": 529,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3266,
+          "death_tick": null,
+          "first_source_index": 35606,
+          "first_source_tick": 3351,
+          "id": 574,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3339,
+          "death_tick": null,
+          "first_source_index": 37364,
+          "first_source_tick": 3666,
+          "id": 583,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3623,
+          "death_tick": null,
+          "first_source_index": 38386,
+          "first_source_tick": 3848,
+          "id": 632,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        }
+      ],
+      "seed": 202623018,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 483,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2560
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 529,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2882
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 574,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3266
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 583,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3339
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 632,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3623
+        }
+      ]
+    },
+    {
+      "condition": "host",
+      "renewals": [
+        {
+          "birth_length": 64,
+          "birth_tick": 2595,
+          "death_tick": null,
+          "first_source_index": 37879,
+          "first_source_tick": 3419,
+          "id": 429,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2601,
+          "death_tick": null,
+          "first_source_index": 32295,
+          "first_source_tick": 2777,
+          "id": 431,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 2904,
+          "death_tick": null,
+          "first_source_index": 39258,
+          "first_source_tick": 3592,
+          "id": 460,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3001,
+          "death_tick": 4998,
+          "first_source_index": 35984,
+          "first_source_tick": 3185,
+          "id": 471,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3004,
+          "death_tick": 3816,
+          "first_source_index": 39770,
+          "first_source_tick": 3665,
+          "id": 473,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3072,
+          "death_tick": 3744,
+          "first_source_index": 38979,
+          "first_source_tick": 3555,
+          "id": 479,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3288,
+          "death_tick": null,
+          "first_source_index": 37194,
+          "first_source_tick": 3338,
+          "id": 510,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3384,
+          "death_tick": null,
+          "first_source_index": 38841,
+          "first_source_tick": 3537,
+          "id": 520,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 3869,
+          "death_tick": 4683,
+          "first_source_index": 41790,
+          "first_source_tick": 3960,
+          "id": 584,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4017,
+          "death_tick": null,
+          "first_source_index": 43924,
+          "first_source_tick": 4321,
+          "id": 613,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": true
+        },
+        {
+          "birth_length": 65,
+          "birth_tick": 4021,
+          "death_tick": null,
+          "first_source_index": 42718,
+          "first_source_tick": 4109,
+          "id": 614,
+          "late": true,
+          "retained_bytes": 65,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4365,
+          "death_tick": 4607,
+          "first_source_index": 44592,
+          "first_source_tick": 4448,
+          "id": 668,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 36,
+          "birth_tick": 4411,
+          "death_tick": 4774,
+          "first_source_index": 45201,
+          "first_source_tick": 4560,
+          "id": 674,
+          "late": true,
+          "retained_bytes": 36,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4429,
+          "death_tick": null,
+          "first_source_index": 47032,
+          "first_source_tick": 4937,
+          "id": 677,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": true
+        },
+        {
+          "birth_length": 64,
+          "birth_tick": 4708,
+          "death_tick": 4967,
+          "first_source_index": 46556,
+          "first_source_tick": 4833,
+          "id": 722,
+          "late": true,
+          "retained_bytes": 64,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 1,
+          "survived_END": false
+        },
+        {
+          "birth_length": 62,
+          "birth_tick": 4774,
+          "death_tick": null,
+          "first_source_index": 46701,
+          "first_source_tick": 4866,
+          "id": 741,
+          "late": true,
+          "retained_bytes": 62,
+          "retained_late": true,
+          "retention": 1.0,
+          "source_depth": 2,
+          "survived_END": true
+        }
+      ],
+      "seed": 202623019,
+      "source_edges": [
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 429,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2595
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 431,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2601
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 460,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 2904
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 471,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3001
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 473,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3004
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 479,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3072
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F2424424C55424F257D4F59594F424200",
+          "child": 510,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3288
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 520,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3384
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 584,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 3869
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 613,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 4017
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F424200",
+          "child": 614,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4021
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 668,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4365
+        },
+        {
+          "birth_buffer_hex": "5E423E43243D3F3E2424424C55424F257D4F45484C484848524C5545554848524C55455500",
+          "child": 674,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4411
+        },
+        {
+          "birth_buffer_hex": "484848524C55455548524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 677,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4429
+        },
+        {
+          "birth_buffer_hex": "57574745574C484848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F3E2424424C55424F257D4F59484F4200",
+          "child": 722,
+          "child_depth": 1,
+          "productive": true,
+          "tick": 4708
+        },
+        {
+          "birth_buffer_hex": "57574745574C4848524C554555574A4A4A524A5855555544594752484A4C525757524524424C55424F5E423E43243D3F2424424C55424F257D4F59484F4200",
+          "child": 741,
+          "child_depth": 2,
+          "productive": true,
+          "tick": 4774
+        }
+      ]
+    }
+  ]
+}
