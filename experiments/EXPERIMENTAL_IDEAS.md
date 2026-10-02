@@ -862,3 +862,21 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 - **Decision:** `reports/sm_h001_reproductive_renewal_decision.json`
 - **Raw results:** `/home/jojo/bio-sim-results/bazzite/sm_h001_reproductive_renewal/bazzite.attlocal.net/prepared`
 - **Next:** preregister causal sequence perturbation/transplant assays.
+
+### SM-H002 — Descendant sequence-order perturbation screen
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-10-01
+- **Depends on:** passed SM-H001 reproductive-renewal gate
+- **Why:** Renewal plus sequence retention does not prove that inherited symbol
+  order causes reproductive competence.
+- **Hypothesis:** Exact renewing-descendant sequences outperform deterministic
+  composition-preserving shuffles in candidate-source renewal, with partner
+  context measured separately.
+- **Test:** Fifteen unique competence-enriched H001 descendant genotypes, each in
+  exact/shuffle × self/canonical-support conditions on paired unseen seeds (60
+  conserved-recycle runs).
+- **Preregistration:** `reports/sm_h002_descendant_sequence_perturbation_preregistration.md`
+- **On success:** preregister an unseen-seed replication in passing contexts.
+- **On failure:** retain genotype-level effects and stop functional-heredity claims.
