@@ -1042,6 +1042,28 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
   `reports/sm_h001_reproductive_renewal_decision.json`; raw campaign:
   `/home/jojo/bio-sim-results/bazzite/sm_h001_reproductive_renewal/bazzite.attlocal.net/prepared`.
 
+### SM-E005 — Descendant sequence-order perturbation screen
+
+- **Hypothesis:** Exact renewing-descendant symbol order supports reproductive
+  renewal better than a deterministic composition-preserving shuffle, measured
+  separately in self-only and canonical-supported contexts.
+- **Test:** Fifteen unique competence-enriched SM-H001 genotypes in 60 paired
+  exact/shuffle × self/support conserved-recycle assays on unseen seeds.
+- **Result:** **UNEVALUABLE.** All 60 runs passed integrity and exact conservation,
+  but the canonical exact SUPPORT positive control had zero late renewing
+  descendants versus the frozen minimum of five. It passed every other liveness
+  component and exceeded its shuffle by 314 productive births, 143 late births,
+  and 25 serial births. Descriptively, 10/15 genotypes passed SELF specificity,
+  7/15 passed SUPPORT, and 5/15 passed both, below the 12/15 threshold.
+- **Decision:** No context qualifies for confirmation. Functional heredity remains
+  unsupported; the outcome is not a valid biological negative result.
+- **Limitations:** Genotype-level exact/shuffle effects are descriptive under the
+  blocked gate. No partner-necessity, adaptation, ecology, organism, or general
+  Stringmol-over-BFF claim. Any redesign requires a new ID and unseen seeds.
+- **Evidence:** `reports/sm_h002_descendant_sequence_perturbation_report.md` and
+  `reports/sm_h002_descendant_sequence_perturbation_decision.json`; raw campaign:
+  `/home/jojo/bio-sim-results/bazzite/sm_h002_descendant_sequence_perturbation/bazzite.attlocal.net/prepared`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -1070,9 +1092,12 @@ witness. The frozen stop rule closes BFF lineage/persistence/ecology work.
 SM-L001 validated explicit successful cleavage birth and persistent individual
 lineage identity in pinned Stringmol. SM-C001 validated exact per-symbol material
 conservation, and SM-C002 showed that accessible decay matter causally sustains
-late copy growth and lineage production. SM-H001 now establishes that qualifying
-descendants themselves produce later population-increasing children while
-retaining inherited sequence. The next frontier is a separately preregistered
-causal sequence perturbation/transplant gate. The comparative Stringmol–BFF
-program proceeds through within-substrate interventions, not historical pass-rate
-comparison or a claim that the symbol pool is energy.
+late copy growth and lineage production. SM-H001 establishes that qualifying descendants themselves produce later
+population-increasing children while retaining inherited sequence. SM-H002's
+causal sequence-order screen completed with valid mechanics but was unevaluable
+because its canonical supported-context late-renewal positive control failed; no
+context qualified for confirmation. Functional heredity therefore remains
+unsupported. Any replacement must use a new prospectively preregistered ID and
+unseen seeds. The comparative Stringmol–BFF program proceeds through
+within-substrate interventions, not historical pass-rate comparison or a claim
+that the symbol pool is energy.

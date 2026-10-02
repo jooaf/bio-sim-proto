@@ -865,7 +865,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### SM-H002 — Descendant sequence-order perturbation screen
 
-- **Status:** Mechanics/source/configuration gates passed; 60 assays sealed
+- **Status:** Completed; unevaluable (canonical SUPPORT positive control failed)
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-10-01
 - **Depends on:** passed SM-H001 reproductive-renewal gate
@@ -879,5 +879,11 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
   conserved-recycle runs).
 - **Preregistration:** `reports/sm_h002_descendant_sequence_perturbation_preregistration.md`
 - **Implementation:** `reports/sm_h002_descendant_sequence_perturbation_implementation.md`
-- **On success:** preregister an unseen-seed replication in passing contexts.
-- **On failure:** retain genotype-level effects and stop functional-heredity claims.
+- **Outcome:** All 60 runs passed integrity, but the canonical exact SUPPORT arm
+  had zero late renewing descendants versus the frozen minimum of five. SELF,
+  SUPPORT, and shared specificity counts were 10/15, 7/15, and 5/15; no context
+  met 12/15 and no follow-up was eligible.
+- **Report:** `reports/sm_h002_descendant_sequence_perturbation_report.md`
+- **Decision:** Unevaluable rather than a biological non-pass; retain descriptive
+  genotype effects and stop functional-heredity claims. Any redesign needs a new
+  ID, preregistration, and unseen seeds.

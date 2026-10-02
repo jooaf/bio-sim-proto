@@ -2,7 +2,11 @@
 
 **Prepared:** 2026-10-01  
 **Preregistration commit:** `f80cce7`  
-**Status:** mechanics/source/configuration gates passed; 60 unseen assays sealed; launch pending commit/push
+**Status at preparation:** mechanics/source/configuration gates passed; 60 unseen assays sealed
+
+The implementation was subsequently committed and pushed as `2f4ca27`; the sealed
+campaign then executed once. See
+`reports/sm_h002_descendant_sequence_perturbation_report.md` for the outcome.
 
 ## Implementation
 
@@ -63,5 +67,6 @@ preparation chain, and found no prelaunch blocker.
 The preparation contains 15 genotype blocks and 60 read-only assay configs:
 EXACT_SELF, SHUFFLE_SELF, EXACT_SUPPORT, and SHUFFLE_SUPPORT on paired unseen
 seeds `202624000`–`202624014`. All output directories and launch/campaign receipts
-were absent. Scientific launch remains prohibited until implementation bytes are
-committed, pushed, and directly observed on `origin/main`.
+were absent at preparation. Scientific launch was prohibited until implementation
+bytes were committed, pushed, and directly observed on `origin/main`; launch later
+satisfied that seal without changing the preparation.

@@ -16,7 +16,13 @@ Established observations are narrower:
 - SM-L001 showed native successful cleavage birth and persistent individual
   lineage over 5,000 ticks.
 - SM-C001 retained that result under exact symbol conservation and showed active
-  material scarcity.
+  material scarcity; SM-C002 then isolated a causal role for accessible
+  decay-released matter.
+- SM-H001 established descendant reproductive renewal with inherited-sequence
+  continuity. SM-H002's exact-versus-composition-shuffle screen completed with
+  valid integrity but was unevaluable because its canonical supported-context
+  late-renewal positive control failed. Its genotype-level order effects remain
+  descriptive and do not establish functional heredity.
 - Therefore exact conservation alone cannot explain the historical contrast.
   Global-interaction/global-placement Stringmol also shows that locality is not
   necessary for the demonstrated Stringmol result.

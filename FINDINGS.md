@@ -285,3 +285,25 @@ does not establish that retained sequence is causally necessary for competence,
 functional heredity under perturbation, adaptation, or organisms. The next gate
 is a prospective exact-sequence versus perturbation/transplant assay under
 standardized partner and material conditions.
+
+## 2026-10-02 — Stringmol descendant sequence-order perturbation
+
+SM-H002 completed all 60 exact/shuffle × self/canonical-support assays with valid
+integrity and exact conservation, but the frozen canonical positive control
+failed in SUPPORT. The exact canonical candidate produced 314 productive source
+births, 25 serial births, depth 2, and 143 late productive births versus zero for
+its shuffle, yet had zero late renewing descendants against the required five.
+The experiment is therefore **unevaluable**, not a valid biological non-pass.
+
+Descriptively, exact sequence order frequently outperformed composition-preserving
+shuffles: 10/15 genotypes passed the full SELF specificity conjunction, 7/15
+passed SUPPORT, and 5/15 passed both. Each remained below the frozen 12/15 panel
+threshold. Exact median productive source births were 586 in SELF and 322 in
+SUPPORT versus zero for shuffles, but these effects cannot rescue the positive
+control or conjunction gates.
+
+No context qualified for the preregistered unseen-seed confirmation. Causal
+functional heredity remains unsupported. The observations may motivate a new-ID,
+prospectively designed genotype/context assay, but do not establish partner
+necessity, adaptation, ecology, organisms, or general Stringmol superiority over
+BFF.

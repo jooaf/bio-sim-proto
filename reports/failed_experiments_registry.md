@@ -215,6 +215,23 @@ ups are prohibited unless opened as an explicitly new design.
   integrated transient load for the failed persistence endpoint. Pivot to a
   substrate with explicit atomic reproduction and lineage identity.
 
+## SM-H002 — Descendant sequence-order perturbation screen
+
+- **Decision:** UNEVALUABLE; no context eligible for confirmation.
+- **Failed prerequisite:** the canonical exact SUPPORT positive control produced
+  zero late renewing descendants versus the frozen minimum of five. Its other
+  liveness components passed, including 314 productive source births, 25 serial
+  births, depth 2, and 143 late productive births; the paired shuffle had zero on
+  those measures.
+- **Retained:** all 60 runs passed exact conservation, source/cohort replay, and
+  artifact integrity. Descriptively, 10/15 genotypes passed SELF specificity,
+  7/15 passed SUPPORT, and 5/15 passed both, all below the frozen 12/15 threshold.
+- **Boundary:** this is not a valid biological negative result and does not
+  establish causal functional heredity. Do not weaken late-renewal or panel
+  thresholds, drop SUPPORT, rerun selected genotypes, or promote descriptive
+  margins. Any replacement requires a new ID, prospective context/positive-control
+  rules, and unseen seeds.
+
 ## Cross-cutting lessons
 
 1. Positive mechanics do not imply ecological or organizational function.

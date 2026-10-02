@@ -1,0 +1,914 @@
+{
+  "schema": "sm_h002_decision_v1",
+  "decision": "unevaluable",
+  "integrity": true,
+  "canonical_positive_control": false,
+  "run_denominator": 60,
+  "genotype_denominator_per_context": 15,
+  "self_specific": false,
+  "support_specific": false,
+  "context_general": false,
+  "passing_genotypes": {
+    "SELF": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      7,
+      9,
+      10,
+      12,
+      14
+    ],
+    "SUPPORT": [
+      1,
+      2,
+      3,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  "shared_passing_genotypes": [
+    1,
+    2,
+    3,
+    7,
+    9
+  ],
+  "follow_up_eligible": false,
+  "genotypes": [
+    {
+      "rank": 0,
+      "sha256": "15953a370760136bb6b59dfccbbd5b01164f7a839b8aabfa16b96ac22c8f9c28",
+      "length": 64,
+      "distance": 14,
+      "self": {
+        "passes": false,
+        "exact": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "shuffle": {
+          "productive_source_births": 247,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 122,
+          "serial_source_births": 122,
+          "max_source_depth": 2,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 0,
+          "late_renewing_descendants": 0,
+          "max_source_depth": -2,
+          "productive_source_births": -247,
+          "serial_source_births": -122
+        }
+      },
+      "support": {
+        "passes": false,
+        "exact": {
+          "productive_source_births": 218,
+          "late_productive_source_births": 106,
+          "renewing_descendants": 10,
+          "serial_source_births": 26,
+          "max_source_depth": 2,
+          "late_renewing_descendants": 5
+        },
+        "shuffle": {
+          "productive_source_births": 159,
+          "late_productive_source_births": 28,
+          "renewing_descendants": 69,
+          "serial_source_births": 69,
+          "max_source_depth": 4,
+          "late_renewing_descendants": 4
+        },
+        "differences": {
+          "late_productive_source_births": 78,
+          "late_renewing_descendants": 1,
+          "max_source_depth": -2,
+          "productive_source_births": 59,
+          "serial_source_births": -43
+        }
+      }
+    },
+    {
+      "rank": 1,
+      "sha256": "1bb243ffa6d820aca736ea8db44d4343e8331d1daf52fcaa74911944a4068ffe",
+      "length": 65,
+      "distance": 2,
+      "self": {
+        "passes": true,
+        "exact": {
+          "productive_source_births": 586,
+          "late_productive_source_births": 245,
+          "renewing_descendants": 27,
+          "serial_source_births": 105,
+          "max_source_depth": 3,
+          "late_renewing_descendants": 18
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 245,
+          "late_renewing_descendants": 18,
+          "max_source_depth": 3,
+          "productive_source_births": 586,
+          "serial_source_births": 105
+        }
+      },
+      "support": {
+        "passes": true,
+        "exact": {
+          "productive_source_births": 353,
+          "late_productive_source_births": 222,
+          "renewing_descendants": 13,
+          "serial_source_births": 53,
+          "max_source_depth": 3,
+          "late_renewing_descendants": 9
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 222,
+          "late_renewing_descendants": 9,
+          "max_source_depth": 3,
+          "productive_source_births": 353,
+          "serial_source_births": 53
+        }
+      }
+    },
+    {
+      "rank": 2,
+      "sha256": "1e7f264b5f9c3c4faef8602af1dc6d11c821adffae44f17cb90fbf94823af2bf",
+      "length": 64,
+      "distance": 8,
+      "self": {
+        "passes": true,
+        "exact": {
+          "productive_source_births": 1083,
+          "late_productive_source_births": 752,
+          "renewing_descendants": 38,
+          "serial_source_births": 453,
+          "max_source_depth": 4,
+          "late_renewing_descendants": 7
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 752,
+          "late_renewing_descendants": 7,
+          "max_source_depth": 4,
+          "productive_source_births": 1083,
+          "serial_source_births": 453
+        }
+      },
+      "support": {
+        "passes": true,
+        "exact": {
+          "productive_source_births": 652,
+          "late_productive_source_births": 391,
+          "renewing_descendants": 12,
+          "serial_source_births": 136,
+          "max_source_depth": 2,
+          "late_renewing_descendants": 6
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 391,
+          "late_renewing_descendants": 6,
+          "max_source_depth": 2,
+          "productive_source_births": 652,
+          "serial_source_births": 136
+        }
+      }
+    },
+    {
+      "rank": 3,
+      "sha256": "2df88170ddfdd5281b80fe2a38eb0b1538074a5e376aae634d2f9b1e4f821a5f",
+      "length": 64,
+      "distance": 1,
+      "self": {
+        "passes": true,
+        "exact": {
+          "productive_source_births": 511,
+          "late_productive_source_births": 231,
+          "renewing_descendants": 37,
+          "serial_source_births": 139,
+          "max_source_depth": 3,
+          "late_renewing_descendants": 15
+        },
+        "shuffle": {
+          "productive_source_births": 180,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 44,
+          "serial_source_births": 44,
+          "max_source_depth": 2,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 231,
+          "late_renewing_descendants": 15,
+          "max_source_depth": 1,
+          "productive_source_births": 331,
+          "serial_source_births": 95
+        }
+      },
+      "support": {
+        "passes": true,
+        "exact": {
+          "productive_source_births": 425,
+          "late_productive_source_births": 221,
+          "renewing_descendants": 26,
+          "serial_source_births": 153,
+          "max_source_depth": 3,
+          "late_renewing_descendants": 13
+        },
+        "shuffle": {
+          "productive_source_births": 100,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 30,
+          "serial_source_births": 30,
+          "max_source_depth": 2,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 221,
+          "late_renewing_descendants": 13,
+          "max_source_depth": 1,
+          "productive_source_births": 325,
+          "serial_source_births": 123
+        }
+      }
+    },
+    {
+      "rank": 4,
+      "sha256": "36b05e71ceac8c5bae3f185d9997eb7083ecc7e24857e547ac52c001f2604929",
+      "length": 63,
+      "distance": 1,
+      "self": {
+        "passes": true,
+        "exact": {
+          "productive_source_births": 594,
+          "late_productive_source_births": 297,
+          "renewing_descendants": 21,
+          "serial_source_births": 117,
+          "max_source_depth": 3,
+          "late_renewing_descendants": 10
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 297,
+          "late_renewing_descendants": 10,
+          "max_source_depth": 3,
+          "productive_source_births": 594,
+          "serial_source_births": 117
+        }
+      },
+      "support": {
+        "passes": false,
+        "exact": {
+          "productive_source_births": 295,
+          "late_productive_source_births": 163,
+          "renewing_descendants": 2,
+          "serial_source_births": 17,
+          "max_source_depth": 2,
+          "late_renewing_descendants": 2
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 163,
+          "late_renewing_descendants": 2,
+          "max_source_depth": 2,
+          "productive_source_births": 295,
+          "serial_source_births": 17
+        }
+      }
+    },
+    {
+      "rank": 5,
+      "sha256": "5d69166053e37fa11cb7c358def06e23e81f0609bf261900fcaab1a9a71361a3",
+      "length": 64,
+      "distance": 4,
+      "self": {
+        "passes": true,
+        "exact": {
+          "productive_source_births": 475,
+          "late_productive_source_births": 201,
+          "renewing_descendants": 99,
+          "serial_source_births": 193,
+          "max_source_depth": 5,
+          "late_renewing_descendants": 53
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 201,
+          "late_renewing_descendants": 53,
+          "max_source_depth": 5,
+          "productive_source_births": 475,
+          "serial_source_births": 193
+        }
+      },
+      "support": {
+        "passes": false,
+        "exact": {
+          "productive_source_births": 208,
+          "late_productive_source_births": 99,
+          "renewing_descendants": 5,
+          "serial_source_births": 30,
+          "max_source_depth": 3,
+          "late_renewing_descendants": 1
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 99,
+          "late_renewing_descendants": 1,
+          "max_source_depth": 3,
+          "productive_source_births": 208,
+          "serial_source_births": 30
+        }
+      }
+    },
+    {
+      "rank": 6,
+      "sha256": "706bbcfaa580844ab1f311a2bfe9a6a746e07327a0415cb7116fd56b28547d35",
+      "length": 64,
+      "distance": 7,
+      "self": {
+        "passes": false,
+        "exact": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 0,
+          "late_renewing_descendants": 0,
+          "max_source_depth": 0,
+          "productive_source_births": 0,
+          "serial_source_births": 0
+        }
+      },
+      "support": {
+        "passes": true,
+        "exact": {
+          "productive_source_births": 322,
+          "late_productive_source_births": 179,
+          "renewing_descendants": 14,
+          "serial_source_births": 50,
+          "max_source_depth": 3,
+          "late_renewing_descendants": 9
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 179,
+          "late_renewing_descendants": 9,
+          "max_source_depth": 3,
+          "productive_source_births": 322,
+          "serial_source_births": 50
+        }
+      }
+    },
+    {
+      "rank": 7,
+      "sha256": "79b762a9a6c8d107f3649e0049f732db73a55d8fa34f3973d394a0359ac821ba",
+      "length": 64,
+      "distance": 2,
+      "self": {
+        "passes": true,
+        "exact": {
+          "productive_source_births": 489,
+          "late_productive_source_births": 253,
+          "renewing_descendants": 65,
+          "serial_source_births": 182,
+          "max_source_depth": 5,
+          "late_renewing_descendants": 32
+        },
+        "shuffle": {
+          "productive_source_births": 140,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 1,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 253,
+          "late_renewing_descendants": 32,
+          "max_source_depth": 4,
+          "productive_source_births": 349,
+          "serial_source_births": 182
+        }
+      },
+      "support": {
+        "passes": true,
+        "exact": {
+          "productive_source_births": 354,
+          "late_productive_source_births": 228,
+          "renewing_descendants": 20,
+          "serial_source_births": 140,
+          "max_source_depth": 3,
+          "late_renewing_descendants": 11
+        },
+        "shuffle": {
+          "productive_source_births": 60,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 1,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 228,
+          "late_renewing_descendants": 11,
+          "max_source_depth": 2,
+          "productive_source_births": 294,
+          "serial_source_births": 140
+        }
+      }
+    },
+    {
+      "rank": 8,
+      "sha256": "7aff4d7950c37213ffe2f9b36793195902bc55dbd642575f3d25606d01f84f32",
+      "length": 64,
+      "distance": 14,
+      "self": {
+        "passes": false,
+        "exact": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 0,
+          "late_renewing_descendants": 0,
+          "max_source_depth": 0,
+          "productive_source_births": 0,
+          "serial_source_births": 0
+        }
+      },
+      "support": {
+        "passes": true,
+        "exact": {
+          "productive_source_births": 343,
+          "late_productive_source_births": 196,
+          "renewing_descendants": 20,
+          "serial_source_births": 97,
+          "max_source_depth": 3,
+          "late_renewing_descendants": 9
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 196,
+          "late_renewing_descendants": 9,
+          "max_source_depth": 3,
+          "productive_source_births": 343,
+          "serial_source_births": 97
+        }
+      }
+    },
+    {
+      "rank": 9,
+      "sha256": "7dd4980b0186ff6aa3f22863d1ed0a8e4a772d5513d7645211434aeba18f6f7c",
+      "length": 64,
+      "distance": 1,
+      "self": {
+        "passes": true,
+        "exact": {
+          "productive_source_births": 616,
+          "late_productive_source_births": 331,
+          "renewing_descendants": 8,
+          "serial_source_births": 45,
+          "max_source_depth": 2,
+          "late_renewing_descendants": 6
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 331,
+          "late_renewing_descendants": 6,
+          "max_source_depth": 2,
+          "productive_source_births": 616,
+          "serial_source_births": 45
+        }
+      },
+      "support": {
+        "passes": true,
+        "exact": {
+          "productive_source_births": 435,
+          "late_productive_source_births": 252,
+          "renewing_descendants": 20,
+          "serial_source_births": 113,
+          "max_source_depth": 3,
+          "late_renewing_descendants": 12
+        },
+        "shuffle": {
+          "productive_source_births": 52,
+          "late_productive_source_births": 3,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 1,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 249,
+          "late_renewing_descendants": 12,
+          "max_source_depth": 2,
+          "productive_source_births": 383,
+          "serial_source_births": 113
+        }
+      }
+    },
+    {
+      "rank": 10,
+      "sha256": "8f959fc754dded054aa42325fce1d6530c3a756c3983f1bd9d30176cfe53b66f",
+      "length": 64,
+      "distance": 1,
+      "self": {
+        "passes": true,
+        "exact": {
+          "productive_source_births": 652,
+          "late_productive_source_births": 359,
+          "renewing_descendants": 18,
+          "serial_source_births": 119,
+          "max_source_depth": 2,
+          "late_renewing_descendants": 9
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 359,
+          "late_renewing_descendants": 9,
+          "max_source_depth": 2,
+          "productive_source_births": 652,
+          "serial_source_births": 119
+        }
+      },
+      "support": {
+        "passes": false,
+        "exact": {
+          "productive_source_births": 415,
+          "late_productive_source_births": 207,
+          "renewing_descendants": 11,
+          "serial_source_births": 110,
+          "max_source_depth": 3,
+          "late_renewing_descendants": 4
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 207,
+          "late_renewing_descendants": 4,
+          "max_source_depth": 3,
+          "productive_source_births": 415,
+          "serial_source_births": 110
+        }
+      }
+    },
+    {
+      "rank": 11,
+      "sha256": "941170d7180a0d10b837939b09769a87cc2490d63600c4e1391d58c5832ed18d",
+      "length": 36,
+      "distance": 63,
+      "self": {
+        "passes": false,
+        "exact": {
+          "productive_source_births": 193,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 1,
+          "late_renewing_descendants": 0
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 0,
+          "late_renewing_descendants": 0,
+          "max_source_depth": 1,
+          "productive_source_births": 193,
+          "serial_source_births": 0
+        }
+      },
+      "support": {
+        "passes": false,
+        "exact": {
+          "productive_source_births": 87,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 1,
+          "late_renewing_descendants": 0
+        },
+        "shuffle": {
+          "productive_source_births": 51,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 18,
+          "serial_source_births": 18,
+          "max_source_depth": 2,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 0,
+          "late_renewing_descendants": 0,
+          "max_source_depth": -1,
+          "productive_source_births": 36,
+          "serial_source_births": -18
+        }
+      }
+    },
+    {
+      "rank": 12,
+      "sha256": "94f8c51cef8ef18d4246fb1fc6030b20f887bb0e265be59b3949be2bb69b89c5",
+      "length": 64,
+      "distance": 0,
+      "self": {
+        "passes": true,
+        "exact": {
+          "productive_source_births": 804,
+          "late_productive_source_births": 426,
+          "renewing_descendants": 22,
+          "serial_source_births": 196,
+          "max_source_depth": 3,
+          "late_renewing_descendants": 5
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 426,
+          "late_renewing_descendants": 5,
+          "max_source_depth": 3,
+          "productive_source_births": 804,
+          "serial_source_births": 196
+        }
+      },
+      "support": {
+        "passes": false,
+        "exact": {
+          "productive_source_births": 314,
+          "late_productive_source_births": 143,
+          "renewing_descendants": 5,
+          "serial_source_births": 25,
+          "max_source_depth": 2,
+          "late_renewing_descendants": 0
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 143,
+          "late_renewing_descendants": 0,
+          "max_source_depth": 2,
+          "productive_source_births": 314,
+          "serial_source_births": 25
+        }
+      }
+    },
+    {
+      "rank": 13,
+      "sha256": "9faa47b24c0717a33e21b5db736da04f792d6aa6dcf380d77c7fc4c22582f52b",
+      "length": 64,
+      "distance": 1,
+      "self": {
+        "passes": false,
+        "exact": {
+          "productive_source_births": 608,
+          "late_productive_source_births": 247,
+          "renewing_descendants": 9,
+          "serial_source_births": 57,
+          "max_source_depth": 2,
+          "late_renewing_descendants": 1
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 247,
+          "late_renewing_descendants": 1,
+          "max_source_depth": 2,
+          "productive_source_births": 608,
+          "serial_source_births": 57
+        }
+      },
+      "support": {
+        "passes": false,
+        "exact": {
+          "productive_source_births": 291,
+          "late_productive_source_births": 169,
+          "renewing_descendants": 2,
+          "serial_source_births": 7,
+          "max_source_depth": 2,
+          "late_renewing_descendants": 2
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 169,
+          "late_renewing_descendants": 2,
+          "max_source_depth": 2,
+          "productive_source_births": 291,
+          "serial_source_births": 7
+        }
+      }
+    },
+    {
+      "rank": 14,
+      "sha256": "c7285cce1777236316f83944bf668215093a683aaf9c4d6a663c9c4629957139",
+      "length": 64,
+      "distance": 31,
+      "self": {
+        "passes": true,
+        "exact": {
+          "productive_source_births": 589,
+          "late_productive_source_births": 280,
+          "renewing_descendants": 27,
+          "serial_source_births": 98,
+          "max_source_depth": 3,
+          "late_renewing_descendants": 13
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 280,
+          "late_renewing_descendants": 13,
+          "max_source_depth": 3,
+          "productive_source_births": 589,
+          "serial_source_births": 98
+        }
+      },
+      "support": {
+        "passes": false,
+        "exact": {
+          "productive_source_births": 198,
+          "late_productive_source_births": 82,
+          "renewing_descendants": 11,
+          "serial_source_births": 21,
+          "max_source_depth": 3,
+          "late_renewing_descendants": 6
+        },
+        "shuffle": {
+          "productive_source_births": 0,
+          "late_productive_source_births": 0,
+          "renewing_descendants": 0,
+          "serial_source_births": 0,
+          "max_source_depth": 0,
+          "late_renewing_descendants": 0
+        },
+        "differences": {
+          "late_productive_source_births": 82,
+          "late_renewing_descendants": 6,
+          "max_source_depth": 3,
+          "productive_source_births": 198,
+          "serial_source_births": 21
+        }
+      }
+    }
+  ]
+}
