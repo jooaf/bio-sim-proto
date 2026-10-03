@@ -912,7 +912,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### SM-M001 — Native-versus-zero mutation baseline
 
-- **Status:** Claimed
+- **Status:** Mechanics/source/configuration gates passed; 40 assays sealed
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-10-03
 - **Depends on:** passed canonical reproductive-renewal mechanics; independent of
@@ -923,5 +923,6 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 - **Test:** Twenty paired canonical conserved-recycle runs with `MUTATE 0.0002`
   versus `MUTATE 0`, unchanged mechanics and renewal definitions.
 - **Preregistration:** `reports/sm_m001_mutation_baseline_preregistration.md`
+- **Implementation:** `reports/sm_m001_mutation_baseline_implementation.md`
 - **On both-arm viability:** preregister the birth-boundary factorial.
 - **Otherwise:** retain the frozen decision and stop that continuation.
