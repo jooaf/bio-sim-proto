@@ -890,7 +890,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### SM-H003 — Replicated canonical-supported sequence-order assay
 
-- **Status:** Claimed
+- **Status:** Mechanics/source/configuration gates passed; 90 assays sealed
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-10-02
 - **Depends on:** bounded SM-H002 cohort-partition diagnosis; does not reverse its
@@ -902,6 +902,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
   H002 genotype (90 runs). Exclude canonical from the 14-genotype scientific
   denominator and require replicated specificity in at least 12/14.
 - **Preregistration:** `reports/sm_h003_replicated_supported_sequence_order_preregistration.md`
+- **Implementation:** `reports/sm_h003_replicated_supported_sequence_order_implementation.md`
 - **On success:** separately preregister catalyst/template-role dissection.
 - **On non-pass:** retain genotype effects and stop the panel functional-heredity
   branch.
