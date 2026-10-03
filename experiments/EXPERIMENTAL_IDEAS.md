@@ -887,3 +887,21 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 - **Decision:** Unevaluable rather than a biological non-pass; retain descriptive
   genotype effects and stop functional-heredity claims. Any redesign needs a new
   ID, preregistration, and unseen seeds.
+
+### SM-H003 — Replicated canonical-supported sequence-order assay
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-10-02
+- **Depends on:** bounded SM-H002 cohort-partition diagnosis; does not reverse its
+  unevaluable decision
+- **Why:** The H002 canonical SUPPORT control split one molecularly identical
+  trajectory into arbitrary candidate/support founder cohorts. A new assay needs
+  a whole-population canonical control and true genotype-level replication.
+- **Test:** Three unseen exact/shuffle canonical-supported pairs for every frozen
+  H002 genotype (90 runs). Exclude canonical from the 14-genotype scientific
+  denominator and require replicated specificity in at least 12/14.
+- **Preregistration:** `reports/sm_h003_replicated_supported_sequence_order_preregistration.md`
+- **On success:** separately preregister catalyst/template-role dissection.
+- **On non-pass:** retain genotype effects and stop the panel functional-heredity
+  branch.
