@@ -909,3 +909,19 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 - **Report:** `reports/sm_h003_replicated_supported_sequence_order_report.md`
 - **Decision:** Valid non-pass. Retain bounded genotype-specific causal effects;
   stop the panel functional-heredity and catalyst/template-confirmation branch.
+
+### SM-M001 — Native-versus-zero mutation baseline
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-10-03
+- **Depends on:** passed canonical reproductive-renewal mechanics; independent of
+  the closed SM-H003 panel gate
+- **Why:** Before birth-boundary ablations, determine whether canonical renewal
+  remains viable without mutation and whether native mutation changes realized
+  descendant sequence diversity.
+- **Test:** Twenty paired canonical conserved-recycle runs with `MUTATE 0.0002`
+  versus `MUTATE 0`, unchanged mechanics and renewal definitions.
+- **Preregistration:** `reports/sm_m001_mutation_baseline_preregistration.md`
+- **On both-arm viability:** preregister the birth-boundary factorial.
+- **Otherwise:** retain the frozen decision and stop that continuation.
