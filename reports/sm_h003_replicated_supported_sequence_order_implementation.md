@@ -2,7 +2,11 @@
 
 **Prepared:** 2026-10-02  
 **Preregistration commit:** `10ae455`  
-**Status:** 90 unseen assays sealed; launch pending committed implementation
+**Status at preparation:** 90 unseen assays sealed
+
+The implementation was subsequently committed and pushed as `1b6f579`; the sealed
+campaign then executed once. See
+`reports/sm_h003_replicated_supported_sequence_order_report.md` for the result.
 
 No simulator mechanics changed. Added:
 
@@ -31,6 +35,7 @@ receipts, or launch/campaign files. Canonical evidence is in:
 - `runs/sm_h003_work/prepared/preparation.json`; and
 - `runs/sm_h003_work/evidence.json`.
 
-Launch remains prohibited until these implementation bytes are committed, pushed,
-directly observed on `origin/main`, and followed by the mandatory launch-time
-seed audit.
+Launch remained prohibited until these implementation bytes were committed,
+pushed, directly observed on `origin/main`, and followed by the mandatory
+launch-time seed audit. The later launch satisfied those gates without changing
+the preparation.

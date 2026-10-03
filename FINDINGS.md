@@ -307,3 +307,23 @@ functional heredity remains unsupported. The observations may motivate a new-ID,
 prospectively designed genotype/context assay, but do not establish partner
 necessity, adaptation, ecology, organisms, or general Stringmol superiority over
 BFF.
+
+## 2026-10-03 — Replicated supported sequence-order assay
+
+SM-H003 prospectively repaired only the H002 control design: canonical renewal was
+measured over the whole identical population, while all 14 noncanonical genotypes
+retained candidate-cohort endpoints across three unseen exact/shuffle pairs. All
+90 runs passed exact conservation and replay integrity; the canonical control
+passed 2/3 replicates.
+
+Only 5/14 genotypes met replicated specificity versus the frozen 12/14 panel
+threshold, so this is a valid non-pass. Exact candidate productive births did
+exceed shuffle in all three pairs for 14/14 genotypes, with pooled three-pair
+margins of 123–1,806 (median 872.5), but the registered complete liveness and
+margin conjunction replicated in too few genotypes.
+
+The five passing fixed genotypes support bounded genotype-specific causal effects
+of sequence order under supplied canonical partners. Panel-level functional
+heredity remains unsupported, and catalyst/template-role confirmation is not
+eligible. The branch stops without weakening endpoints or selecting only passing
+genotypes.

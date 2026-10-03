@@ -1064,6 +1064,28 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
   `reports/sm_h002_descendant_sequence_perturbation_decision.json`; raw campaign:
   `/home/jojo/bio-sim-results/bazzite/sm_h002_descendant_sequence_perturbation/bazzite.attlocal.net/prepared`.
 
+### SM-E006 — Replicated canonical-supported sequence-order assay
+
+- **Hypothesis:** Exact sequence order reproducibly supports focal descendant
+  renewal better than its composition-preserving shuffle under supplied canonical
+  partners across the noncanonical competence-enriched panel.
+- **Test:** Three unseen exact/shuffle pairs for each frozen genotype (90 runs),
+  whole-population canonical positive control, and 14-genotype denominator.
+- **Result:** **VALID NON-PASS.** All runs passed integrity; the canonical control
+  passed 2/3. Five of 14 noncanonical genotypes met replicated specificity versus
+  12 required. Exact productive births nevertheless exceeded shuffle in all three
+  pairs for 14/14, with pooled margins 123–1,806 (median 872.5).
+- **Decision:** Retain causal sequence-order effects for the five fixed passing
+  genotypes, but reject the panel-level gate. Catalyst/template-role confirmation
+  is not eligible.
+- **Limitations:** Supplied canonical-partner context only. Directional productive
+  birth effects cannot replace the failed complete liveness conjunction. No
+  panel-level functional heredity, partner necessity, adaptation, ecology,
+  organism, or general substrate-ranking claim.
+- **Evidence:** `reports/sm_h003_replicated_supported_sequence_order_report.md`
+  and `reports/sm_h003_replicated_supported_sequence_order_decision.json`; raw:
+  `/home/jojo/bio-sim-results/bazzite/sm_h003_replicated_supported_sequence_order/bazzite.attlocal.net/prepared`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -1093,11 +1115,12 @@ SM-L001 validated explicit successful cleavage birth and persistent individual
 lineage identity in pinned Stringmol. SM-C001 validated exact per-symbol material
 conservation, and SM-C002 showed that accessible decay matter causally sustains
 late copy growth and lineage production. SM-H001 establishes that qualifying descendants themselves produce later
-population-increasing children while retaining inherited sequence. SM-H002's
-causal sequence-order screen completed with valid mechanics but was unevaluable
-because its canonical supported-context late-renewal positive control failed; no
-context qualified for confirmation. Functional heredity therefore remains
-unsupported. Any replacement must use a new prospectively preregistered ID and
-unseen seeds. The comparative Stringmol–BFF program proceeds through
+population-increasing children while retaining inherited sequence. SM-H002's causal sequence-order screen was unevaluable because its canonical
+supported-context positive control partitioned one identical trajectory by
+founder cohort. SM-H003 prospectively corrected that control and passed integrity,
+but only 5/14 genotypes met replicated specificity versus 12 required. Five fixed
+genotypes therefore retain bounded causal sequence-order effects under canonical
+support, while panel-level functional heredity and catalyst/template follow-up
+remain closed. The comparative Stringmol–BFF program proceeds through
 within-substrate interventions, not historical pass-rate comparison or a claim
 that the symbol pool is energy.

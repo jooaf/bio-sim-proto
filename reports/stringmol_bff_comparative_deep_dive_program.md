@@ -19,10 +19,12 @@ Established observations are narrower:
   material scarcity; SM-C002 then isolated a causal role for accessible
   decay-released matter.
 - SM-H001 established descendant reproductive renewal with inherited-sequence
-  continuity. SM-H002's exact-versus-composition-shuffle screen completed with
-  valid integrity but was unevaluable because its canonical supported-context
-  late-renewal positive control failed. Its genotype-level order effects remain
-  descriptive and do not establish functional heredity.
+  continuity. SM-H002's exact-versus-composition-shuffle screen was unevaluable
+  because its canonical control split one identical trajectory by founder cohort.
+  SM-H003 prospectively repaired that control: five fixed genotypes showed
+  replicated sequence-order effects under canonical support, but only 5/14 passed
+  versus the frozen 12/14 panel gate. Panel functional heredity and the gated
+  catalyst/template follow-up remain unsupported.
 - Therefore exact conservation alone cannot explain the historical contrast.
   Global-interaction/global-placement Stringmol also shows that locality is not
   necessary for the demonstrated Stringmol result.

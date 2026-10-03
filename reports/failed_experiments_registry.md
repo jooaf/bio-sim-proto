@@ -232,6 +232,21 @@ ups are prohibited unless opened as an explicitly new design.
   margins. Any replacement requires a new ID, prospective context/positive-control
   rules, and unseen seeds.
 
+## SM-H003 — Replicated canonical-supported sequence order
+
+- **Decision:** VALID NON-PASS; panel functional-heredity and catalyst/template
+  follow-up stopped.
+- **Failed criterion:** 5/14 noncanonical genotypes met replicated specificity,
+  below the frozen 12/14 panel threshold.
+- **Retained:** all 90 runs passed integrity and the whole-population canonical
+  control passed 2/3. Exact productive source births exceeded shuffle in all three
+  pairs for 14/14 genotypes; five fixed genotypes passed the complete replicated
+  conjunction and retain bounded genotype-specific causal order effects.
+- **Boundary:** do not count 42 pairs as independent genotypes, weaken liveness or
+  margin criteria, select only five passes for confirmation, or replace the
+  conjunction with unanimous productive-birth direction. Supplied canonical
+  support does not establish partner necessity or panel functional heredity.
+
 ## Cross-cutting lessons
 
 1. Positive mechanics do not imply ecological or organizational function.
