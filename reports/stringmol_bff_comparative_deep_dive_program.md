@@ -82,9 +82,13 @@ mechanics. Then separate:
 - parent preservation: source modified versus prospectively defined protection;
 - admission: vacancy versus replacement at fixed capacity.
 
-Begin with Stringmol ablations around its validated positive control. Then build a
-BFF-derived experimental substrate in which products arise from execution, not an
-automatic copier or retrospective score-64 admission. Freeze material cost,
+Begin with Stringmol ablations around its validated positive control. SM-M001
+completed the mutation baseline: native and zero-mutation canonical renewal were
+both viable (18/20 each), while the broad realized-divergence gate was unsupported.
+The birth-boundary factorial is therefore eligible without claiming equivalent
+mutation-arm performance. Then build a BFF-derived experimental substrate in
+which products arise from execution, not an automatic copier or retrospective
+score-64 admission. Freeze material cost,
 completion, parent disposition, and scheduling before outcomes.
 
 Prediction: a birth-boundary explanation requires both loss under Stringmol

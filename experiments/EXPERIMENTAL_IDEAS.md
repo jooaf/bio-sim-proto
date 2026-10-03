@@ -912,7 +912,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### SM-M001 — Native-versus-zero mutation baseline
 
-- **Status:** Mechanics/source/configuration gates passed; 40 assays sealed
+- **Status:** Completed; both arms viable, divergence gate not detected
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-10-03
 - **Depends on:** passed canonical reproductive-renewal mechanics; independent of
@@ -924,5 +924,10 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
   versus `MUTATE 0`, unchanged mechanics and renewal definitions.
 - **Preregistration:** `reports/sm_m001_mutation_baseline_preregistration.md`
 - **Implementation:** `reports/sm_m001_mutation_baseline_implementation.md`
-- **On both-arm viability:** preregister the birth-boundary factorial.
-- **Otherwise:** retain the frozen decision and stop that continuation.
+- **Outcome:** NATIVE and ZERO each passed renewal with continuity in 18/20
+  runs. The same-pair realized-divergence conjunction held in 7/20 versus 16
+  required.
+- **Report:** `reports/sm_m001_mutation_baseline_report.md`
+- **Decision:** Renewal without native mutation is supported; equivalent
+  performance and broad mutation-caused divergence are not. Birth-boundary
+  factorial eligible.

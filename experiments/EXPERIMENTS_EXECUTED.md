@@ -1086,6 +1086,27 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
   and `reports/sm_h003_replicated_supported_sequence_order_decision.json`; raw:
   `/home/jojo/bio-sim-results/bazzite/sm_h003_replicated_supported_sequence_order/bazzite.attlocal.net/prepared`.
 
+### SM-E007 — Native-versus-zero mutation baseline
+
+- **Hypothesis:** Canonical reproductive renewal remains viable without native
+  mutation, while native mutation may increase realized sequence diversity.
+- **Test:** Twenty paired conserved-recycle canonical runs differing only in
+  `MUTATE 0.0002` versus `MUTATE 0`, with H001 renewal and complete productive
+  birth-sequence endpoints.
+- **Result:** **BOTH ARMS VIABLE; DIVERGENCE NOT DETECTED.** NATIVE and ZERO each
+  passed renewal with continuity in 18/20 runs. The joint realized-divergence
+  condition held in 7/20 versus 16 required. Native had greater productive q=0
+  richness in 16/20 pairs, but noncanonical fraction split 10/10.
+- **Decision:** Native mutation is not required for robust renewal under these
+  conditions. Do not claim equivalent performance or broad mutation-caused
+  divergence. Birth-boundary factorial eligible.
+- **Limitations:** Total `MUTATE` intervention only; indels and substitutions are
+  not isolated and mutation events are not individually counted. Diversity is
+  not adaptation or selected function.
+- **Evidence:** `reports/sm_m001_mutation_baseline_report.md` and
+  `reports/sm_m001_mutation_baseline_decision.json`; raw:
+  `/home/jojo/bio-sim-results/bazzite/sm_m001_mutation_baseline/bazzite.attlocal.net/prepared`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -1121,6 +1142,8 @@ founder cohort. SM-H003 prospectively corrected that control and passed integrit
 but only 5/14 genotypes met replicated specificity versus 12 required. Five fixed
 genotypes therefore retain bounded causal sequence-order effects under canonical
 support, while panel-level functional heredity and catalyst/template follow-up
-remain closed. The comparative Stringmol–BFF program proceeds through
-within-substrate interventions, not historical pass-rate comparison or a claim
-that the symbol pool is energy.
+remain closed. SM-M001 then showed that canonical renewal remains viable with
+native mutation disabled, while its broad realized-divergence gate failed. The
+birth-boundary factorial is now eligible. The comparative Stringmol–BFF program
+proceeds through within-substrate interventions, not historical pass-rate
+comparison or a claim that the symbol pool is energy.

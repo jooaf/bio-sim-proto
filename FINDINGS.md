@@ -327,3 +327,21 @@ of sequence order under supplied canonical partners. Panel-level functional
 heredity remains unsupported, and catalyst/template-role confirmation is not
 eligible. The branch stops without weakening endpoints or selecting only passing
 genotypes.
+
+## 2026-10-03 — Stringmol mutation baseline
+
+SM-M001 compared canonical conserved-recycle renewal under native mutation and
+`MUTATE 0` across 20 paired unseen seeds. All 40 runs passed exact conservation
+and independent replay. Both arms passed renewal with continuity in 18/20 runs,
+with two NATIVE-only and two ZERO-only discordant pairs.
+
+ZERO viability shows that native mutation is not required for robust canonical
+renewal under these conditions; it does not establish equivalent performance.
+The frozen realized-divergence conjunction held in only 7/20 pairs versus 16
+required. Native mutation increased productive sequence richness directionally
+in 16/20 pairs and Hill q=1 in 15/20, but the noncanonical productive-birth
+fraction split 10/10 and the joint gate failed.
+
+Broad mutation-caused realized divergence, beneficial variation, selection, and
+adaptation remain unsupported. Because both arms were viable, the independently
+planned birth-boundary factorial is eligible.

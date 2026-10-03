@@ -247,6 +247,20 @@ ups are prohibited unless opened as an explicitly new design.
   conjunction with unanimous productive-birth direction. Supplied canonical
   support does not establish partner necessity or panel functional heredity.
 
+## SM-M001 — Native-versus-zero mutation baseline
+
+- **Decision:** BOTH ARMS VIABLE; realized-divergence gate not detected.
+- **Failed criterion:** native mutation had both greater productive sequence
+  richness and greater noncanonical productive-birth fraction in 7/20 paired
+  seeds, below the frozen 16/20 conjunction.
+- **Retained:** all 40 runs passed integrity. NATIVE and ZERO each passed renewal
+  with continuity in 18/20, demonstrating robust renewal without native mutation.
+  Native richness was greater in 16/20 pairs, but noncanonical fraction split
+  10/10. The birth-boundary factorial is eligible.
+- **Boundary:** no equivalent-performance, counted-mutation-event, broad
+  mutation-caused divergence, beneficial variation, selection, or adaptation
+  claim. Do not replace the conjunction with the q=0 directional result.
+
 ## Cross-cutting lessons
 
 1. Positive mechanics do not imply ecological or organizational function.

@@ -2,8 +2,9 @@
 
 Prepared against committed preregistration `c3030c1a36f6c5e9de99e2cbf5f3d9bab22e062a`.
 No preregistration, registry, upstream source, patches, or simulator mechanics were
-edited. Implementation remains uncommitted; no push or unseen assay execution is
-authorized by this preparation.
+edited during preparation. The implementation was subsequently committed and
+pushed as `7539813`; the sealed campaign then executed once. See
+`reports/sm_m001_mutation_baseline_report.md` for the outcome.
 
 `experiments/stringmol/mutation_workflow.py` adds the exact 20-pair NATIVE/ZERO
 matrix, strict rendered-config equality and independent loader parsing, complete

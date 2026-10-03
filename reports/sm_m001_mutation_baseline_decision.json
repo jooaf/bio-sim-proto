@@ -1,0 +1,3462 @@
+{
+  "schema": "sm_m001_decision_v1",
+  "decision": "both viable, divergence not detected",
+  "integrity": true,
+  "arms": {
+    "NATIVE": {
+      "continuity_count": 18,
+      "core_count": 18,
+      "totals": {
+        "late_renewing_descendants": 219,
+        "max_source_depth": 54,
+        "native_births": 12035,
+        "orphan_source_productive_births": 0,
+        "other_nonproductive_births": 0,
+        "productive_source_births": 11969,
+        "renewing_descendants": 452,
+        "retained_late_renewals": 219,
+        "serial_source_births": 2386,
+        "whole_parent_transfers": 66
+      },
+      "viable": true
+    },
+    "ZERO": {
+      "continuity_count": 18,
+      "core_count": 18,
+      "totals": {
+        "late_renewing_descendants": 225,
+        "max_source_depth": 53,
+        "native_births": 11973,
+        "orphan_source_productive_births": 0,
+        "other_nonproductive_births": 0,
+        "productive_source_births": 11973,
+        "renewing_descendants": 419,
+        "retained_late_renewals": 225,
+        "serial_source_births": 2197,
+        "whole_parent_transfers": 0
+      },
+      "viable": true
+    }
+  },
+  "realized_divergence": false,
+  "divergence_pairs": 7,
+  "discordant_pairs": [
+    202626001,
+    202626008,
+    202626012,
+    202626013
+  ],
+  "birth_boundary_factorial_eligible": true,
+  "run_denominator": 40,
+  "paired_denominator": 20,
+  "paired_summary": {
+    "late_renewing_descendants": {
+      "direction_counts": {
+        "native_greater": 9,
+        "zero_greater": 11
+      },
+      "median_difference": -1.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "max_source_depth": {
+      "direction_counts": {
+        "native_greater": 7,
+        "tie": 7,
+        "zero_greater": 6
+      },
+      "median_difference": 0.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "native_births": {
+      "direction_counts": {
+        "native_greater": 9,
+        "tie": 1,
+        "zero_greater": 10
+      },
+      "median_difference": -7.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "orphan_source_productive_births": {
+      "direction_counts": {
+        "tie": 20
+      },
+      "median_difference": 0.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "other_nonproductive_births": {
+      "direction_counts": {
+        "tie": 20
+      },
+      "median_difference": 0.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "productive_births": {
+      "direction_counts": {
+        "native_greater": 9,
+        "tie": 1,
+        "zero_greater": 10
+      },
+      "median_difference": -7.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "productive_exact_births": {
+      "direction_counts": {
+        "native_greater": 9,
+        "tie": 1,
+        "zero_greater": 10
+      },
+      "median_difference": -1.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "productive_exact_fraction": {
+      "direction_counts": {
+        "native_greater": 10,
+        "zero_greater": 10
+      },
+      "median_difference": -0.0002845935055802804,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "productive_hill_q0": {
+      "direction_counts": {
+        "native_greater": 16,
+        "tie": 1,
+        "zero_greater": 3
+      },
+      "median_difference": 7.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "productive_hill_q1": {
+      "direction_counts": {
+        "native_greater": 15,
+        "zero_greater": 5
+      },
+      "median_difference": 0.4851733765467108,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "productive_noncanonical_births": {
+      "direction_counts": {
+        "native_greater": 10,
+        "zero_greater": 10
+      },
+      "median_difference": -5.5,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "productive_noncanonical_fraction": {
+      "direction_counts": {
+        "native_greater": 10,
+        "zero_greater": 10
+      },
+      "median_difference": 0.000284593505580244,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "productive_source_births": {
+      "direction_counts": {
+        "native_greater": 9,
+        "tie": 1,
+        "zero_greater": 10
+      },
+      "median_difference": -7.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "productive_unique_lengths": {
+      "direction_counts": {
+        "native_greater": 11,
+        "tie": 1,
+        "zero_greater": 8
+      },
+      "median_difference": 1.5,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "productive_unique_sequences": {
+      "direction_counts": {
+        "native_greater": 16,
+        "tie": 1,
+        "zero_greater": 3
+      },
+      "median_difference": 7.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "renewing_births": {
+      "direction_counts": {
+        "native_greater": 11,
+        "zero_greater": 9
+      },
+      "median_difference": 1.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "renewing_descendants": {
+      "direction_counts": {
+        "native_greater": 11,
+        "zero_greater": 9
+      },
+      "median_difference": 1.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "renewing_exact_births": {
+      "direction_counts": {
+        "native_greater": 10,
+        "zero_greater": 10
+      },
+      "median_difference": 0.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "renewing_exact_fraction": {
+      "direction_counts": {
+        "tie": 6,
+        "zero_greater": 14
+      },
+      "median_difference": -0.0822072072072072,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "renewing_hill_q0": {
+      "direction_counts": {
+        "native_greater": 14,
+        "tie": 6
+      },
+      "median_difference": 1.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "renewing_hill_q1": {
+      "direction_counts": {
+        "native_greater": 14,
+        "tie": 6
+      },
+      "median_difference": 0.35817558985556686,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "renewing_noncanonical_births": {
+      "direction_counts": {
+        "native_greater": 14,
+        "tie": 6
+      },
+      "median_difference": 1.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "renewing_noncanonical_fraction": {
+      "direction_counts": {
+        "native_greater": 14,
+        "tie": 6
+      },
+      "median_difference": 0.0822072072072072,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "renewing_unique_lengths": {
+      "direction_counts": {
+        "native_greater": 11,
+        "tie": 9
+      },
+      "median_difference": 1.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "renewing_unique_sequences": {
+      "direction_counts": {
+        "native_greater": 14,
+        "tie": 6
+      },
+      "median_difference": 1.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "retained_late_renewals": {
+      "direction_counts": {
+        "native_greater": 9,
+        "zero_greater": 11
+      },
+      "median_difference": -1.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "retention_exact_fraction": {
+      "direction_counts": {
+        "tie": 17,
+        "zero_greater": 3
+      },
+      "median_difference": 0.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "retention_median": {
+      "direction_counts": {
+        "tie": 20
+      },
+      "median_difference": 0.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "retention_minimum": {
+      "direction_counts": {
+        "tie": 17,
+        "zero_greater": 3
+      },
+      "median_difference": 0.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "serial_source_births": {
+      "direction_counts": {
+        "native_greater": 12,
+        "zero_greater": 8
+      },
+      "median_difference": 9.5,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    },
+    "whole_parent_transfers": {
+      "direction_counts": {
+        "native_greater": 1,
+        "tie": 19
+      },
+      "median_difference": 0.0,
+      "observed_pairs": 20,
+      "pair_denominator": 20
+    }
+  },
+  "failures": [],
+  "pairs": [
+    {
+      "seed": 202626000,
+      "native": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "discordant_core": false,
+      "discordant_continuity": false,
+      "divergence": true,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": 2,
+          "direction": "native_greater"
+        },
+        "max_source_depth": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "native_births": {
+          "difference": -50,
+          "direction": "zero_greater"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": -50,
+          "direction": "zero_greater"
+        },
+        "productive_exact_births": {
+          "difference": -9,
+          "direction": "zero_greater"
+        },
+        "productive_exact_fraction": {
+          "difference": -0.012501967485890313,
+          "direction": "zero_greater"
+        },
+        "productive_hill_q0": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "productive_hill_q1": {
+          "difference": 0.7316240548491946,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": -41,
+          "direction": "zero_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": 0.012501967485890275,
+          "direction": "native_greater"
+        },
+        "productive_source_births": {
+          "difference": -50,
+          "direction": "zero_greater"
+        },
+        "productive_unique_lengths": {
+          "difference": 2,
+          "direction": "native_greater"
+        },
+        "productive_unique_sequences": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "renewing_births": {
+          "difference": -5,
+          "direction": "zero_greater"
+        },
+        "renewing_descendants": {
+          "difference": -5,
+          "direction": "zero_greater"
+        },
+        "renewing_exact_births": {
+          "difference": -5,
+          "direction": "zero_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "renewing_hill_q0": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_hill_q1": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "renewing_unique_lengths": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_unique_sequences": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "retained_late_renewals": {
+          "difference": 2,
+          "direction": "native_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "serial_source_births": {
+          "difference": -62,
+          "direction": "zero_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 0,
+          "direction": "tie"
+        }
+      }
+    },
+    {
+      "seed": 202626001,
+      "native": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": false
+        },
+        "continuity": false,
+        "core": false
+      },
+      "discordant_core": true,
+      "discordant_continuity": true,
+      "divergence": false,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "max_source_depth": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "native_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_exact_births": {
+          "difference": 28,
+          "direction": "native_greater"
+        },
+        "productive_exact_fraction": {
+          "difference": 0.045088566827697255,
+          "direction": "native_greater"
+        },
+        "productive_hill_q0": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "productive_hill_q1": {
+          "difference": 0.7250912694917373,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": -28,
+          "direction": "zero_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": -0.04508856682769724,
+          "direction": "zero_greater"
+        },
+        "productive_source_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_unique_lengths": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_unique_sequences": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "renewing_births": {
+          "difference": 27,
+          "direction": "native_greater"
+        },
+        "renewing_descendants": {
+          "difference": 27,
+          "direction": "native_greater"
+        },
+        "renewing_exact_births": {
+          "difference": 24,
+          "direction": "native_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": -0.08108108108108103,
+          "direction": "zero_greater"
+        },
+        "renewing_hill_q0": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "renewing_hill_q1": {
+          "difference": 0.4484275383089593,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.08108108108108109,
+          "direction": "native_greater"
+        },
+        "renewing_unique_lengths": {
+          "difference": 2,
+          "direction": "native_greater"
+        },
+        "renewing_unique_sequences": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "retained_late_renewals": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "serial_source_births": {
+          "difference": 184,
+          "direction": "native_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 0,
+          "direction": "tie"
+        }
+      }
+    },
+    {
+      "seed": 202626002,
+      "native": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "discordant_core": false,
+      "discordant_continuity": false,
+      "divergence": true,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": -8,
+          "direction": "zero_greater"
+        },
+        "max_source_depth": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "native_births": {
+          "difference": -26,
+          "direction": "zero_greater"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": -26,
+          "direction": "zero_greater"
+        },
+        "productive_exact_births": {
+          "difference": -28,
+          "direction": "zero_greater"
+        },
+        "productive_exact_fraction": {
+          "difference": -0.041863885155534776,
+          "direction": "zero_greater"
+        },
+        "productive_hill_q0": {
+          "difference": 11,
+          "direction": "native_greater"
+        },
+        "productive_hill_q1": {
+          "difference": 0.42563260057610997,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": 2,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": 0.04186388515553474,
+          "direction": "native_greater"
+        },
+        "productive_source_births": {
+          "difference": -26,
+          "direction": "zero_greater"
+        },
+        "productive_unique_lengths": {
+          "difference": 8,
+          "direction": "native_greater"
+        },
+        "productive_unique_sequences": {
+          "difference": 11,
+          "direction": "native_greater"
+        },
+        "renewing_births": {
+          "difference": -17,
+          "direction": "zero_greater"
+        },
+        "renewing_descendants": {
+          "difference": -17,
+          "direction": "zero_greater"
+        },
+        "renewing_exact_births": {
+          "difference": -18,
+          "direction": "zero_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": -0.08333333333333337,
+          "direction": "zero_greater"
+        },
+        "renewing_hill_q0": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_hill_q1": {
+          "difference": 0.33220569124944777,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.08333333333333333,
+          "direction": "native_greater"
+        },
+        "renewing_unique_lengths": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_unique_sequences": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "retained_late_renewals": {
+          "difference": -8,
+          "direction": "zero_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "serial_source_births": {
+          "difference": -94,
+          "direction": "zero_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 0,
+          "direction": "tie"
+        }
+      }
+    },
+    {
+      "seed": 202626003,
+      "native": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "discordant_core": false,
+      "discordant_continuity": false,
+      "divergence": true,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": -4,
+          "direction": "zero_greater"
+        },
+        "max_source_depth": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "native_births": {
+          "difference": 67,
+          "direction": "native_greater"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": 67,
+          "direction": "native_greater"
+        },
+        "productive_exact_births": {
+          "difference": -3,
+          "direction": "zero_greater"
+        },
+        "productive_exact_fraction": {
+          "difference": -0.008160765326955609,
+          "direction": "zero_greater"
+        },
+        "productive_hill_q0": {
+          "difference": 6,
+          "direction": "native_greater"
+        },
+        "productive_hill_q1": {
+          "difference": 0.9092303047264636,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": 70,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": 0.008160765326955643,
+          "direction": "native_greater"
+        },
+        "productive_source_births": {
+          "difference": 67,
+          "direction": "native_greater"
+        },
+        "productive_unique_lengths": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "productive_unique_sequences": {
+          "difference": 6,
+          "direction": "native_greater"
+        },
+        "renewing_births": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "renewing_descendants": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "renewing_exact_births": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "renewing_hill_q0": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_hill_q1": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "renewing_unique_lengths": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_unique_sequences": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "retained_late_renewals": {
+          "difference": -4,
+          "direction": "zero_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "serial_source_births": {
+          "difference": 29,
+          "direction": "native_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 0,
+          "direction": "tie"
+        }
+      }
+    },
+    {
+      "seed": 202626004,
+      "native": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "discordant_core": false,
+      "discordant_continuity": false,
+      "divergence": false,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": -9,
+          "direction": "zero_greater"
+        },
+        "max_source_depth": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "native_births": {
+          "difference": 178,
+          "direction": "native_greater"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": 178,
+          "direction": "native_greater"
+        },
+        "productive_exact_births": {
+          "difference": -13,
+          "direction": "zero_greater"
+        },
+        "productive_exact_fraction": {
+          "difference": -0.03647446113827275,
+          "direction": "zero_greater"
+        },
+        "productive_hill_q0": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "productive_hill_q1": {
+          "difference": 0.03230880111768197,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": 191,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": 0.036474461138272796,
+          "direction": "native_greater"
+        },
+        "productive_source_births": {
+          "difference": 178,
+          "direction": "native_greater"
+        },
+        "productive_unique_lengths": {
+          "difference": -4,
+          "direction": "zero_greater"
+        },
+        "productive_unique_sequences": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "renewing_births": {
+          "difference": -10,
+          "direction": "zero_greater"
+        },
+        "renewing_descendants": {
+          "difference": -10,
+          "direction": "zero_greater"
+        },
+        "renewing_exact_births": {
+          "difference": -10,
+          "direction": "zero_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "renewing_hill_q0": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_hill_q1": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "renewing_unique_lengths": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_unique_sequences": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "retained_late_renewals": {
+          "difference": -9,
+          "direction": "zero_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "serial_source_births": {
+          "difference": 22,
+          "direction": "native_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 0,
+          "direction": "tie"
+        }
+      }
+    },
+    {
+      "seed": 202626005,
+      "native": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "discordant_core": false,
+      "discordant_continuity": false,
+      "divergence": true,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "max_source_depth": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "native_births": {
+          "difference": -104,
+          "direction": "zero_greater"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": -104,
+          "direction": "zero_greater"
+        },
+        "productive_exact_births": {
+          "difference": -24,
+          "direction": "zero_greater"
+        },
+        "productive_exact_fraction": {
+          "difference": -0.027760343880144048,
+          "direction": "zero_greater"
+        },
+        "productive_hill_q0": {
+          "difference": 15,
+          "direction": "native_greater"
+        },
+        "productive_hill_q1": {
+          "difference": 2.4265305298560005,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": -80,
+          "direction": "zero_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": 0.027760343880144034,
+          "direction": "native_greater"
+        },
+        "productive_source_births": {
+          "difference": -104,
+          "direction": "zero_greater"
+        },
+        "productive_unique_lengths": {
+          "difference": 6,
+          "direction": "native_greater"
+        },
+        "productive_unique_sequences": {
+          "difference": 15,
+          "direction": "native_greater"
+        },
+        "renewing_births": {
+          "difference": -13,
+          "direction": "zero_greater"
+        },
+        "renewing_descendants": {
+          "difference": -13,
+          "direction": "zero_greater"
+        },
+        "renewing_exact_births": {
+          "difference": -16,
+          "direction": "zero_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": -0.10344827586206895,
+          "direction": "zero_greater"
+        },
+        "renewing_hill_q0": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "renewing_hill_q1": {
+          "difference": 0.5624322808223241,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.10344827586206896,
+          "direction": "native_greater"
+        },
+        "renewing_unique_lengths": {
+          "difference": 2,
+          "direction": "native_greater"
+        },
+        "renewing_unique_sequences": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "retained_late_renewals": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "serial_source_births": {
+          "difference": -115,
+          "direction": "zero_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 0,
+          "direction": "tie"
+        }
+      }
+    },
+    {
+      "seed": 202626006,
+      "native": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "discordant_core": false,
+      "discordant_continuity": false,
+      "divergence": false,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "max_source_depth": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "native_births": {
+          "difference": 33,
+          "direction": "native_greater"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": 33,
+          "direction": "native_greater"
+        },
+        "productive_exact_births": {
+          "difference": 6,
+          "direction": "native_greater"
+        },
+        "productive_exact_fraction": {
+          "difference": 0.008158866995073892,
+          "direction": "native_greater"
+        },
+        "productive_hill_q0": {
+          "difference": 10,
+          "direction": "native_greater"
+        },
+        "productive_hill_q1": {
+          "difference": 3.003137537803476,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": 27,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": -0.008158866995073843,
+          "direction": "zero_greater"
+        },
+        "productive_source_births": {
+          "difference": 33,
+          "direction": "native_greater"
+        },
+        "productive_unique_lengths": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "productive_unique_sequences": {
+          "difference": 10,
+          "direction": "native_greater"
+        },
+        "renewing_births": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "renewing_descendants": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "renewing_exact_births": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": -0.050000000000000044,
+          "direction": "zero_greater"
+        },
+        "renewing_hill_q0": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_hill_q1": {
+          "difference": 0.21959061791417178,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.05,
+          "direction": "native_greater"
+        },
+        "renewing_unique_lengths": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_unique_sequences": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "retained_late_renewals": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "serial_source_births": {
+          "difference": 14,
+          "direction": "native_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 0,
+          "direction": "tie"
+        }
+      }
+    },
+    {
+      "seed": 202626007,
+      "native": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "discordant_core": false,
+      "discordant_continuity": false,
+      "divergence": false,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": 2,
+          "direction": "native_greater"
+        },
+        "max_source_depth": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "native_births": {
+          "difference": -42,
+          "direction": "zero_greater"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": -42,
+          "direction": "zero_greater"
+        },
+        "productive_exact_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_exact_fraction": {
+          "difference": 0.0021758429625373527,
+          "direction": "native_greater"
+        },
+        "productive_hill_q0": {
+          "difference": 16,
+          "direction": "native_greater"
+        },
+        "productive_hill_q1": {
+          "difference": 2.8380626602559307,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": -42,
+          "direction": "zero_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": -0.0021758429625373665,
+          "direction": "zero_greater"
+        },
+        "productive_source_births": {
+          "difference": -42,
+          "direction": "zero_greater"
+        },
+        "productive_unique_lengths": {
+          "difference": 7,
+          "direction": "native_greater"
+        },
+        "productive_unique_sequences": {
+          "difference": 16,
+          "direction": "native_greater"
+        },
+        "renewing_births": {
+          "difference": 5,
+          "direction": "native_greater"
+        },
+        "renewing_descendants": {
+          "difference": 5,
+          "direction": "native_greater"
+        },
+        "renewing_exact_births": {
+          "difference": 2,
+          "direction": "native_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": -0.15000000000000002,
+          "direction": "zero_greater"
+        },
+        "renewing_hill_q0": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "renewing_hill_q1": {
+          "difference": 0.7994857526397829,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.15,
+          "direction": "native_greater"
+        },
+        "renewing_unique_lengths": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_unique_sequences": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "retained_late_renewals": {
+          "difference": 2,
+          "direction": "native_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "serial_source_births": {
+          "difference": 5,
+          "direction": "native_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 0,
+          "direction": "tie"
+        }
+      }
+    },
+    {
+      "seed": 202626008,
+      "native": {
+        "components": {
+          "late_renewing_descendants": false,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": false,
+          "serial_source_births": true
+        },
+        "continuity": false,
+        "core": false
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "discordant_core": true,
+      "discordant_continuity": true,
+      "divergence": true,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": -4,
+          "direction": "zero_greater"
+        },
+        "max_source_depth": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "native_births": {
+          "difference": -14,
+          "direction": "zero_greater"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": -14,
+          "direction": "zero_greater"
+        },
+        "productive_exact_births": {
+          "difference": -2,
+          "direction": "zero_greater"
+        },
+        "productive_exact_fraction": {
+          "difference": -0.0027450299736979135,
+          "direction": "zero_greater"
+        },
+        "productive_hill_q0": {
+          "difference": 10,
+          "direction": "native_greater"
+        },
+        "productive_hill_q1": {
+          "difference": 1.2803567855133746,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": -12,
+          "direction": "zero_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": 0.0027450299736978545,
+          "direction": "native_greater"
+        },
+        "productive_source_births": {
+          "difference": -14,
+          "direction": "zero_greater"
+        },
+        "productive_unique_lengths": {
+          "difference": 8,
+          "direction": "native_greater"
+        },
+        "productive_unique_sequences": {
+          "difference": 10,
+          "direction": "native_greater"
+        },
+        "renewing_births": {
+          "difference": -3,
+          "direction": "zero_greater"
+        },
+        "renewing_descendants": {
+          "difference": -3,
+          "direction": "zero_greater"
+        },
+        "renewing_exact_births": {
+          "difference": -4,
+          "direction": "zero_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": -0.09999999999999998,
+          "direction": "zero_greater"
+        },
+        "renewing_hill_q0": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_hill_q1": {
+          "difference": 0.38414548846168595,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.1,
+          "direction": "native_greater"
+        },
+        "renewing_unique_lengths": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_unique_sequences": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "retained_late_renewals": {
+          "difference": -4,
+          "direction": "zero_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "serial_source_births": {
+          "difference": -2,
+          "direction": "zero_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 0,
+          "direction": "tie"
+        }
+      }
+    },
+    {
+      "seed": 202626009,
+      "native": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "discordant_core": false,
+      "discordant_continuity": false,
+      "divergence": false,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "max_source_depth": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "native_births": {
+          "difference": -40,
+          "direction": "zero_greater"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": -40,
+          "direction": "zero_greater"
+        },
+        "productive_exact_births": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "productive_exact_fraction": {
+          "difference": 0.00431730658494589,
+          "direction": "native_greater"
+        },
+        "productive_hill_q0": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "productive_hill_q1": {
+          "difference": -0.12126354915166182,
+          "direction": "zero_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": -41,
+          "direction": "zero_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": -0.00431730658494589,
+          "direction": "zero_greater"
+        },
+        "productive_source_births": {
+          "difference": -40,
+          "direction": "zero_greater"
+        },
+        "productive_unique_lengths": {
+          "difference": -2,
+          "direction": "zero_greater"
+        },
+        "productive_unique_sequences": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "renewing_births": {
+          "difference": 5,
+          "direction": "native_greater"
+        },
+        "renewing_descendants": {
+          "difference": 5,
+          "direction": "native_greater"
+        },
+        "renewing_exact_births": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": -0.09090909090909094,
+          "direction": "zero_greater"
+        },
+        "renewing_hill_q0": {
+          "difference": 2,
+          "direction": "native_greater"
+        },
+        "renewing_hill_q1": {
+          "difference": 0.4443356779366723,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 2,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.09090909090909091,
+          "direction": "native_greater"
+        },
+        "renewing_unique_lengths": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_unique_sequences": {
+          "difference": 2,
+          "direction": "native_greater"
+        },
+        "retained_late_renewals": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "serial_source_births": {
+          "difference": -11,
+          "direction": "zero_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 0,
+          "direction": "tie"
+        }
+      }
+    },
+    {
+      "seed": 202626010,
+      "native": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "discordant_core": false,
+      "discordant_continuity": false,
+      "divergence": false,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": -5,
+          "direction": "zero_greater"
+        },
+        "max_source_depth": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "native_births": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "productive_exact_births": {
+          "difference": 2,
+          "direction": "native_greater"
+        },
+        "productive_exact_fraction": {
+          "difference": 0.0030520024254323957,
+          "direction": "native_greater"
+        },
+        "productive_hill_q0": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "productive_hill_q1": {
+          "difference": -1.7980436702095517,
+          "direction": "zero_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": -0.003052002425432354,
+          "direction": "zero_greater"
+        },
+        "productive_source_births": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "productive_unique_lengths": {
+          "difference": -2,
+          "direction": "zero_greater"
+        },
+        "productive_unique_sequences": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "renewing_births": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "renewing_descendants": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "renewing_exact_births": {
+          "difference": 2,
+          "direction": "native_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": -0.02941176470588236,
+          "direction": "zero_greater"
+        },
+        "renewing_hill_q0": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_hill_q1": {
+          "difference": 0.14189757816330895,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.029411764705882353,
+          "direction": "native_greater"
+        },
+        "renewing_unique_lengths": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_unique_sequences": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "retained_late_renewals": {
+          "difference": -5,
+          "direction": "zero_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": -0.02941176470588236,
+          "direction": "zero_greater"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": -0.01538461538461533,
+          "direction": "zero_greater"
+        },
+        "serial_source_births": {
+          "difference": 40,
+          "direction": "native_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 0,
+          "direction": "tie"
+        }
+      }
+    },
+    {
+      "seed": 202626011,
+      "native": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "discordant_core": false,
+      "discordant_continuity": false,
+      "divergence": false,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": -3,
+          "direction": "zero_greater"
+        },
+        "max_source_depth": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "native_births": {
+          "difference": -33,
+          "direction": "zero_greater"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": -33,
+          "direction": "zero_greater"
+        },
+        "productive_exact_births": {
+          "difference": 13,
+          "direction": "native_greater"
+        },
+        "productive_exact_fraction": {
+          "difference": 0.02409707844490453,
+          "direction": "native_greater"
+        },
+        "productive_hill_q0": {
+          "difference": 9,
+          "direction": "native_greater"
+        },
+        "productive_hill_q1": {
+          "difference": 1.4674923137274956,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": -46,
+          "direction": "zero_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": -0.024097078444904496,
+          "direction": "zero_greater"
+        },
+        "productive_source_births": {
+          "difference": -33,
+          "direction": "zero_greater"
+        },
+        "productive_unique_lengths": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "productive_unique_sequences": {
+          "difference": 9,
+          "direction": "native_greater"
+        },
+        "renewing_births": {
+          "difference": 11,
+          "direction": "native_greater"
+        },
+        "renewing_descendants": {
+          "difference": 11,
+          "direction": "native_greater"
+        },
+        "renewing_exact_births": {
+          "difference": 10,
+          "direction": "native_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": -0.033333333333333326,
+          "direction": "zero_greater"
+        },
+        "renewing_hill_q0": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_hill_q1": {
+          "difference": 0.15736369970317088,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.03333333333333333,
+          "direction": "native_greater"
+        },
+        "renewing_unique_lengths": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_unique_sequences": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "retained_late_renewals": {
+          "difference": -3,
+          "direction": "zero_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "serial_source_births": {
+          "difference": 67,
+          "direction": "native_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 0,
+          "direction": "tie"
+        }
+      }
+    },
+    {
+      "seed": 202626012,
+      "native": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": false,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": false,
+          "retained_late_renewals": false,
+          "serial_source_births": false
+        },
+        "continuity": false,
+        "core": false
+      },
+      "discordant_core": true,
+      "discordant_continuity": true,
+      "divergence": false,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": 8,
+          "direction": "native_greater"
+        },
+        "max_source_depth": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "native_births": {
+          "difference": 41,
+          "direction": "native_greater"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": 41,
+          "direction": "native_greater"
+        },
+        "productive_exact_births": {
+          "difference": 16,
+          "direction": "native_greater"
+        },
+        "productive_exact_fraction": {
+          "difference": 0.024740174880673947,
+          "direction": "native_greater"
+        },
+        "productive_hill_q0": {
+          "difference": 28,
+          "direction": "native_greater"
+        },
+        "productive_hill_q1": {
+          "difference": 3.0144175366086072,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": 25,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": -0.024740174880674037,
+          "direction": "zero_greater"
+        },
+        "productive_source_births": {
+          "difference": 41,
+          "direction": "native_greater"
+        },
+        "productive_unique_lengths": {
+          "difference": 7,
+          "direction": "native_greater"
+        },
+        "productive_unique_sequences": {
+          "difference": 28,
+          "direction": "native_greater"
+        },
+        "renewing_births": {
+          "difference": 16,
+          "direction": "native_greater"
+        },
+        "renewing_descendants": {
+          "difference": 16,
+          "direction": "native_greater"
+        },
+        "renewing_exact_births": {
+          "difference": 12,
+          "direction": "native_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": -0.18181818181818177,
+          "direction": "zero_greater"
+        },
+        "renewing_hill_q0": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "renewing_hill_q1": {
+          "difference": 1.0671954493852618,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.18181818181818182,
+          "direction": "native_greater"
+        },
+        "renewing_unique_lengths": {
+          "difference": 2,
+          "direction": "native_greater"
+        },
+        "renewing_unique_sequences": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "retained_late_renewals": {
+          "difference": 8,
+          "direction": "native_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "serial_source_births": {
+          "difference": 108,
+          "direction": "native_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 0,
+          "direction": "tie"
+        }
+      }
+    },
+    {
+      "seed": 202626013,
+      "native": {
+        "components": {
+          "late_renewing_descendants": false,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": false,
+          "retained_late_renewals": false,
+          "serial_source_births": false
+        },
+        "continuity": false,
+        "core": false
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "discordant_core": true,
+      "discordant_continuity": true,
+      "divergence": false,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": -7,
+          "direction": "zero_greater"
+        },
+        "max_source_depth": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "native_births": {
+          "difference": 11,
+          "direction": "native_greater"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": 11,
+          "direction": "native_greater"
+        },
+        "productive_exact_births": {
+          "difference": -7,
+          "direction": "zero_greater"
+        },
+        "productive_exact_fraction": {
+          "difference": -0.012249756209487752,
+          "direction": "zero_greater"
+        },
+        "productive_hill_q0": {
+          "difference": -4,
+          "direction": "zero_greater"
+        },
+        "productive_hill_q1": {
+          "difference": -0.6297240463506295,
+          "direction": "zero_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": 18,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": 0.012249756209487761,
+          "direction": "native_greater"
+        },
+        "productive_source_births": {
+          "difference": 11,
+          "direction": "native_greater"
+        },
+        "productive_unique_lengths": {
+          "difference": -5,
+          "direction": "zero_greater"
+        },
+        "productive_unique_sequences": {
+          "difference": -4,
+          "direction": "zero_greater"
+        },
+        "renewing_births": {
+          "difference": -7,
+          "direction": "zero_greater"
+        },
+        "renewing_descendants": {
+          "difference": -7,
+          "direction": "zero_greater"
+        },
+        "renewing_exact_births": {
+          "difference": -7,
+          "direction": "zero_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "renewing_hill_q0": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_hill_q1": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "renewing_unique_lengths": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_unique_sequences": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "retained_late_renewals": {
+          "difference": -7,
+          "direction": "zero_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "serial_source_births": {
+          "difference": -44,
+          "direction": "zero_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 0,
+          "direction": "tie"
+        }
+      }
+    },
+    {
+      "seed": 202626014,
+      "native": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "discordant_core": false,
+      "discordant_continuity": false,
+      "divergence": false,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": 12,
+          "direction": "native_greater"
+        },
+        "max_source_depth": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "native_births": {
+          "difference": -49,
+          "direction": "zero_greater"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": -49,
+          "direction": "zero_greater"
+        },
+        "productive_exact_births": {
+          "difference": 7,
+          "direction": "native_greater"
+        },
+        "productive_exact_fraction": {
+          "difference": 0.014250479583447516,
+          "direction": "native_greater"
+        },
+        "productive_hill_q0": {
+          "difference": 14,
+          "direction": "native_greater"
+        },
+        "productive_hill_q1": {
+          "difference": -0.11723513243111316,
+          "direction": "zero_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": -56,
+          "direction": "zero_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": -0.014250479583447495,
+          "direction": "zero_greater"
+        },
+        "productive_source_births": {
+          "difference": -49,
+          "direction": "zero_greater"
+        },
+        "productive_unique_lengths": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "productive_unique_sequences": {
+          "difference": 14,
+          "direction": "native_greater"
+        },
+        "renewing_births": {
+          "difference": 16,
+          "direction": "native_greater"
+        },
+        "renewing_descendants": {
+          "difference": 16,
+          "direction": "native_greater"
+        },
+        "renewing_exact_births": {
+          "difference": 7,
+          "direction": "native_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": -0.3214285714285714,
+          "direction": "zero_greater"
+        },
+        "renewing_hill_q0": {
+          "difference": 6,
+          "direction": "native_greater"
+        },
+        "renewing_hill_q1": {
+          "difference": 2.114754366743774,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 9,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.32142857142857145,
+          "direction": "native_greater"
+        },
+        "renewing_unique_lengths": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_unique_sequences": {
+          "difference": 6,
+          "direction": "native_greater"
+        },
+        "retained_late_renewals": {
+          "difference": 12,
+          "direction": "native_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": -0.0714285714285714,
+          "direction": "zero_greater"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": -0.015625,
+          "direction": "zero_greater"
+        },
+        "serial_source_births": {
+          "difference": 29,
+          "direction": "native_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 0,
+          "direction": "tie"
+        }
+      }
+    },
+    {
+      "seed": 202626015,
+      "native": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "discordant_core": false,
+      "discordant_continuity": false,
+      "divergence": true,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "max_source_depth": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "native_births": {
+          "difference": 48,
+          "direction": "native_greater"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": 48,
+          "direction": "native_greater"
+        },
+        "productive_exact_births": {
+          "difference": -6,
+          "direction": "zero_greater"
+        },
+        "productive_exact_fraction": {
+          "difference": -0.01620122470274872,
+          "direction": "zero_greater"
+        },
+        "productive_hill_q0": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "productive_hill_q1": {
+          "difference": -1.0731993697960984,
+          "direction": "zero_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": 54,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": 0.01620122470274865,
+          "direction": "native_greater"
+        },
+        "productive_source_births": {
+          "difference": 48,
+          "direction": "native_greater"
+        },
+        "productive_unique_lengths": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "productive_unique_sequences": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "renewing_births": {
+          "difference": -2,
+          "direction": "zero_greater"
+        },
+        "renewing_descendants": {
+          "difference": -2,
+          "direction": "zero_greater"
+        },
+        "renewing_exact_births": {
+          "difference": -2,
+          "direction": "zero_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "renewing_hill_q0": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_hill_q1": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "renewing_unique_lengths": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_unique_sequences": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "retained_late_renewals": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "serial_source_births": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 0,
+          "direction": "tie"
+        }
+      }
+    },
+    {
+      "seed": 202626016,
+      "native": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "discordant_core": false,
+      "discordant_continuity": false,
+      "divergence": true,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "max_source_depth": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "native_births": {
+          "difference": 121,
+          "direction": "native_greater"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": 55,
+          "direction": "native_greater"
+        },
+        "productive_exact_births": {
+          "difference": -18,
+          "direction": "zero_greater"
+        },
+        "productive_exact_fraction": {
+          "difference": -0.0312965055221808,
+          "direction": "zero_greater"
+        },
+        "productive_hill_q0": {
+          "difference": 9,
+          "direction": "native_greater"
+        },
+        "productive_hill_q1": {
+          "difference": 0.30816205472527436,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": 73,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": 0.031296505522180884,
+          "direction": "native_greater"
+        },
+        "productive_source_births": {
+          "difference": 55,
+          "direction": "native_greater"
+        },
+        "productive_unique_lengths": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "productive_unique_sequences": {
+          "difference": 9,
+          "direction": "native_greater"
+        },
+        "renewing_births": {
+          "difference": -10,
+          "direction": "zero_greater"
+        },
+        "renewing_descendants": {
+          "difference": -10,
+          "direction": "zero_greater"
+        },
+        "renewing_exact_births": {
+          "difference": -14,
+          "direction": "zero_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": -0.25,
+          "direction": "zero_greater"
+        },
+        "renewing_hill_q0": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "renewing_hill_q1": {
+          "difference": 1.481612957605599,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.25,
+          "direction": "native_greater"
+        },
+        "renewing_unique_lengths": {
+          "difference": 2,
+          "direction": "native_greater"
+        },
+        "renewing_unique_sequences": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "retained_late_renewals": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "serial_source_births": {
+          "difference": -17,
+          "direction": "zero_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 66,
+          "direction": "native_greater"
+        }
+      }
+    },
+    {
+      "seed": 202626017,
+      "native": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "discordant_core": false,
+      "discordant_continuity": false,
+      "divergence": false,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "max_source_depth": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "native_births": {
+          "difference": -47,
+          "direction": "zero_greater"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": -47,
+          "direction": "zero_greater"
+        },
+        "productive_exact_births": {
+          "difference": 21,
+          "direction": "native_greater"
+        },
+        "productive_exact_fraction": {
+          "difference": 0.03680848123102755,
+          "direction": "native_greater"
+        },
+        "productive_hill_q0": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "productive_hill_q1": {
+          "difference": 0.5447141525173116,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": -68,
+          "direction": "zero_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": -0.036808481231027534,
+          "direction": "zero_greater"
+        },
+        "productive_source_births": {
+          "difference": -47,
+          "direction": "zero_greater"
+        },
+        "productive_unique_lengths": {
+          "difference": -3,
+          "direction": "zero_greater"
+        },
+        "productive_unique_sequences": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "renewing_births": {
+          "difference": 12,
+          "direction": "native_greater"
+        },
+        "renewing_descendants": {
+          "difference": 12,
+          "direction": "native_greater"
+        },
+        "renewing_exact_births": {
+          "difference": 9,
+          "direction": "native_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": -0.1071428571428571,
+          "direction": "zero_greater"
+        },
+        "renewing_hill_q0": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "renewing_hill_q1": {
+          "difference": 0.5812382426241689,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.10714285714285714,
+          "direction": "native_greater"
+        },
+        "renewing_unique_lengths": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_unique_sequences": {
+          "difference": 3,
+          "direction": "native_greater"
+        },
+        "retained_late_renewals": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "serial_source_births": {
+          "difference": 64,
+          "direction": "native_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 0,
+          "direction": "tie"
+        }
+      }
+    },
+    {
+      "seed": 202626018,
+      "native": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "discordant_core": false,
+      "discordant_continuity": false,
+      "divergence": false,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": 9,
+          "direction": "native_greater"
+        },
+        "max_source_depth": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "native_births": {
+          "difference": -107,
+          "direction": "zero_greater"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": -107,
+          "direction": "zero_greater"
+        },
+        "productive_exact_births": {
+          "difference": -2,
+          "direction": "zero_greater"
+        },
+        "productive_exact_fraction": {
+          "difference": 0.007751127895412026,
+          "direction": "native_greater"
+        },
+        "productive_hill_q0": {
+          "difference": 8,
+          "direction": "native_greater"
+        },
+        "productive_hill_q1": {
+          "difference": 0.2641333846751719,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": -105,
+          "direction": "zero_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": -0.007751127895411991,
+          "direction": "zero_greater"
+        },
+        "productive_source_births": {
+          "difference": -107,
+          "direction": "zero_greater"
+        },
+        "productive_unique_lengths": {
+          "difference": 2,
+          "direction": "native_greater"
+        },
+        "productive_unique_sequences": {
+          "difference": 8,
+          "direction": "native_greater"
+        },
+        "renewing_births": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_descendants": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_exact_births": {
+          "difference": -4,
+          "direction": "zero_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": -0.18518518518518523,
+          "direction": "zero_greater"
+        },
+        "renewing_hill_q0": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "renewing_hill_q1": {
+          "difference": 1.0665187870910309,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 5,
+          "direction": "native_greater"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.18518518518518517,
+          "direction": "native_greater"
+        },
+        "renewing_unique_lengths": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_unique_sequences": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "retained_late_renewals": {
+          "difference": 9,
+          "direction": "native_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": -0.03703703703703709,
+          "direction": "zero_greater"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": -0.01538461538461533,
+          "direction": "zero_greater"
+        },
+        "serial_source_births": {
+          "difference": -68,
+          "direction": "zero_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 0,
+          "direction": "tie"
+        }
+      }
+    },
+    {
+      "seed": 202626019,
+      "native": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "zero": {
+        "components": {
+          "late_renewing_descendants": true,
+          "max_source_depth": true,
+          "productive_source_births": true,
+          "renewing_descendants": true,
+          "retained_late_renewals": true,
+          "serial_source_births": true
+        },
+        "continuity": true,
+        "core": true
+      },
+      "discordant_core": false,
+      "discordant_continuity": false,
+      "divergence": false,
+      "comparisons": {
+        "late_renewing_descendants": {
+          "difference": -5,
+          "direction": "zero_greater"
+        },
+        "max_source_depth": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "native_births": {
+          "difference": 72,
+          "direction": "native_greater"
+        },
+        "orphan_source_productive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "other_nonproductive_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_births": {
+          "difference": 72,
+          "direction": "native_greater"
+        },
+        "productive_exact_births": {
+          "difference": 4,
+          "direction": "native_greater"
+        },
+        "productive_exact_fraction": {
+          "difference": -0.0043300877777543295,
+          "direction": "zero_greater"
+        },
+        "productive_hill_q0": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "productive_hill_q1": {
+          "difference": 0.14874754117611655,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_births": {
+          "difference": 68,
+          "direction": "native_greater"
+        },
+        "productive_noncanonical_fraction": {
+          "difference": 0.004330087777754232,
+          "direction": "native_greater"
+        },
+        "productive_source_births": {
+          "difference": 72,
+          "direction": "native_greater"
+        },
+        "productive_unique_lengths": {
+          "difference": -1,
+          "direction": "zero_greater"
+        },
+        "productive_unique_sequences": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_births": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_descendants": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_exact_births": {
+          "difference": 1,
+          "direction": "native_greater"
+        },
+        "renewing_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "renewing_hill_q0": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_hill_q1": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "renewing_noncanonical_births": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_noncanonical_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "renewing_unique_lengths": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "renewing_unique_sequences": {
+          "difference": 0,
+          "direction": "tie"
+        },
+        "retained_late_renewals": {
+          "difference": -5,
+          "direction": "zero_greater"
+        },
+        "retention_exact_fraction": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_median": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "retention_minimum": {
+          "difference": 0.0,
+          "direction": "tie"
+        },
+        "serial_source_births": {
+          "difference": 36,
+          "direction": "native_greater"
+        },
+        "whole_parent_transfers": {
+          "difference": 0,
+          "direction": "tie"
+        }
+      }
+    }
+  ],
+  "inference_limits": "Total effect of MUTATE only; no counted mutation events, adaptation, variant fitness, equivalence, or necessity from a threshold crossing. Both viable demonstrates renewal without native mutation; divergence requires the same 16 pairs."
+}
