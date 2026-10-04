@@ -953,3 +953,20 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 - **Decision:** Immediate next-tick availability is not required for robust
   renewal at a 500-tick delay. Scheduling × source-remnant retention is eligible;
   replacement admission remains later.
+
+### SM-B002 — Scheduling × source-remnant-retention factorial
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-10-04
+- **Depends on:** estimable delay-robust SM-B001 branch
+- **Why:** Test whether multigenerational material transfer requires the native
+  post-cleavage source remnant to survive, separately under immediate and delayed
+  offspring scheduling.
+- **Test:** Twenty matched seeds across IMMEDIATE/DELAY500 × RETAIN/RETIRE (80
+  exact-conservation, zero-mutation runs). RETIRE atomically recycles the known
+  source remnant after admission; viability uses rooted nonrelocation transfer
+  lineage rather than H001's source-survival endpoint.
+- **Preregistration:** `reports/sm_b002_scheduling_source_retention_preregistration.md`
+- **On exposed result:** complete source-disposition classification and determine
+  whether separately preregistered replacement admission is eligible.
