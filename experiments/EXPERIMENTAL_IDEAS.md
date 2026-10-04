@@ -931,3 +931,20 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 - **Decision:** Renewal without native mutation is supported; equivalent
   performance and broad mutation-caused divergence are not. Birth-boundary
   factorial eligible.
+
+### SM-B001 — Offspring scheduling-delay ablation
+
+- **Status:** Claimed
+- **Owner / machine:** Linux remote (`bazzite`)
+- **Claimed at:** 2026-10-04
+- **Depends on:** both-arm SM-M001 viability
+- **Why:** A nominal separation × preservation × admission factorial is
+  degenerate under exact conservation. First isolate the timing of independent
+  reaction eligibility while physical cleavage, source healing, and vacancy
+  admission remain native.
+- **Test:** Twenty matched seeds in IMMEDIATE, DELAY500, and permanently LOCKED
+  policy arms (60 conserved, zero-mutation runs), with complete scheduling-event
+  replay and unchanged renewal endpoints.
+- **Preregistration:** `reports/sm_b001_offspring_scheduling_delay_preregistration.md`
+- **On an estimable response:** separately preregister scheduling × source-remnant
+  retention; replacement admission remains a later exposed contrast.
