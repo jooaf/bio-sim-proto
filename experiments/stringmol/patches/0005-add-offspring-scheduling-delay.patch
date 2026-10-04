@@ -1,0 +1,435 @@
+--- a/src/agent.h
++++ b/src/agent.h
+@@ -20,6 +20,7 @@
+ 
+ #ifndef AGENT_H_
+ #define AGENT_H_
++#include <stdint.h>
+ 
+ //TODO(sjh): this is a tangled mess.. can we tidy?
+ enum s_bind{B_UNBOUND=1,B_PASSIVE=2,B_ACTIVE=3};
+@@ -29,6 +30,7 @@
+ struct l_spp;
+ 
+ struct s_ag{//THIS DEFINES AN INDIVIDUAL AGENT IN A STRINGMOL SYSTEM
++	uint64_t eligible_tick; // SM-B001; initial molecules are eligible at zero.
+ 	char 	*S;		//The executing string;
+ 	//char 	*comp;	//the complement of the string
+ 	int		label;
+--- a/src/agent.cpp
++++ b/src/agent.cpp
+@@ -202,6 +202,7 @@
+ 	//https://embeddedartistry.com/blog/2017/03/15/c-casting-or-oh-no-they-broke-malloc/
+ 	//if((ag = (s_ag *) mymalloc(1,sizeof(s_ag)))!=NULL){
+ 	if(( ag = static_cast<s_ag *> (MallocOrExit(1, sizeof(s_ag))))!=NULL){
++		ag->eligible_tick=0;
+ 		ag->label=alab;
+ 		ag->next = NULL;
+ 		ag->prev = NULL;
+--- a/src/sm_spatial.h
++++ b/src/sm_spatial.h
+@@ -25,6 +25,7 @@
+ 
+ 
+ #include "sm_conservation.h"
++#include "sm_scheduling.h"
+ 
+ class Stringmol_Spatial: public stringPM
+ {
+@@ -33,6 +34,7 @@
+ 
+ public:
+ 	SpatialConservation conservation;
++	SpatialScheduling scheduling;
+ 
+ 	explicit Stringmol_Spatial(SMspp * pSP);
+ 
+--- a/src/sm_spatial.cpp
++++ b/src/sm_spatial.cpp
+@@ -156,6 +156,7 @@
+ 	}
+ 	conservation.init(nowhead, maxl0, blosum->key);
+ 	lineage_begin(timestep, nowhead);
++	scheduling.init(nowhead, nsteps, conservation.routed && conservation.logging);
+ 
+ 	int bt,ct{0};
+ 	ct = AgentsCount(nowhead,-1);
+@@ -242,6 +243,7 @@
+ 
+ 	conservation.observe(timestep, "END", nowhead);
+ 	lineage_end(timestep, ct);
++	scheduling.end(timestep, nowhead, conservation.event_index);
+ 	printf("FINISHED smspatial\n");
+ 	fflush(stdout);
+ 	return 0;
+@@ -284,7 +286,8 @@
+ 	//TODO: Now we have to place each agent on the grid - use the makenext() model -
+ 	//But we only need to do this if extit == 0, because otherwise we'll have the molecular positions...
+ 	if(!timestep){
+-		while(nowhead!=NULL){
++		scheduling.tick(timestep, nowhead);
++	while(nowhead!=NULL){
+ 			s_ag *pag;
+ 			pag = AgentSelectRandomly(nowhead,-1);
+ 			AgentExtract(&(nowhead),pag);
+@@ -518,6 +521,7 @@
+ 
+ 	int ct=0;
+ 
++	scheduling.tick(timestep, nowhead);
+ 	while(nowhead!=NULL){
+ 
+  		s_ag *bag;
+@@ -554,11 +558,28 @@
+ 			break;
+ 		}
+ 
+-		if(!AgentAttemptDecaySpatial(&pag)){
++        scheduling.check(bag,timestep);
++        if (pag->status!=B_UNBOUND) scheduling.check(pag,timestep);
++        SpatialScheduling::Row selection("SELECT",timestep);
++        selection.id=pag->idx; selection.other=bag?bag->idx:-1;
++        selection.eligible=pag->eligible_tick; selection.count=scheduling.eligible(pag,timestep);
++        selection.outcome=pag->status==B_UNBOUND?"UNBOUND":pag->status==B_ACTIVE?"ACTIVE":"PASSIVE";
++        scheduling.emit(selection);
++        int selected_id=pag->idx, partner_id=bag?bag->idx:-1;
++        int decayed=AgentAttemptDecaySpatial(&pag);
++        SpatialScheduling::Row survival(decayed?"DECAY":"SURVIVE",timestep);
++        survival.id=selected_id; survival.other=partner_id; scheduling.emit(survival);
++		if(!decayed){
++            if (!scheduling.eligible(pag,timestep)) {
++                if (pag->status!=B_UNBOUND || bag) SpatialScheduling::fail("bound before eligibility");
++                grid->status[pag->x][pag->y]=G_NEXT;
++                AgentAppend(&(nexthead),pag);
++                continue;
++            }
+ 			int changed = 0;
+ 			if(energy>0){
+ 				switch(pag->status){
+-				case B_UNBOUND:
++				case B_UNBOUND: {
+ 					//seek binding partner, set binding states.
+ 					//changed = A->testbind(pag);
+ 
+@@ -569,7 +590,14 @@
+ 					//find_ag_gridpos(pag,run,&x,&y);
+ 					grid->status[pag->x][pag->y]=G_NEXT;
+ 
+-					if((bag = ReactionSeekRandomSpatialPartner(pag->x,pag->y))!=NULL){
++                    scheduling.check(pag,timestep);
++                    bag=ReactionSeekRandomSpatialPartner(pag->x,pag->y);
++                    SpatialScheduling::Row search("SEARCH",timestep);
++                    search.id=pag->idx; search.other=bag?bag->idx:-1;
++                    search.count=scheduling.candidates; search.selected=scheduling.selected;
++                    search.outcome=bag?"SELECTED":"EMPTY"; scheduling.emit(search);
++					if(bag!=NULL){
++                        scheduling.check(bag,timestep);
+ 
+ 						//TODO: We need to make sure that bag is in nowhead first!
+ 						AgentExtract(&(nowhead),bag);
+@@ -580,9 +608,16 @@
+ 
+ 						float rno;
+ 						rno = RandomBetween0And1();
++                        SpatialScheduling::Row encounter("ENCOUNTER",timestep);
++                        encounter.id=pag->idx; encounter.other=bag->idx;
++                        encounter.count=scheduling.candidates; encounter.selected=scheduling.selected;
++                        encounter.outcome=rno<bprob?"BOUND":"UNBOUND";
+ 						if(rno<bprob){//Binding success!
+ 							//figure out which is the executing string:
++                            scheduling.check(pag,timestep); scheduling.check(bag,timestep);
+ 							ReactionSetupExecution(pag,bag,&sw);
++                            encounter.active=pag->status==B_ACTIVE?pag->idx:bag->idx;
++                            encounter.passive=pag->status==B_PASSIVE?pag->idx:bag->idx;
+ 							pag->nbind++;
+ 							bag->nbind++;
+ 
+@@ -592,9 +627,11 @@
+ 							AgentAppend(&(nexthead),bag);
+ 							changed=1;
+ 						}
++                        scheduling.emit(encounter);
+ 					}
+ 
+ 					break;
++                }
+ 				case B_PASSIVE:
+ 					//find_ag_gridpos(pag->exec,run,&x,&y);
+ 
+@@ -658,8 +695,27 @@
+ *******************************************************************************/
+ s_ag * Stringmol_Spatial::ReactionSeekRandomSpatialPartner(int x, int y){
+ 
++    scheduling.candidates=0; scheduling.selected=-1;
+ 	if(interaction_radius == 0){
+-		s_ag *partner = AgentSelectRandomly(nowhead,B_UNBOUND);
++        s_ag *partner=NULL;
++        if (!scheduling.enabled || !strcmp(scheduling.policy,"IMMEDIATE")) {
++            partner=AgentSelectRandomly(nowhead,B_UNBOUND);
++            if (scheduling.observing()) for(s_ag *p=nowhead;p;p=p->next) if(p->status==B_UNBOUND) {
++                if(p==partner) scheduling.selected=scheduling.candidates;
++                ++scheduling.candidates;
++            }
++        } else {
++            // Filter BEFORE count and the one native uniform draw, in native list order.
++            for(s_ag *p=nowhead;p;p=p->next) if(p->status==B_UNBOUND && scheduling.eligible(p,timestep)) ++scheduling.candidates;
++            if(scheduling.candidates) {
++                scheduling.selected=(int)(scheduling.candidates*RandomBetween0And1());
++                if(scheduling.selected>=scheduling.candidates) SpatialScheduling::fail("partner draw outside range");
++                int rank=0;
++                for(s_ag *p=nowhead;p;p=p->next) if(p->status==B_UNBOUND && scheduling.eligible(p,timestep)) {
++                    if(rank++==scheduling.selected) { partner=p; break; }
++                }
++            }
++        }
+ 		if(partner != NULL)
+ 			grid->status[partner->x][partner->y] = G_NEXT;
+ 		return partner;
+@@ -676,7 +732,7 @@
+ 				xx = ToroidalNeighbour(x,i,grid->gridx);
+ 				yy = ToroidalNeighbour(y,j,grid->gridy);
+ 				if(grid->grid[xx][yy]!=NULL){
+-					if(grid->grid[xx][yy]->status == B_UNBOUND){
++					if(grid->grid[xx][yy]->status == B_UNBOUND && scheduling.eligible(grid->grid[xx][yy],timestep)){
+ 						if(grid->status[xx][yy] == G_NOW)
+ 							count++;
+ 					}
+@@ -684,10 +740,12 @@
+ 			}
+ 		}
+ 	}
++	scheduling.candidates=count;
+ 	if(!count)
+ 		return NULL;
+ 
+ 	int selected = count * RandomBetween0And1();
++	scheduling.selected=selected;
+ 
+ 	//choose the drawn eligible neighbor rather than the first eligible neighbor
+ 	count = 0;
+@@ -697,7 +755,7 @@
+ 				xx = ToroidalNeighbour(x,i,grid->gridx);
+ 				yy = ToroidalNeighbour(y,j,grid->gridy);
+ 				if(grid->grid[xx][yy]!=NULL){
+-					if(grid->grid[xx][yy]->status == B_UNBOUND){
++					if(grid->grid[xx][yy]->status == B_UNBOUND && scheduling.eligible(grid->grid[xx][yy],timestep)){
+ 						if(grid->status[xx][yy] == G_NOW){
+ 							if(count==selected){
+ 								grid->status[xx][yy] = G_NEXT;
+@@ -736,9 +794,17 @@
+ *******************************************************************************/
+ int Stringmol_Spatial::ReactionExecuteOpcode_Spatial(s_ag *act, s_ag *pass){//, int x, int y){
+ 
++    scheduling.check(act,timestep); scheduling.check(pass,timestep);
++    int dispatch_active=act->idx, dispatch_passive=pass->idx;
+ 	bool safe_append=true;
+ 	if (conservation.enabled) conservation.instruction(act, pass);
+ 
++    if(scheduling.observing()) {
++        SpatialScheduling::Row r("DISPATCH",timestep); r.active=dispatch_active; r.passive=dispatch_passive;
++        r.opcode=(unsigned char)*(act->i[act->it]); r.owner=act->it?act->idx:pass->idx;
++        r.offset=SpatialConservation::allocated_offset(act->i[act->it],act->it?act->S:pass->S,maxl0);
++        r.material=conservation.event_index; scheduling.emit(r);
++    }
+ 	switch(*(act->i[act->it])){//*iptr[it]){
+ 
+ 	/*************
+@@ -858,6 +924,9 @@
+ 	if (conservation.enabled && safe_append && act->status == B_ACTIVE)
+ 		conservation.instruction(act, pass);
+ 
++    SpatialScheduling::Row complete("COMPLETE",timestep);
++    complete.active=dispatch_active; complete.passive=dispatch_passive;
++    complete.material=conservation.event_index; scheduling.emit(complete);
+ 	return 1;
+ }
+ 
+@@ -914,6 +983,7 @@
+             conservation.decay_release(*pag);
+             conservation.material(timestep, "DECAY", "REMOVED", before, SpatialConservation::State{});
+         }
++		scheduling.death(timestep,*pag,"DECAY",conservation.event_index);
+ 		AgentFreeAndNull(pag);
+ 		//TODO: sort this null-ing of free'd agents out!
+ 		//pag = NULL;
+@@ -929,6 +999,7 @@
+                 conservation.decay_release(bag);
+                 conservation.material(timestep, "DECAY", "REMOVED", before, SpatialConservation::State{});
+             }
++			scheduling.death(timestep,bag,"DECAY",conservation.event_index);
+ 			AgentFreeAndNull(&bag);
+ 			//bag = NULL;
+ 		}
+@@ -961,6 +1032,7 @@
+ 	s_ag *c,*pass,*csite;
+ 	c = NULL;
+ 	pass = act->pass;
++    int birth_active=act->idx,birth_passive=pass->idx;
+ 
+ 	auto material_before = conservation.state(act, pass);
+ 	bool attempted_placement = false;
+@@ -971,6 +1043,7 @@
+ 		SpatialConservation::fail("invalid cleavage toggle");
+ 	//pick the mol containing the cleave site:
+ 	csite = act->ft?act:pass;
++    int birth_source=csite->idx;
+ 
+ 	// Prove the complete allocated range before native pointer subtraction.
+ 	// In-buffer flow heads at/beyond the visible end remain native no-change.
+@@ -1060,6 +1133,7 @@
+ 				grid->grid[act->x][act->y]=NULL;
+ 				grid->status[act->x][act->y]=G_EMPTY;
+ 
++				scheduling.death(timestep,act,"CLEAVE",SpatialScheduling::add(conservation.event_index,1));
+ 				AgentFreeAndNull(&act);
+ 				//act = NULL;
+ 
+@@ -1077,6 +1151,7 @@
+ 				grid->grid[pass->x][pass->y]=NULL;
+ 				grid->status[pass->x][pass->y]=G_EMPTY;
+ 
++				scheduling.death(timestep,pass,"CLEAVE",SpatialScheduling::add(conservation.event_index,1));
+ 				AgentFreeAndNull(&pass);
+ 				//pass = NULL;
+ 
+@@ -1088,8 +1163,10 @@
+ 				spl->SpeciesListUpdate(pass,'P',1,act->spp,pass->spp,
+ 						AgentUnbind(pass),timestep,maxl0);
+ 
++				scheduling.death(timestep,act,"CLEAVE",SpatialScheduling::add(conservation.event_index,1));
+ 				AgentFreeAndNull(&act);
+ 				//act = NULL;
++				scheduling.death(timestep,pass,"CLEAVE",SpatialScheduling::add(conservation.event_index,1));
+ 				AgentFreeAndNull(&pass);
+ 				//pass = NULL;
+ 				break;
+@@ -1108,6 +1185,7 @@
+ 	if (conservation.enabled) conservation.cleave(before, act, pass, c);
+     conservation.material(timestep, "CLEAVE", c ? "PLACED" : attempted_placement ? "FAILED" : "NO_CHANGE",
+         material_before, conservation.state(act,pass,c));
++    if(c) scheduling.birth(c,timestep,birth_source,birth_active,birth_passive,conservation.event_index);
+ 	return dac;
+ }
+ 
+--- /dev/null
++++ b/src/sm_scheduling.h
+@@ -0,0 +1,119 @@
++// SM-B001: reaction eligibility only. Observation never consumes randomness.
++#ifndef SM_SCHEDULING_H
++#define SM_SCHEDULING_H
++#include <map>
++#include <set>
++#include <string>
++#include <sstream>
++#include <stdint.h>
++#include <inttypes.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
++struct SpatialScheduling {
++    struct Row {
++        const char *event;
++        uint64_t tick, eligible = 0, material = 0;
++        int id = -1, other = -1, active = -1, passive = -1, source = -1;
++        int count = 0, selected = -1, opcode = -1, owner = -1, offset = -1;
++        std::string outcome, ids;
++        Row(const char *e, uint64_t t): event(e), tick(t) {}
++    };
++    bool enabled = false;
++    const char *policy = "DISABLED";
++    uint64_t delay = 0, horizon = 0, sentinel = 0, index = 0;
++    FILE *journal = NULL;
++    std::map<int, uint64_t> children;
++    std::set<int> released, seen;
++    int candidates = 0, selected = -1;
++    static void fail(const char *why) {
++        fprintf(stderr, "SM-B001 boundary failure: %s\n", why);
++        exit(EXIT_FAILURE);
++    }
++    static uint64_t add(uint64_t a, uint64_t b) {
++        if (b > UINT64_MAX-a) fail("eligible tick overflow");
++        return a+b;
++    }
++    bool observing() const { return journal != NULL; }
++    bool tracked() const { return enabled || observing(); }
++    bool eligible(const s_ag *a, uint64_t tick) const {
++        return !enabled || tick >= a->eligible_tick;
++    }
++    void check(const s_ag *a, uint64_t tick) const {
++        if (a && !eligible(a,tick)) fail("early encounter/binding/dispatch");
++    }
++    void emit(const Row &r) {
++        if (!journal) return;
++        index = add(index,1);
++        fprintf(journal,"%s,%" PRIu64 ",%" PRIu64 ",%d,%d,%d,%d,%d,%" PRIu64 ",%s,%d,%d,%s,%d,%d,%d,%" PRIu64 ",%s\n",
++            r.event,r.tick,index,r.id,r.other,r.active,r.passive,r.source,r.eligible,policy,
++            r.count,r.selected,r.outcome.c_str(),r.opcode,r.owner,r.offset,r.material,r.ids.c_str());
++        if (fflush(journal) || ferror(journal)) fail("journal write");
++    }
++    static std::string ids(const s_ag *head) {
++        std::ostringstream s;
++        for (const s_ag *p=head;p;p=p->next) { if(p!=head) s << ';'; s << p->idx; }
++        return s.str();
++    }
++    void init(s_ag *head, uint64_t end, bool material_logging) {
++        const char *flag=getenv("STRINGMOL_SCHEDULING");
++        if (flag && strcmp(flag,"0") && strcmp(flag,"1")) fail("invalid scheduling flag");
++        enabled=flag && !strcmp(flag,"1");
++        if (enabled) {
++            const char *p=getenv("STRINGMOL_SCHEDULING_POLICY");
++            if (!p) fail("missing policy");
++            if (!strcmp(p,"IMMEDIATE")) policy="IMMEDIATE";
++            else if (!strcmp(p,"DELAY500")) { policy="DELAY500"; delay=500; }
++            else if (!strcmp(p,"LOCKED")) policy="LOCKED";
++            else fail("invalid policy");
++        }
++        horizon=end; sentinel=add(end,1);
++        const char *log=getenv("STRINGMOL_SCHEDULING_LOG");
++        if (log && strcmp(log,"0") && strcmp(log,"1")) fail("invalid scheduling log flag");
++        if (log && !strcmp(log,"1")) {
++            if (!material_logging) fail("boundary journal requires material journal");
++            journal=fopen("scheduling_events001.csv","wx");
++            if (!journal) fail("journal open");
++            fputs("event,tick,index,id,other,active,passive,source,eligible_tick,policy,count,selected,outcome,opcode,owner,offset,material_index,ids\n",journal);
++            Row r("START",0); r.eligible=end; r.ids=ids(head); emit(r);
++        }
++        if (tracked()) for (s_ag *p=head;p;p=p->next) {
++            if (!seen.insert(p->idx).second) fail("initial ID reuse");
++            p->eligible_tick=0;
++        }
++    }
++    void birth(s_ag *child, uint64_t tick, int source, int active, int passive, uint64_t transaction) {
++        if (!tracked()) return;
++        if (!seen.insert(child->idx).second) fail("child ID reuse");
++        child->eligible_tick=!strcmp(policy,"LOCKED") ? sentinel : add(add(tick,1),delay);
++        if (!strcmp(policy,"LOCKED") && child->eligible_tick<=tick) fail("locked sentinel not above birth");
++        children[child->idx]=child->eligible_tick;
++        Row r("BIRTH",tick); r.id=child->idx; r.source=source; r.active=active; r.passive=passive;
++        r.eligible=child->eligible_tick; r.material=transaction; emit(r);
++    }
++    void tick(uint64_t t, const s_ag *head) {
++        Row r("TICK",t); if (observing()) { r.ids=ids(head); emit(r); }
++        if (tracked()) for (const s_ag *p=head;p;p=p->next) {
++            if (children.count(p->idx) && t>=p->eligible_tick && !released.count(p->idx)) {
++                if (t!=p->eligible_tick) fail("missed eligibility transition");
++                released.insert(p->idx);
++                Row release("RELEASE",t); release.id=p->idx; release.eligible=p->eligible_tick; emit(release);
++            }
++            if(p->status!=B_UNBOUND) check(p,t);
++        }
++    }
++    void death(uint64_t t, const s_ag *p, const char *cause, uint64_t transaction) {
++        if (!tracked()) return;
++        Row r("DEATH",t); r.id=p->idx; r.eligible=p->eligible_tick; r.outcome=cause; r.material=transaction; emit(r);
++    }
++    void end(uint64_t t, const s_ag *head, uint64_t material) {
++        if (!journal) return;
++        for (const s_ag *p=head;p;p=p->next) if(children.count(p->idx)) {
++            Row r("CENSOR",t); r.id=p->idx; r.eligible=p->eligible_tick; emit(r);
++        }
++        Row r("END",t); r.ids=ids(head); r.material=material; emit(r);
++        if (fclose(journal)) fail("journal close"); journal=NULL;
++    }
++};
++#endif

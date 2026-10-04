@@ -934,7 +934,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### SM-B001 — Offspring scheduling-delay ablation
 
-- **Status:** Claimed
+- **Status:** Mechanics/configuration gates passed; 60 assays sealed
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-10-04
 - **Depends on:** both-arm SM-M001 viability
@@ -946,5 +946,6 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
   policy arms (60 conserved, zero-mutation runs), with complete scheduling-event
   replay and unchanged renewal endpoints.
 - **Preregistration:** `reports/sm_b001_offspring_scheduling_delay_preregistration.md`
+- **Implementation:** `reports/sm_b001_offspring_scheduling_delay_implementation.md`
 - **On an estimable response:** separately preregister scheduling × source-remnant
   retention; replacement admission remains a later exposed contrast.
