@@ -1,0 +1,626 @@
+{
+  "archive": {
+    "reason": "Retired only never-launched superseded inputs; preserved previous hashes and bulky quota/recovery evidence outside tracked reports. No seed-use exemption or changed protocol.",
+    "recovery": {
+      "path": "/var/home/jojo/bio-sim-proto/logs/sm_b002_revision_archive/sm_b002_validation_recovery.json",
+      "record": {
+        "sha256": "ac30b0a5ae7a836b598c90939d8467016af6b49294123bffece1123b49c1563b",
+        "size": 1352
+      }
+    },
+    "relocation": {
+      "path": "/var/home/jojo/bio-sim-proto/logs/sm_b002_revision_archive/relocation.json",
+      "record": {
+        "sha256": "8edb7b92f2bfbe2ab0389b6ef48e29be2f1d4043c5b838ba674394cf77ee9139",
+        "size": 1242
+      }
+    },
+    "superseded_preparation": {
+      "path": "/var/home/jojo/bio-sim-proto/logs/sm_b002_revision_archive/superseded-prepared/preparation.json",
+      "record": {
+        "sha256": "73a0f7bc32d4d586552564ea714207509bd7ed331534f98bc0d744787b6ed65a",
+        "size": 64623699
+      }
+    }
+  },
+  "build": {
+    "path": "/tmp/b2u/build.json",
+    "record": {
+      "sha256": "e8c578db3c61df075ac0e75e1175a1c21b41cc02b29f7df22b734dfac715a811",
+      "size": 286637
+    }
+  },
+  "development_checks": {
+    "DELAY500_RETAIN": {
+      "boundary_errors": 0,
+      "end_population": 307,
+      "fatal_enforcement_errors": 0,
+      "max_nonrelocation_depth": 3,
+      "native_births": 613,
+      "qualifying_transfers": 613,
+      "retirement_eligible": 613,
+      "retirement_proposals": 1015,
+      "retirements": 0,
+      "serial_transfers": 189,
+      "zero_residual": true
+    },
+    "DELAY500_RETIRE": {
+      "boundary_errors": 0,
+      "end_population": 28,
+      "fatal_enforcement_errors": 0,
+      "max_nonrelocation_depth": 3,
+      "native_births": 139,
+      "qualifying_transfers": 139,
+      "retirement_eligible": 139,
+      "retirement_proposals": 190,
+      "retirements": 139,
+      "serial_transfers": 28,
+      "zero_residual": true
+    },
+    "IMMEDIATE_RETAIN": {
+      "boundary_errors": 0,
+      "end_population": 347,
+      "fatal_enforcement_errors": 0,
+      "max_nonrelocation_depth": 3,
+      "native_births": 664,
+      "qualifying_transfers": 664,
+      "retirement_eligible": 664,
+      "retirement_proposals": 1499,
+      "retirements": 0,
+      "serial_transfers": 140,
+      "zero_residual": true
+    },
+    "IMMEDIATE_RETIRE": {
+      "boundary_errors": 0,
+      "end_population": 34,
+      "fatal_enforcement_errors": 0,
+      "max_nonrelocation_depth": 3,
+      "native_births": 131,
+      "qualifying_transfers": 131,
+      "retirement_eligible": 131,
+      "retirement_proposals": 183,
+      "retirements": 131,
+      "serial_transfers": 17,
+      "zero_residual": true
+    }
+  },
+  "development_seed": 202620999,
+  "directed_artifacts": {
+    "binary": {
+      "sha256": "e4c10387f66ad5b6d50cc7917da6ca6db2760e003b7dc2615ec0f5a35ecc0519",
+      "size": 503256
+    },
+    "exit_status": 0,
+    "fixture": {
+      "sha256": "7e0c5c32fc5e685a1f7746d9924179a7ac1eef149163f14e4816268e1a8fcd97",
+      "size": 14221
+    },
+    "stderr": {
+      "sha256": "6c3af1541060d6a9d0dd1b0c9de3ff14efeb1925fffa7e0adab6bbc913105a86",
+      "size": 1927
+    },
+    "stdout": {
+      "sha256": "06a2adbb5ffb0051c7cbc8ee634d51213273bb52b7d775f4055363977da72b4c",
+      "size": 702
+    }
+  },
+  "factorial": {
+    "NUMBA_NUM_THREADS": 1,
+    "all_80_initial_state_material_and_normalized_config_equality_verified": true,
+    "arms": [
+      "IMMEDIATE_RETAIN",
+      "DELAY500_RETAIN",
+      "IMMEDIATE_RETIRE",
+      "DELAY500_RETIRE"
+    ],
+    "input_files_read_only": true,
+    "runs": 80,
+    "seeds": [
+      202628000,
+      202628001,
+      202628002,
+      202628003,
+      202628004,
+      202628005,
+      202628006,
+      202628007,
+      202628008,
+      202628009,
+      202628010,
+      202628011,
+      202628012,
+      202628013,
+      202628014,
+      202628015,
+      202628016,
+      202628017,
+      202628018,
+      202628019
+    ],
+    "workers": 6
+  },
+  "faults": {
+    "artifact_directory": "/var/home/jojo/bio-sim-proto/runs/sm_b002_work/review-gates/faults",
+    "artifact_inventory_sha256": "353029db16f2f9fcc08fc5aaae086b3730fb2cc7b6eae8af7c98ff73924016d6",
+    "cases": 114,
+    "coverage": "Both source roles; participants off-list, current-list, next-list; hidden full-buffer bytes; 19 failure modes x 2 roles x 3 list states.",
+    "journal_write_failures": 36,
+    "prepublication": "Actual phase mutations observed before exception unwinding; exact post-cleavage agent/buffer/grid/list/species/ledger/RNG snapshot restored, commitments zero; fatal exit without RETAIN fallback.",
+    "publication": "Material, death, source journal publication and before/after real free; fatal exits rejected before scientific replay even with complete published rows.",
+    "publication_or_free_fatal": 30,
+    "rolled_back": 48,
+    "writes": "Real fopencookie ENOSPC and partial-byte writes for material/death/source journals with logging enabled; retained failed prefixes, ferror and fatal process receipts."
+  },
+  "focused": {
+    "path": "/var/home/jojo/bio-sim-proto/runs/sm_b002_work/review-gates/focused.json",
+    "record": {
+      "sha256": "a80ef78390d9595d47e1a6e13403415d4eba90cea04725a29625e842546835e4",
+      "size": 28807112
+    }
+  },
+  "gates": {
+    "path": "/var/home/jojo/bio-sim-proto/runs/sm_b002_work/review-full-gates/gates.json",
+    "record": {
+      "sha256": "d0eebe85fb6e7847810cd6763fae048fd6dc1ff349de23cc2473472bec2a0652",
+      "size": 767
+    }
+  },
+  "implementation": {
+    "experiments/stringmol/README.md": {
+      "sha256": "fdb963b0d1ce217b22969c3ddbd4b698ecb3184eb3948243a71f5083e5395d26",
+      "size": 13084
+    },
+    "experiments/stringmol/analyze_conservation.py": {
+      "sha256": "3a1c11d66ea299e72bc7da26504e7e17cc63e91c55b7cb49d583e48a3033c9e4",
+      "size": 13131
+    },
+    "experiments/stringmol/analyze_decay.py": {
+      "sha256": "c891b54453445b5420bf878cf80ef720c25997bf3979e78c5af7f3f1f2417982",
+      "size": 19092
+    },
+    "experiments/stringmol/analyze_lineage.py": {
+      "sha256": "782eabf2fdc08337b85f36c0cb264b88b23ff8aeb1f2f2b4fce15bd36cc23809",
+      "size": 11857
+    },
+    "experiments/stringmol/analyze_mutation.py": {
+      "sha256": "ccd5da9ed34b3dd9ea752dc00d26b26409ebf146d425667ce77da15b77db6435",
+      "size": 12627
+    },
+    "experiments/stringmol/analyze_perturbation.py": {
+      "sha256": "3583fd44e1bed48eaa3589b64013efadae4e94112f24ab0a640f0585a79af089",
+      "size": 9965
+    },
+    "experiments/stringmol/analyze_renewal.py": {
+      "sha256": "adea2f45405286aa33e7dea78684013b2afc420664ed47d19a4e749cb9baf3ef",
+      "size": 17744
+    },
+    "experiments/stringmol/analyze_replicated.py": {
+      "sha256": "6ef19e584a669f959dbf6a2253b721868111dd175baac0081e783b50dbe83f86",
+      "size": 6862
+    },
+    "experiments/stringmol/analyze_retirement.py": {
+      "sha256": "92c40faff998573054cd4d82b01f8c0c9f06b221878a4563ba89788a1c34f411",
+      "size": 42887
+    },
+    "experiments/stringmol/analyze_scheduling.py": {
+      "sha256": "8f0a6d08b756e48febcbc1e61428cc5355421aef59f6569b734f241649d0123a",
+      "size": 32613
+    },
+    "experiments/stringmol/configure_control.py": {
+      "sha256": "62f2b14118265a00ddd876c691d179ab69d32fbc0533f1518eaaa98cb4ddce75",
+      "size": 4650
+    },
+    "experiments/stringmol/conservation_workflow.py": {
+      "sha256": "f0a37cd13db4745c1acc7f98c98662ae16748afe68986863868ae4ba76fa6cb4",
+      "size": 25665
+    },
+    "experiments/stringmol/decay_workflow.py": {
+      "sha256": "cda5a4878f17363a8e2db6222c9739bac91a39c74301eb2a322cb97abf215732",
+      "size": 29343
+    },
+    "experiments/stringmol/lineage_workflow.py": {
+      "sha256": "73cf21389f8e05f29be3e5b81e8c2d874f516304accfd1e084976ed24ad8fbf9",
+      "size": 16963
+    },
+    "experiments/stringmol/mutation_workflow.py": {
+      "sha256": "4afff6ab84268200b83784e7b57f6dc4ded6e93622508e3cb1be1ea4b587a7e1",
+      "size": 25703
+    },
+    "experiments/stringmol/patches/0005-add-offspring-scheduling-delay.patch": {
+      "sha256": "85577a087a755ddfed8ee46dce929fbe7bbe6f0519d233fbcf1b804b3b3b62d1",
+      "size": 17688
+    },
+    "experiments/stringmol/patches/0006-add-source-remnant-retirement.patch": {
+      "sha256": "972e4b378a6e0f607e60abdd59c8a4f30ef70fa35e66da4f692bb52e5f9326f3",
+      "size": 16122
+    },
+    "experiments/stringmol/perturbation_panel.py": {
+      "sha256": "09534c3778c41de8973b9463250c7ba90cc9fd87f7cbe57c59c0d306f10d2c97",
+      "size": 9724
+    },
+    "experiments/stringmol/perturbation_workflow.py": {
+      "sha256": "c4d3f9f4e0b336323a990314520f1a577f808434e739987430c7c2fd7c776809",
+      "size": 28181
+    },
+    "experiments/stringmol/renewal_workflow.py": {
+      "sha256": "0c5ddbb62d07de27fd2e7fbff79db4f3b29d06c592b76f4f33eee5b802c66a14",
+      "size": 23367
+    },
+    "experiments/stringmol/replicated_workflow.py": {
+      "sha256": "3dd1b074a3fc3729a8d86eb069d0329df8ce7a49c46b138b488523dd44ae3a39",
+      "size": 24501
+    },
+    "experiments/stringmol/retirement_material.py": {
+      "sha256": "cd54ab81451c0d5301610ec60ab207540ce705787e0dd8b3308e7b15e1ec3164",
+      "size": 14912
+    },
+    "experiments/stringmol/retirement_workflow.py": {
+      "sha256": "291e8ebaaa28dd33f1e6ec7fd2bc32268c3c0e37362d792f9be57ea859cdf25c",
+      "size": 44482
+    },
+    "experiments/stringmol/scheduling_workflow.py": {
+      "sha256": "9731abc32312144fea221a55aee96a0cad94818081e2b0b8c4d2bee38ce763e9",
+      "size": 39461
+    },
+    "experiments/stringmol/source.lock.json": {
+      "sha256": "d0c8a729560d57f2839c6dea58ddc6e451791760172f8be091bf561351f801be",
+      "size": 406
+    },
+    "pyproject.toml": {
+      "sha256": "ba530c3fbeb219a9d9170975f6a4b2d77519a80d4f7ae7013612890392f640fa",
+      "size": 1585
+    },
+    "tests/fixtures/sm_h002_source_candidates.json": {
+      "sha256": "463ec5dbcf090a001d80e44fc6cfaf38942d52e284843dab1b4b24834abeba8b",
+      "size": 152399
+    },
+    "tests/stringmol_conservation_directed.cpp": {
+      "sha256": "96141b3d18670e03d50ae3acc2300b65f30dfa213e2e78ee90d14ff7fee1112a",
+      "size": 23310
+    },
+    "tests/stringmol_decay_directed.cpp": {
+      "sha256": "83bee870157b497d38ed6f6b130f00135a6df1c5bcf823d14e7a3dc8dd371aac",
+      "size": 4214
+    },
+    "tests/stringmol_retirement_directed.cpp": {
+      "sha256": "7e0c5c32fc5e685a1f7746d9924179a7ac1eef149163f14e4816268e1a8fcd97",
+      "size": 14221
+    },
+    "tests/stringmol_scheduling_directed.cpp": {
+      "sha256": "84f3b94dd67b6572fdf21ec4e2e518792cd90bdbc8fc2dda0d0a4ff0d50cbdbb",
+      "size": 10417
+    },
+    "tests/stringmol_scheduling_rng.cpp": {
+      "sha256": "a5cf57b22cb67b714a0fc97b92a1949f428ac61699614d6c1382f2e89f1076b6",
+      "size": 527
+    },
+    "tests/test_stringmol_conservation.py": {
+      "sha256": "82707c58eeea75bec203a5d2c90b5dc477979f1affd4a7d0840cdb00517d73ce",
+      "size": 23466
+    },
+    "tests/test_stringmol_control.py": {
+      "sha256": "24304021ca64121a8245312ac521c35e9e36e737279f272fae531f2a216b4837",
+      "size": 3497
+    },
+    "tests/test_stringmol_decay.py": {
+      "sha256": "caef1b0e5cbecb7b965f6455eed6de389242acf5874d7fd057572b6419536a8c",
+      "size": 23230
+    },
+    "tests/test_stringmol_lineage.py": {
+      "sha256": "7c19103d6a64c7908575bfacbdd01bae8addf16c3256a5019aed3bc7d8b4fce6",
+      "size": 19856
+    },
+    "tests/test_stringmol_mutation.py": {
+      "sha256": "2a113ed6762770bc05ddd5b2342a16d811da0d7896642c1ac87d37c6725f361a",
+      "size": 23094
+    },
+    "tests/test_stringmol_perturbation.py": {
+      "sha256": "a0f36acf6ec274e9ce36ba88dd231aacfcad89519a9370f5ad0b95dbea868a62",
+      "size": 29738
+    },
+    "tests/test_stringmol_renewal.py": {
+      "sha256": "70777be8845b09ea253e0edec2fd0a621ea2094ad15c06d5e161eb43b35a4841",
+      "size": 30119
+    },
+    "tests/test_stringmol_replicated.py": {
+      "sha256": "de7a2a3c743ac4b2d3aadbfe0e9ffe1d9ef18e149982142c71b98736c242a311",
+      "size": 24628
+    },
+    "tests/test_stringmol_retirement.py": {
+      "sha256": "a8b87680372e1569cd302ff24b5a9e6d0588458f3bc5693130843e2d685b1359",
+      "size": 39928
+    },
+    "tests/test_stringmol_scheduling.py": {
+      "sha256": "01c1e2f254e86918ea31ba9c5baf703c73447d7381fb2d2944097db3bc29c301",
+      "size": 41247
+    },
+    "uv.lock": {
+      "sha256": "72a3be7c4268afe827119cc7a797d5161b62b686cc8741a262a7cca6b74708d4",
+      "size": 548931
+    }
+  },
+  "inherited_directed_on_patch0006": {
+    "binary": {
+      "sha256": "bf90d0191dda669e679bd504fc0046198a38632487140ba11b5d1fbb2beca3af",
+      "size": 493232
+    },
+    "command": [
+      "g++",
+      "-std=c++11",
+      "-O2",
+      "-Wall",
+      "-I",
+      "/tmp/b2u/observer/src",
+      "/var/home/jojo/bio-sim-proto/tests/stringmol_scheduling_directed.cpp",
+      "/tmp/b2u/observer/release/SMspp.o",
+      "/tmp/b2u/observer/release/agent.o",
+      "/tmp/b2u/observer/release/alignment.o",
+      "/tmp/b2u/observer/release/hsort.o",
+      "/tmp/b2u/observer/release/lodepng.o",
+      "/tmp/b2u/observer/release/mathutil.o",
+      "/tmp/b2u/observer/release/memoryutil.o",
+      "/tmp/b2u/observer/release/microbial_ga.o",
+      "/tmp/b2u/observer/release/mt19937-2.o",
+      "/tmp/b2u/observer/release/opcodes.o",
+      "/tmp/b2u/observer/release/params.o",
+      "/tmp/b2u/observer/release/randutil.o",
+      "/tmp/b2u/observer/release/rules.o",
+      "/tmp/b2u/observer/release/setupSM.o",
+      "/tmp/b2u/observer/release/sm_spatial.o",
+      "/tmp/b2u/observer/release/stringPM.o",
+      "/tmp/b2u/observer/release/stringmanip.o",
+      "-o",
+      "/var/home/jojo/bio-sim-proto/runs/sm_b002_work/review-gates/scheduling-fixture/directed-test"
+    ],
+    "environment": {
+      "LANG": "C",
+      "LC_ALL": "C",
+      "PATH": "/usr/bin:/bin",
+      "TZ": "UTC"
+    },
+    "exit_status": 0,
+    "fixture": {
+      "sha256": "84f3b94dd67b6572fdf21ec4e2e518792cd90bdbc8fc2dda0d0a4ff0d50cbdbb",
+      "size": 10417
+    },
+    "objects": {
+      "/tmp/b2u/observer/release/SMspp.o": {
+        "sha256": "fc9e21aa9411759cae79190932dce700779efa1b36eca928562607181658ca6f",
+        "size": 10168
+      },
+      "/tmp/b2u/observer/release/agent.o": {
+        "sha256": "ed84249ca05cf249d8bc337becb4c398d7acface6aaf0ef52fcf64ef5d460575",
+        "size": 13680
+      },
+      "/tmp/b2u/observer/release/alignment.o": {
+        "sha256": "a0d2143a313ca5e55c47edfa296587e8c8fe09a1c8e7aeed08aaedbf4c688788",
+        "size": 50424
+      },
+      "/tmp/b2u/observer/release/hsort.o": {
+        "sha256": "e2bb777943a87ae2fe0e4688b5942700e8a340e17908a4398e823795e7eaa410",
+        "size": 1904
+      },
+      "/tmp/b2u/observer/release/lodepng.o": {
+        "sha256": "811f23847d804930a693f42be791586bc429f088e83e37dbcb9c50a28c19804f",
+        "size": 182544
+      },
+      "/tmp/b2u/observer/release/mathutil.o": {
+        "sha256": "66b528bae9a5051cbca417c70199c8ef27cccc3e4e23d902091cd8c1a58dee20",
+        "size": 1264
+      },
+      "/tmp/b2u/observer/release/memoryutil.o": {
+        "sha256": "a4993bb2af7d96b868d979fa1646e3fc14a0fdae8482207a90c8d57148ade8f9",
+        "size": 2288
+      },
+      "/tmp/b2u/observer/release/microbial_ga.o": {
+        "sha256": "bc7fe18c5d19586067b0ade449c449bf247377281e6f3db14aeb4d416deaccf5",
+        "size": 3120
+      },
+      "/tmp/b2u/observer/release/mt19937-2.o": {
+        "sha256": "e2c3d939e56763810d473d2b1122111700e7bce332410bf68d47261b888d66e1",
+        "size": 7440
+      },
+      "/tmp/b2u/observer/release/opcodes.o": {
+        "sha256": "e735b392a4810867200a9cb06cfc166a73cee6f22eae406abc76a0cec0f420ec",
+        "size": 12128
+      },
+      "/tmp/b2u/observer/release/params.o": {
+        "sha256": "c1331961e0ba16119fcbf411fda8afb69dff43e1323432463c9aa1a1601462f7",
+        "size": 7296
+      },
+      "/tmp/b2u/observer/release/randutil.o": {
+        "sha256": "3e9c4d1243b32cf705e560df136504e8d94449c05832960aeaf5f8845ede05be",
+        "size": 8480
+      },
+      "/tmp/b2u/observer/release/rules.o": {
+        "sha256": "fb757513c5e2e7d30ebe4b76d598a27bd5838fc73cb96765755181d11a55e618",
+        "size": 4216
+      },
+      "/tmp/b2u/observer/release/setupSM.o": {
+        "sha256": "825c77e9df9dd89e30b492bd99e69cefe77eecb5c1338e40f8444c0b877313ef",
+        "size": 42904
+      },
+      "/tmp/b2u/observer/release/sm_spatial.o": {
+        "sha256": "773f8603b72d3b76e9fc231d50c768f68ade22489bd1bb422bbf1009725b9f9a",
+        "size": 169520
+      },
+      "/tmp/b2u/observer/release/stringPM.o": {
+        "sha256": "03ecedcab601b47189250b17b2b78785fa791ff83ca3eea5e145a7218f7eb177",
+        "size": 62584
+      },
+      "/tmp/b2u/observer/release/stringmanip.o": {
+        "sha256": "335721f17a90f8a52eb6379f00f6f9bf774026f5c9d802a1969e02ca65bebc91",
+        "size": 1744
+      }
+    },
+    "stderr": {
+      "sha256": "fced832a5d20302f2b1aff2e19cc0af9176e7d1ea5ab79cb7231a18fdd404eee",
+      "size": 2176
+    },
+    "stdout": {
+      "sha256": "04324fe39c3475f98e8563de14c112eb42b65e62be4c818bdb53574f1fda7035",
+      "size": 606
+    }
+  },
+  "inherited_gates": {
+    "mutation_replicated_perturbation": {
+      "path": "/tmp/b2mg/gates.json",
+      "record": {
+        "sha256": "a7e984277bf25b254d795f35683da756263495d805aca21fcd56239e42831e4e",
+        "size": 8952513
+      }
+    },
+    "reuse": "Unchanged inherited build/gate receipts retained and fully reverified, including native conservation/decay/renewal/perturbation/replicated/mutation/scheduling evidence. Full inherited Python suites rerun in new focused gate.",
+    "scheduling": {
+      "path": "/tmp/b2ig/gates.json",
+      "record": {
+        "sha256": "6d3411335a0db08c88b86f1e8c80e4a5ce17d9373818423e8ac7ee83b1082aa2",
+        "size": 32084707
+      }
+    }
+  },
+  "launch_blockers": [
+    "commit implementation before launch",
+    "User forbids commit/push; direct verification of implementation bytes on origin/main remains unperformed."
+  ],
+  "no_commit_or_push": true,
+  "no_held_out_execution": true,
+  "no_preregistration_or_registry_edits": true,
+  "parity_and_rng_cases": [
+    "IMMEDIATE-baseline",
+    "IMMEDIATE-absent",
+    "IMMEDIATE-disabled",
+    "DELAY500-baseline",
+    "DELAY500-absent",
+    "DELAY500-disabled",
+    "IMMEDIATE_RETAIN",
+    "IMMEDIATE_RETAIN-repeat",
+    "IMMEDIATE_RETAIN-off",
+    "DELAY500_RETAIN",
+    "DELAY500_RETAIN-repeat",
+    "DELAY500_RETAIN-off",
+    "IMMEDIATE_RETIRE",
+    "IMMEDIATE_RETIRE-repeat",
+    "IMMEDIATE_RETIRE-off",
+    "DELAY500_RETIRE",
+    "DELAY500_RETIRE-repeat",
+    "DELAY500_RETIRE-off"
+  ],
+  "preparation": {
+    "path": "/var/home/jojo/bio-sim-proto/runs/sm_b002_work/prepared/preparation.json",
+    "record": {
+      "sha256": "0a67c2bc01c744a1d68f45f4bd75561c673a9bcc970e4d5d842edefa3b37cb7a",
+      "size": 65542617
+    }
+  },
+  "preparation_digest": {
+    "path": "/var/home/jojo/bio-sim-proto/runs/sm_b002_work/prepared/preparation.sha256.json",
+    "record": {
+      "sha256": "75015ca13955518f21dc8fcf33838948cda355fe420e9d66613fe3e9c14a8efd",
+      "size": 103
+    }
+  },
+  "protocol": "SM-B002",
+  "protocol_pin": {
+    "path": "reports/sm_b002_scheduling_source_retention_preregistration.md",
+    "revision": "0e0d0a9a1f47c53ead2de314addbe3ffbca0ab14",
+    "sha256": "10bee908d8ab1597539932ae839e9775974d39546d7eb6a475b61cff54c64a62"
+  },
+  "scope": "Development mechanics evidence only; no SM-B002 response classification or biological result.",
+  "sealed_package_full_verification_passed": true,
+  "seed_audit": {
+    "checked_files": 70812,
+    "matches": [],
+    "nonseed_counter_matches": [
+      {
+        "config": {
+          "sha256": "86e792e7d95382934ec751ba1eedf5bd99a9b1c3634b761c6d8d8fd4b41c4fa1",
+          "size": 1177
+        },
+        "epoch": 88801,
+        "field": "returns",
+        "manifest": {
+          "sha256": "e88911210a0a5344c8a3012fddd8108c7597e58ba453c97d6eee68d7a56a009d",
+          "size": 108983
+        },
+        "offset": 14744931,
+        "path": "sweeps/ac_p004_prospective_controlled_convergence/runs/p1_m16_n32768_s202614006_funcv1_prectrlv1/symbols.csv",
+        "record": {
+          "sha256": "95809444c406d449e5148b27dbe92ad146e4f36833360cde9c5b2e81bdd52f18",
+          "size": 16731496
+        },
+        "run_seed": 202614006,
+        "symbol": 39,
+        "value": 202628016
+      }
+    ]
+  },
+  "status": "review blocker fixed; rebuilt and verified; 80 inputs resealed; held-out matrix NOT executed",
+  "validation": {
+    "mypy": {
+      "command": [
+        "/var/home/jojo/bio-sim-proto/.venv/bin/python",
+        "-m",
+        "mypy",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/perturbation_workflow.py",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/perturbation_panel.py",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/analyze_perturbation.py",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/renewal_workflow.py",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/analyze_renewal.py",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/decay_workflow.py",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/analyze_decay.py",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/conservation_workflow.py",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/analyze_conservation.py",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/lineage_workflow.py",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/analyze_lineage.py",
+        "tests/test_stringmol_perturbation.py",
+        "tests/test_stringmol_renewal.py",
+        "tests/test_stringmol_decay.py",
+        "tests/test_stringmol_conservation.py",
+        "tests/test_stringmol_lineage.py",
+        "tests/test_stringmol_control.py",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/replicated_workflow.py",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/analyze_replicated.py",
+        "tests/test_stringmol_replicated.py",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/mutation_workflow.py",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/analyze_mutation.py",
+        "tests/test_stringmol_mutation.py",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/scheduling_workflow.py",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/analyze_scheduling.py",
+        "tests/test_stringmol_scheduling.py",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/retirement_workflow.py",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/analyze_retirement.py",
+        "/var/home/jojo/bio-sim-proto/experiments/stringmol/retirement_material.py",
+        "tests/test_stringmol_retirement.py"
+      ],
+      "exit_status": 0,
+      "log": {
+        "sha256": "b1e54a4dabc8d720118d6074a4c299c7b40c262f2e4f5d8f801e29a5cdfe35a5",
+        "size": 44
+      }
+    },
+    "pytest": {
+      "command": [
+        "/var/home/jojo/bio-sim-proto/.venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_stringmol_perturbation.py",
+        "tests/test_stringmol_renewal.py",
+        "tests/test_stringmol_decay.py",
+        "tests/test_stringmol_conservation.py",
+        "tests/test_stringmol_lineage.py",
+        "tests/test_stringmol_control.py",
+        "tests/test_stringmol_replicated.py",
+        "tests/test_stringmol_mutation.py",
+        "tests/test_stringmol_scheduling.py",
+        "tests/test_stringmol_retirement.py"
+      ],
+      "exit_status": 0,
+      "log": {
+        "sha256": "b9cdcce685e30922e4d317dd3908342b7eed1981e159a61441f2df8657db9527",
+        "size": 1233
+      }
+    }
+  }
+}

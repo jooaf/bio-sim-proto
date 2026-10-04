@@ -1,0 +1,282 @@
+--- a/src/sm_spatial.h
++++ b/src/sm_spatial.h
+@@ -26,6 +26,7 @@
+ 
+ #include "sm_conservation.h"
+ #include "sm_scheduling.h"
++#include "sm_retirement.h"
+ 
+ class Stringmol_Spatial: public stringPM
+ {
+@@ -35,6 +36,7 @@
+ public:
+ 	SpatialConservation conservation;
+ 	SpatialScheduling scheduling;
++    SpatialRetirement retirement;
+ 
+ 	explicit Stringmol_Spatial(SMspp * pSP);
+ 
+--- a/src/sm_spatial.cpp
++++ b/src/sm_spatial.cpp
+@@ -157,6 +157,7 @@
+ 	conservation.init(nowhead, maxl0, blosum->key);
+ 	lineage_begin(timestep, nowhead);
+ 	scheduling.init(nowhead, nsteps, conservation.routed && conservation.logging);
++    retirement.init(conservation);
+ 
+ 	int bt,ct{0};
+ 	ct = AgentsCount(nowhead,-1);
+@@ -907,7 +908,7 @@
+ 	}
+ #ifdef V_VERBOSE
+ 	printf("Exec step - looks like:\n");
+-	print_exec(stdout,act,pass);
++	if(safe_append) print_exec(stdout,act,pass);
+ #endif
+ 
+ 
+@@ -1044,6 +1045,7 @@
+ 	//pick the mol containing the cleave site:
+ 	csite = act->ft?act:pass;
+     int birth_source=csite->idx;
++    int birth_offset=retirement.enabled?SpatialConservation::allocated_offset(act->f[act->ft],csite->S,maxl0):-1;
+ 
+ 	// Prove the complete allocated range before native pointer subtraction.
+ 	// In-buffer flow heads at/beyond the visible end remain native no-change.
+@@ -1186,6 +1188,123 @@
+     conservation.material(timestep, "CLEAVE", c ? "PLACED" : attempted_placement ? "FAILED" : "NO_CHANGE",
+         material_before, conservation.state(act,pass,c));
+     if(c) scheduling.birth(c,timestep,birth_source,birth_active,birth_passive,conservation.event_index);
++    if(retirement.enabled) {
++        auto &r=retirement; auto &m=conservation;
++        r.proposals=SpatialConservation::add(r.proposals,1);
++        auto stable=m.state(act,pass,c);
++        int source=-1, offset=-1;
++        if(c) { auto inferred=SpatialRetirement::infer(material_before,stable,c->idx,birth_active,birth_passive);
++            source=inferred.first; offset=inferred.second;
++            if(source!=birth_source) SpatialRetirement::fail("flow/source disagreement"); }
++        s_ag *src=source==birth_active?act:source==birth_passive?pass:NULL;
++        bool eligible=c && offset>0 && src && !stable.at(source).empty() &&
++                      std::any_of(stable.at(source).begin(),stable.at(source).end(),[](char b){return b!=0;});
++        int sx=src?src->x:-1, sy=src?src->y:-1;
++        std::string remnant=src?SpatialRetirement::hex(stable.at(source)):"";
++        int child=c?c->idx:-1, cx=c?c->x:-1, cy=c?c->y:-1;
++        uint64_t eligibility=c?c->eligible_tick:0;
++        int64_t link=m.event_index;
++        std::string now_before=SpatialScheduling::ids(nowhead), next_before=SpatialScheduling::ids(nexthead);
++        int survivor=-1;
++        if(eligible) r.eligible=SpatialConservation::add(r.eligible,1);
++        if(eligible && r.retire) {
++            s_ag *other=source==birth_active?pass:act;
++            survivor=other?other->idx:-1;
++            SpatialRetirement::validate_list(nowhead); SpatialRetirement::validate_list(nexthead);
++            if(SpatialRetirement::contains(nowhead,src)+SpatialRetirement::contains(nexthead,src)>1 ||
++               (other && SpatialRetirement::contains(nowhead,other)+SpatialRetirement::contains(nexthead,other)>1))
++                SpatialRetirement::fail("duplicate ownership");
++            if(grid->grid[sx][sy]!=src || grid->grid[cx][cy]!=c || (sx==cx && sy==cy))
++                SpatialRetirement::fail("admission/grid ownership");
++            if(other && grid->grid[other->x][other->y]!=other) SpatialRetirement::fail("partner grid");
++            if(other && (act->status!=B_ACTIVE || pass->status!=B_PASSIVE || act->pass!=pass || pass->exec!=act))
++                SpatialRetirement::fail("source/partner binding");
++            if(other && other==act && other->ect==INT_MAX) SpatialRetirement::fail("completion overflow");
++            std::set<s_ag *> occupied;
++            for(int x=0;x<grid->gridx;++x) for(int y=0;y<grid->gridy;++y) {
++                s_ag *p=grid->grid[x][y]; if(!p) continue;
++                if(!occupied.insert(p).second || p->x!=x || p->y!=y) SpatialRetirement::fail("duplicate grid ownership");
++                if(p!=src && p!=other && (p->pass==src || p->exec==src)) SpatialRetirement::fail("external bound pointer");
++            }
++            std::set<s_ag *> listed;
++            for(s_ag *head:{nowhead,nexthead}) for(s_ag *p=head;p;p=p->next)
++                if(!occupied.count(p) || !listed.insert(p).second) SpatialRetirement::fail("list/grid ownership");
++            auto units=m.count(src);
++            auto pool=SpatialConservation::sum(m.pool,units);
++            auto returns=SpatialConservation::sum(m.retirement_returns,units);
++            int64_t commits=SpatialConservation::add(r.committed,1);
++            auto retired=m.state(src);
++            SpatialRetirement::validate_fault_name();
++            // Save every list node whose links can change, plus both participants.
++            // Retirement does not change buffers. Native cleavage/child admission
++            // and its already-published journals remain committed on rollback.
++            std::map<s_ag *,s_ag> saved;
++            for(s_ag *head:{nowhead,nexthead}) for(s_ag *p=head;p;p=p->next) saved.emplace(p,*p);
++            saved.emplace(src,*src); if(other) saved.emplace(other,*other);
++            s_ag *saved_now=nowhead, *saved_next=nexthead;
++            auto saved_pool=m.pool, saved_returns=m.retirement_returns, saved_minimum=m.minimum;
++            auto saved_source_status=grid->status[sx][sy];
++            auto saved_other_status=other?grid->status[other->x][other->y]:G_EMPTY;
++            auto rollback=[&]() {
++                for(const auto &entry:saved) *entry.first=entry.second;
++                nowhead=saved_now; nexthead=saved_next;
++                grid->grid[sx][sy]=src; grid->status[sx][sy]=saved_source_status;
++                if(other) grid->status[other->x][other->y]=saved_other_status;
++                m.pool=saved_pool; m.retirement_returns=saved_returns; m.minimum=saved_minimum;
++            };
++            int mass=0;
++            try {
++                SpatialRetirement::fault("validate");
++                SpatialRetirement::detach(&nowhead,src); SpatialRetirement::detach(&nexthead,src);
++                if(other) { SpatialRetirement::detach(&nowhead,other); SpatialRetirement::detach(&nexthead,other); }
++                SpatialRetirement::fault("unlink");
++                grid->grid[sx][sy]=NULL; grid->status[sx][sy]=G_EMPTY;
++                SpatialRetirement::fault("grid");
++                m.pool=pool; m.retirement_returns=returns; m.minima();
++                SpatialRetirement::fault("refund");
++                if(other && other==act) ++other->ect;
++                SpatialRetirement::fault("complete");
++                if(other) mass=AgentUnbind(other);
++                SpatialRetirement::fault("unbind");
++                if(other) { grid->status[other->x][other->y]=G_NEXT; AgentAppend(&nexthead,other); }
++                SpatialRetirement::fault("append");
++                SpatialRetirement::fault("publication");
++            } catch(const SpatialRetirement::Fault &fault) {
++                rollback();
++                fprintf(stderr,"SM-B002 rolled back before publication: %s\n",fault.phase);
++                SpatialRetirement::fail(fault.phase);
++            } catch(...) {
++                rollback(); SpatialRetirement::fail("exception before publication");
++            }
++            // Irreversible species/journal publication begins here. Any failure
++            // terminates the process: published prefixes are NEVER rolled back,
++            // retried, treated as RETAIN, or accepted as an evaluable run.
++            r.committed=commits;
++            try {
++                if(other) spl->SpeciesListUpdate(other,other==act?'A':'P',1,
++                    act?act->spp:NULL,pass?pass->spp:NULL,mass,timestep,maxl0);
++                m.material(timestep,"RETIRE","REMOVED",retired,SpatialConservation::State{});
++                SpatialRetirement::published_fault("material");
++                scheduling.death(timestep,src,"RETIRE",m.event_index);
++                SpatialRetirement::published_fault("death");
++            } catch(...) { SpatialRetirement::fail("exception during publication; unevaluable"); }
++            dac=4; // adapter owns completion: generic safe_append must be false
++        }
++        if(r.journal) {
++            fprintf(r.journal,"%u,%lld,%d,%d,%d,%d,%d,%d,%d,%llu,%s,%s,%d,%d,%d,%d,%d,%s,%s,%s,%s,%lld,%lld,%lld\n",
++                timestep,(long long)link,birth_active,birth_passive,birth_source,birth_offset,source,offset,child,(unsigned long long)eligibility,
++                eligible?(r.retire?"RETIRE":"RETAIN"):"INELIGIBLE",remnant.c_str(),sx,sy,cx,cy,survivor,
++                now_before.c_str(),next_before.c_str(),SpatialScheduling::ids(nowhead).c_str(),SpatialScheduling::ids(nexthead).c_str(),
++                (long long)r.proposals,(long long)r.eligible,(long long)r.committed);
++            if(fflush(r.journal)||ferror(r.journal)) SpatialRetirement::fail("journal write");
++        }
++        if(eligible && r.retire) {
++            SpatialRetirement::published_fault("journal");
++            SpatialRetirement::published_fault("free_before");
++            AgentFreeAndNull(&src);
++            SpatialRetirement::published_fault("free");
++        }
++    }
+ 	return dac;
+ }
+ 
+--- a/src/sm_conservation.h
++++ b/src/sm_conservation.h
+@@ -25,6 +25,7 @@
+     int64_t attempts = 0, growth = 0;
+     std::array<int64_t, 6> categories{};
+     bool routed = false, sequester = false, logging = true;
++    Counts retirement_returns{};
+     Counts waste{}, decay_pool{}, decay_waste{}, stable_molecular{};
+     int64_t positive_bytes = 0, contraction_bytes = 0, event_index = 0;
+     FILE *journal = NULL;
+@@ -251,7 +252,7 @@
+             stable_molecular[s] = add(stable_molecular[s]-old[s], now[s]);
+             if (add(add(stable_molecular[s], pool[s]), waste[s]) != initial[s]) fail("operation residual");
+             if (decay[s] != add(decay_pool[s],decay_waste[s]) || waste[s] != decay_waste[s]) fail("decay reconciliation");
+-            __int128 p = static_cast<__int128>(initial_pool[s])-withdrawals[s]+returns[s]+decay_pool[s]+failed[s]+discard[s];
++            __int128 p = static_cast<__int128>(initial_pool[s])-withdrawals[s]+returns[s]+decay_pool[s]+failed[s]+discard[s]+retirement_returns[s];
+             if (p != pool[s]) fail("operation pool reconciliation");
+         }
+         event_index = add(event_index, 1);
+@@ -297,7 +298,7 @@
+         for (int s = 0; s < 33; ++s) {
+             if (add(add(molecular[s], pool[s]), waste[s]) != initial[s]) fail("nonzero residual");
+             // Reconciliation uses a wide intermediate; each persisted ledger is int64.
+-            __int128 reconciled = static_cast<__int128>(initial_pool[s]) - withdrawals[s] + returns[s] + (routed ? decay_pool[s] : decay[s]) + failed[s] + discard[s];
++            __int128 reconciled = static_cast<__int128>(initial_pool[s]) - withdrawals[s] + returns[s] + (routed ? decay_pool[s] : decay[s]) + failed[s] + discard[s] + retirement_returns[s];
+             if (reconciled != pool[s] || minimum[s] < 0 || minimum[s] > pool[s]) fail("pool reconciliation");
+             molecular_bytes = add(molecular_bytes, molecular[s]); free_bytes = add(free_bytes, pool[s]);
+         }
+--- /dev/null
++++ b/src/sm_retirement.h
+@@ -0,0 +1,82 @@
++// SM-B002 source disposition. No random draws; RETAIN is observational only.
++#ifndef SM_RETIREMENT_H
++#define SM_RETIREMENT_H
++#include <set>
++struct SpatialRetirement {
++    bool enabled=false, retire=false, logging=false;
++    int64_t proposals=0, eligible=0, committed=0;
++    FILE *journal=NULL;
++    static void fail(const char *s) { fprintf(stderr,"SM-B002 fatal enforcement: %s\n",s); exit(EXIT_FAILURE); }
++    void init(const SpatialConservation &c) {
++        const char *v=getenv("STRINGMOL_SOURCE_RETENTION");
++        if(v && strcmp(v,"0") && strcmp(v,"1")) fail("invalid enable flag");
++        enabled=v && !strcmp(v,"1");
++        if(!enabled) return;
++        v=getenv("STRINGMOL_SOURCE_DISPOSITION");
++        if(!v || (strcmp(v,"RETAIN") && strcmp(v,"RETIRE"))) fail("invalid disposition");
++        retire=!strcmp(v,"RETIRE");
++        if(!c.enabled || !c.routed || c.sequester) fail("requires exact recycling");
++        v=getenv("STRINGMOL_RETIREMENT_LOG");
++        if(v && strcmp(v,"0") && strcmp(v,"1")) fail("invalid log flag");
++        logging=v && !strcmp(v,"1");
++        if(logging) {
++            if(!c.logging) fail("requires material observation");
++            journal=fopen("source_events006.csv","wx");
++            if(!journal) fail("journal open");
++            fputs("tick,material_index,active,passive,flow_source,flow_offset,source,offset,child,eligible_tick,decision,remnant_hex,source_x,source_y,child_x,child_y,survivor,now_before,next_before,now_after,next_after,proposals,eligible,committed\n",journal);
++            if(fflush(journal)||ferror(journal)) fail("journal header write");
++        }
++    }
++    static std::string hex(const std::string &s) {
++        std::string out; const char *digits="0123456789ABCDEF";
++        for(unsigned char b:s) { out+=digits[b>>4]; out+=digits[b&15]; } return out;
++    }
++    static size_t visible(const std::string &s) { size_t n=s.find('\0'); return n==std::string::npos?s.size():n; }
++    // Independently enumerate all suffix/healing/active-first cleanup explanations.
++    static std::pair<int,int> infer(const SpatialConservation::State &before,
++                                   const SpatialConservation::State &after, int child, int active, int passive) {
++        std::vector<std::pair<int,int> > matches;
++        for(const auto &entry:before) for(size_t o=0;o<visible(entry.second);++o) {
++            auto healed=before;
++            std::string suffix=entry.second.substr(o,visible(entry.second)-o);
++            suffix.resize(entry.second.size(),'\0');
++            if(after.at(child)!=suffix) continue;
++            healed[entry.first].replace(o,visible(entry.second)-o,visible(entry.second)-o,'\0');
++            if(!visible(healed.at(active))) healed.erase(active);
++            else if(!visible(healed.at(passive))) healed.erase(passive);
++            healed[child]=suffix;
++            if(healed==after) matches.push_back({entry.first,static_cast<int>(o)});
++        }
++        if(matches.size()!=1) fail("unknown or ambiguous placed suffix source");
++        return matches[0];
++    }
++    static void validate_list(s_ag *head) {
++        std::set<s_ag *> seen; s_ag *prev=NULL;
++        for(s_ag *p=head;p;p=p->next) { if(!seen.insert(p).second || p->prev!=prev) fail("invalid list"); prev=p; }
++    }
++    static int contains(s_ag *head,s_ag *a) { int n=0; for(s_ag *p=head;p;p=p->next) n+=p==a; return n; }
++    static void detach(s_ag **head,s_ag *a) { if(contains(*head,a)) AgentExtract(head,a); }
++    struct Fault { const char *phase; };
++    static bool selected(const char *phase) {
++        const char *v=getenv("STRINGMOL_RETIREMENT_FAULT");
++        return v && !strcmp(v,phase);
++    }
++    static void validate_fault_name() {
++        const char *v=getenv("STRINGMOL_RETIREMENT_FAULT");
++        if(!v) return;
++        for(const char *step:{"validate","unlink","grid","refund","complete","unbind","append",
++                             "publication","material","death","journal","free_before","free"})
++            if(!strcmp(v,step)) return;
++        fail("unknown injected fault");
++    }
++    // Reversible checkpoints are AFTER the named real operation. The caller
++    // restores its native post-cleavage snapshot before terminating, never RETAIN.
++    static void fault(const char *phase) { if(selected(phase)) throw Fault{phase}; }
++    static void published_fault(const char *phase) {
++        if(selected(phase)) {
++            fprintf(stderr,"SM-B002 unevaluable after publication: %s\n",phase);
++            fail(phase);
++        }
++    }
++};
++#endif

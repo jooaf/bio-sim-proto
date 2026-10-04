@@ -956,7 +956,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### SM-B002 — Scheduling × source-remnant-retention factorial
 
-- **Status:** Claimed
+- **Status:** Mechanics/configuration gates passed; 80 assays sealed
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-10-04
 - **Depends on:** estimable delay-robust SM-B001 branch
@@ -968,5 +968,6 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
   source remnant after admission; viability uses rooted nonrelocation transfer
   lineage rather than H001's source-survival endpoint.
 - **Preregistration:** `reports/sm_b002_scheduling_source_retention_preregistration.md`
+- **Implementation:** `reports/sm_b002_scheduling_source_retention_implementation.md`
 - **On exposed result:** complete source-disposition classification and determine
   whether separately preregistered replacement admission is eligible.
