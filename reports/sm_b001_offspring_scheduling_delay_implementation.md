@@ -2,7 +2,11 @@
 
 **Prepared:** 2026-10-04  
 **Preregistration commit:** `a1debdc`  
-**Status:** mechanics/configuration gates passed; 60 unseen assays sealed
+**Status at preparation:** mechanics/configuration gates passed; 60 unseen assays sealed
+
+The implementation was subsequently committed and pushed as `bd12938`; the
+sealed campaign then executed once. See
+`reports/sm_b001_offspring_scheduling_delay_report.md` for the outcome.
 
 Added environment-gated patch
 `experiments/stringmol/patches/0005-add-offspring-scheduling-delay.patch`, an
@@ -39,7 +43,7 @@ audit evidence are outside Git in `runs/sm_b001_work/prelaunch/`.
 
 The sealed preparation is
 `runs/sm_b001_work/prepared/preparation.json`: 60 configs plus manifest and digest,
-all read-only, with no output directories or launch/campaign receipts. Independent
-read-only review found no prelaunch blocker. Launch remains prohibited until the
-implementation is committed, pushed, directly observed on `origin/main`, and a
-fresh launch-time seed audit passes.
+all read-only, with no output directories or launch/campaign receipts at preparation. Independent read-only review found no
+prelaunch blocker. The later launch occurred only after committed bytes were
+pushed, directly observed on `origin/main`, and a fresh launch-time seed audit
+passed.

@@ -1107,6 +1107,26 @@ maintained at [`reports/failed_experiments_registry.md`](../reports/failed_exper
   `reports/sm_m001_mutation_baseline_decision.json`; raw:
   `/home/jojo/bio-sim-results/bazzite/sm_m001_mutation_baseline/bazzite.attlocal.net/prepared`.
 
+### SM-E008 — Offspring scheduling-delay ablation
+
+- **Hypothesis:** Canonical renewal remains robust when physically separated
+  children wait 500 ticks before becoming reaction-eligible.
+- **Test:** Twenty matched IMMEDIATE, DELAY500, and permanently LOCKED zero-mutation
+  runs with native cleavage/source healing/vacancy placement, exact conservation,
+  and complete scheduling-event replay.
+- **Result:** **DELAY-ROBUST RENEWAL.** All 60 passed integrity. IMMEDIATE passed
+  continuity 18/20; DELAY500 passed 20/20 with application and response exposure
+  20/20. LOCKED policy children had zero encounters, bindings, dispatches, or
+  renewal. DELAY500 had more renewing descendants in 17/20 pairs.
+- **Decision:** Immediate next-tick availability is not required for robust renewal
+  at a 500-tick delay. Scheduling × source-remnant retention is eligible.
+- **Limitations:** Not equivalence or superiority. Delay changes mortality,
+  encounter, occupancy, and composition trajectories. LOCKED zero renewal is
+  imposed and does not show latent incompetence.
+- **Evidence:** `reports/sm_b001_offspring_scheduling_delay_report.md` and
+  `reports/sm_b001_offspring_scheduling_delay_decision.json`; raw:
+  `/home/jojo/bio-sim-results/bazzite/sm_b001_offspring_scheduling_delay/bazzite.attlocal.net/prepared`.
+
 ## Current frontier
 
 The minimum viable structured-signal phase is complete: exact event dispatch,
@@ -1143,7 +1163,9 @@ but only 5/14 genotypes met replicated specificity versus 12 required. Five fixe
 genotypes therefore retain bounded causal sequence-order effects under canonical
 support, while panel-level functional heredity and catalyst/template follow-up
 remain closed. SM-M001 then showed that canonical renewal remains viable with
-native mutation disabled, while its broad realized-divergence gate failed. The
-birth-boundary factorial is now eligible. The comparative Stringmol–BFF program
+native mutation disabled, while its broad realized-divergence gate failed.
+SM-B001 then showed that a 500-tick offspring eligibility delay retains robust
+renewal; immediate next-tick scheduling is not required. Scheduling ×
+source-remnant retention is now eligible. The comparative Stringmol–BFF program
 proceeds through within-substrate interventions, not historical pass-rate
 comparison or a claim that the symbol pool is energy.

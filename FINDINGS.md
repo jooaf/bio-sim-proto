@@ -345,3 +345,23 @@ fraction split 10/10 and the joint gate failed.
 Broad mutation-caused realized divergence, beneficial variation, selection, and
 adaptation remain unsupported. Because both arms were viable, the independently
 planned birth-boundary factorial is eligible.
+
+## 2026-10-04 — Offspring scheduling-delay ablation
+
+SM-B001 isolated the timing of independent offspring reaction eligibility while
+retaining physical cleavage, separate identity/buffer/cell, native source healing,
+vacancy admission, decay, and exact conservation. All 60 IMMEDIATE, DELAY500, and
+LOCKED runs passed full material/source/scheduling replay.
+
+IMMEDIATE passed renewal with continuity in 18/20; DELAY500 passed 20/20 with
+application and post-release exposure in every run. Thus a 500-tick delay retained
+robust renewal, showing immediate next-tick eligibility is not required under the
+tested condition. LOCKED children had zero encounters, bindings, dispatches, and
+renewal by policy while still producing 339–523 physical children per run.
+
+DELAY500 descriptively had more renewing descendants in 17/20 pairs and more
+serial births in 14/20, while IMMEDIATE retained higher final population in 18/20
+and greater noncanonical productive-birth fraction in 20/20. These are not
+superiority or adaptation claims: delay changes mortality exposure, encounters,
+occupancy, and population composition. Scheduling × source-remnant retention is
+now eligible under a new preregistration.

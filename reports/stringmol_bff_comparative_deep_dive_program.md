@@ -85,9 +85,14 @@ mechanics. Then separate:
 Begin with Stringmol ablations around its validated positive control. SM-M001
 completed the mutation baseline: native and zero-mutation canonical renewal were
 both viable (18/20 each), while the broad realized-divergence gate was unsupported.
-The birth-boundary factorial is therefore eligible without claiming equivalent
-mutation-arm performance. Then build a BFF-derived experimental substrate in
-which products arise from execution, not an automatic copier or retrospective
+The birth-boundary program is therefore eligible without claiming equivalent
+mutation-arm performance. SM-B001 completed its first staged ablation: canonical
+renewal remained viable after a 500-tick delay in offspring reaction eligibility
+(20/20 versus IMMEDIATE 18/20), so immediate next-tick scheduling is not required
+under that condition. Scheduling × source-remnant retention is next; admission
+replacement remains a later exposed contrast. Then build a BFF-derived
+experimental substrate in which products arise from execution, not an automatic
+copier or retrospective
 score-64 admission. Freeze material cost,
 completion, parent disposition, and scheduling before outcomes.
 

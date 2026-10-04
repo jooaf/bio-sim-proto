@@ -934,7 +934,7 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
 
 ### SM-B001 — Offspring scheduling-delay ablation
 
-- **Status:** Mechanics/configuration gates passed; 60 assays sealed
+- **Status:** Completed; delay-robust renewal (20/20 DELAY500)
 - **Owner / machine:** Linux remote (`bazzite`)
 - **Claimed at:** 2026-10-04
 - **Depends on:** both-arm SM-M001 viability
@@ -947,5 +947,9 @@ reopen or reinterpret the integrated Phase 2 NO-GO.
   replay and unchanged renewal endpoints.
 - **Preregistration:** `reports/sm_b001_offspring_scheduling_delay_preregistration.md`
 - **Implementation:** `reports/sm_b001_offspring_scheduling_delay_implementation.md`
-- **On an estimable response:** separately preregister scheduling × source-remnant
-  retention; replacement admission remains a later exposed contrast.
+- **Outcome:** IMMEDIATE passed continuity in 18/20 and DELAY500 in 20/20; both
+  exposure gates passed 20/20. LOCKED had zero policy-child participation.
+- **Report:** `reports/sm_b001_offspring_scheduling_delay_report.md`
+- **Decision:** Immediate next-tick availability is not required for robust
+  renewal at a 500-tick delay. Scheduling × source-remnant retention is eligible;
+  replacement admission remains later.
