@@ -56,6 +56,24 @@ def test_submat_requires_exactly_one_field(raw: str) -> None:
         r.normalized_config(raw)
 
 
+def test_historical_config_preserves_lexical_path_after_storage_move(tmp_path: Path) -> None:
+    archive = tmp_path / 'archive'
+    archive.mkdir()
+    alias = tmp_path / 'old'
+    alias.symlink_to(archive, target_is_directory=True)
+    matrix = alias / 'engine/config/ALXII.mtx'
+    archived = f'MUTATE 0\nSUBMAT {matrix}\n'.encode()
+    rendered = f'MUTATE 0\nSUBMAT {matrix.resolve()}\n'.encode()
+    assert archived != rendered
+    r.historical_config(archived, rendered, archived.hex(), matrix)
+    with pytest.raises(ValueError, match='canonical'):
+        r.historical_config(archived, rendered.replace(b'MUTATE 0', b'MUTATE 1'), archived.hex(), matrix)
+    with pytest.raises(ValueError, match='pathname'):
+        r.historical_config(archived, rendered, archived.hex(), matrix.resolve())
+    with pytest.raises(ValueError, match='sealed'):
+        r.historical_config(archived, rendered, rendered.hex(), matrix)
+
+
 def test_snapshot_tampering_and_symlinks(tmp_path: Path) -> None:
     path = tmp_path / 'evidence.json'
     path.write_text('{}')

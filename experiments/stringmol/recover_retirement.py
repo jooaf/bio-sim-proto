@@ -120,6 +120,15 @@ def check_records(records: dict[str, Any]) -> None:
         require(c.record(Path(path)) == expected, f'evidence changed: {path}')
 
 
+def historical_config(actual: bytes, rendered: bytes, sealed_hex: str, matrix: Path) -> None:
+    # render_config resolves paths through today's mounts; archived bytes retain
+    # the original lexical pathname. Validate both separately, never rewrite it.
+    require(actual.hex() == sealed_hex, 'historical sealed config')
+    lines = actual.decode('ascii').splitlines()
+    require([line for line in lines if line.startswith('SUBMAT ')] == [f'SUBMAT {matrix}'], 'historical matrix pathname')
+    require(normalized_config(actual.decode('ascii')) == normalized_config(rendered.decode('ascii')), 'historical canonical config')
+
+
 def historical_replay(archive: Path, old: dict[str, Any]) -> dict[str, Any]:
     """Recreate the pinned H001 analysis from all 30 archived raw runs, not old builds."""
     manifest = archive / 'prepared/preparation.json'
@@ -146,7 +155,7 @@ def historical_replay(archive: Path, old: dict[str, Any]) -> dict[str, Any]:
         require(r['expected_initial'] == expected, 'historical canonical inoculum')
         config = archive / 'prepared' / Path(r['config']).name
         raw = render_config(StringmolControlConfig('host-only' if r['condition'] == 'host' else 'inert', r['seed'], 0, 0), source / 'config/ALXII.mtx').encode()
-        require(config.read_bytes() == raw and raw.hex() == r['bytes_hex'], 'historical canonical config')
+        historical_config(config.read_bytes(), raw, r['bytes_hex'], source / 'config/ALXII.mtx')
         directory = archive / 'prepared/runs' / r['condition'] / str(r['seed'])
         verify_receipt(r, receipt, directory, c.record(manifest))
         summary = ah.analyze_run(directory, expected, exit_status=receipt['exit_status'])
