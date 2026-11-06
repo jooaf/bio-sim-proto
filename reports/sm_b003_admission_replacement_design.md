@@ -93,8 +93,12 @@ old native outputs and final RNG; an enabled observer may add only its new journ
 Replacement is not a call to native decay (which can also kill a bound partner),
 and must not use the SM-B002 post-admission RETIRE adapter as a substitute.
 
-Before irreversible publication, stage the existing child bytes/ID, selected
-victim, all affected list/grid nodes, source healing/cleanup effects, full victim
+Native child allocation/species bookkeeping and sampler draws form an already
+committed proposal prefix. The new rollback baseline is **after** that prefix,
+before victim/list/grid/pool mutation; no failure is described as erasing the
+proposal or rewinding its RNG. Before new irreversible admission publication,
+stage the existing child bytes/ID, selected victim, all affected list/grid nodes,
+source healing/cleanup effects, full victim
 histogram, pool/counter additions and overflow checks. The victim must be extant,
 unbound, distinct from both participants, uniquely owned by its grid cell and
 exactly one current/next list, and have no inbound binding pointer. Reject stale,
@@ -116,8 +120,8 @@ victim eviction has zero occupancy delta; native participant cleanup may make th
 composite delta negative. No qualified replacement transaction may increase live
 population. Ordinary vacancy births and native deaths remain separate.
 
-Before publication: injected failures restore all staged state, then terminate the
-run; never fall back to vacancy placement or retry a different victim. After any
+Before new admission publication: injected failures restore the post-proposal
+baseline, then terminate the run; never fall back to vacancy placement or retry a different victim. After any
 journal/species publication: failure is fatal, with its prefix retained. No rollback
 of published prefixes, double refund, silent rejection, or resumed transaction.
 This contract still requires a native implementation and a fully specified journal
@@ -188,6 +192,10 @@ Categories 5–7 are not statements of universal necessity or equivalence. All v
 categories are retained; none permits selective reruns, endpoint relaxation, tuning
 until success, or reopening BFF. Additional questions require separate prospective
 design. No category grants automatic downstream experimental authorization.
+
+Native integration details and completed selector/RNG qualification are recorded
+in `reports/sm_b003_admission_native_integration_notes.md`. The selector corpus
+validates neither eviction atomicity nor population-level exposure.
 
 ## Launch prerequisites still outstanding
 
