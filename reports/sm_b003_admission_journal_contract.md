@@ -1,11 +1,29 @@
-# SM-B003 admission journal v1 and publication contract
+# SM-B003 admission journal v2 and publication contract
 
-**Wire version:** `SM-B003-ADMISSION-1`
+**Wire version:** `SM-B003-ADMISSION-2`
 
 **File:** `admission_events007.csv`
 
 **Status:** frozen implementation contract before native adapter implementation;
 not a final assay preregistration or launch certificate.
+
+## Prospective v2 correction: native cleanup is active-first
+
+Native `AgentCheckZeroLengthString` returns immediately for an empty active
+participant, otherwise checks the passive one. It removes **at most one** participant,
+even if both visible strings are empty. The v1 framer incorrectly inferred physical
+source survival solely from a positive cut offset and allowed two cleanup deaths.
+In a whole-source passive transfer with an already-empty active partner, native
+cleanup removes the active partner and retains the empty passive source, including
+any hidden tail. Do not silently change that native behavior to match an oracle.
+
+V2 preserves the columns but corrects these semantic checks; native and Python
+version tags advance together. `check_native_cleanup()` uses independently supplied
+pre-dispatch buffers to check the active-first result. Earlier v1 development
+artifacts remain unchanged and interpretable at their recorded source revisions.
+No population assay was run under either version. Partial opportunity/continuity
+still requires a positive cut offset and nonempty remnant; an empty surviving
+source receives no partial/continuity credit. No endpoint or denominator changes.
 
 Authoritative column order is `admission_journal.COLUMNS`. Values are ASCII tokens,
 comma-separated, no quoting/embedded separators, LF including the final LF. Blank
@@ -107,7 +125,8 @@ survival; its state/queues/population are the completed transaction state.
   cannot be treated as a separate admission. CSV interleaving is not a causal clock.
 - Actual child/victim/grid/list bijections and all untouched occupants must be
   reconstructed independently. Replacement adds one child and removes one victim;
-  only native participant cleanup can reduce its composite population further.
+  only native active-first cleanup of at most one participant can reduce its
+  composite population further.
   A replacement transaction cannot increase population.
 
 Cumulative fields at START (zero), each RESOLVE, and END are: nonempty proposals,
@@ -133,6 +152,9 @@ cell can pass framing: the adversarial tests demonstrate that fact.
 `check_selection()` compares a BEGIN to externally reconstructed VM, grid and
 current/next state and recomputes the target using the independent Python oracle.
 That state must not be manufactured from the same admission row.
+`check_native_cleanup()` independently projects source healing and removes the first
+empty participant in active/passive order, checking actual source/list survival.
+It does not assume that an empty passive source must have been removed.
 
 Full admission replay still must implement:
 

@@ -1,11 +1,13 @@
 # SM-B003 native journal transport checkpoint
 
-This implements the native **transport**, not atomic victim replacement. The
+This records the initial native **transport**, not atomic victim replacement.
+Subsequent sanitizer recovery and the prospective v2 cleanup correction are in
+`sm_b003_sanitizer_recovery.md`; the former tooling blocker is now resolved. The
 simulator, archived patch-0006 trees and R2 data have not been modified.
 
 Files:
-- `experiments/stringmol/native/admission_journal.h`: C++11 writer for the frozen
-  `SM-B003-ADMISSION-1` contract, typed field/event/policy names, exclusive creation,
+- `experiments/stringmol/native/admission_journal.h`: C++11 writer, initially for
+  `SM-B003-ADMISSION-1` (now prospectively revised to v2), typed field/event/policy names, exclusive creation,
   bounded rows, exact MT-uniform bit encoding and ordered transaction framing.
 - `tests/stringmol_admission_journal.cpp`: synthetic transport fixture, not a
   native population simulation.
@@ -33,7 +35,8 @@ fatal process status remains invalid: file framing alone is not run integrity.
 UBSan trap-mode compilation and the synthetic complete-proposal fixture passed.
 ASan linking did **not** pass: the installed compiler references missing
 `/usr/lib64/libasan.so.8.0.0`; static sanitizer runtimes and clang are also absent.
-This is retained as an outstanding tooling issue, not silently counted as a gate.
+This initial failure remains retained, not silently counted as a gate; the separate
+recovery receipt documents its subsequent repair and actual sanitizer passes.
 The GNU linker `--wrap` fault fixture is Linux-specific and needs an equivalent
 fault-injection mechanism when rebuilt on macOS; CSV evidence is ordinary ASCII.
 

@@ -109,6 +109,56 @@ def test_whole_transfer_is_not_partial_exposure() -> None:
     assert rows[2]['population'] == '2' and rows[2]['source_alive'] == '0'
 
 
+def cleanup_case(source: int, empty_partner: bool, offset: int) -> tuple[j.Header, tuple[j.Row, ...], j.SelectionState]:
+    header, rows, state = fixture(offset=offset)
+    slots = list(state.slots)
+    for identity in (0, 1):
+        actor = slots[identity].actor
+        assert actor is not None
+        content = b'%ABC' if identity == source else (b'' if empty_partner else b'DEF')
+        slots[identity] = replace(slots[identity], actor=replace(actor, buffer=buf(content)))
+    state = replace(state, slots=tuple(slots), source=source)
+    empty = {identity for identity in (0, 1) if (identity == source and offset == 0) or (identity != source and empty_partner)}
+    removed = next((identity for identity in (0, 1) if identity in empty), None)
+    survivors = [identity for identity in (0, 1) if identity != removed]
+    next_ids = ';'.join(map(str, [3, *survivors]))
+    population = str(1 + len(survivors))
+    begin = changed(rows[1], source=str(source))
+    resolved = changed(rows[2], next_ids=next_ids, population=population, source_alive=str(int(source != removed)))
+    end = changed(rows[3], now_ids=next_ids, population=population)
+    return header, (rows[0], begin, resolved, end), state
+
+
+@pytest.mark.parametrize('source', [0, 1])
+@pytest.mark.parametrize('empty_partner', [False, True])
+@pytest.mark.parametrize('offset', [0, 1])
+def test_native_cleanup_is_active_first_and_removes_at_most_one(source: int, empty_partner: bool, offset: int) -> None:
+    header, rows, state = cleanup_case(source, empty_partner, offset)
+    j.check_selection(rows[1], header, state)
+    j.check_native_cleanup(rows[1], rows[2], state)
+    summary = j.audit_structure(rows, header)
+    assert summary.partial_commits == int(offset > 0)
+    if source == 1 and empty_partner and offset == 0:
+        assert rows[2]['source_alive'] == '1' and rows[2]['next_ids'] == '3;1'
+
+
+def test_wrong_empty_participant_death_needs_independent_cleanup_check() -> None:
+    header, rows, state = cleanup_case(1, True, 0)
+    forged = changed(rows[2], next_ids='3;0', source_alive='0')
+    j.audit_structure((rows[0], rows[1], forged, changed(rows[3], now_ids='3;0')), header)
+    with pytest.raises(ValueError, match='active-first'):
+        j.check_native_cleanup(rows[1], forged, state)
+
+
+def test_native_cleanup_cannot_delete_both_empty_participants() -> None:
+    header, rows, state = cleanup_case(0, True, 0)
+    forged = changed(rows[2], next_ids='3', population='1')
+    with pytest.raises(ValueError, match='active-first'):
+        j.audit_structure((rows[0], rows[1], forged, rows[3]), header)
+    with pytest.raises(ValueError, match='active-first'):
+        j.check_native_cleanup(rows[1], forged, state)
+
+
 @pytest.mark.parametrize('bits', ['8000000000000000', '7FF0000000000000', '7FF8000000000000', '3FF0000000000000', '3fb999999999999a', '0'])
 def test_noncanonical_or_nonuniform_bits_rejected(bits: str) -> None:
     with pytest.raises(ValueError):

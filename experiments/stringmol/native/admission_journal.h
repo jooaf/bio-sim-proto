@@ -90,7 +90,7 @@ public:
         }
         ensure(p && s, "unknown journal policy");
         auto put=[&](Field f, const std::string &v) { common[static_cast<size_t>(f)]=v; };
-        put(Field::Version,"SM-B003-ADMISSION-1"); put(Field::Policy,p); put(Field::Schedule,s);
+        put(Field::Version,"SM-B003-ADMISSION-2"); put(Field::Policy,p); put(Field::Schedule,s);
         put(Field::Horizon,std::to_string(end)); put(Field::Width,std::to_string(width)); put(Field::Height,std::to_string(height));
         put(Field::BufferSize,"2001"); put(Field::SourceDisposition,"RETAIN");
         file.reset(std::fopen(path.c_str(), "wx"));

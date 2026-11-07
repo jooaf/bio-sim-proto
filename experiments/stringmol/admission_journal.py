@@ -17,7 +17,7 @@ from experiments.stringmol import admission_design as design
 from experiments.stringmol.analyze_conservation import ALPHABET, LIMIT, MAXL0
 from experiments.stringmol.analyze_lineage import require
 
-VERSION = 'SM-B003-ADMISSION-1'
+VERSION = 'SM-B003-ADMISSION-2'
 NAME = 'admission_events007.csv'
 MAX_LINE = 65536
 COMMON = ('version', 'event', 'tick', 'index', 'transaction', 'policy', 'schedule', 'horizon', 'width', 'height', 'buffer_size', 'source_disposition')
@@ -248,6 +248,30 @@ def check_selection(row: Row, header: Header, state: SelectionState) -> design.P
     return expected_plan
 
 
+def check_native_cleanup(begin: Row, resolved: Row, state: SelectionState) -> None:
+    """Check native active-first cleanup against independent pre-dispatch buffers.
+
+    This is a local check, not a replacement for full material/ownership replay.
+    Native cleanup removes at most one participant, even if both become empty.
+    """
+    require(begin.event is Event.BEGIN and resolved.event is Event.RESOLVE, 'cleanup event pair')
+    require(begin['transaction'] == resolved['transaction'] and begin['tick'] == resolved['tick'], 'cleanup transaction linkage')
+    expected = {'active': state.active, 'passive': state.passive, 'source': state.source, 'offset': state.offset}
+    require(all(number(begin[name]) == value for name, value in expected.items()), 'cleanup VM linkage')
+    buffers = {slot.actor.identity: slot.actor.buffer for slot in state.slots if slot.actor is not None}
+    require(state.active in buffers and state.passive in buffers and state.source in (state.active, state.passive), 'cleanup participants')
+    source = full_buffer(begin['source_buffer'])
+    require(source == buffers[state.source], 'cleanup source buffer differs')
+    visible = len(source.split(b'\0', 1)[0])
+    require(0 <= state.offset < visible, 'cleanup nonempty proposal')
+    buffers[state.source] = source[:state.offset] + bytes(visible - state.offset) + source[visible:]
+    removed = next((actor for actor in (state.active, state.passive) if buffers[actor][0] == 0), None)
+    listed = (*ids(resolved['now_ids']), *ids(resolved['next_ids']))
+    for actor in (state.active, state.passive):
+        require((actor in listed) == (actor != removed), 'native active-first cleanup differs')
+    require(number(resolved['source_alive'], 1) == int(state.source != removed), 'native source survival differs')
+
+
 @dataclass(frozen=True)
 class Structure:
     rows: int
@@ -329,10 +353,16 @@ def audit_structure(rows: Iterable[Row], header: Header) -> Structure:
             else:
                 require(birth is None and row['child_eligible_tick'] == '' and child not in (*now, *next_ids), 'rejected child admitted')
             source_alive = number(row['source_alive'], 1)
-            require(source_alive == int(number(pending['offset']) > 0), 'native source-remnant projection')
+            offset = number(pending['offset'])
+            if offset > 0:
+                require(source_alive == 1, 'nonempty source remnant removed')
+            elif pending['source'] == pending['active']:
+                require(source_alive == 0, 'empty active source not removed')
             require((identity(pending['source']) in (*now, *next_ids)) == bool(source_alive), 'source survival/list mismatch')
             cleanup = number(pending['population']) + int(admitted) - int(replaced) - population
-            require(1 - source_alive <= cleanup <= 2 - source_alive, 'population accounting/participant cleanup')
+            removed_participants = sum(identity(pending[name]) not in (*now, *next_ids) for name in ('active', 'passive'))
+            require(cleanup in (0, 1) and cleanup == removed_participants and (offset > 0 or cleanup == 1),
+                    'population accounting/active-first participant cleanup')
             require(len(now) + len(next_ids) == population, 'completed list ownership')
             proposals += 1
             evictions += replaced
