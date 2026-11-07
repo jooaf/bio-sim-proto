@@ -15,7 +15,12 @@ Files:
 ## Checks completed
 
 105 combined design/journal/transport tests passed; strict typing passed for the
-three journal modules/tests. Native compilation uses C++11, `-Wall -Wextra -Werror`.
+three journal modules/tests. The complete committed-source regression at `3d03256`
+also passed: **1,769 tests**, two existing warnings, 843.61 seconds. Its evidence is
+`Elements/bio-sim-results/verification/sm-b003-journal-3d03256-full2/`, including
+source checksums and 28 checksum-verified ordinary-file CSV exports. The earlier
+180-second regression attempt was incomplete and is retained separately, not
+counted as a pass. Native compilation uses C++11, `-Wall -Wextra -Werror`.
 A synthetic complete replacement-shaped record, including hidden victim bytes,
 round-trips through Python framing. This does **not** prove actual replacement.
 
