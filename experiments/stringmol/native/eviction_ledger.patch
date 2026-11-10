@@ -1,0 +1,31 @@
+diff --git a/src/sm_conservation.h b/src/sm_conservation.h
+index 8c22226..28034d2 100644
+--- a/src/sm_conservation.h
++++ b/src/sm_conservation.h
+@@ -25,7 +25,7 @@ struct SpatialConservation {
+     int64_t attempts = 0, growth = 0;
+     std::array<int64_t, 6> categories{};
+     bool routed = false, sequester = false, logging = true;
+-    Counts retirement_returns{};
++    Counts retirement_returns{}, eviction_returns{};
+     Counts waste{}, decay_pool{}, decay_waste{}, stable_molecular{};
+     int64_t positive_bytes = 0, contraction_bytes = 0, event_index = 0;
+     FILE *journal = NULL;
+@@ -252,7 +252,7 @@ struct SpatialConservation {
+             stable_molecular[s] = add(stable_molecular[s]-old[s], now[s]);
+             if (add(add(stable_molecular[s], pool[s]), waste[s]) != initial[s]) fail("operation residual");
+             if (decay[s] != add(decay_pool[s],decay_waste[s]) || waste[s] != decay_waste[s]) fail("decay reconciliation");
+-            __int128 p = static_cast<__int128>(initial_pool[s])-withdrawals[s]+returns[s]+decay_pool[s]+failed[s]+discard[s]+retirement_returns[s];
++            __int128 p = static_cast<__int128>(initial_pool[s])-withdrawals[s]+returns[s]+decay_pool[s]+failed[s]+discard[s]+retirement_returns[s]+eviction_returns[s];
+             if (p != pool[s]) fail("operation pool reconciliation");
+         }
+         event_index = add(event_index, 1);
+@@ -298,7 +298,7 @@ struct SpatialConservation {
+         for (int s = 0; s < 33; ++s) {
+             if (add(add(molecular[s], pool[s]), waste[s]) != initial[s]) fail("nonzero residual");
+             // Reconciliation uses a wide intermediate; each persisted ledger is int64.
+-            __int128 reconciled = static_cast<__int128>(initial_pool[s]) - withdrawals[s] + returns[s] + (routed ? decay_pool[s] : decay[s]) + failed[s] + discard[s] + retirement_returns[s];
++            __int128 reconciled = static_cast<__int128>(initial_pool[s]) - withdrawals[s] + returns[s] + (routed ? decay_pool[s] : decay[s]) + failed[s] + discard[s] + retirement_returns[s] + eviction_returns[s];
+             if (reconciled != pool[s] || minimum[s] < 0 || minimum[s] > pool[s]) fail("pool reconciliation");
+             molecular_bytes = add(molecular_bytes, molecular[s]); free_bytes = add(free_bytes, pool[s]);
+         }
