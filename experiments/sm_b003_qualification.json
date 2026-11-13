@@ -1,0 +1,33 @@
+{
+  "qualified_revision": "a663885635ee79d03d1db8655e5cef2a64a02114",
+  "build": "/tmp/sm/b3d2/build.json",
+  "development": "/tmp/sm/b3q2/development.json",
+  "evidence": [
+    {
+      "path": "/tmp/sm/b3d2/build.json",
+      "size": 78232,
+      "sha256": "caeab881c5d604370ec9e662df0c8a47213e642069161bd0034980a75b9b22b8"
+    },
+    {
+      "path": "/tmp/sm/b3q2/plan.json",
+      "size": 297507,
+      "sha256": "7eb685698c9bf7bdb26327e358585b9467c6a77e65300fa50478a011b71e1e57"
+    },
+    {
+      "path": "/tmp/sm/b3q2/development.json",
+      "size": 26302801,
+      "sha256": "f40d06d0af0cc686bc75439e17ee3b55d617ce8e23901d2d9c272b6a9053dc92"
+    },
+    {
+      "path": "/tmp/sm/b3q2/executions.json",
+      "size": 770319,
+      "sha256": "612b22335c2db6431687561c54669d76de6038f200b788dc9b2f22d3449cdc13"
+    },
+    {
+      "path": "/run/media/jojo/Elements/bio-sim-results/verification/sm-b003-full-regression-v2/result.nuon",
+      "size": 5141,
+      "sha256": "66932fa60d6e6d0d5ce99852535c32c3fe69dcb5aee62ba433d434acc4b74996"
+    }
+  ],
+  "orchestration_tests_passed": 3953
+}
