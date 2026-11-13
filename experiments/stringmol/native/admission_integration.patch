@@ -1,0 +1,318 @@
+diff --git a/src/sm_spatial.cpp b/src/sm_spatial.cpp
+index 9d64d5b..2f09415 100644
+--- a/src/sm_spatial.cpp
++++ b/src/sm_spatial.cpp
+@@ -100,13 +100,15 @@ void lineage_snapshot(unsigned int tick, const s_ag *head) {
+     }
+ }
+ 
+-void lineage_end(unsigned int tick, int population) {
++void lineage_end(unsigned int tick, int population, bool strict=false) {
+     if (lineage_events) {
+         fprintf(lineage_events, "END,%u,%d,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,,,\n", tick, population);
+-        fclose(lineage_events); lineage_events = NULL;
++        const int result=fclose(lineage_events); lineage_events = NULL;
++        if(strict && result) sm_b003::AdmissionAdapter::fail("lineage event close");
+     }
+     if (lineage_snapshots) {
+-        fclose(lineage_snapshots); lineage_snapshots = NULL;
++        const int result=fclose(lineage_snapshots); lineage_snapshots = NULL;
++        if(strict && result) sm_b003::AdmissionAdapter::fail("lineage snapshot close");
+     }
+ }
+ }
+@@ -158,6 +160,13 @@ int Stringmol_Spatial::Run(int argc, char *argv[]) {
+ 	lineage_begin(timestep, nowhead);
+ 	scheduling.init(nowhead, nsteps, conservation.routed && conservation.logging);
+     retirement.init(conservation);
++    try { admission.init(conservation,scheduling,retirement,*grid,nowhead,nexthead,nsteps,placement_radius || interaction_radius,
++                         domut && (subrate!=0 || indelrate!=0)); }
++    catch(const std::exception &e) { sm_b003::AdmissionAdapter::fail(e.what()); }
++    if(admission.observing() && (!lineage_events || !lineage_snapshots))
++        sm_b003::AdmissionAdapter::fail("admission observation requires lineage journals");
++    if(admission.observing() && (fflush(lineage_events) || fflush(lineage_snapshots)))
++        sm_b003::AdmissionAdapter::fail("lineage initialization flush");
+ 
+ 	int bt,ct{0};
+ 	ct = AgentsCount(nowhead,-1);
+@@ -243,8 +252,14 @@ int Stringmol_Spatial::Run(int argc, char *argv[]) {
+ 	}
+ 
+ 	conservation.observe(timestep, "END", nowhead);
+-	lineage_end(timestep, ct);
++	lineage_end(timestep, ct, admission.enabled);
+ 	scheduling.end(timestep, nowhead, conservation.event_index);
++    if(admission.enabled && retirement.journal) {
++        const int result=fclose(retirement.journal); retirement.journal=NULL;
++        if(result) sm_b003::AdmissionAdapter::fail("source journal close");
++    }
++    try { admission.end(conservation,scheduling,*grid,nowhead,nexthead,timestep); }
++    catch(const std::exception &e) { sm_b003::AdmissionAdapter::fail(e.what()); }
+ 	printf("FINISHED smspatial\n");
+ 	fflush(stdout);
+ 	return 0;
+@@ -928,6 +943,8 @@ int Stringmol_Spatial::ReactionExecuteOpcode_Spatial(s_ag *act, s_ag *pass){//,
+     SpatialScheduling::Row complete("COMPLETE",timestep);
+     complete.active=dispatch_active; complete.passive=dispatch_passive;
+     complete.material=conservation.event_index; scheduling.emit(complete);
++    try { admission.complete(conservation,scheduling,*grid,nowhead,nexthead,timestep); }
++    catch(const std::exception &e) { sm_b003::AdmissionAdapter::fail(e.what()); }
+ 	return 1;
+ }
+ 
+@@ -1027,7 +1044,7 @@ int Stringmol_Spatial::AgentAttemptDecaySpatial(s_ag **pag){
+ * @return which agents have been destroyed (if any) 0: none; 1: active only
+  *         2: passive only; 3: both
+ *******************************************************************************/
+-int Stringmol_Spatial::OpcodeCleaveSpatial(s_ag *act){//, int x, int y){
++int Stringmol_Spatial::OpcodeCleaveSpatial(s_ag *act) try {//, int x, int y){
+ 
+ 	int dac = 0,cpy;
+ 	s_ag *c,*pass,*csite;
+@@ -1054,7 +1071,12 @@ int Stringmol_Spatial::OpcodeCleaveSpatial(s_ag *act){//, int x, int y){
+ 	if(act->f[act->ft]-csite->S < csite->len){
+ 
+ 		//1: MAKE THE NEW MOLECULE FROM THE CLEAVE POINT
++        if(admission.enabled && (agct>INT_MAX || csite->len!=static_cast<int>(strlen(csite->S))))
++            sm_b003::AdmissionAdapter::fail("identity exhaustion or stale source length");
+ 		c = AgentMake(pass->label,(agct)++);//,A->maxl0);//,1);
++        if(admission.enabled && !c) sm_b003::AdmissionAdapter::fail("child allocation");
++        if(admission.enabled) c->set=false; // AgentMake leaves this unused pre-placement bool indeterminate
++        admission.own_proposal(c);
+ 
+ 		//Copy the cleaved string to the agent
+ 		char *cs;
+@@ -1073,6 +1095,7 @@ int Stringmol_Spatial::OpcodeCleaveSpatial(s_ag *act){//, int x, int y){
+ 
+ 		if(!cpy){
+ 			printf("ERROR: Zero length molecule definitely being created!\nbail..\n");
++            admission.release_proposal();
+ 			AgentFreeAndNull(&c);
+ 			//c=NULL;
+ 		}
+@@ -1091,8 +1114,20 @@ int Stringmol_Spatial::OpcodeCleaveSpatial(s_ag *act){//, int x, int y){
+ 
+ 			//TODO: place the new agent on the grid
+ 			attempted_placement = true;
+-			if((AgentPlaceInMooreNeighbourhood(c,act->x,act->y))!=NULL){//,x,y))!=NULL){
++            bool placed=admission.enabled
++                ? admission.place(conservation,scheduling,*grid,nowhead,nexthead,act,pass,csite,birth_offset,c,timestep,
++                    [&](s_ag *victim) {
++                        lineage_event("EVICT",timestep,victim,NULL,NULL);
++                        if(lineage_events && (fflush(lineage_events) || ferror(lineage_events)))
++                            sm_b003::AdmissionAdapter::fail("eviction lineage publication");
++                    })
++                : AgentPlaceInMooreNeighbourhood(c,act->x,act->y)!=NULL;
++            admission.native_completion();
++			if(placed){
+ 				lineage_event("BIRTH", timestep, c, act, pass);
++                if(admission.enabled && lineage_events && (fflush(lineage_events) || ferror(lineage_events)))
++                    sm_b003::AdmissionAdapter::fail("birth lineage publication");
++                admission.born();
+ 				//append the agent to nexthead
+ 				AgentAppend(&(nexthead),c);
+ 			}
+@@ -1305,7 +1340,11 @@ int Stringmol_Spatial::OpcodeCleaveSpatial(s_ag *act){//, int x, int y){
+             SpatialRetirement::published_fault("free");
+         }
+     }
++    admission.cleaved(conservation,scheduling,c);
+ 	return dac;
++} catch(const std::exception &e) {
++    if(admission.enabled) sm_b003::AdmissionAdapter::fail(e.what());
++    throw;
+ }
+ 
+ 
+diff --git a/src/sm_spatial.h b/src/sm_spatial.h
+index d060a71..df69126 100644
+--- a/src/sm_spatial.h
++++ b/src/sm_spatial.h
+@@ -27,6 +27,7 @@
+ #include "sm_conservation.h"
+ #include "sm_scheduling.h"
+ #include "sm_retirement.h"
++#include "admission_adapter.h"
+ 
+ class Stringmol_Spatial: public stringPM
+ {
+@@ -37,6 +38,7 @@ public:
+ 	SpatialConservation conservation;
+ 	SpatialScheduling scheduling;
+     SpatialRetirement retirement;
++    sm_b003::AdmissionAdapter admission;
+ 
+ 	explicit Stringmol_Spatial(SMspp * pSP);
+ 
+diff --git a/src/sm_conservation.h b/src/sm_conservation.h
+index 8c22226..28034d2 100644
+--- a/src/sm_conservation.h
++++ b/src/sm_conservation.h
+@@ -25,7 +25,7 @@ struct SpatialConservation {
+     int64_t attempts = 0, growth = 0;
+     std::array<int64_t, 6> categories{};
+     bool routed = false, sequester = false, logging = true;
+-    Counts retirement_returns{};
++    Counts retirement_returns{}, eviction_returns{};
+     Counts waste{}, decay_pool{}, decay_waste{}, stable_molecular{};
+     int64_t positive_bytes = 0, contraction_bytes = 0, event_index = 0;
+     FILE *journal = NULL;
+@@ -252,7 +252,7 @@ struct SpatialConservation {
+             stable_molecular[s] = add(stable_molecular[s]-old[s], now[s]);
+             if (add(add(stable_molecular[s], pool[s]), waste[s]) != initial[s]) fail("operation residual");
+             if (decay[s] != add(decay_pool[s],decay_waste[s]) || waste[s] != decay_waste[s]) fail("decay reconciliation");
+-            __int128 p = static_cast<__int128>(initial_pool[s])-withdrawals[s]+returns[s]+decay_pool[s]+failed[s]+discard[s]+retirement_returns[s];
++            __int128 p = static_cast<__int128>(initial_pool[s])-withdrawals[s]+returns[s]+decay_pool[s]+failed[s]+discard[s]+retirement_returns[s]+eviction_returns[s];
+             if (p != pool[s]) fail("operation pool reconciliation");
+         }
+         event_index = add(event_index, 1);
+@@ -298,7 +298,7 @@ struct SpatialConservation {
+         for (int s = 0; s < 33; ++s) {
+             if (add(add(molecular[s], pool[s]), waste[s]) != initial[s]) fail("nonzero residual");
+             // Reconciliation uses a wide intermediate; each persisted ledger is int64.
+-            __int128 reconciled = static_cast<__int128>(initial_pool[s]) - withdrawals[s] + returns[s] + (routed ? decay_pool[s] : decay[s]) + failed[s] + discard[s] + retirement_returns[s];
++            __int128 reconciled = static_cast<__int128>(initial_pool[s]) - withdrawals[s] + returns[s] + (routed ? decay_pool[s] : decay[s]) + failed[s] + discard[s] + retirement_returns[s] + eviction_returns[s];
+             if (reconciled != pool[s] || minimum[s] < 0 || minimum[s] > pool[s]) fail("pool reconciliation");
+             molecular_bytes = add(molecular_bytes, molecular[s]); free_bytes = add(free_bytes, pool[s]);
+         }
+diff --git a/src/stringPM.cpp b/src/stringPM.cpp
+index 43435cd..15cf3be 100644
+--- a/src/stringPM.cpp
++++ b/src/stringPM.cpp
+@@ -241,6 +241,9 @@ stringPM::stringPM(const stringPM& spm){
+ 
+ stringPM::~stringPM() {
+ 	BucketReset(0);
++    free(blosum); // BucketReset releases the contents, not the table header
++    free(bct);
++    free(bpp);
+ }
+ 
+ 
+@@ -453,12 +456,12 @@ int stringPM::load_table_matrix(const char *fn){
+ 		int i,j; 
+ 		char *p;
+ 		char line[maxl];
+-		char label[maxl];
++		char label[2001]; // %2000s also requires the terminating byte
+ 		
+ 		if(fgets(line,maxl,fp)==NULL){
+ 			printf("ERROR in reading line during load_table_matrix() in stringPM.cpp");
+ 		}
+-		memset(label,0,maxl);
++		memset(label,0,sizeof(label));
+ 		sscanf(line,"%2000s",label);
+ 
+ 		//Set N and key:
+@@ -518,24 +521,18 @@ int stringPM::load_table(const char *fn){
+ 	if((fp=fopen(fn,"r"))!=NULL){
+ 		int found = 0;
+ 		char line[maxl];
+-		char label[maxl];
+-		char fn2[maxl];
++		char fn2[2001]; // %2000s includes a terminating byte
+ 		FILE *fp2;
+ 		
+ 		while((fgets(line,maxl,fp))!=NULL){
+-			memset(label,0,maxl);
+-			sscanf(line,"%2000s",label);
+-			//printf("line = %s",line);
+-			if(!strncmp(line,"USING",5)){
+-				sscanf(line,"%*s %2000s",fn2);
+-				strcpy(swt_fn,fn2);
+-				found = 1;
+-				break;
+-			}
+-			if(!strncmp(line,"SUBMAT",6)){
+-				sscanf(line,"%*s %2000s",fn2);
++			if(!strncmp(line,"USING",5) || !strncmp(line,"SUBMAT",6)){
++				if(sscanf(line,"%*s %2000s",fn2)!=1 || strlen(fn2)>=sizeof(swt_fn)) {
++					fclose(fp);
++					fprintf(stderr,"Invalid or oversized substitution-table filename\n");
++					return 4;
++				}
+ 				strcpy(swt_fn,fn2);
+-				found = 2;
++				found = !strncmp(line,"USING",5) ? 1 : 2;
+ 				break;
+ 			}
+ 		}
+@@ -555,11 +552,9 @@ int stringPM::load_table(const char *fn){
+ 				//can't understand why this is suddenly happening, but let's put a rewind in to fix it for now!
+ 				rewind(fp2);
+ 				while((fgets(line,maxl,fp2))!=NULL){
+-					memset(label,0,maxl);
+-					sscanf(line,"%2000s",label);
+-					//printf("line = %s",line);
+ 					if(!strncmp(line,"SET",3)){
+-						sscanf(line,"%*s %2000s",fn2); //using fn2 to temporarily hold the alphabet...
++						if(sscanf(line,"%*s %2000s",fn2)!=1) { fclose(fp2); return 2; }
++						// using fn2 to temporarily hold the alphabet...
+ 						blosum->N = strlen(fn2);
+ 						blosum->key = (char *)malloc((blosum->N+1) * sizeof(char));
+ 						memset(blosum->key,0,(blosum->N+1)*sizeof(char));
+@@ -945,8 +940,8 @@ s_ag * stringPM::read_unbound_agent(FILE **fp, char line[], const int llen){
+ 	}
+ 
+ 
+-	//No parents for these initial agents!
+-	pag->pp = spl->ParentsMake(NULL,NULL);
++	// SpeciesListUpdate installs the species-owned parent record.
++	pag->pp = NULL;
+ 
+ 	//if(!i){
+ 
+@@ -1474,7 +1469,7 @@ int stringPM::AgentsLoad(const char *fn, char *fntab, int test, int verbose){
+ 
+ 
+ 						//No parents for these initial agents!
+-						pag->pp = spl->ParentsMake(NULL,NULL);
++						pag->pp = NULL; // SpeciesListUpdate installs the owned record
+ 
+ 						if(!i){
+ 
+diff --git a/src/alignment.cpp b/src/alignment.cpp
+index 0df36e1..15d0119 100644
+--- a/src/alignment.cpp
++++ b/src/alignment.cpp
+@@ -940,6 +940,7 @@ smith_waterman_table * default_table(){
+ 		free(TData[i]);
+ 	}
+ 
++	free(TData[table->N]); // indel row is allocated too, but has no adjacency row
+ 	free(TData);
+ 
+ 	return table;
+diff --git a/src/stringmol.cpp b/src/stringmol.cpp
+index 47a9f17..68e1dd5 100644
+--- a/src/stringmol.cpp
++++ b/src/stringmol.cpp
+@@ -2142,8 +2142,11 @@ void StringmolPrintTrialTypes(){
+ void run_stringmol_spatial(int argc, char *argv[]){
+ 
+     SMspp                SP;
+-    Stringmol_Spatial    A(&SP);
+-    A.Run(argc,argv);
++    {
++        Stringmol_Spatial A(&SP);
++        A.Run(argc,argv);
++    }
++    SP.SpeciesListClear();
+ }
+ 
+ 
+diff --git a/src/agent.cpp b/src/agent.cpp
+index 3988fe5..d65ae32 100644
+--- a/src/agent.cpp
++++ b/src/agent.cpp
+@@ -428,8 +428,8 @@ float AgentsAlign(s_ag *a1, s_ag *a2, align *sw, smith_waterman_table *blosum, s
+ 
+ 		/*bprob =*/ SmithWatermanAlignment(a1->S,a2->S,&sw2,blosum,0);
+ 
+-		//TODO: SUGGEST: pass in pointer to the species - not its index
+-		ReactionStoreAlignmentToSWList(&swlist,sw,a1->spp->spp,a2->spp->spp);
++		// swlist is passed by value: a new head cannot reach the caller.
++		// Do not allocate an unreachable cache entry; preserve uncached behavior.
+ 	}
+ 	else{
+ 		SmithWatermanDataFromAlignmentObject(swa,sw);

@@ -110,13 +110,20 @@ int main(int argc,char **argv) {
     assert(argc==5);
     const std::string mode=argv[1];
     World w(std::atoi(argv[2]),std::atoi(argv[3]),std::atoi(argv[4]));
+    if(mode.find("-bound")!=std::string::npos) {
+        assert(w.next);
+        auto a=w.owned[3], p=w.owned[4];
+        a->status=B_ACTIVE; p->status=B_PASSIVE; a->pass=p; p->exec=a;
+        for(int t=0;t<2;++t) a->i[t]=a->r[t]=a->w[t]=a->f[t]=t?a->S:p->S;
+        w.statuses[a->x][a->y]=w.statuses[p->x][p->y]=G_NOW;
+    }
     s_ag *victim=w.owned[2];
     char *original_child_buffer=w.owned[5]->S;
     if(mode=="protected") victim=w.owned[0];
     if(mode=="bound") victim->status=B_ACTIVE;
     if(mode=="empty") victim->S[0]=0;
     if(mode=="inbound") w.owned[3]->exec=victim;
-    if(mode=="head") w.owned[3]->r[0]=victim->S+1;
+    if(mode=="head") w.owned[0]->r[0]=victim->S+1;
     if(mode=="dual") { if(w.now) w.next=w.now; else w.now=w.next; }
     if(mode=="unowned") AgentExtract(w.now?&w.now:&w.next,victim);
     if(mode=="reuse") w.owned[5]->idx=victim->idx;
@@ -124,6 +131,7 @@ int main(int argc,char **argv) {
     if(mode=="ledger-overflow") w.m.eviction_returns[0]=INT64_MAX;
     if(mode=="negative-pool") w.m.pool[0]=-1;
     if(mode=="invalid-min") w.m.minimum[0]=1;
+    if(mode=="invalid-grid-status") w.grid.status[1][0]=G_EMPTY;
     if(mode=="grid-duplicate") w.grid.grid[2][1]=victim;
     if(mode=="duplicate-id") w.owned[3]->idx=victim->idx;
     if(mode=="backlink") victim->prev=nullptr;
@@ -134,7 +142,7 @@ int main(int argc,char **argv) {
     if(mode=="protected" || mode=="bound" || mode=="empty" || mode=="inbound" || mode=="head" ||
        mode=="dual" || mode=="unowned" || mode=="reuse" || mode=="overflow" || mode=="ledger-overflow" || mode=="cycle" ||
        mode=="negative-pool" || mode=="invalid-min" || mode=="grid-duplicate" || mode=="duplicate-id" ||
-       mode=="backlink" || mode=="child-owned" || mode=="child-alias") {
+       mode=="backlink" || mode=="child-owned" || mode=="child-alias" || mode=="invalid-grid-status") {
         rejects([&]{ Tx t(w.grid,w.now,w.next,w.m,w.owned[0],w.owned[1],w.owned[5],victim); });
         assert(w.snapshot()==baseline && victim_frees==0);
         w.owned[5]->S=original_child_buffer;
@@ -173,7 +181,7 @@ int main(int argc,char **argv) {
             rejects([&]{t.stage();}); rejects([&]{t.release_victim();});
             assert(victim_frees==0); std::fputs("POST_PUBLICATION_FATAL\n",stderr); return 23;
         } else {
-            assert(mode=="success");
+            assert(mode=="success" || mode=="success-bound");
             t.publish([&]{w.m.material(10,"EVICT","REMOVED",t.before(),{});});
             t.release_victim(); w.owned[2]=nullptr;
             assert(victim_frees==1 && t.state()==Tx::Phase::Freed);

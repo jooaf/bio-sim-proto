@@ -1,5 +1,6 @@
 """Development-only native test tooling; no simulation/assay launch API."""
 import hashlib
+import json
 import os
 from pathlib import Path
 import subprocess
@@ -7,6 +8,25 @@ import subprocess
 SANITIZERS = os.environ.get('SM_ADMISSION_SANITIZERS', '0')
 if SANITIZERS not in ('0', '1'):
     raise ValueError('SM_ADMISSION_SANITIZERS must be 0 or 1')
+
+
+def checked(args: list[str], root: Path, name: str, timeout: int = 60) -> None:
+    paths = {suffix: root / f'{name}.{suffix}' for suffix in ('stdout', 'stderr', 'json')}
+    for path in paths.values():
+        if os.path.lexists(path):
+            raise FileExistsError(f'Refusing to overwrite command evidence: {path}')
+    # Reserve every output before launch. A child cannot accidentally publish a
+    # scientific result at the command-receipt path, even on fakeroot mounts.
+    with paths['json'].open('x', encoding='utf-8') as receipt, paths['stdout'].open('xb') as out, paths['stderr'].open('xb') as err:
+        try:
+            result = subprocess.run(args, cwd=root, stdout=out, stderr=err, timeout=timeout)
+        except (subprocess.TimeoutExpired, OSError) as error:
+            json.dump({'command': args, 'exit_code': None, 'error': str(error),
+                       'timed_out': isinstance(error, subprocess.TimeoutExpired)}, receipt)
+            raise
+        json.dump({'command': args, 'exit_code': result.returncode}, receipt)
+    if result.returncode:
+        raise RuntimeError(paths['stderr'].read_text(encoding='utf-8', errors='replace'))
 
 
 def sanitizer_flags() -> list[str]:

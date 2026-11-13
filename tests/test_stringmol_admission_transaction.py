@@ -9,19 +9,11 @@ import subprocess
 
 import pytest
 
-from experiments.stringmol.native_testing import sanitizer_flags, runtime_environment, verify_linkage, verify_native_agent
+from experiments.stringmol.native_testing import checked, sanitizer_flags, runtime_environment, verify_linkage, verify_native_agent
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = os.environ.get('SM_ADMISSION_NATIVE_SOURCE')
 pytestmark = pytest.mark.skipif(not SOURCE, reason='explicit native source component qualification only')
-
-
-def checked(args: list[str], root: Path, name: str) -> None:
-    result = subprocess.run(args, cwd=root, capture_output=True, text=True, timeout=60)
-    (root / f'{name}.stdout').write_text(result.stdout, encoding='utf-8')
-    (root / f'{name}.stderr').write_text(result.stderr, encoding='utf-8')
-    (root / f'{name}.json').write_text(json.dumps({'command': args, 'exit_code': result.returncode}) + '\n', encoding='utf-8')
-    assert result.returncode == 0, result.stderr
 
 
 @pytest.fixture(scope='module')
@@ -77,6 +69,13 @@ def test_native_full_refund_and_both_reconciliation_sites(binary: Path, tmp_path
     assert (tmp_path / 'conservation_buffers002.csv').is_file()
 
 
+@pytest.mark.parametrize('position', [0, 1, 2])
+@pytest.mark.parametrize('hidden', [0, 1])
+@pytest.mark.parametrize('mode', ['success-bound', *[f'fault-{point}-bound' for point in range(5)]])
+def test_native_bound_next_queue_may_retain_now_grid_status(binary: Path, tmp_path: Path, position: int, hidden: int, mode: str) -> None:
+    execute(binary, tmp_path, mode, 1, position, hidden)
+
+
 @pytest.mark.parametrize('point', range(5))
 @pytest.mark.parametrize('future', [0, 1])
 @pytest.mark.parametrize('position', [0, 1, 2])
@@ -108,7 +107,7 @@ def test_native_abandoned_stage_and_free_order(binary: Path, tmp_path: Path, mod
 
 
 @pytest.mark.parametrize('mode', ['protected', 'bound', 'empty', 'inbound', 'head', 'dual', 'unowned', 'reuse', 'overflow', 'ledger-overflow', 'cycle',
-                                  'negative-pool', 'invalid-min', 'grid-duplicate', 'duplicate-id', 'backlink', 'child-owned', 'child-alias'])
+                                  'negative-pool', 'invalid-min', 'invalid-grid-status', 'grid-duplicate', 'duplicate-id', 'backlink', 'child-owned', 'child-alias'])
 @pytest.mark.parametrize('future', [0, 1])
 def test_native_preflight_rejects_invalid_victims_and_ownership(binary: Path, tmp_path: Path, mode: str, future: int) -> None:
     execute(binary, tmp_path, mode, future, 1, 1)

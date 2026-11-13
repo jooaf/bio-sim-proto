@@ -69,11 +69,14 @@ public:
                 if (!p) { require(g.status[xx][yy] == G_EMPTY, "empty cell status"); continue; }
                 require(p != child && live.insert(p).second && p->idx >= 0 && identities.insert(p->idx).second, "duplicate grid identity");
                 require(p->set && p->x == xx && p->y == yy && p->S, "grid coordinate/ownership");
+                require(g.status[xx][yy] == G_NOW || g.status[xx][yy] == G_NEXT || g.status[xx][yy] == G_DOING, "occupied cell status");
                 require(!overlaps(p->S, child->S, m.size), "child buffer aliases live material");
                 if (p != victim) {
                     require(!overlaps(p->S, victim->S, m.size) && p->pass != victim && p->exec != victim, "incoming incumbent reference");
                     const uintptr_t base=reinterpret_cast<uintptr_t>(victim->S);
-                    for (int t=0; t<2; ++t) for (const char *head: {p->i[t], p->r[t], p->w[t], p->f[t]}) {
+                    // Only active VM heads are meaningful. Native newborn/unbound
+                    // and passive agents may carry indeterminate dormant head slots.
+                    if (p->status == B_ACTIVE) for (int t=0; t<2; ++t) for (const char *head: {p->i[t], p->r[t], p->w[t], p->f[t]}) {
                         const uintptr_t address=reinterpret_cast<uintptr_t>(head);
                         require(!head || address < base || address-base > m.size, "incoming incumbent head");
                     }
@@ -85,8 +88,8 @@ public:
         for (auto p: live) {
             const int owners=current_nodes.count(p)+future_nodes.count(p);
             require(owners <= 1 && (p == active || p == passive || owners == 1), "unique list ownership");
-            if (p != active && p != passive)
-                require(g.status[p->x][p->y] == (current_nodes.count(p)?G_NOW:G_NEXT), "queue/grid status mismatch");
+            // Native ordinary bound dispatch appends to NEXT without necessarily
+            // changing G_NOW. Queue ownership comes from links, not this flag.
         }
         in_now=current_nodes.count(victim);
         x=victim->x; y=victim->y; old_status=g.status[x][y];
