@@ -1,0 +1,79 @@
+{
+  "development": "/tmp/sm/sm-b003-vm-rewind-development-v1",
+  "original_development": "/tmp/sm/b3q2",
+  "test_suites": {
+    "/run/media/jojo/Elements/bio-sim-results/verification/sm-b003-vm-rewind-regression-v1/junit.xml": 4007,
+    "/tmp/sm/sm-b003-analysis-controller-v4/junit.xml": 35
+  },
+  "evidence": [
+    {
+      "path": "/tmp/sm/sm-b003-vm-rewind-development-v1/COMPLETE.json",
+      "size": 12128,
+      "sha256": "bd443994e38772828ed2fb90d109eb3e36f5e648d980002f74081cbabdeeb35a"
+    },
+    {
+      "path": "/tmp/sm/sm-b003-vm-rewind-development-v1/STARTED.json",
+      "size": 16566,
+      "sha256": "0fc0aadb035e233696d9b5140cc6f5337d6acee082d741436dad7e3e380b43c5"
+    },
+    {
+      "path": "/tmp/sm/sm-b003-vm-rewind-development-v1/qualify.py",
+      "size": 5305,
+      "sha256": "e8c3eb4a091845dee3ae1cf8ebd75f2082cf0366ebb444c2f291820dc5849f0b"
+    },
+    {
+      "path": "/run/media/jojo/Elements/bio-sim-results/verification/sm-b003-vm-rewind-regression-v1/junit.xml",
+      "size": 522936,
+      "sha256": "a26aa1a575d8ded4af8f1cc5b5085e78b88f12d49024a436e71938eddd5cee9b"
+    },
+    {
+      "path": "/run/media/jojo/Elements/bio-sim-results/verification/sm-b003-vm-rewind-regression-v1/result.nuon",
+      "size": 65,
+      "sha256": "472f55be5f90bb01443dea9f5b689f18d6f2035b865201e7ac8ff96f216965f6"
+    },
+    {
+      "path": "/run/media/jojo/Elements/bio-sim-results/verification/sm-b003-vm-rewind-regression-v1/pytest.stdout",
+      "size": 5183,
+      "sha256": "b5d61323df3a8c0378b985a0fa37a3c3c131a65a21513c383209e57b7c806e3d"
+    },
+    {
+      "path": "/tmp/sm/sm-b003-analysis-controller-v4/junit.xml",
+      "size": 4729,
+      "sha256": "dabc696fd13723f8c0917a9d0c9086a6394fe1f3a6dcd16c5991ae2fe92488d3"
+    },
+    {
+      "path": "/tmp/sm/sm-b003-analysis-controller-v4/result.nuon",
+      "size": 14,
+      "sha256": "008685b503fcce72977959f1219a7d0e49ae0eae29f0aad3c2506a71e72e3043"
+    },
+    {
+      "path": "/tmp/sm/sm-b003-analysis-controller-v4/typing.nuon",
+      "size": 145,
+      "sha256": "330df289910d1245314c02f1c363c71d428af7b996c08b5b83f408d4b7ef15c7"
+    },
+    {
+      "path": "/tmp/sm/c3/preparation.json",
+      "size": 1728284,
+      "sha256": "42d4a826d0aa3424d45aa353ef7483e2b037f0f9d2a4dcda4c9012cda24f51e9"
+    },
+    {
+      "path": "/tmp/sm/c3/executions.json",
+      "size": 4635280,
+      "sha256": "31b29bec3b32542dedafbc7e41e9d639455b93183890e1ee1b7621e782fe416f"
+    },
+    {
+      "path": "/tmp/sm/c3/decision.json",
+      "size": 54358,
+      "sha256": "0016a85e43a06614ff9614acbf9741ae9c18257b5868e04a2cc7ba585792c6f1"
+    }
+  ],
+  "artifact_roots": [
+    "/tmp/sm/sm-b003-vm-rewind-v1",
+    "/tmp/sm/sm-b003-vm-rewind-regression-v1",
+    "/tmp/sm/sm-b003-vm-rewind-development-v1",
+    "/tmp/sm/sm-b003-analysis-controller-v1",
+    "/tmp/sm/sm-b003-analysis-controller-v2",
+    "/tmp/sm/sm-b003-analysis-controller-v3",
+    "/tmp/sm/sm-b003-analysis-controller-v4"
+  ]
+}

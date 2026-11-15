@@ -39,6 +39,19 @@ class VM:
     def increment(self, kind: str) -> None:
         self.heads[kind][self.toggles[kind]] += 1
 
+    def rewind_after_cleave(self, lengths: tuple[int, int]) -> None:
+        """Inherited AgentRewindDanglingPtrs: passive first, then active.
+
+        Clamp every head, including inactive sides, to the visible end (not the
+        allocation end). Empty-side toggle changes precede participant cleanup.
+        """
+        for side, length in enumerate(lengths):
+            for head in self.heads.values():
+                if not length or not 0 <= head[side] <= length:
+                    head[side] = length
+            if not length and (side == 0 or lengths[0]):
+                self.toggles = dict.fromkeys('irwf', 1-side)
+
     def instruction(self, buffers: dict[int, bytes], pool: list[int], rng: MT, matrix: Matrix,
                     *, granular: bool = False) -> Effect:
         pair = {idx: buffers[idx] for idx in (self.active, self.passive)}
@@ -116,7 +129,14 @@ class VM:
             source, offset = flow
             require(0 <= offset < MAXL0, 'VM flow bounds')
             proposal = offset < len(pair[source].split(b'\0', 1)[0])
-            self.increment('i')
+            lengths = [len(pair[idx].split(b'\0', 1)[0]) for idx in (self.passive, self.active)]
+            if proposal:
+                # Source healing occurs even on rejected admission. Birth lineage
+                # still needs the pre-healing buffers returned in the Effect.
+                lengths[self.toggles['f']] = offset
+                self.rewind_after_cleave((lengths[0], lengths[1]))
+            if not proposal or all(lengths):
+                self.increment('i')
             return Effect(opcode, pair, flow=flow, proposal=proposal)
         self.increment('i')
         return Effect(opcode, pair)

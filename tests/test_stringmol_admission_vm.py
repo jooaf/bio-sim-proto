@@ -48,7 +48,7 @@ def test_flow_is_derived_before_increment(matrix: Matrix, offset: int, proposal:
     machine = vm(); machine.toggles['f'] = 0; machine.heads['f'][0] = offset
     result = machine.instruction(buffers(b'%', b'ABCD'), [0]*33, MT(2), matrix)
     assert result.flow == (1, offset) and result.proposal is proposal
-    assert machine.address('i') == (0, 1)
+    assert machine.address('i') == (0, int(offset != 0))
 
 
 def test_move_and_toggle_change_target_then_increment(matrix: Matrix) -> None:
@@ -67,6 +67,26 @@ def test_conditional_read_near_reserved_terminator_is_padded(matrix: Matrix) -> 
     machine.instruction({0: b'?AAAAA'.ljust(MAXL0, b'\0'), 1: bytes(other)}, [0]*33, rng, matrix)
     assert rng.draws == 1
     assert machine.address('i')[1] in (6, 7)
+
+
+@pytest.mark.parametrize('lengths,toggle', [((4, 3), 0), ((0, 3), 1), ((4, 0), 0), ((0, 0), 1)])
+def test_rewind_all_sides_and_empty_toggle_order(lengths: tuple[int, int], toggle: int) -> None:
+    machine = vm(); machine.toggles = dict.fromkeys('irwf', 0)
+    for head in machine.heads.values(): head[:] = [-1, 2000]
+    machine.rewind_after_cleave(lengths)
+    assert all(head == list(lengths) for head in machine.heads.values())
+    assert set(machine.toggles.values()) == {toggle}
+
+
+@pytest.mark.parametrize('offset', [1, 4])
+def test_cleave_rewinds_only_real_proposals_and_keeps_birth_buffers(matrix: Matrix, offset: int) -> None:
+    machine = vm(); machine.toggles['f'] = 0; machine.heads['f'][0] = offset
+    machine.heads['w'] = [2000, 2000]
+    before = buffers(b'%ABC', b'BCDA\0XYZ')
+    effect = machine.instruction(before, [0]*33, MT(2), matrix)
+    assert effect.buffers == before
+    assert machine.heads['w'] == ([1, 4] if offset == 1 else [2000, 2000])
+    assert machine.address('i') == (0, 1)
 
 
 def test_empty_alignment_is_not_invented(matrix: Matrix) -> None:

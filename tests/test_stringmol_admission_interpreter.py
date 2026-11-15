@@ -494,6 +494,51 @@ def test_table_loader_accepts_maximum_filename(interpreter: Path, tmp_path: Path
 
 @pytest.mark.parametrize('policy', [p.value for p in design.Admission])
 @pytest.mark.parametrize('schedule', ['IMMEDIATE', 'DELAY500'])
+@pytest.mark.parametrize('target', [0, 1])
+@pytest.mark.parametrize('offset', [0, 1, 3, 4])
+def test_native_cleave_rewinds_all_heads(interpreter: Path, legacy_interpreter: Path, tmp_path: Path,
+                                       policy: str, schedule: str, target: int, offset: int) -> None:
+    """Visible-end cleanup on both participants, including inactive head sides."""
+    from experiments.stringmol.admission_vm import VM
+    model = VM(0, 1, admission_numeric.Alignment(0, 0, 0, 0, 0, 0))
+    model.toggles.update(w=0, f=target)
+    model.heads['i'][0] = 2000
+    model.heads['r'] = [2000, 2000]; model.heads['w'] = [2000, 2000]
+    model.heads['f'][target] = offset; model.heads['f'][1-target] = 2000
+    state = fixture_state('sparse', 1, 0, target, offset, 'none')
+    buffers = {s.actor.identity: s.actor.buffer for s in state.slots if s.actor is not None}
+    matrix = interpreter.parent/'ALXII.mtx'
+    effect = model.instruction(buffers, [0]*33, admission_numeric.MT(2), admission_numeric.Matrix(matrix))
+    assert effect.proposal is (offset < 4)
+    assert effect.buffers == {i: buffers[i] for i in (0, 1)}
+    def invoke(binary: Path, name: str) -> dict[str, bytes]:
+        directory = tmp_path/name; directory.mkdir()
+        env = runtime_environment()
+        for key in list(env):
+            if key.startswith('SM_TEST_') or key == 'STRINGMOL_ADMISSION_FAULT': del env[key]
+        env['SM_TEST_DANGLING_HEADS'] = '1'
+        args = [str(binary), policy, schedule, str(target), str(offset), '1', '0', 'sparse', '2', str(matrix)]
+        result = subprocess.run(args, cwd=directory, env=env, capture_output=True, text=True, timeout=15)
+        (directory/'native.stdout').write_text(result.stdout)
+        (directory/'native.stderr').write_text(result.stderr)
+        (directory/'result.json').write_text(json.dumps({'args': args, 'exit_code': result.returncode}))
+        assert result.returncode == 0 and not result.stderr, result.stderr
+        if name == 'candidate':
+            with (directory/'vm_end007.csv').open(newline='') as stream: terminal = list(csv.DictReader(stream))
+            active = [row for row in terminal if row['role'] == 'ACTIVE']
+            assert len(active) == int(offset != 0)
+            if active:
+                row = active[0]
+                for kind in 'irwf':
+                    assert int(row[kind+'t']) == model.toggles[kind]
+                    assert [int(row[kind+str(side)]) for side in (0, 1)] == model.heads[kind]
+        return {p.name: p.read_bytes() for p in directory.glob('*.csv') if p.name not in {journal.NAME, 'vm_end007.csv'}}
+    observed = invoke(interpreter, 'candidate')
+    if policy == 'NATIVE_VACANCY': assert invoke(legacy_interpreter, 'legacy') == observed
+
+
+@pytest.mark.parametrize('policy', [p.value for p in design.Admission])
+@pytest.mark.parametrize('schedule', ['IMMEDIATE', 'DELAY500'])
 @pytest.mark.parametrize('scenario', ['tiny', 'program', 'decay'])
 @pytest.mark.parametrize('seed', [2, 17])
 def test_complete_simulator_plumbing(interpreter: Path, legacy_interpreter: Path, tmp_path: Path, policy: str, schedule: str, scenario: str, seed: int) -> None:

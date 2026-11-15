@@ -104,6 +104,12 @@ int main(int argc,char **argv) {
         for(int t=0;t<2;++t) a->i[t]=a->r[t]=a->w[t]=a->f[t]=t?a->S:b->S;
         a->it=a->rt=strcmp(empty,"active")?1:0; a->wt=0; a->ft=target;
         a->f[target]=(target?a->S:b->S)+offset;
+        if(std::getenv("SM_TEST_DANGLING_HEADS")) {
+            assert(!strcmp(empty,"none"));
+            a->i[0]=b->S+SIZE-1;
+            for(int side=0;side<2;++side) a->r[side]=a->w[side]=(side?a->S:b->S)+SIZE-1;
+            a->f[1-target]=(target?b->S:a->S)+SIZE-1;
+        }
         a->biomass=7; b->biomass=3; a->ect=11; b->ect=5;
         if(hidden) { a->S[10]='Z'; b->S[11]='Y'; }
         int id=2; std::vector<s_ag *> extra;
