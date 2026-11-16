@@ -12,7 +12,7 @@ DEST=Path('/run/media/jojo/Elements/bio-sim-results/verification/sm-xl001-explor
 
 def main():
     preflight()
-    assert (CONTROL/'diagnostic-v2-exit.json').exists(), 'do not export active analyses'
+    assert (CONTROL/'diagnostic-v3-exit.json').exists(), 'do not export active analyses'
     assert not subprocess.check_output(['git','status','--porcelain'],text=True).strip(), 'commit source before final export'
     DEST.mkdir(parents=True,exist_ok=False)
     portable=DEST/'portable-control';portable.mkdir()

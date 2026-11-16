@@ -20,6 +20,15 @@ def candidates(now, pairs, grid, seeker, radius, tick, eligible):
     return [by_cell[c] for c in cells(origin, radius) if c != origin and by_cell.get(c) in allowed]
 
 
+def population_candidates(now, pairs, grid, seeker, radius, tick, eligible):
+    # Native AgentPlaceOnGrid initializes all cells G_NEXT. Run does not advance
+    # grid readiness before tick0; TimestepGridIncrement does so after each tick.
+    # At later ticks queue ownership encodes readiness, with pairs excluded.
+    if radius == 1 and tick == 0:
+        return []
+    return candidates(now,pairs,grid,seeker,radius,tick,eligible)
+
+
 def vacancies(grid, active, radius):
     occupied = set(grid.values())
     return [c for c in cells(grid[active], radius) if c not in occupied]
@@ -40,7 +49,7 @@ class Boundary(NativeBoundary):
         if row['event'] != 'SEARCH' or self.interaction == 0:
             return super().step(row)
         saved = self.now.copy()
-        local = candidates(saved, self.pairs, self.grid, int(row['id']), 1, self.tick, self.eligible_tick)
+        local = population_candidates(saved, self.pairs, self.grid, int(row['id']), 1, self.tick, self.eligible_tick)
         # Inherited SEARCH filters by pair/eligibility, so temporarily hide
         # nonlocal unbound agents; restore the unchanged queue after validation.
         self.now = local.copy()

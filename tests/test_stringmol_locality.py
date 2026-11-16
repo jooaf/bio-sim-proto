@@ -24,6 +24,15 @@ def test_torus_and_order():
     assert candidates([3,2,1],{},grid,0,1,0,lambda i: 1 if i==2 else 0)==[1]
 
 
+def test_native_population_startup_readiness():
+    from experiments.stringmol.locality_geometry import population_candidates
+    grid={0:(0,0),1:(39,39),2:(1,1),3:(20,20)}
+    args=([3,2,1],{},grid,0)
+    assert population_candidates(*args,1,0,lambda _:0)==[]
+    assert population_candidates(*args,1,1,lambda _:0)==[1,2]
+    assert population_candidates(*args,0,0,lambda _:0)==[3,2,1]
+
+
 def test_placement_and_reject():
     grid={0:(0,0),1:(20,20)}
     assert len(vacancies(grid,0,1))==8
@@ -63,9 +72,9 @@ def test_local_boundary_candidate_rank_tampering():
     initial['waste']=[0]*33
     def fixture():
         b=Boundary(initial,[],'IMMEDIATE',grid={0:(0,0),1:(39,39),2:(1,1),3:(20,20)},interaction=1)
-        b.started=True;b.tick=0;b.index=1;b.now=[3,2,1];b.selection=(0,-1);b.phase='action'
+        b.started=True;b.tick=1;b.index=1;b.now=[3,2,1];b.selection=(0,-1);b.phase='action'
         return b
-    row={**DEFAULTS,'event':'SEARCH','tick':'0','index':'2','policy':'IMMEDIATE','id':'0','other':'2','count':'2','selected':'1','outcome':'SELECTED'}
+    row={**DEFAULTS,'event':'SEARCH','tick':'1','index':'2','policy':'IMMEDIATE','id':'0','other':'2','count':'2','selected':'1','outcome':'SELECTED'}
     b=fixture();b.step(row)
     assert b.now==[3,1] and b.search==(2,2,1)
     for field,value in [('other','3'),('count','3'),('selected','0')]:

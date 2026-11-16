@@ -10,7 +10,7 @@ from experiments.stringmol import analyze_retirement as retirement
 from experiments.stringmol.admission_numeric import MT, Matrix, complement, f32
 from experiments.stringmol.admission_vm import VM
 from experiments.stringmol.admission_replay import VM_COLUMNS
-from experiments.stringmol.locality_geometry import Boundary, candidates, vacancies
+from experiments.stringmol.locality_geometry import Boundary, population_candidates, vacancies
 from experiments.stringmol.analyze_lineage import EVENT_COLUMNS, SNAPSHOT_COLUMNS, require
 from experiments.stringmol.analyze_scheduling import COLUMNS
 
@@ -98,10 +98,11 @@ def replay(directory, initial, coordinates, seed, matrix_path, interaction, plac
             require(expected_decay is True, 'unproposed death')
         elif event == 'SEARCH':
             searches += 1
-            choices = candidates(boundary.now,boundary.pairs,grid,int(row['id']),interaction,tick,boundary.eligible_tick)
+            choices = population_candidates(boundary.now,boundary.pairs,grid,int(row['id']),interaction,tick,boundary.eligible_tick)
             rank = rng.rank(len(choices)) if choices else -1
             require(int(row['count']) == len(choices) and int(row['selected']) == rank and
-                    int(row['other']) == (choices[rank] if choices else -1), 'independent local/global candidate order/RNG')
+                    int(row['other']) == (choices[rank] if choices else -1),
+                    f'independent local/global candidate order/RNG tick={tick} index={row["index"]} expected={choices} rank={rank} observed={row}')
             empty += not choices
         elif event == 'ENCOUNTER':
             encounters += 1

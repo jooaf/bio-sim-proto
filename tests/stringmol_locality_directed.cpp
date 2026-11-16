@@ -18,7 +18,12 @@ static void geometry() {
         f.sim.grid=f.sim.init_smprun(40,40);
         f.a->status=f.b->status=B_UNBOUND; f.a->pass=NULL; f.b->exec=NULL;
         AgentPlaceOnGrid(f.a,f.sim.grid,39,39); AgentPlaceOnGrid(f.b,f.sim.grid,20,20);
-        f.sim.grid->status[39][39]=f.sim.grid->status[20][20]=G_NOW;
+        assert(f.sim.grid->status[39][39]==G_NEXT && f.sim.grid->status[20][20]==G_NEXT);
+        f.sim.interaction_radius=1;
+        SetRNGSeed(seed); assert(!f.sim.ReactionSeekRandomSpatialPartner(0,0));
+        assert(rng()==after_draws(seed,0));
+        TimestepGridIncrement(f.sim.grid);
+        assert(f.sim.grid->status[39][39]==G_NOW && f.sim.grid->status[20][20]==G_NOW);
         f.a->next=f.b; f.b->prev=f.a; f.sim.nowhead=f.a;
         f.sim.interaction_radius=1;
         SetRNGSeed(seed);

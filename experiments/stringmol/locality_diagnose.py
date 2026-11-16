@@ -6,7 +6,7 @@ from experiments.stringmol.locality_pilot import CONTROL,RAW,ARMS,PYTHON,invento
 
 
 def main():
-    root=CONTROL/'diagnostic-v2';root.mkdir(exist_ok=False)
+    root=CONTROL/'diagnostic-v3';root.mkdir(exist_ok=False)
     result={}
     for arm in ARMS:
         receipts={kind:json.loads((RAW/f'{arm}-{kind}.receipt.json').read_text()) for kind in ('observed','repeat','off')}
@@ -26,7 +26,7 @@ def main():
             r['replays'].append({'kind':kind,'exit_code':code,'log':record(log),'result':record(output) if output.exists() else None})
         result[arm]=r
         save(root/f'{arm}-diagnostic.json',r)
-        (CONTROL/'STATUS.md').write_text(f'# SM-XL001\n12/12 native executions done; full-observer-off gate FAILED. Diagnostic v2 finished {arm}; current controller is active, no population interpretation.\n')
+        (CONTROL/'STATUS.md').write_text(f'# SM-XL001\n12/12 native executions done; full-observer-off gate FAILED. Diagnostic v3 finished {arm}; current controller is active, no population interpretation.\n')
     save(root/'diagnostics.json',{'full_observer_gate':False,'population_interpretation_authorized':False,'arms':result})
 
 
