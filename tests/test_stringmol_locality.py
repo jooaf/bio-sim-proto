@@ -58,6 +58,21 @@ def test_stream_exact_bytes_and_bounded_memory(tmp_path):
         with pytest.raises(ValueError):list(canonical_stream(path,['a','b']))
 
 
+def test_finish_retains_gate_when_replays_fail(tmp_path,monkeypatch):
+    import json
+    from experiments.stringmol import locality_finish as finish
+    monkeypatch.setattr(finish,'CONTROL',tmp_path)
+    root=tmp_path/'diagnostic-v3';root.mkdir()
+    arm={'native_exit_codes':dict(observed=0,repeat=0,off=0),'exact_repeat':True,'common_file_parity':True,
+         'full_observer_off':False,'replays':[{'exit_code':1},{'exit_code':1}]}
+    (root/'diagnostics.json').write_text(json.dumps({'arms':{name:arm for name in finish.ARMS}}))
+    finish.main()
+    decision=json.loads((tmp_path/'decision.json').read_text())
+    assert decision['population_interpretation_authorized'] is False
+    assert decision['native_executions']==12 and decision['additional_native_executions_authorized']==0
+    assert decision['diagnostic_replays_passed']==0 and decision['canonical_positive_control_observed'] is None
+
+
 def test_fixed_initial():
     host,_=inoculum()
     assert len(host)==140 and len(set(host))==140
