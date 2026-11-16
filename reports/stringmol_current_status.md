@@ -1,5 +1,7 @@
 # Current Stringmol program status
 
+Updated 2026-11-16. SM-B002 and SM-B003 are closed. No campaign is currently running.
+
 ## SM-B002: complete, verified, not a strong-dependence result
 
 Authoritative completed attempt: SM-B002-R2, source
@@ -24,28 +26,55 @@ unevaluable operational attempt; it is not pooled into R2. No R3 was needed or r
 Raw data, full/repeat analyses, decisions and source bundle:
 `/run/media/jojo/Elements/bio-sim-results/sm-b002-r2/`.
 
-## SM-B003: design and mechanical selector qualification only
+## SM-B003: complete, integrity-valid non-pass
 
-The user requested autonomous continuation. B002 permits separate admission-stage
-design, not automatic admission execution. The candidate protocol is in
-`sm_b003_admission_replacement_design.md`; native integration findings and the
-probe receipt are in `sm_b003_admission_native_integration_notes.md`.
+Final decision: **Robust replacement-only continuity not established**.
+Recovery source: `15b4bb18d50bd09568a2cdd16f8644734ff2b278`.
 
-The six proposed arms cross both schedules with native vacancy, stratified reject,
-and stratified replace; source RETAIN is fixed. A prospective half-occupied/half-
-vacant challenge avoids pretending that a vacancy-first fallback establishes
-replacement exposure. Replacement-only ancestry excludes all vacancy/relocation
-paths and is reported separately from population expansion and all-admission renewal.
+| Schedule | Admission | All-admission continuity | Replacement-only continuity |
+|---|---|---:|---:|
+| IMMEDIATE | NATIVE_VACANCY | 16/20 | 0/20 |
+| IMMEDIATE | STRATIFIED_REJECT | 13/20 | 0/20 |
+| IMMEDIATE | STRATIFIED_REPLACE | 12/20 | 3/20 |
+| DELAY500 | NATIVE_VACANCY | 20/20 | 0/20 |
+| DELAY500 | STRATIFIED_REJECT | 16/20 | 0/20 |
+| DELAY500 | STRATIFIED_REPLACE | 18/20 | 4/20 |
 
-Completed: 234 focused tests, strict typing, 1,536 independent Python/C++ selector
-comparisons and 192 complete native RNG reference-state checks. There have been
-**zero SM-B003 population assays**. The native atomic replacement adapter,
-independent ordered admission replay, fault/adversarial gates, development
-opportunity qualification, final preregistration and held-out execution audit are
-still required. Candidate seed reservations are not certified unseen.
+Native controls passed, and all 40 REPLACE runs had ≥100 partial replacement
+commits. Neither replacement-only arm reached the frozen 16/20 robustness gate.
+The result is not rescued by all-admission continuity, nor does it establish
+that replacement continuity or Stringmol renewal is generally impossible.
 
-The next engineering work is native adapter/replay implementation and qualification,
-not rerunning B002, changing its interpretation, or launching an unqualified matrix.
-Ordinary raw data stays on Elements; immutable controls use its POSIX image.
-Historical BFF acceptance/program documents are not current launch instructions:
+All 120 native executions succeeded. The original two-pass analysis rejected 22
+inputs due to an independent VM omission of inherited dangling-head cleanup; its
+Unevaluable integrity decision remains preserved. Qualified analysis-only recovery
+passed all 240 checks, with the original 98 valid results unchanged byte-for-byte.
+No native runs, horizons, thresholds, or criteria were changed or selectively retried.
+
+Final decision: 2026-11-15T23:47:29Z. Portable export: 2026-11-16T00:16:04Z,
+69,516 checksum-verified regular files across nine evidence roots. Original
+POSIX controls and failed attempts remain intact.
+
+Full report: [`sm_b003_admission_replacement_closeout.md`](sm_b003_admission_replacement_closeout.md).
+Raw: `/run/media/jojo/Elements/bio-sim-results/sm-b003-v1/`.
+Portable controls/source bundle:
+`/run/media/jojo/Elements/bio-sim-results/verification/sm-b003-analysis-recovery-c3a2/`.
+
+## Next work: distinct exploratory questions, not SM-B003 retries
+
+The user requested two independent exploratory agents. The existing roadmap is
+[`stringmol_bff_comparative_deep_dive_program.md`](stringmol_bff_comparative_deep_dive_program.md).
+Two candidate tracks are partner/frequency context (module 1) and separated
+interaction/placement locality (module 4). These are proposals, not launched
+experiments or approved confirmatory protocols. Agent launch and per-track scope
+remain to be established; no new results are claimed.
+
+Each track needs a distinct ID, bounded design, qualified positive control,
+separate code/output ownership and explicit resource budget. Retain every pilot,
+label exploration honestly, and use a separate prospective unseen-seed design
+for any later confirmation. Do not reopen SM-H003's failed panel-level catalyst/
+template confirmation or reuse SM-B003 seeds as unseen confirmation.
+
+Ordinary raw data stays on Elements; POSIX controls remain in its mounted image.
+Historical comparative/BFF documents are not launch instructions:
 **BFF remains closed as NO-GO.**

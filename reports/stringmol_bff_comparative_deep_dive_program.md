@@ -1,5 +1,28 @@
 # Prospective Stringmol–BFF comparative deep-dive program
 
+## Execution status and next-track candidates — 2026-11-16
+
+This is the existing experiment roadmap, not blanket launch authorization.
+SM-B002 closed with **Intermediate response**; SM-B003 closed with **Robust
+replacement-only continuity not established**, integrity valid after qualified
+whole-matrix reanalysis. See `sm_b003_admission_replacement_closeout.md` and
+`stringmol_current_status.md`. Neither result permits selective retries or
+relaxed endpoints. SM-H003's catalyst/template confirmation remains gated off;
+**BFF remains NO-GO**, including historical follow-up proposals below.
+
+For the user's requested independent exploratory work, candidate tracks are:
+
+1. **Partner/frequency context (module 1):** bounded canonical Stringmol reaction
+   assays and positive-control qualification before any population claim.
+2. **Interaction versus placement locality (module 4):** a small complete locality
+   factorial under native vacancy admission, with occupancy and other conditions
+   held fixed; not a search to rescue SM-B003 replacement-only continuity.
+
+These are unlaunched proposals. Separate experiment IDs, implementation/output
+ownership, retained outcomes and shared resource limits are required before runs.
+Exploratory screening does not establish a confirmatory effect; any subsequent
+confirmation needs its own frozen protocol and unseen seeds.
+
 ## Question and inference boundary
 
 The program asks which mechanisms explain persistent seeded reproduction in the
@@ -89,9 +112,12 @@ The birth-boundary program is therefore eligible without claiming equivalent
 mutation-arm performance. SM-B001 completed its first staged ablation: canonical
 renewal remained viable after a 500-tick delay in offspring reaction eligibility
 (20/20 versus IMMEDIATE 18/20), so immediate next-tick scheduling is not required
-under that condition. Scheduling × source-remnant retention is next; admission
-replacement remains a later exposed contrast. Then build a BFF-derived
-experimental substrate in which products arise from execution, not an automatic
+under that condition. SM-B002 subsequently closed scheduling × source-remnant
+retention with an intermediate response. SM-B003 then tested admission replacement:
+controls and exposure passed, but replacement-only continuity was not robust under
+either schedule. Both experiments are closed; their outcomes are not interchangeable
+with broader renewal claims. The following BFF-derived idea remains a historical,
+unlaunched proposal, not a next-step instruction: build an experimental substrate in which products arise from execution, not an automatic
 copier or retrospective
 score-64 admission. Freeze material cost,
 completion, parent disposition, and scheduling before outcomes.

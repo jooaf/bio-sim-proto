@@ -1,6 +1,6 @@
 # Failed and mixed experiment registry
 
-**Updated:** 2026-09-18
+**Updated:** 2026-11-16
 
 ## Purpose
 
@@ -260,6 +260,26 @@ ups are prohibited unless opened as an explicitly new design.
 - **Boundary:** no equivalent-performance, counted-mutation-event, broad
   mutation-caused divergence, beneficial variation, selection, or adaptation
   claim. Do not replace the conjunction with the q=0 directional result.
+
+## SM-B003 — Admission replacement and replacement-only continuity
+
+- **Decision:** VALID NON-PASS — Robust replacement-only continuity not established.
+- **Failed criterion:** replacement-only continuity passed in 3/20 IMMEDIATE and
+  4/20 DELAY500 runs, below the frozen 16/20 robustness threshold in both schedules.
+- **Retained:** native continuity passed (16/20 and 20/20); all 40 REPLACE runs had
+  ≥100 partial replacement commits. All 120 native executions succeeded and all
+  240 recovered replay processes passed. REPLACE all-admission continuity (12/20
+  and 18/20) is distinct from the replacement-only ancestry endpoint.
+- **Recovery:** preserve the original 98-valid/22-terminal-mismatch attempt and
+  its Unevaluable integrity decision. The independent VM lacked inherited
+  dangling-head cleanup; qualified source `15b4bb1` repaired that omission without
+  native changes or relaxed equality. All 120 inputs were reanalyzed twice;
+  original 98 results matched byte-for-byte. No native population reruns.
+- **Boundary:** no selective retries, endpoint replacement, horizon/threshold
+  tuning, robust-replacement claim or general impossibility claim. Any further
+  exploration needs a distinct prospective question; BFF and gated SM-H003
+  follow-ups remain closed. See `sm_b003_admission_replacement_closeout.md` for
+  provenance and checksum-verified portable evidence.
 
 ## Cross-cutting lessons
 

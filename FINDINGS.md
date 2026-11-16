@@ -365,3 +365,32 @@ and greater noncanonical productive-birth fraction in 20/20. These are not
 superiority or adaptation claims: delay changes mortality exposure, encounters,
 occupancy, and population composition. Scheduling × source-remnant retention is
 now eligible under a new preregistration.
+
+## 2026-11-16 — Admission replacement: valid non-pass after verifier recovery
+
+SM-B003 crossed IMMEDIATE/DELAY500 with native vacancy, stratified reject and
+stratified replace across 20 paired seeds (120 runs). Source RETAIN, zero mutation
+and free pool, recycling, global interaction/placement and 5,000 ticks stayed fixed.
+All native executions succeeded. Original replay rejected 22 inputs in both
+passes because its independent VM omitted inherited dangling-head cleanup; that
+original **Unevaluable integrity** attempt remains preserved.
+
+A qualified, prospectively documented analysis-only repair rechecked all 120
+preserved inputs twice: **240/240 checks passed**, with all 98 previously valid
+outputs byte-identical and no native reruns. The unchanged classifier returned
+**Robust replacement-only continuity not established**. Native all-admission
+continuity passed in 16/20 immediate and 20/20 delayed runs. Both REPLACE arms had
+at least 100 partial replacement commits in 20/20 runs, but replacement-only
+continuity passed in only **3/20 immediate and 4/20 delayed**, below 16/20.
+All-admission continuity in REPLACE (12/20 and 18/20) does not rescue that endpoint.
+
+The result is a valid bounded non-pass, not an integrity failure or proof that
+Stringmol renewal/replacement transmission is impossible. SM-B003 stops without
+tuning, selective retries or replacing endpoints. Separate exploratory questions
+require new designs and must retain negatives; BFF remains NO-GO and SM-H003's
+catalyst/template confirmation remains gated off.
+
+Repair/recovery source: `15b4bb18d50bd09568a2cdd16f8644734ff2b278`. All original
+failures and 69,516 checksum-verified portable evidence files remain on Elements.
+Full arm table, evidence paths and decision checksum:
+[`reports/sm_b003_admission_replacement_closeout.md`](reports/sm_b003_admission_replacement_closeout.md).
