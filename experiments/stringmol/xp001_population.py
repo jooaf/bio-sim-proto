@@ -49,6 +49,11 @@ def analyze(directory: Path, founders: list[dict]) -> dict:
         key=(int(r['tick']),r['event']); target=buffers.setdefault(key,{})
         idx=int(r['id']); assert idx not in target
         target[idx]=bytes.fromhex(r['full_buffer_hex'])
+    lineage_snapshots: dict[int,dict[int,bytes]] = {}
+    for r in x.rows(directory/'lineage_snapshots001.csv'):
+        target=lineage_snapshots.setdefault(int(r['tick']),{})
+        idx=int(r['id']); assert idx not in target
+        target[idx]=bytes.fromhex(r['sequence_hex'])
     aggregates=x.rows(directory/'conservation002.csv'); cursor=0; snapshots=[]
     for r in aggregates:
         tick=int(r['tick'])
@@ -58,10 +63,16 @@ def analyze(directory: Path, founders: list[dict]) -> dict:
         key=(tick,r['event'])
         assert source.material.buffers==buffers.get(key,{})
         visible={i:b.split(b'\0',1)[0] for i,b in source.material.buffers.items()}
+        if r['event']=='CHECKPOINT':
+            assert visible==lineage_snapshots.get(tick,{})
         snapshots.append({'tick':tick, 'event':r['event'], 'total':len(visible), 'host':sum(b==HOST.encode() for b in visible.values())})
     assert cursor==len(material) and source.material.buffers==boundary.source.material.buffers
     assert source.edges==boundary.source.edges
     births=[r for r in events if r['event']=='BIRTH']; assert len(births)==len(source.edges)
+    for row, edge in zip(births,source.edges,strict=True):
+        child=int(row['child_id'])
+        assert child==edge['child'] and int(row['timestep'])==edge['tick']
+        assert bytes.fromhex(row['child_sequence_hex'])==source.birth_buffers[child].split(b'\0',1)[0]
     assert int(ends[0]['population'])==len(source.material.buffers)
     transaction = verify_source_transactions(boundary,x.rows(directory/'source_events006.csv'),events)
     counts=Counter(); bound=0
@@ -129,14 +140,14 @@ def run() -> None:
             result['analysis_returncode']=rc
     x.save(CONTROL/'completed.json',results)
 
-def analyze_one(index: int) -> None:
+def analyze_one(index: int, repeat: bool = False) -> None:
     case=json.loads((CONTROL/'freeze.json').read_text())['matrix'][index]
     directory=POP/f'{index:02}'
     assert x.inventory(directory)==json.loads(directory.with_suffix('.inventory.json').read_text())
     result=analyze(directory,case['founders'])
-    x.save(CONTROL/f'summary-{index:02}.json',result)
+    x.save(CONTROL/f"{'repeat' if repeat else 'summary'}-{index:02}.json",result)
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__); p.add_argument('action',choices=['freeze','run','analyze-one']);p.add_argument('index',type=int,nargs='?');args=p.parse_args()
-    if args.action=='analyze-one': analyze_one(args.index)
+    p=argparse.ArgumentParser(description=__doc__); p.add_argument('action',choices=['freeze','run','analyze-one','repeat-analyze']);p.add_argument('index',type=int,nargs='?');args=p.parse_args()
+    if args.action in ('analyze-one','repeat-analyze'): analyze_one(args.index,args.action=='repeat-analyze')
     else: {'freeze':freeze,'run':run}[args.action]()
