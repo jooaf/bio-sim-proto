@@ -50,6 +50,19 @@ def preflight():
     assert posix < 4*1024**3 and raw < 25*1024**3
 
 
+def locality_environment(logging):
+    """Explicit own log controls; inherited helper does not forward all flags.
+
+    This correction is for a separately authorized future whole-matrix recovery.
+    Existing sealed preparations and twelve retained executions are unchanged.
+    """
+    env=environment('IMMEDIATE_RETAIN',logging=logging)
+    env['STRINGMOL_CONSERVATION_LOG']='1' if logging else '0'
+    if not logging:
+        env.pop('STRINGMOL_LINEAGE_LOG',None)
+    return env
+
+
 def prepare():
     preflight()
     assert subprocess.check_output(['git','branch','--show-current'],text=True).strip()=='explore/sm-xl001'
@@ -63,8 +76,7 @@ def prepare():
         with config.open('x') as f:f.write(raw)
         config.chmod(0o444)
         for kind in ('observed','repeat','off'):
-            env=environment('IMMEDIATE_RETAIN',logging=kind!='off')
-            if kind=='off':env.pop('STRINGMOL_LINEAGE_LOG',None)
+            env=locality_environment(kind!='off')
             jobs.append(dict(arm=arm,interaction=interaction,placement=placement,kind=kind,config=str(config),config_record=record(config),
                              directory=str(RAW/f'{arm}-{kind}'),environment=env,command=[str(SOURCE/'release/stringmol'),'30',str(config)]))
     manifest=dict(seed=SEED,horizon=5000,jobs=jobs,commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),

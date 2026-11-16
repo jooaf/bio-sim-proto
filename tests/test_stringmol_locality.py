@@ -5,6 +5,15 @@ from experiments.stringmol.configure_control import inoculum,HOST
 from experiments.stringmol.analyze_conservation import initial_material
 
 
+def test_explicit_log_controls_for_future_recovery():
+    from experiments.stringmol.locality_pilot import locality_environment
+    on,off=locality_environment(True),locality_environment(False)
+    for key in ('STRINGMOL_CONSERVATION_LOG','STRINGMOL_SCHEDULING_LOG','STRINGMOL_RETIREMENT_LOG'):
+        assert on[key]=='1' and off[key]=='0'
+    assert on['STRINGMOL_LINEAGE_LOG']=='1' and 'STRINGMOL_LINEAGE_LOG' not in off
+    assert {k:v for k,v in on.items() if not k.endswith('_LOG')}=={k:v for k,v in off.items() if not k.endswith('_LOG')}
+
+
 def test_torus_and_order():
     assert cells((0,0),1) == [(39,39),(39,0),(39,1),(0,39),(0,0),(0,1),(1,39),(1,0),(1,1)]
     grid={0:(0,0),1:(39,39),2:(1,1),3:(20,20)}
