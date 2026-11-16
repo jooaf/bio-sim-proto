@@ -26,6 +26,20 @@ def test_placement_and_reject():
     with pytest.raises(ValueError): cells((0,0),2)
 
 
+def test_stream_exact_bytes_and_bounded_memory(tmp_path):
+    import tracemalloc
+    from experiments.stringmol.locality_replay import canonical_stream
+    path=tmp_path/'stream.csv'
+    path.write_bytes(b'a,b\n'+b'1,2\n'*10000)
+    tracemalloc.start()
+    assert sum(1 for _ in canonical_stream(path,['a','b']))==10000
+    _,peak=tracemalloc.get_traced_memory();tracemalloc.stop()
+    assert peak < 1024*1024
+    for raw in (b'a,b\n1,2',b'a,b\r\n1,2\n',b'a,b\n"1",2\n',b'a,b\n1,2,3\n'):
+        path.write_bytes(raw)
+        with pytest.raises(ValueError):list(canonical_stream(path,['a','b']))
+
+
 def test_fixed_initial():
     host,_=inoculum()
     assert len(host)==140 and len(set(host))==140

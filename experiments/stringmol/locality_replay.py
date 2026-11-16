@@ -15,6 +15,17 @@ from experiments.stringmol.analyze_lineage import EVENT_COLUMNS, SNAPSHOT_COLUMN
 from experiments.stringmol.analyze_scheduling import COLUMNS
 
 
+def canonical_stream(path, columns):
+    """Bounded-memory strict ASCII/LF CSV; these journals never quote fields."""
+    with Path(path).open('rb') as stream:
+        require(stream.readline() == (','.join(columns)+'\n').encode('ascii'), 'stream schema')
+        for raw in stream:
+            require(raw.endswith(b'\n') and b'\r' not in raw and b'"' not in raw, 'noncanonical stream bytes')
+            fields = raw[:-1].decode('ascii').split(',')
+            require(len(fields) == len(columns), 'stream field count')
+            yield dict(zip(columns,fields,strict=True))
+
+
 def replay(directory, initial, coordinates, seed, matrix_path, interaction, placement, horizon=5000):
     directory = Path(directory)
     rng, matrix = MT(seed), Matrix(Path(matrix_path))
@@ -69,8 +80,10 @@ def replay(directory, initial, coordinates, seed, matrix_path, interaction, plac
     vms, pending = {}, None
     expected_decay, next_identity, source_eligible = None, max(grid)+1, 0
     searches = empty = encounters = bindings = proposals = failed = placed = vacancy_sum = 0
-    rows = c.canonical_rows(directory/'scheduling_events001.csv', COLUMNS)
+    rows = canonical_stream(directory/'scheduling_events001.csv', COLUMNS)
+    end = -1
     for row in rows:
+        end = int(row['tick'])
         event, tick = row['event'], int(row['tick'])
         if event == 'TICK' and tick % 100 == 0:
             checkpoint(tick,'CHECKPOINT')
@@ -173,7 +186,7 @@ def replay(directory, initial, coordinates, seed, matrix_path, interaction, plac
                     species[idx] = species_for(current[idx])
             pending = None
     require(boundary.ended and pending is None, 'incomplete history')
-    end = int(rows[-1]['tick']); checkpoint(end,'END')
+    checkpoint(end,'END')
     require(checkpoint_index == len(aggregates) and buffer_index == len(buffer_rows), 'extra checkpoints')
     require(set(grid) == set(boundary.next) and len(set(grid.values())) == len(grid), 'terminal grid collision/roster')
     row = dict.fromkeys(EVENT_COLUMNS,'-1')
