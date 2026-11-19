@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 import time
 from experiments.stringmol import xp001 as x, xp001_population as p
+from experiments.stringmol.xp001_safety import require, authorization
 
 
 def finish() -> None:
@@ -16,14 +17,21 @@ def finish() -> None:
             raise TimeoutError('first analysis controller has not completed in 1800s')
         time.sleep(3)
     executions=json.loads((p.CONTROL/'completed.json').read_text())
-    assert len(executions)==12 and all(r['returncode']==0 for r in executions)
-    assert all(r.get('analysis_returncode')==0 for r in executions if r['case']['observed'])
+    require(isinstance(executions, list) and len(executions)==12, 'twelve execution receipts required')
+    require(all(type(r['returncode']) is int and r['returncode']==0 for r in executions), 'native execution failure')
+    require([r['case']['index'] for r in executions] == list(range(12)), 'ordered unique execution indices required')
+    require(sum(r['case']['observed'] == 1 for r in executions) == 10, 'ten observed analyses required')
+    require(all(type(r.get('analysis_returncode')) is int and r['analysis_returncode']==0 for r in executions if r['case']['observed']), 'analysis failure')
+    replay_integrity = True
     for r in executions:
         c=r['case']; index=c['index']
         if not c['observed']: continue
-        assert x.command([sys.executable,'-m','experiments.stringmol.xp001_population','repeat-analyze',str(index)],
-                         p.CONTROL,f'repeat-analysis-{index:02}',1800,working_dir=x.ROOT)==0
-        assert (p.CONTROL/f'summary-{index:02}.json').read_bytes()==(p.CONTROL/f'repeat-{index:02}.json').read_bytes()
+        x.preflight()
+        rc = x.command([sys.executable,'-m','experiments.stringmol.xp001_population','repeat-analyze',str(index)],
+                       p.CONTROL,f'repeat-analysis-{index:02}',1800,working_dir=x.ROOT)
+        require(rc == 0, 'repeat analysis failed')
+        require((p.CONTROL/f'summary-{index:02}.json').read_bytes()==(p.CONTROL/f'repeat-{index:02}.json').read_bytes(), 'repeat analysis drift')
+        replay_integrity &= json.loads((p.CONTROL/f'summary-{index:02}.json').read_text()).get('integrity') is True
     parity={}
     for a,b in [(4,8),(5,9),(4,10),(6,11)]:
         left=json.loads((p.POP/f'{a:02}.inventory.json').read_text())
@@ -40,10 +48,14 @@ def finish() -> None:
         summaries.append({**{k:c[k] for k in ['index','count','mixed','seed']},
             **{k:s[k] for k in ['integrity','end_tick','final_population','final_host','late_min_host','encounters','bound_encounters','dispatches','successful_cleavages','exact_host_children']},
             **{k:s['transfer'][k] for k in ['qualifying_transfers','serial_transfers','transfer_renewing_descendants','max_nonrelocation_depth']}})
-    canonical=all(s['exact_host_children']>0 and s['final_host']>0 for s in summaries if s['count']==140 and not s['mixed'])
+    references = [s for s in summaries if s['count']==140 and not s['mixed']]
+    canonical=bool(references) and all(s['exact_host_children']>0 and s['final_host']>0 for s in references)
+    integrity = replay_integrity and all(parity.values())
     result={'population_executions':12,'native_successes':12,'analyses_passed_twice':10,
             'repeat_analysis_byte_equal':True,'output_parity':parity,'canonical_reference_gate':canonical,
-            'interpretation_integrity':all(parity.values()),'summaries':summaries,
+            'interpretation_integrity':integrity,
+            'interpretation_authorized':authorization(integrity, canonical),
+            'summaries':summaries,
             'inference':'Development only; short binding-excluded B changes material/length as well as compatible frequency; no significance or heredity claims.'}
     x.save(p.CONTROL/'final-audit.json',result)
     with (p.CONTROL/'population-summary.csv').open('x',newline='') as out:

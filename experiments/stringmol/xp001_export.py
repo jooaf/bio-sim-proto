@@ -7,7 +7,14 @@ from pathlib import Path
 import shutil
 import stat
 import subprocess
+from typing import TypedDict
+
+class FileRecord(TypedDict):
+    path: str
+    bytes: int
+    sha256: str
 from experiments.stringmol import xp001 as x
+from experiments.stringmol.xp001_safety import require
 
 DEST=Path('/run/media/jojo/Elements/bio-sim-results/verification/sm-xp001-exploration-v1')
 
@@ -22,7 +29,8 @@ def export() -> None:
     x.preflight()
     DEST.mkdir()
     portable=DEST/'posix-controls'; portable.mkdir()
-    records=[]; special=[]
+    records: list[FileRecord] = []
+    special: list[dict[str, str | int]] = []
     for source in sorted(x.EVIDENCE.rglob('*')):
         rel=source.relative_to(x.EVIDENCE); target=portable/rel
         mode=source.lstat().st_mode
@@ -33,20 +41,20 @@ def export() -> None:
         elif stat.S_ISREG(mode):
             target.parent.mkdir(parents=True,exist_ok=True)
             before=sha(source);shutil.copyfile(source,target)
-            assert sha(target)==before==sha(source)
+            require(sha(target)==before==sha(source), 'export checksum mismatch')
             records.append({'path':str(rel),'bytes':source.stat().st_size,'sha256':before})
         else:
             special.append({'path':str(rel),'kind':'special','mode':mode})
     x.save(DEST/'posix-controls-checksums.json',records)
     x.save(DEST/'posix-special-metadata.json',special)
-    raw=[]
+    raw: list[FileRecord] = []
     for source in sorted(x.RAW.rglob('*')):
         if source.is_file():
             raw.append({'path':str(source.relative_to(x.RAW)),'bytes':source.stat().st_size,'sha256':sha(source)})
     x.save(DEST/'raw-checksums.json',raw)
     # Verify the entire ordinary raw export in a second read.
     for record in raw:
-        assert sha(x.RAW/record['path'])==record['sha256']
+        require(sha(x.RAW/record['path'])==record['sha256'], 'raw checksum mismatch')
     archive=DEST/'source.tar'
     subprocess.run(['git','archive','--format=tar',f'--output={archive}','HEAD','experiments/stringmol',
                     'tests/test_sm_xp001.py','tests/stringmol_xp001_reaction.cpp',

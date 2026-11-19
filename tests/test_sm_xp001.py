@@ -12,7 +12,7 @@ def test_changed_inoculum(count: int,mixed: bool) -> None:
     founders=p.expected(count,mixed)
     assert len(founders)==count
     assert len({(r['x'],r['y']) for r in founders})==count
-    initial=initial_material(founders,'histogram',0)
+    initial=initial_material([dict(f) for f in founders],'histogram',0)
     boundary=BoundaryReplay(initial,[],'IMMEDIATE',5000,[r['id'] for r in founders],'RETAIN')
     assert set(boundary.source.material.buffers)==set(range(count))
     visible=[b.split(b'\0',1)[0] for b in boundary.source.material.buffers.values()]
