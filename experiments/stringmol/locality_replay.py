@@ -5,17 +5,32 @@ is reconstructed before every partner/placement draw. All full buffers, ledgers,
 lineage, source journals, terminal heads and complete RNG state must agree.
 """
 from pathlib import Path
+from collections.abc import Iterator, Sequence
+from dataclasses import dataclass
+from typing import Any, cast
+from experiments.stringmol.locality_models import Checkpoint, ReplayResult, Renewal
+from experiments.stringmol.locality_geometry import Cell, Grid
 from experiments.stringmol import analyze_conservation as c, retirement_material as material
 from experiments.stringmol import analyze_retirement as retirement
 from experiments.stringmol.admission_numeric import MT, Matrix, complement, f32
-from experiments.stringmol.admission_vm import VM
+from experiments.stringmol.admission_vm import VM, Effect
+
+
+@dataclass(frozen=True)
+class Pending:
+    effect: Effect
+    start: int
+    active: int
+    passive: int
+    child: int
+    target: Cell | None
 from experiments.stringmol.admission_replay import VM_COLUMNS
 from experiments.stringmol.locality_geometry import Boundary, population_candidates, vacancies
 from experiments.stringmol.analyze_lineage import EVENT_COLUMNS, SNAPSHOT_COLUMNS, require
 from experiments.stringmol.analyze_scheduling import COLUMNS
 
 
-def canonical_stream(path, columns):
+def canonical_stream(path: str | Path, columns: Sequence[str]) -> Iterator[dict[str, str]]:
     """Bounded-memory strict ASCII/LF CSV; these journals never quote fields."""
     with Path(path).open('rb') as stream:
         require(stream.readline() == (','.join(columns)+'\n').encode('ascii'), 'stream schema')
@@ -26,7 +41,8 @@ def canonical_stream(path, columns):
             yield dict(zip(columns,fields,strict=True))
 
 
-def replay(directory, initial, coordinates, seed, matrix_path, interaction, placement, horizon=5000):
+def replay(directory: str | Path, initial: dict[str, Any], coordinates: Grid, seed: int,
+           matrix_path: str | Path, interaction: int, placement: int, horizon: int = 5000) -> ReplayResult:
     directory = Path(directory)
     rng, matrix = MT(seed), Matrix(Path(matrix_path))
     loaded, order = list(map(int, initial['buffers'])), []
@@ -36,16 +52,20 @@ def replay(directory, initial, coordinates, seed, matrix_path, interaction, plac
     grid = coordinates.copy()
     boundary = Boundary(initial, events, 'IMMEDIATE', horizon, initial_order=order,
                         grid=grid, interaction=interaction)
-    registry, species = {}, {}
-    def species_for(buffer):
+    registry: dict[bytes, int] = {}
+    species: dict[int, int] = {}
+    def species_for(buffer: bytes) -> int:
         seq = buffer.split(b'\0', 1)[0]
         if seq not in registry:
             registry[seq] = len(registry)+1
         return registry[seq]
     for idx, buffer in boundary.source.material.buffers.items():
         species[idx] = species_for(buffer)
-    lineage, snapshots, sources = [], [], []
-    def life(event, tick, idx, buffer, cell, active=-1, passive=-1, parents=None):
+    lineage: list[dict[str, str]] = []
+    snapshots: list[dict[str, str]] = []
+    sources: list[dict[str, str]] = []
+    def life(event: str, tick: int, idx: int, buffer: bytes, cell: Cell, active: int = -1,
+             passive: int = -1, parents: dict[int, bytes] | None = None) -> None:
         row = dict.fromkeys(EVENT_COLUMNS, '-1')
         row.update(event=event, timestep=str(tick), child_id=str(idx), active_id=str(active), passive_id=str(passive),
                    child_species=str(species[idx]), child_label='81', x=str(cell[0]), y=str(cell[1]),
@@ -60,8 +80,8 @@ def replay(directory, initial, coordinates, seed, matrix_path, interaction, plac
     aggregates = c.canonical_rows(directory/'conservation002.csv', material.COLUMNS)
     buffer_rows = c.canonical_rows(directory/'conservation_buffers002.csv', c.BUFFER_COLUMNS)
     checkpoint_index = buffer_index = 0
-    clustering = []
-    def checkpoint(tick, event):
+    clustering: list[Checkpoint] = []
+    def checkpoint(tick: int, event: str) -> None:
         nonlocal checkpoint_index, buffer_index
         require(checkpoint_index < len(aggregates), 'missing checkpoint')
         row = aggregates[checkpoint_index]; checkpoint_index += 1
@@ -77,7 +97,8 @@ def replay(directory, initial, coordinates, seed, matrix_path, interaction, plac
         occupied = set(grid.values())
         adjacent = sum(((x+dx)%40,(y+dy)%40) in occupied for x,y in occupied for dx in (-1,0,1) for dy in (-1,0,1) if dx or dy)
         clustering.append({'tick':tick,'event':event,'population':len(grid),'occupied_neighbor_slots':adjacent,'neighbor_slots':8*len(grid)})
-    vms, pending = {}, None
+    vms: dict[int, VM] = {}
+    pending: Pending | None = None
     expected_decay, next_identity, source_eligible = None, max(grid)+1, 0
     searches = empty = encounters = bindings = proposals = failed = placed = vacancy_sum = 0
     rows = canonical_stream(directory/'scheduling_events001.csv', COLUMNS)
@@ -128,9 +149,11 @@ def replay(directory, initial, coordinates, seed, matrix_path, interaction, plac
             if effect.proposal:
                 proposals += 1
                 child = next_identity; next_identity += 1
-                choices = vacancies(grid,active,placement)
-                vacancy_sum += len(choices)
-                target = choices[rng.rank(len(choices))] if choices else None
+                targets = vacancies(grid,active,placement)
+                vacancy_sum += len(targets)
+                target = targets[rng.rank(len(targets))] if targets else None
+                if effect.flow is None:
+                    raise ValueError('proposal without flow')
                 source,offset = effect.flow
                 species[child] = species_for(effect.buffers[source].split(b'\0',1)[0][offset:].ljust(c.MAXL0,b'\0'))
                 if target is not None:
@@ -138,7 +161,7 @@ def replay(directory, initial, coordinates, seed, matrix_path, interaction, plac
                     life('BIRTH',tick,child,effect.buffers[source].split(b'\0',1)[0][offset:].ljust(c.MAXL0,b'\0'),target,active,passive,effect.buffers)
                 else:
                     failed += 1
-            pending = dict(effect=effect,start=boundary.cursor,active=active,passive=passive,child=child,target=target)
+            pending = Pending(effect,boundary.cursor,active,passive,child,target)
         previous = set(boundary.source.material.buffers)
         boundary.step(row)
         current = boundary.source.material.buffers
@@ -149,19 +172,24 @@ def replay(directory, initial, coordinates, seed, matrix_path, interaction, plac
                 if idx in (vm.active,vm.passive):
                     del vms[active]
         for idx in added:
-            require(pending is not None and idx == pending['child'] and pending['target'] is not None and pending['target'] not in grid.values(), 'independent vacancy/child identity')
-            grid[idx] = pending['target']
+            if pending is None or pending.target is None:
+                raise ValueError('missing child dispatch/target')
+            require(idx == pending.child and pending.target not in grid.values(), 'independent vacancy/child identity')
+            grid[idx] = pending.target
         if removed and pending is not None and event == 'DEATH' and row['outcome'] == 'CLEAVE':
-            for idx in (pending['active'],pending['passive']):
+            for idx in (pending.active,pending.passive):
                 if idx in current:
                     species[idx] = species_for(current[idx])
         if event == 'COMPLETE':
-            require(pending is not None, 'missing dispatch')
-            effect, start = pending['effect'],pending['start']
+            if pending is None:
+                raise ValueError('missing dispatch')
+            effect, start = pending.effect,pending.start
             if effect.opcode == ord('='):
                 require(events[start]['outcome'] == effect.copy_outcome and {i:current[i] for i in effect.buffers} == effect.buffers, 'independent copy')
             elif effect.opcode == ord('%'):
-                child = pending['child'] if pending['target'] is not None else -1
+                child = pending.child if pending.target is not None else -1
+                if effect.flow is None:
+                    raise ValueError('cleavage without flow')
                 flow_source,flow_offset = effect.flow
                 require(events[start]['outcome'] == ('PLACED' if child >= 0 else 'FAILED' if effect.proposal else 'NO_CHANGE'), 'independent cleavage disposition')
                 expected = effect.buffers.copy()
@@ -177,13 +205,13 @@ def replay(directory, initial, coordinates, seed, matrix_path, interaction, plac
                 source_eligible += eligible
                 sx,sy = grid[source] if source in current else (-1,-1)
                 cx,cy = grid[child] if child >= 0 else (-1,-1)
-                values = dict(tick=tick,material_index=boundary.cursor,active=pending['active'],passive=pending['passive'],flow_source=flow_source,flow_offset=flow_offset,
+                values = dict(tick=tick,material_index=boundary.cursor,active=pending.active,passive=pending.passive,flow_source=flow_source,flow_offset=flow_offset,
                     source=source,offset=offset,child=child,eligible_tick=boundary.eligible_tick(child) if child >= 0 else 0,decision='RETAIN' if eligible else 'INELIGIBLE',
                     remnant_hex=current[source].hex().upper() if source in current else '',source_x=sx,source_y=sy,child_x=cx,child_y=cy,survivor=-1,proposals=len(sources)+1,eligible=source_eligible,committed=0)
                 sources.append({**{k:str(v) for k,v in values.items()},**{k:';'.join(map(str,v)) for k,v in boundary.list_transactions[boundary.cursor].items()}})
             if effect.unbind:
-                vms.pop(pending['active'],None)
-                for idx in (pending['active'],pending['passive']):
+                vms.pop(pending.active,None)
+                for idx in (pending.active,pending.passive):
                     species[idx] = species_for(current[idx])
             pending = None
     require(boundary.ended and pending is None, 'incomplete history')
@@ -210,4 +238,4 @@ def replay(directory, initial, coordinates, seed, matrix_path, interaction, plac
     require(c.canonical_rows(directory/'xl_vm_end.csv',VM_COLUMNS) == terminal, 'independent terminal heads/grid')
     require((directory/'xl_rng_end.txt').read_text() == rng.encoded(), 'independent complete terminal RNG')
     return dict(end_tick=end,end_population=len(grid),rng_draws=rng.draws,searches=searches,empty_searches=empty,encounters=encounters,bindings=bindings,
-                proposals=proposals,placed=placed,failed_placement=failed,vacancy_sum=vacancy_sum,checkpoints=clustering,renewal=boundary.source.transfer_summary())
+                proposals=proposals,placed=placed,failed_placement=failed,vacancy_sum=vacancy_sum,checkpoints=clustering,renewal=cast(Renewal, boundary.source.transfer_summary()))

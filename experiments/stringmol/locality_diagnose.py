@@ -1,16 +1,22 @@
 """Whole-matrix diagnostics; never converts the failed full-off gate into a pass."""
 import json
 from pathlib import Path
-import subprocess
+import os
+from typing import cast
+from experiments.stringmol.locality_models import Diagnostic
+from experiments.stringmol.locality_process import execute
+from experiments.stringmol.locality_pilot import NativeReceipt
 from experiments.stringmol.locality_pilot import CONTROL,RAW,ARMS,PYTHON,inventory,record,save,OBS
 
 
-def main():
+def main() -> None:
     root=CONTROL/'diagnostic-v3';root.mkdir(exist_ok=False)
-    result={}
+    result: dict[str, Diagnostic]={}
     for arm in ARMS:
-        receipts={kind:json.loads((RAW/f'{arm}-{kind}.receipt.json').read_text()) for kind in ('observed','repeat','off')}
-        r={'native_exit_codes':{k:v['exit_code'] for k,v in receipts.items()},'inventories':{},'replays':[]}
+        receipts={kind:cast(NativeReceipt, json.loads((RAW/f'{arm}-{kind}.receipt.json').read_text())) for kind in ('observed','repeat','off')}
+        r: Diagnostic={'native_exit_codes':{k:v['exit_code'] for k,v in receipts.items()},
+            'inventories':{},'replays':[], 'exact_repeat':False, 'common_file_parity':False,
+            'disabled_streams':[], 'full_observer_off':False}
         for kind,receipt in receipts.items():r['inventories'][kind]=inventory(RAW/f'{arm}-{kind}')==receipt['inventory']
         on,repeat,off=(receipts[k]['inventory'] for k in ('observed','repeat','off'))
         r['exact_repeat']=on==repeat
@@ -20,9 +26,10 @@ def main():
         for kind in ('observed','repeat'):
             output=root/f'{arm}-{kind}.json';log=root/f'{arm}-{kind}.log'
             cmd=[PYTHON,'-m','experiments.stringmol.locality_pilot','one',arm,kind,str(output)]
-            with log.open('xb') as f:
-                try:p=subprocess.run(cmd,stdout=f,stderr=subprocess.STDOUT,timeout=1800);code=p.returncode
-                except subprocess.TimeoutExpired:code='TIMEOUT'
+            process = execute(cmd, cwd=Path.cwd(), environment=dict(os.environ),
+                receipt=root/f'{arm}-{kind}.process.json', stdout=log,
+                stderr=root/f'{arm}-{kind}.stderr', timeout=1800, output_root=root)
+            code = process['exit_code']
             r['replays'].append({'kind':kind,'exit_code':code,'log':record(log),'result':record(output) if output.exists() else None})
         result[arm]=r
         save(root/f'{arm}-diagnostic.json',r)

@@ -6,18 +6,20 @@ import shutil
 import stat
 import subprocess
 from experiments.stringmol.locality_pilot import CONTROL,RAW,inventory,record,save,preflight
+from experiments.stringmol.analyze_lineage import require
 
 DEST=Path('/run/media/jojo/Elements/bio-sim-results/verification/sm-xl001-exploration-v1')
 
 
-def main():
+def main() -> None:
     preflight()
-    assert (CONTROL/'diagnostic-v3/diagnostics.json').exists(), 'do not export incomplete analyses'
-    assert (CONTROL/'process-state-final.nuon').exists(), 'record actual stopped process state before export'
-    assert not subprocess.check_output(['git','status','--porcelain'],text=True).strip(), 'commit source before final export'
+    require((CONTROL/'diagnostic-v3/diagnostics.json').exists(), 'do not export incomplete analyses')
+    require((CONTROL/'process-state-final.nuon').exists(), 'record actual stopped process state before export')
+    require(not subprocess.check_output(['git','status','--porcelain'],text=True).strip(), 'commit source before final export')
     DEST.mkdir(parents=True,exist_ok=False)
     portable=DEST/'portable-control';portable.mkdir()
-    manifest=[];nodes=[]
+    manifest: list[dict[str, str | int]]=[]
+    nodes: list[dict[str, str | int]]=[]
     for source in sorted(CONTROL.rglob('*')):
         relative=source.relative_to(CONTROL)
         mode=source.lstat().st_mode
@@ -26,8 +28,9 @@ def main():
         elif stat.S_ISREG(mode):
             target=portable/relative;target.parent.mkdir(parents=True,exist_ok=True)
             before=record(source);shutil.copyfile(source,target)
-            assert before==record(source)==record(target), f'export mismatch: {source}'
-            manifest.append({'source':str(source),'portable':str(target.relative_to(DEST)),**before})
+            require(before==record(source)==record(target), f'export mismatch: {source}')
+            manifest.append({'source':str(source),'portable':str(target.relative_to(DEST)),
+                             'sha256':before['sha256'], 'bytes':before['bytes']})
         elif not stat.S_ISDIR(mode):
             nodes.append({'path':str(relative),'kind':'special','mode':mode})
     # Raw outputs already are ordinary Mac-readable files on Elements. Rehash
@@ -36,7 +39,7 @@ def main():
     for receipt_path in sorted(RAW.glob('*.receipt.json')):
         receipt=json.loads(receipt_path.read_text())
         directory=RAW/receipt_path.name.removesuffix('.receipt.json')
-        assert inventory(directory)==receipt['inventory'], f'raw changed: {directory}'
+        require(inventory(directory)==receipt['inventory'], f'raw changed: {directory}')
     subprocess.run(['git','bundle','create',str(DEST/'source.bundle'),'explore/sm-xl001'],check=True)
     subprocess.run(['git','archive','--format=tar',f'--output={DEST / "source.tar"}','HEAD'],check=True)
     save(DEST/'checksums.json',{'controls':manifest,'raw_root':str(RAW),'raw':raw,'nonregular_nodes':nodes,

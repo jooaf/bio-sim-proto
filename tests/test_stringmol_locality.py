@@ -1,11 +1,12 @@
 """Directed synthetic reconstruction fixtures; no population executions."""
+from pathlib import Path
 import pytest
 from experiments.stringmol.locality_geometry import cells,candidates,vacancies,Boundary
 from experiments.stringmol.configure_control import inoculum,HOST
 from experiments.stringmol.analyze_conservation import initial_material
 
 
-def test_explicit_log_controls_for_future_recovery():
+def test_explicit_log_controls_for_future_recovery() -> None:
     from experiments.stringmol.locality_pilot import locality_environment
     on,off=locality_environment(True),locality_environment(False)
     for key in ('STRINGMOL_CONSERVATION_LOG','STRINGMOL_SCHEDULING_LOG','STRINGMOL_RETIREMENT_LOG'):
@@ -14,7 +15,7 @@ def test_explicit_log_controls_for_future_recovery():
     assert {k:v for k,v in on.items() if not k.endswith('_LOG')}=={k:v for k,v in off.items() if not k.endswith('_LOG')}
 
 
-def test_torus_and_order():
+def test_torus_and_order() -> None:
     assert cells((0,0),1) == [(39,39),(39,0),(39,1),(0,39),(0,0),(0,1),(1,39),(1,0),(1,1)]
     grid={0:(0,0),1:(39,39),2:(1,1),3:(20,20)}
     eligible=lambda _:0
@@ -24,16 +25,16 @@ def test_torus_and_order():
     assert candidates([3,2,1],{},grid,0,1,0,lambda i: 1 if i==2 else 0)==[1]
 
 
-def test_native_population_startup_readiness():
+def test_native_population_startup_readiness() -> None:
     from experiments.stringmol.locality_geometry import population_candidates
     grid={0:(0,0),1:(39,39),2:(1,1),3:(20,20)}
-    args=([3,2,1],{},grid,0)
+    args: tuple[list[int], dict[int, int], dict[int, tuple[int, int]], int]=([3,2,1],{},grid,0)
     assert population_candidates(*args,1,0,lambda _:0)==[]
     assert population_candidates(*args,1,1,lambda _:0)==[1,2]
     assert population_candidates(*args,0,0,lambda _:0)==[3,2,1]
 
 
-def test_placement_and_reject():
+def test_placement_and_reject() -> None:
     grid={0:(0,0),1:(20,20)}
     assert len(vacancies(grid,0,1))==8
     assert (39,39) in vacancies(grid,0,1)
@@ -44,7 +45,7 @@ def test_placement_and_reject():
     with pytest.raises(ValueError): cells((0,0),2)
 
 
-def test_stream_exact_bytes_and_bounded_memory(tmp_path):
+def test_stream_exact_bytes_and_bounded_memory(tmp_path: Path) -> None:
     import tracemalloc
     from experiments.stringmol.locality_replay import canonical_stream
     path=tmp_path/'stream.csv'
@@ -58,7 +59,7 @@ def test_stream_exact_bytes_and_bounded_memory(tmp_path):
         with pytest.raises(ValueError):list(canonical_stream(path,['a','b']))
 
 
-def test_finish_retains_gate_when_replays_fail(tmp_path,monkeypatch):
+def test_finish_retains_gate_when_replays_fail(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     import json
     from experiments.stringmol import locality_finish as finish
     monkeypatch.setattr(finish,'CONTROL',tmp_path)
@@ -73,19 +74,19 @@ def test_finish_retains_gate_when_replays_fail(tmp_path,monkeypatch):
     assert decision['diagnostic_replays_passed']==0 and decision['canonical_positive_control_observed'] is None
 
 
-def test_fixed_initial():
+def test_fixed_initial() -> None:
     host,_=inoculum()
     assert len(host)==140 and len(set(host))==140
     assert len(HOST)==64
 
 
-def test_local_boundary_candidate_rank_tampering():
+def test_local_boundary_candidate_rank_tampering() -> None:
     # Synthetic valid SEARCH at a pre-established action boundary. Verify native
     # queue is preserved rather than left in geometric order.
     from experiments.stringmol.analyze_scheduling import DEFAULTS
     initial=initial_material([{'id':i,'sequence_hex':HOST.encode().hex()} for i in range(4)],'histogram',0)
     initial['waste']=[0]*33
-    def fixture():
+    def fixture() -> Boundary:
         b=Boundary(initial,[],'IMMEDIATE',grid={0:(0,0),1:(39,39),2:(1,1),3:(20,20)},interaction=1)
         b.started=True;b.tick=1;b.index=1;b.now=[3,2,1];b.selection=(0,-1);b.phase='action'
         return b

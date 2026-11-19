@@ -1,20 +1,8 @@
 --- a/src/sm_spatial.cpp
 +++ b/src/sm_spatial.cpp
-@@ -38,6 +38,7 @@
- #include "opcodes.h"
- #include "stringPM.h"
- #include "sm_spatial.h"
+@@ -40,0 +41 @@
 +#include "locality_observer.h"
- 
- #include "lodepng.h"
- #include <iostream>
-@@ -244,7 +245,8 @@
- 
- 	conservation.observe(timestep, "END", nowhead);
- 	lineage_end(timestep, ct);
+@@ -247 +248,2 @@
 -	scheduling.end(timestep, nowhead, conservation.event_index);
 +	xl_terminal(*this,timestep);
 +    scheduling.end(timestep, nowhead, conservation.event_index);
- 	printf("FINISHED smspatial\n");
- 	fflush(stdout);
- 	return 0;
