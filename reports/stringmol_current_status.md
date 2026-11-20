@@ -1,6 +1,6 @@
 # Current Stringmol program status
 
-Updated 2026-11-20 after the read-only XL renewal synthesis. SM-B002 and SM-B003 are closed.
+Updated 2026-11-20 after the read-only XL role/opportunity measurement. SM-B002 and SM-B003 are closed.
 XP and the complete XL technical recovery are closed as bounded descriptive
 explorations. Original failures remain preserved. No experiment is currently running.
 
@@ -96,9 +96,19 @@ Portable controls/source bundle:
   placement accompanies fewer distinct renewers (GL12 vs GG25; LL39 vs LG47) and
   late-born renewers (2vs6;12vs21). Per-admitted-child renewal fractions change in
   opposite directions across interaction contexts, while exact HOST declines in
-  every cell. The next recommendation is measurement work on productive roles,
-  partner context and censoring—not another population campaign. See
+  every cell. This motivated the role/opportunity measurement below,
+  rather than another population campaign. See
   [`sm_xl001_renewal_analysis.md`](sm_xl001_renewal_analysis.md).
+
+- **Role/opportunity measurement complete:** independent scheduling-log reduction
+  and parent audit show every qualifying source action was also executed actively
+  by that molecule, with its own instruction-head genome. First renewer counts
+  remain25/47/12/39. Passive-source attribution does not explain those successes.
+  Death/no-event and end-censoring are separately recorded; observed opportunities
+  and follow-up differ. This resolves role attribution in these histories, not
+  intrinsic or standardized competence. Further claims require a separately
+  authorized design, not more reinterpretation of the same observations. No new
+  simulations or assays ran. See [`sm_xl001_role_analysis.md`](sm_xl001_role_analysis.md).
 
 These are bounded development explorations, not confirmatory unseen-seed results.
 Retain negatives and every attempt. Do not reopen SM-H003's failed panel-level

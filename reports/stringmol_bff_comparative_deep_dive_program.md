@@ -26,12 +26,18 @@ fractions changed in opposing directions. Exact HOST declined in all cells while
 total populations grew. See `sm_xl001_renewal_analysis.md` for counts, denominators,
 right-censoring, role/competence limitations and independent parent review.
 
-**Next recommendation: measurement work, not new population execution.** Define
-productive source versus active-executor performance, partner context and exposure/
-censoring before selecting a further prospective hypothesis. No campaign is active
-or additionally authorized. The modules below remain a conceptual roadmap, not
-permission to launch. Confirmation would require a separate design, unseen seeds,
-fixed endpoints and explicit budget; these histories cannot supply confirmation.
+**Existing-log measurement work is complete; no new execution is authorized.**
+Role/opportunity reduction (`sm_xl001_role_analysis.md`) shows retained-source,
+active-executor and instruction-owner concordance in every qualifying success
+in these histories. Passive-source attribution does not explain the renewal counts.
+Death versus administrative censoring and actual experienced event exposures are
+now separated, but standardized competence remains unidentifiable: partners,
+material support, survival and opportunity were not standardized. Further claims
+need a separately authorized design with explicit feasibility/gate constraints,
+not indefinite reanalysis or an implicit reopening of H003. No campaign is active.
+The modules below remain a conceptual roadmap, not permission to launch.
+Confirmation would require a separate design, unseen seeds, fixed endpoints and
+explicit budget; these histories cannot supply confirmation.
 
 ## Question and inference boundary
 

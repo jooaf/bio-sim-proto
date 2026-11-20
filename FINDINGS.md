@@ -430,3 +430,16 @@ partner opportunity, unequal follow-up and censoring remain important. Parent
 independent raw-data/count/geometry/hash checks passed, with no new simulations or
 full replays. Recommendation: measurement work before another population study.
 See [`reports/sm_xl001_renewal_analysis.md`](reports/sm_xl001_renewal_analysis.md).
+
+The subsequent read-only role measurement resolves one ambiguity: every qualifying
+retained source in these histories was also the ACTIVE executor and instruction
+owner. All25/47/12/39 first renewing descendants have that concordance; passive
+source use does not account for the recorded renewal. Instruction owner is not
+COPY read-source, and active success remains partner/context dependent. Per-child
+observed opportunity, first-event exposure, competing death and administrative END
+censoring are now explicitly separated and independently checked from scheduling
+records. Intrinsic competence and causal mediation remain unidentified. The
+existing-log measurement recommendation is complete, without new simulations or
+full VM replays. Any further study requires separate design/authorization and
+cannot bypass the H003 or other closed gates. See
+[`reports/sm_xl001_role_analysis.md`](reports/sm_xl001_role_analysis.md).
