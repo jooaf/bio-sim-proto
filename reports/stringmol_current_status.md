@@ -1,6 +1,8 @@
 # Current Stringmol program status
 
-Updated 2026-11-16. SM-B002 and SM-B003 are closed. No campaign is currently running.
+Updated 2026-11-19. SM-B002 and SM-B003 are closed. XP/XL exploratory attempts
+are complete and preserved. Reviewed code is integrated; prospective full-matrix
+XL technical recovery is authorized but has not launched.
 
 ## SM-B002: complete, verified, not a strong-dependence result
 
@@ -62,18 +64,32 @@ Portable controls/source bundle:
 
 ## Next work: distinct exploratory questions, not SM-B003 retries
 
-The user requested two independent exploratory agents. The existing roadmap is
-[`stringmol_bff_comparative_deep_dive_program.md`](stringmol_bff_comparative_deep_dive_program.md).
-Two candidate tracks are partner/frequency context (module 1) and separated
-interaction/placement locality (module 4). These are proposals, not launched
-experiments or approved confirmatory protocols. Agent launch and per-track scope
-remain to be established; no new results are claimed.
+- **SM-XP001 partner/frequency context:** 12/12 populations and 48 directed
+  assays retained. Descriptive archive only: the one-byte background is not
+  binding-matched inert, and canonical HOST declined in all eight primary runs.
+  See [`sm_xp001_results.md`](sm_xp001_results.md).
+- **SM-XL001 separated interaction/placement locality:** all twelve original
+  population executions completed and eight observed histories replayed, but
+  population interpretation remains **BLOCKED**: all four nominal off conditions
+  omitted the default-on conservation logger flag. Directed logging qualification
+  does not repair that historical missing control. See
+  [`sm_xl001_closeout.md`](sm_xl001_closeout.md).
+- Independent review and controller hardening are complete. XP `d0e3034` and
+  XL `fe3bf8c` are integrated through `61de654`, with the documented limited scope
+  in [`stringmol_exploration_code_review_closeout.md`](stringmol_exploration_code_review_closeout.md).
+  Combined parent validation: 102 tests passed normally and 102 under `-O`, one
+  directed-native-fixture skip each, strict typing clean across 20 owned files.
+  This is not full historical/native regression qualification.
+- The user authorized a fresh **complete 12-run XL technical recovery**, not
+  selective off-only replacement. Prospective protocol/controller qualification
+  and independent review precede execution. Original seed, biological settings,
+  horizon and endpoints remain fixed; new external roots, full observer-off
+  checks, independent replay, repeat analysis and verified export are required.
+  The original blocked attempt is immutable and will not be relabeled or pooled.
 
-Each track needs a distinct ID, bounded design, qualified positive control,
-separate code/output ownership and explicit resource budget. Retain every pilot,
-label exploration honestly, and use a separate prospective unseen-seed design
-for any later confirmation. Do not reopen SM-H003's failed panel-level catalyst/
-template confirmation or reuse SM-B003 seeds as unseen confirmation.
+These are bounded development explorations, not confirmatory unseen-seed results.
+Retain negatives and every attempt. Do not reopen SM-H003's failed panel-level
+catalyst/template confirmation or reuse SM-B003 seeds as unseen confirmation.
 
 Ordinary raw data stays on Elements; POSIX controls remain in its mounted image.
 Historical comparative/BFF documents are not launch instructions:
