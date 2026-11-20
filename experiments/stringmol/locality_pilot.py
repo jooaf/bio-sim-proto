@@ -13,7 +13,7 @@ from experiments.stringmol.analyze_conservation import initial_material
 from experiments.stringmol.retirement_workflow import environment
 from experiments.stringmol.analyze_lineage import require
 from experiments.stringmol.locality_process import FileRecord, execute
-from typing import TypedDict, cast
+from typing import NotRequired, TypedDict, cast
 
 
 class Job(TypedDict):
@@ -40,6 +40,7 @@ class Preparation(TypedDict):
 class NativeReceipt(TypedDict):
     exit_code: int | str
     inventory: dict[str, FileRecord]
+    collection_complete: NotRequired[bool]  # Absent only in historical receipts.
 
 
 class Analysis(TypedDict):
@@ -53,6 +54,8 @@ class Verification(TypedDict):
     observer_isolation: bool
     analyses: list[Analysis]
 
+POSIX_STORAGE=Path('/tmp/sm')
+ELEMENTS_STORAGE=Path('/run/media/jojo/Elements')
 CONTROL=Path('/tmp/sm/xl-e')
 RAW=Path('/run/media/jojo/Elements/bio-sim-results/sm-xl001-exploration-v1')
 SOURCE=CONTROL/'n'
@@ -71,9 +74,13 @@ def record(path: str | Path) -> FileRecord:
     return {'sha256':h.hexdigest(),'bytes':path.stat().st_size}
 
 
-def inventory(root: str | Path) -> dict[str, FileRecord]:
+def inventory(root: str | Path, *, collected: dict[str, FileRecord] | None = None) -> dict[str, FileRecord]:
     root = Path(root)
-    return {str(p.relative_to(root)):record(p) for p in sorted(Path(root).rglob('*')) if p.is_file() and not p.is_symlink()}
+    files = {} if collected is None else collected
+    for p in sorted(root.rglob('*')):
+        if p.is_file() and not p.is_symlink():
+            files[str(p.relative_to(root))] = record(p)
+    return files
 
 
 def save(path: str | Path, data: object) -> None:
@@ -84,6 +91,11 @@ def preflight() -> None:
     mounts=Path('/proc/mounts').read_text()
     require(' /tmp/sm ' in mounts and '/run/media/jojo/Elements/bio-sim-results/stringmol-posix.ext4' in mounts, 'safety/provenance check failed')
     require(' /run/media/jojo/Elements ' in mounts, 'safety/provenance check failed')
+    # Admission-time containment only; not protection against concurrent swaps.
+    for root, storage in ((CONTROL, POSIX_STORAGE), (RAW, ELEMENTS_STORAGE)):
+        require(not root.is_symlink(), 'symlink storage root')
+        require(root.resolve().is_relative_to(storage) and root.resolve() != storage,
+                'storage root escapes intended external storage')
     require(shutil.disk_usage(CONTROL).free >= 5*1024**3, 'safety/provenance check failed')
     require(shutil.disk_usage(RAW.parent).free >= 10*1024**3, 'safety/provenance check failed')
     # Every launch also enforces track-specific cumulative byte budgets.
@@ -157,6 +169,7 @@ def validate_preparation(data: object) -> None:
 
 
 def run() -> None:
+    preflight()
     data=cast(Preparation, json.loads((CONTROL/'preparation.json').read_text()))
     validate_preparation(data)
     require(record(CONTROL/'preparation.json')==json.loads((CONTROL/'preparation.sha256.json').read_text()), 'safety/provenance check failed')
@@ -193,6 +206,7 @@ def analyze() -> None:
     reports: dict[str, Verification]={}
     for arm in ARMS:
         receipts={kind:cast(NativeReceipt, json.loads((RAW/f'{arm}-{kind}.receipt.json').read_text())) for kind in ('observed','repeat','off')}
+        require(all(r.get('collection_complete', True) for r in receipts.values()), 'incomplete native evidence')
         require(all(r['exit_code']==0 for r in receipts.values()), 'native failure')
         for kind,r in receipts.items():require(inventory(RAW/f'{arm}-{kind}')==r['inventory'], 'safety/provenance check failed')
         on,repeat,off=(receipts[k]['inventory'] for k in ('observed','repeat','off'))

@@ -6,6 +6,7 @@ from typing import cast
 from experiments.stringmol.locality_models import Diagnostic
 from experiments.stringmol.locality_process import execute
 from experiments.stringmol.locality_pilot import NativeReceipt
+from experiments.stringmol.analyze_lineage import require
 from experiments.stringmol.locality_pilot import CONTROL,RAW,ARMS,PYTHON,inventory,record,save,OBS
 
 
@@ -14,6 +15,7 @@ def main() -> None:
     result: dict[str, Diagnostic]={}
     for arm in ARMS:
         receipts={kind:cast(NativeReceipt, json.loads((RAW/f'{arm}-{kind}.receipt.json').read_text())) for kind in ('observed','repeat','off')}
+        require(all(r.get('collection_complete', True) for r in receipts.values()), 'incomplete native evidence')
         r: Diagnostic={'native_exit_codes':{k:v['exit_code'] for k,v in receipts.items()},
             'inventories':{},'replays':[], 'exact_repeat':False, 'common_file_parity':False,
             'disabled_streams':[], 'full_observer_off':False}
