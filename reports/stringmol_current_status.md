@@ -1,8 +1,8 @@
 # Current Stringmol program status
 
-Updated 2026-11-19. SM-B002 and SM-B003 are closed. XP/XL exploratory attempts
-are complete and preserved. Reviewed code is integrated; prospective full-matrix
-XL technical recovery is authorized but has not launched.
+Updated after the 2026-11-19 SM-XL001 recovery. SM-B002 and SM-B003 are closed.
+XP and the complete XL technical recovery are closed as bounded descriptive
+explorations. Original failures remain preserved. No experiment is currently running.
 
 ## SM-B002: complete, verified, not a strong-dependence result
 
@@ -68,24 +68,28 @@ Portable controls/source bundle:
   assays retained. Descriptive archive only: the one-byte background is not
   binding-matched inert, and canonical HOST declined in all eight primary runs.
   See [`sm_xp001_results.md`](sm_xp001_results.md).
-- **SM-XL001 separated interaction/placement locality:** all twelve original
-  population executions completed and eight observed histories replayed, but
-  population interpretation remains **BLOCKED**: all four nominal off conditions
-  omitted the default-on conservation logger flag. Directed logging qualification
-  does not repair that historical missing control. See
-  [`sm_xl001_closeout.md`](sm_xl001_closeout.md).
+- **SM-XL001 separated interaction/placement locality:** the original attempt
+  remains **BLOCKED** because all four nominal off conditions omitted the default-on
+  conservation logger flag. A separately authorized complete12-run recovery now
+  passes all full-off/repeat checks and16independent replays, with the original
+  eight observed/repeat outputs unchanged byte-for-byte. GG positive control passed.
+  Final populations GG/LG/GL/LL:347/230/157/187; births:664/539/339/413. Local-placement
+  cells had1027/1556failed placements; global-placement cells had zero. This is
+  one development realization per cell, not confirmatory evidence. See
+  [`sm_xl001_recovery_closeout.md`](sm_xl001_recovery_closeout.md) and the unchanged
+  [`original blocked closeout`](sm_xl001_closeout.md).
 - Independent review and controller hardening are complete. XP `d0e3034` and
   XL `fe3bf8c` are integrated through `61de654`, with the documented limited scope
   in [`stringmol_exploration_code_review_closeout.md`](stringmol_exploration_code_review_closeout.md).
   Combined parent validation: 102 tests passed normally and 102 under `-O`, one
   directed-native-fixture skip each, strict typing clean across 20 owned files.
   This is not full historical/native regression qualification.
-- The user authorized a fresh **complete 12-run XL technical recovery**, not
-  selective off-only replacement. Prospective protocol/controller qualification
-  and independent review precede execution. Original seed, biological settings,
-  horizon and endpoints remain fixed; new external roots, full observer-off
-  checks, independent replay, repeat analysis and verified export are required.
-  The original blocked attempt is immutable and will not be relabeled or pooled.
+- Recovery source `2532726` was qualified, independently reviewed, frozen and
+  published before execution. All12native runs and16replays succeeded;2297portable
+  files were checksum-verified and independently rehashed by the parent. Original
+  seed, biological settings, horizon and endpoints were unchanged. The original
+  blocked attempt is immutable and unpooled. The recovery budget is now exhausted;
+  no additional population attempts are authorized.
 
 These are bounded development explorations, not confirmatory unseen-seed results.
 Retain negatives and every attempt. Do not reopen SM-H003's failed panel-level

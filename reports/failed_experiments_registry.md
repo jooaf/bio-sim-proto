@@ -281,6 +281,23 @@ ups are prohibited unless opened as an explicitly new design.
   follow-ups remain closed. See `sm_b003_admission_replacement_closeout.md` for
   provenance and checksum-verified portable evidence.
 
+## SM-XL001 original attempt — Missing fully-disabled observer control
+
+- **Decision:** BLOCKED, permanently retained for the original attempt.
+- All12original executions completed and eight observed/repeat histories replayed,
+  but all four nominal-off environments omitted `STRINGMOL_CONSERVATION_LOG=0`.
+  Native default-on behavior retained conservation/material streams. Partial
+  ordinary-output parity cannot substitute for the frozen fully-off condition.
+- Directed logger qualification and later engineering fixes do not change this
+  historical result. A separately authorized, prospectively frozen complete12-run
+  recovery at `2532726` passed all full-off/repeat/replay gates and the canonical
+  positive control. Its valid descriptive result is separate and unpooled.
+- All original12raw inventories are unchanged; all eight recovered observed/repeat
+  outputs match their originals. No selective off-only retry, biological change,
+  threshold tuning or retrospective relabeling occurred. Both attempts and their
+  source/receipts are preserved on Elements. See `sm_xl001_closeout.md` and
+  `sm_xl001_recovery_closeout.md`. Recovery budget exhausted; no new attempts.
+
 ## Cross-cutting lessons
 
 1. Positive mechanics do not imply ecological or organizational function.

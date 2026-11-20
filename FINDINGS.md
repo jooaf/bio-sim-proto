@@ -394,3 +394,26 @@ Repair/recovery source: `15b4bb18d50bd09568a2cdd16f8644734ff2b278`. All original
 failures and 69,516 checksum-verified portable evidence files remain on Elements.
 Full arm table, evidence paths and decision checksum:
 [`reports/sm_b003_admission_replacement_closeout.md`](reports/sm_b003_admission_replacement_closeout.md).
+
+## Exploratory partner context and locality: bounded descriptive closeouts
+
+SM-XP001 retained48directed assays and12population executions. The one-byte
+background was binding-excluded, not a matched inert control; canonical HOST
+abundance declined in all8primary histories. Supported-pool host replication does
+not erase the zero-pool negative or justify an interaction-specific causal claim.
+See [`reports/sm_xp001_results.md`](reports/sm_xp001_results.md).
+
+SM-XL001's original attempt remains blocked by incomplete observer disabling.
+A separately authorized complete12-run recovery, source `2532726`, passed all
+four fully-off controls, native repeat parity and16independent full-state/RNG
+replays. Eight observed/repeat scientific outputs match the originals exactly.
+The canonical GG control passed. Final populations GG/LG/GL/LL were347/230/157/187;
+births664/539/339/413. Global-placement cells had zero placement failures; local
+placement had1027(GL) and1556(LL), with high occupied-neighbor fractions. Local
+interaction increased empty-search counts in this fixed development realization.
+These are descriptive patterns with one realization per cell, not replication,
+mediator identification, adaptation, robustness or confirmation. All horizons,
+inputs and endpoints were unchanged; the original attempt was not relabeled or
+pooled. Portable2297-file export and independent parent audit passed. No additional
+population budget remains. Full counts, denominators and provenance:
+[`reports/sm_xl001_recovery_closeout.md`](reports/sm_xl001_recovery_closeout.md).
