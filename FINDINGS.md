@@ -417,3 +417,16 @@ inputs and endpoints were unchanged; the original attempt was not relabeled or
 pooled. Portable2297-file export and independent parent audit passed. No additional
 population budget remains. Full counts, denominators and provenance:
 [`reports/sm_xl001_recovery_closeout.md`](reports/sm_xl001_recovery_closeout.md).
+
+A subsequent **post hoc, existing-data-only** reduction found rooted nonfounder
+renewers GG/LG/GL/LL=25/47/12/39 and late-born renewers=6/21/2/12. Local placement
+therefore accompanies less absolute renewal under both fixed interaction regimes,
+but per-admitted-child renewal changes from25/664 to12/339 with global interaction
+and from47/539 to39/413 with local interaction: opposing fraction directions.
+Late-born fractions also have opposing directions. All cells lose exact HOST from
+140initial to7/25/4/15final despite growing total populations. This does not isolate
+an admission-mediated causal effect or measure intrinsic competence; source role,
+partner opportunity, unequal follow-up and censoring remain important. Parent
+independent raw-data/count/geometry/hash checks passed, with no new simulations or
+full replays. Recommendation: measurement work before another population study.
+See [`reports/sm_xl001_renewal_analysis.md`](reports/sm_xl001_renewal_analysis.md).

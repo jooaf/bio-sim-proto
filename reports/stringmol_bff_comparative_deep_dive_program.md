@@ -1,6 +1,6 @@
 # Prospective Stringmol–BFF comparative deep-dive program
 
-## Execution status and next-track candidates — 2026-11-16
+## Execution status and measurement boundary — 2026-11-20
 
 This is the existing experiment roadmap, not blanket launch authorization.
 SM-B002 closed with **Intermediate response**; SM-B003 closed with **Robust
@@ -10,18 +10,28 @@ whole-matrix reanalysis. See `sm_b003_admission_replacement_closeout.md` and
 relaxed endpoints. SM-H003's catalyst/template confirmation remains gated off;
 **BFF remains NO-GO**, including historical follow-up proposals below.
 
-For the user's requested independent exploratory work, candidate tracks are:
+Both independent exploratory tracks are now closed:
 
-1. **Partner/frequency context (module 1):** bounded canonical Stringmol reaction
-   assays and positive-control qualification before any population claim.
-2. **Interaction versus placement locality (module 4):** a small complete locality
-   factorial under native vacancy admission, with occupancy and other conditions
-   held fixed; not a search to rescue SM-B003 replacement-only continuity.
+1. **SM-XP001 partner/frequency context (module1):** conditional HOST output with
+   supplied matter, a zero-pool negative, and descriptive population outcomes;
+   the one-byte background was not a binding-matched inert control.
+2. **SM-XL001 interaction versus placement locality (module4):** a separately
+   authorized complete12-run technical recovery passed full-off controls and
+   sixteen independent replays. The original missing-control attempt stays blocked.
+   Fixed initial occupancy/arrangement are not fixed subsequent occupancy trajectories.
 
-These are unlaunched proposals. Separate experiment IDs, implementation/output
-ownership, retained outcomes and shared resource limits are required before runs.
-Exploratory screening does not establish a confirmatory effect; any subsequent
-confirmation needs its own frozen protocol and unseen seeds.
+Read-only post hoc renewal synthesis found fewer absolute nonfounder renewers with
+local placement in both interaction contexts, but per-admitted-child renewal
+fractions changed in opposing directions. Exact HOST declined in all cells while
+total populations grew. See `sm_xl001_renewal_analysis.md` for counts, denominators,
+right-censoring, role/competence limitations and independent parent review.
+
+**Next recommendation: measurement work, not new population execution.** Define
+productive source versus active-executor performance, partner context and exposure/
+censoring before selecting a further prospective hypothesis. No campaign is active
+or additionally authorized. The modules below remain a conceptual roadmap, not
+permission to launch. Confirmation would require a separate design, unseen seeds,
+fixed endpoints and explicit budget; these histories cannot supply confirmation.
 
 ## Question and inference boundary
 

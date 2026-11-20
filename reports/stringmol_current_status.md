@@ -1,6 +1,6 @@
 # Current Stringmol program status
 
-Updated after the 2026-11-19 SM-XL001 recovery. SM-B002 and SM-B003 are closed.
+Updated 2026-11-20 after the read-only XL renewal synthesis. SM-B002 and SM-B003 are closed.
 XP and the complete XL technical recovery are closed as bounded descriptive
 explorations. Original failures remain preserved. No experiment is currently running.
 
@@ -90,6 +90,15 @@ Portable controls/source bundle:
   seed, biological settings, horizon and endpoints were unchanged. The original
   blocked attempt is immutable and unpooled. The recovery budget is now exhausted;
   no additional population attempts are authorized.
+
+- **Existing-data renewal synthesis:** independent parent review accepted the
+  post hoc reduction (`f9ba2d6`), with zero new simulations or full replays. Local
+  placement accompanies fewer distinct renewers (GL12 vs GG25; LL39 vs LG47) and
+  late-born renewers (2vs6;12vs21). Per-admitted-child renewal fractions change in
+  opposite directions across interaction contexts, while exact HOST declines in
+  every cell. The next recommendation is measurement work on productive roles,
+  partner context and censoring—not another population campaign. See
+  [`sm_xl001_renewal_analysis.md`](sm_xl001_renewal_analysis.md).
 
 These are bounded development explorations, not confirmatory unseen-seed results.
 Retain negatives and every attempt. Do not reopen SM-H003's failed panel-level
